@@ -143,14 +143,16 @@ def find_longitude_event(body: str, natal_longitude: float,
         b = fn(next_t)
         if a == 0:
             root = t
+        elif b == 0:
+            root = next_t
         elif a * b < 0:
             root = _bisect_crossing(fn, t, next_t)
         else:
             t, next_t = next_t, min(next_t + step.total_seconds(), stop)
             continue
 
+        direction = _event_direction(body, root, (natal_longitude + target_degrees) % 360.0)
         dt = datetime.fromtimestamp(root, tz=timezone.utc)
-        direction = "forward" if b > a else "retrograde"
         events.append({
             "type": f"{body}_{'return' if target_degrees == 0 else 'opposition'}",
             "body": body,
