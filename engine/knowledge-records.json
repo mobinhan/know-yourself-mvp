@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0",
+  "records": [
+    {
+      "id": "HD-KNOW-FOUNDATION-001",
+      "concept": "BodyGraph foundation",
+      "claim": "The Human Design BodyGraph represents activated gates and the connections between them; completed channels connect centres and contribute to chart definition.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section One, The Human Design BodyGraph, pp. 31-43; Section Two, The Nine Centers, pp. 44-103",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-DEFINITION-001",
+      "concept": "Definition",
+      "claim": "Chart definition is formed by completed channels and the centres they connect; the resulting defined structure is treated as a stable component of the natal design.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section Two, Definition in a BodyGraph, printed p. 34; Section Two, The Nine Centers",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-CENTRES-001",
+      "concept": "Defined and undefined centres",
+      "claim": "The reference distinguishes defined centres from undefined and completely open centres, with definition represented by connected channel structure and openness represented by absence of complete channel definition.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section Two, The Nine Centers, especially pp. 51-52",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-AUTHORITY-001",
+      "concept": "Authority",
+      "claim": "Strategy and Authority are presented as the Human Design decision-making framework, with different Authority forms associated with different chart configurations.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section Three, Authority, pp. 106-112",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-TYPE-001",
+      "concept": "Types and Strategy",
+      "claim": "The reference presents four major Types and associates each with a corresponding Strategy for navigating interaction and decision-making.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section Four, The Four Types and Strategies, pp. 114-145",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-CHANNEL-001",
+      "concept": "Channels",
+      "claim": "A channel is formed by two gates and connects two centres; the reference describes 36 channels within the BodyGraph system.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section Six, Circuits, Channels and Gates, printed p. 159 and channel index",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-GATE-001",
+      "concept": "Gates",
+      "claim": "The BodyGraph contains 64 gates, each functioning as an entry or exit point associated with the channel structure; the reference provides individual gate descriptions and line names.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section Six, Circuits, Channels and Gates, pp. 158-257",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-CIRCUITRY-001",
+      "concept": "Circuitry",
+      "claim": "Circuitry groups channels into broader energy-flow structures and is used as an interpretive framework for understanding how channel themes relate within the BodyGraph.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section Six, Circuits, Channels and Gates, pp. 158-159",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-PROFILE-001",
+      "concept": "Profile",
+      "claim": "Profile is derived from the Personality Sun line and Design Sun line and is treated as a major component of the chart description.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Section Five, Profiles, following the Types and Strategies section",
+      "use": "educational"
+    },
+    {
+      "id": "HD-KNOW-EXPERIMENT-001",
+      "concept": "Experimentation",
+      "claim": "The reference frames Human Design knowledge as something to be tested through personal experience rather than accepted solely as an intellectual belief.",
+      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
+      "locator": "Opening message from Ra Uru Hu, March 1, 2011",
+      "use": "educational"
+    }
+  ]
+}
