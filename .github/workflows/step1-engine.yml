@@ -41,6 +41,10 @@ jobs:
         run: node engine/test_connection_mechanics.mjs
       - name: Run temporal state integration test
         run: node engine/test_temporal_state.mjs
+      - name: Run connection invariants test
+        run: node engine/test_connection_invariants.mjs
+      - name: Run transit invariants test
+        run: node engine/test_transit_invariants.mjs
       - name: Validate chart contract
         run: node engine/validate_contract.mjs
       - name: Validate canonical chart artifact
