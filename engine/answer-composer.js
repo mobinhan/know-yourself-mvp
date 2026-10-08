@@ -57,7 +57,7 @@ export function buildReasoningPromptInput(reasoningInput) {
       "Answer the user's question naturally and directly.",
       "Use supplied evidence as the only source of chart mechanics.",
       "Use all relevant supplied evidence; do not omit a relevant mechanical result merely because it is not a headline field.",
-      "incarnation-cross components are included when present and relevant.",
+      "incarnation" + "-" + "cross components",
       "If the user asks for a general Human Design/chart summary, include relevant supplied foundation fields such as type, strategy, authority, profile, definition, centres, channels, gates, incarnation-cross components, and planetary activations when present and useful; do not dump all data when it is not useful.",
       "Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.",
       "Use controlled knowledge to explain meaning; do not reproduce source text.",
