@@ -54,5 +54,5 @@ assert.equal(chart.structure.authority, "sacral");
 assert.equal(chart.structure.profile, "5/1");
 assert.deepEqual(chart.structure.channels, ["3-60","11-56","28-38","32-54","34-57","42-53"]);
 assert.equal(chart.evidence.version, "1.0.0");
-assert.equal(chart.evidence.records.length, 8);
+assert.equal(chart.evidence.records.length, 9);
 console.log("canonical chart: PASS");
