@@ -28,7 +28,7 @@ def test_golden_substructure_matches_legacy_fixture():
 
 def test_substructure_is_continuous_and_nested():
     # The same normalized Mandala position must drive Gate -> Line -> Colour -> Tone -> Base.
-    from ephemeris import GATE_SIZE_DEG, LINE_SIZE_DEG, COLOUR_SIZE_DEG, TONE_SIZE_DEG, BASE_SIZE_DEG, MANDALA_OFFSET_DEG
+    from ephemeris import GATE_ORDER, GATE_SIZE_DEG, LINE_SIZE_DEG, COLOUR_SIZE_DEG, TONE_SIZE_DEG, BASE_SIZE_DEG, MANDALA_OFFSET_DEG
     eps = 1e-9
     for gate_index in range(64):
         gate_start = (gate_index * GATE_SIZE_DEG - MANDALA_OFFSET_DEG) % 360.0
