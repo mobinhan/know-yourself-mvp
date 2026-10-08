@@ -1,21 +1,23 @@
-import pytest
-from ephemeris import gate_line, GATE_SIZE_DEG, LINE_SIZE_DEG, GATE_ORDER
+from ephemeris import gate_line, GATE_SIZE_DEG, LINE_SIZE_DEG, GATE_ORDER, MANDALA_OFFSET_DEG
+
+def _lon_from_x(x):
+    return (x - MANDALA_OFFSET_DEG) % 360
 
 def test_gate_boundaries():
     for i, gate in enumerate(GATE_ORDER):
         start = i * GATE_SIZE_DEG
-        assert gate_line((start - 1e-9) % 360)[0] == GATE_ORDER[(i - 1) % 64]
-        assert gate_line(start)[0] == gate
-        assert gate_line((start + GATE_SIZE_DEG - 1e-9) % 360)[0] == gate
+        assert gate_line(_lon_from_x((start - 1e-9) % 360))[0] == GATE_ORDER[(i - 1) % 64]
+        assert gate_line(_lon_from_x(start))[0] == gate
+        assert gate_line(_lon_from_x((start + GATE_SIZE_DEG - 1e-9) % 360))[0] == gate
 
 def test_line_boundaries():
     gate_start = 0.0
     gate = GATE_ORDER[0]
     for line in range(1, 7):
         start = gate_start + (line - 1) * LINE_SIZE_DEG
-        assert gate_line((start + 1e-10) % 360) == (gate, line)
+        assert gate_line(_lon_from_x((start + 1e-10) % 360)) == (gate, line)
         if line < 6:
-            assert gate_line((start + LINE_SIZE_DEG - 1e-10) % 360) == (gate, line)
+            assert gate_line(_lon_from_x((start + LINE_SIZE_DEG - 1e-10) % 360)) == (gate, line)
 
 def test_gate_order_has_exactly_64_unique_gates():
     assert len(GATE_ORDER) == 64
