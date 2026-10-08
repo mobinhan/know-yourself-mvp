@@ -24,7 +24,7 @@ export function understandQuestion(question) {
     question: question.trim(),
     intent,
     domains: domains.length ? domains : ["general"],
-    evidence_targets: requires_timing ? ["temporal_state","lifecycle_event","activations"] : ["type","strategy","authority","profile","definition","channels","centres","gates"],
+    evidence_targets: requires_timing ? ["temporal_state","lifecycle_event","activations"] : ["type","strategy","authority","profile","definition","channels","centres","gates","activations"],
     requires_timing
   };
 }
