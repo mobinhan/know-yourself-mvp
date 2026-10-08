@@ -121,6 +121,8 @@ jobs:
         run: node engine/test_step5_stress.mjs
       - name: Run Step 5 adversarial tests
         run: node engine/test_step5_adversarial.mjs
+      - name: Run reasoning provider contract test
+        run: node engine/test_reasoning-provider.mjs
       - name: Write JavaScript validation marker
         if: always()
         run: |
