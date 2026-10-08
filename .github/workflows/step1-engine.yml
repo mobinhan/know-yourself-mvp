@@ -101,6 +101,8 @@ jobs:
         run: node engine/validate_knowledge.mjs
       - name: Run controlled knowledge layer test
         run: node engine/test_knowledge.mjs
+      - name: Run evidence-to-knowledge retrieval test
+        run: node engine/test_knowledge_retrieval.mjs
       - name: Write JavaScript validation marker
         if: always()
         run: |
