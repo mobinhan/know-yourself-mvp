@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "purpose": "Contract for ingesting and using external blogs, videos, podcasts and case material.",
+  "rules": [
+    "External content is enrichment, not a replacement for deterministic mechanics.",
+    "P0 deterministic output always outranks external claims about chart calculation.",
+    "P1 lineage material can explain Human Design concepts but cannot change computed chart facts.",
+    "P2 practitioner material may provide interpretation, application, examples and alternative framing.",
+    "P3 community material is experiential evidence only and must be labelled as such.",
+    "P4 critical material may surface uncertainty, disagreement or limitations but cannot rewrite Human Design mechanics.",
+    "Every external claim must retain source_id, locator and claim_type.",
+    "Every external claim must record whether it is supported, disputed, experiential, interpretive or critical.",
+    "Conflicting external claims must be stored as a conflict set rather than silently merged.",
+    "Multiple sources that repeat the same wording or claim do not count as independent corroboration without provenance review.",
+    "External claims must never be promoted into deterministic evidence records.",
+    "The AI may use external material only when the question calls for interpretation, practical examples, alternative perspectives or critical context.",
+    "A source can be useful even when its claim is not accepted as authoritative; usefulness and truth authority are separate dimensions.",
+    "Copyrighted material must be represented by metadata, concise paraphrase and provenance unless rights explicitly permit fuller use.",
+    "Video and podcast ingestion should prefer creator-provided transcripts or authorized captions and store segment locators rather than reproducing full transcripts."
+  ],
+  "claim_types": [
+    "mechanical",
+    "interpretive",
+    "experiential",
+    "case_example",
+    "teaching",
+    "critical",
+    "historical"
+  ],
+  "claim_status": [
+    "accepted",
+    "provisional",
+    "disputed",
+    "experiential_only",
+    "rejected"
+  ],
+  "allowed_use": [
+    "explain",
+    "illustrate",
+    "compare",
+    "question",
+    "contextualize"
+  ],
+  "blocked_use": [
+    "recalculate_chart",
+    "override_evidence",
+    "assert_mechanical_truth_from_single_external_source",
+    "publish_copyrighted_source_text"
+  ]
+}
