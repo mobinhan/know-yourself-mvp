@@ -1,0 +1,34 @@
+{
+  "contract_version": "1.0.0",
+  "purpose": "Deterministic Know Yourself chart output contract",
+  "calculation": {
+    "ephemeris_provider": "Swiss Ephemeris",
+    "node": "true",
+    "design_sun_offset_degrees": 88,
+    "mandala_start_gate": 41,
+    "mandala_offset_degrees": 58
+  },
+  "activation_fields": [
+    "body",
+    "imprint",
+    "timestamp_utc",
+    "longitude",
+    "gate",
+    "line",
+    "colour",
+    "tone",
+    "base"
+  ],
+  "derived_fields": [
+    "channels",
+    "centres",
+    "definition",
+    "type",
+    "strategy",
+    "authority",
+    "profile",
+    "incarnation_cross"
+  ],
+  "evidence_required": true,
+  "interpretation_in_engine": false
+}
