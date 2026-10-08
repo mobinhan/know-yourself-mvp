@@ -16,7 +16,8 @@
     "podcast",
     "course",
     "interview",
-    "case_story"
+    "case_story",
+    "social_media"
   ],
   "sources": [
     {
@@ -24,9 +25,18 @@
       "name": "Jovian Archive",
       "url": "https://jovianarchive.com/",
       "tier": "P1",
-      "content_types": ["blog", "article", "video", "course"],
+      "content_types": [
+        "blog",
+        "article",
+        "video",
+        "course"
+      ],
       "lineage": "Official Human Design source associated with Ra Uru Hu's teachings.",
-      "authority_scope": ["teaching", "system_concepts", "original_media"],
+      "authority_scope": [
+        "teaching",
+        "system_concepts",
+        "original_media"
+      ],
       "quality": {
         "authorship": 5,
         "lineage": 5,
@@ -42,9 +52,16 @@
       "name": "Ra.TV",
       "url": "https://www.ra.tv/",
       "tier": "P1",
-      "content_types": ["video", "course"],
+      "content_types": [
+        "video",
+        "course"
+      ],
       "lineage": "Official Jovian Archive platform for Ra Uru Hu video teachings.",
-      "authority_scope": ["original_media", "teaching", "system_concepts"],
+      "authority_scope": [
+        "original_media",
+        "teaching",
+        "system_concepts"
+      ],
       "quality": {
         "authorship": 5,
         "lineage": 5,
@@ -60,9 +77,19 @@
       "name": "Richard Beaumont / Human.Design",
       "url": "https://human.design/",
       "tier": "P2",
-      "content_types": ["blog", "article", "video", "podcast", "course"],
+      "content_types": [
+        "blog",
+        "article",
+        "video",
+        "podcast",
+        "course"
+      ],
       "lineage": "Long-standing teacher and direct student of Ra Uru Hu; authorized UK Human Design organization is described on the source site.",
-      "authority_scope": ["teaching", "practical_application", "lived_examples"],
+      "authority_scope": [
+        "teaching",
+        "practical_application",
+        "lived_examples"
+      ],
       "quality": {
         "authorship": 5,
         "lineage": 5,
@@ -78,9 +105,18 @@
       "name": "Human Design Collective",
       "url": "https://humandesigncollective.com/",
       "tier": "P2",
-      "content_types": ["article", "podcast", "course", "interview"],
+      "content_types": [
+        "article",
+        "podcast",
+        "course",
+        "interview"
+      ],
       "lineage": "Established practitioner education/community source with IHDS course offerings.",
-      "authority_scope": ["teaching", "practical_application", "case_discussion"],
+      "authority_scope": [
+        "teaching",
+        "practical_application",
+        "case_discussion"
+      ],
       "quality": {
         "authorship": 4,
         "lineage": 4,
@@ -96,9 +132,16 @@
       "name": "Human Design Business",
       "url": "https://www.humandesignbusiness.com/",
       "tier": "P2",
-      "content_types": ["article"],
+      "content_types": [
+        "article"
+      ],
       "lineage": "Independent practitioner source with an explicit editorial methodology and source-traceability policy.",
-      "authority_scope": ["practical_application", "career", "business", "interpretation"],
+      "authority_scope": [
+        "practical_application",
+        "career",
+        "business",
+        "interpretation"
+      ],
       "quality": {
         "authorship": 4,
         "lineage": 3,
@@ -114,9 +157,15 @@
       "name": "Innate Map — Human Design evidence commentary",
       "url": "https://innatemap.com/human-design/is-human-design-real/",
       "tier": "P4",
-      "content_types": ["article"],
+      "content_types": [
+        "article"
+      ],
       "lineage": "Independent critical source; useful for separating calculable astronomy from interpretive claims and for surfacing scientific-evidence limitations.",
-      "authority_scope": ["critical_context", "limitations", "epistemic_status"],
+      "authority_scope": [
+        "critical_context",
+        "limitations",
+        "epistemic_status"
+      ],
       "quality": {
         "authorship": 3,
         "lineage": 1,
@@ -125,6 +174,39 @@
         "independence": 5
       },
       "rights_policy": "Use as independent commentary; preserve attribution and avoid reproducing source text.",
+      "status": "seeded"
+    },
+    {
+      "id": "EXT_IHDS_OFFICIAL",
+      "name": "International Human Design School (IHDS)",
+      "url": "https://www.ihdschool.com/",
+      "social_urls": [
+        "https://www.facebook.com/share/19RriUoGU8/"
+      ],
+      "tier": "P1",
+      "content_types": [
+        "blog",
+        "article",
+        "video",
+        "course",
+        "social_media"
+      ],
+      "lineage": "Official International Human Design School associated with the original educational standards, certification and teacher-training lineage of Human Design.",
+      "authority_scope": [
+        "teaching",
+        "educational_standards",
+        "certification_context",
+        "original_media",
+        "practical_context"
+      ],
+      "quality": {
+        "authorship": 5,
+        "lineage": 5,
+        "traceability": 5,
+        "experience": 5,
+        "independence": 2
+      },
+      "rights_policy": "Store metadata, source links, concise paraphrase and provenance. Do not reproduce copyrighted posts, videos, images or transcripts unless rights explicitly permit fuller use.",
       "status": "seeded"
     }
   ]
