@@ -28,7 +28,8 @@ const evidence = buildEvidence({
 const gateEvidence = getEvidence(evidence,"E-GATES");
 const packet = buildEvidenceKnowledgePacket(gateEvidence);
 
-assert.ok(getKnowledgeForEvidence("E-GATES").length > 0);
+assert.equal(getKnowledgeForEvidence("E-GATES").length, 1);
+assert.equal(getKnowledgeForEvidence("UNKNOWN-EVIDENCE").length, 0);
 assert.equal(packet.evidence.id,"E-GATES");
 assert.equal(packet.knowledge[0].id,"HD-KNOW-GATE-001");
 assert.equal(packet.interpretation_allowed,false);
