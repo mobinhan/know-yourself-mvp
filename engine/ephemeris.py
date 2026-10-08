@@ -7,7 +7,6 @@ from zoneinfo import ZoneInfo
 
 import swisseph as swe
 
-
 GATE_ORDER = [
     25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,15,52,
     39,53,62,56,31,33,7,4,29,59,40,64,47,6,46,18,48,57,
@@ -17,6 +16,9 @@ GATE_ORDER = [
 MANDALA_OFFSET_DEG = 1.875
 GATE_SIZE_DEG = 360.0 / 64.0
 LINE_SIZE_DEG = GATE_SIZE_DEG / 6.0
+COLOUR_SIZE_DEG = LINE_SIZE_DEG / 6.0
+TONE_SIZE_DEG = COLOUR_SIZE_DEG / 6.0
+BASE_SIZE_DEG = TONE_SIZE_DEG / 5.0
 
 BODIES = {
     "sun": swe.SUN, "moon": swe.MOON, "mercury": swe.MERCURY,
@@ -33,6 +35,9 @@ class Activation:
     longitude: float
     gate: int
     line: int
+    colour: int
+    tone: int
+    base: int
 
 def local_to_utc(local_datetime: str, iana_timezone: str) -> datetime:
     dt = datetime.fromisoformat(local_datetime)
@@ -57,12 +62,23 @@ def longitude(jd: float, body_id: int) -> float:
     values, _ = swe.calc_ut(jd, body_id)
     return float(values[0]) % 360.0
 
+def substructure(lon: float) -> tuple[int,int,int,int,int]:
+    """Return gate, line, colour, tone, base from the canonical nested divisions."""
+    x = (lon + MANDALA_OFFSET_DEG) % 360.0
+    gate_index = min(63, int(x / GATE_SIZE_DEG))
+    within_gate = x - gate_index * GATE_SIZE_DEG
+    line = min(6, int(within_gate / LINE_SIZE_DEG) + 1)
+    within_line = within_gate - (line - 1) * LINE_SIZE_DEG
+    colour = min(6, int(within_line / COLOUR_SIZE_DEG) + 1)
+    within_colour = within_line - (colour - 1) * COLOUR_SIZE_DEG
+    tone = min(6, int(within_colour / TONE_SIZE_DEG) + 1)
+    within_tone = within_colour - (tone - 1) * TONE_SIZE_DEG
+    base = min(5, int(within_tone / BASE_SIZE_DEG) + 1)
+    return GATE_ORDER[gate_index], line, colour, tone, base
+
 def gate_line(lon: float) -> tuple[int,int]:
-    x=(lon+MANDALA_OFFSET_DEG)%360.0
-    gi=min(63,int(x/GATE_SIZE_DEG))
-    within=x-gi*GATE_SIZE_DEG
-    line=min(6,int(within/LINE_SIZE_DEG)+1)
-    return GATE_ORDER[gi],line
+    gate, line, _, _, _ = substructure(lon)
+    return gate, line
 
 def _sun_delta(jd: float, birth_sun: float) -> float:
     current=longitude(jd,swe.SUN)
@@ -96,8 +112,8 @@ def _iso(jd: float) -> str:
 
 def _activation(body: str, imprint: str, jd: float) -> Activation:
     lon=longitude(jd,BODIES[body])
-    gate,line=gate_line(lon)
-    return Activation(body,imprint,_iso(jd),lon,gate,line)
+    gate,line,colour,tone,base=substructure(lon)
+    return Activation(body,imprint,_iso(jd),lon,gate,line,colour,tone,base)
 
 def calculate_activations(birth_utc: datetime) -> dict:
     birth_jd=julian_day(birth_utc)
@@ -108,12 +124,13 @@ def calculate_activations(birth_utc: datetime) -> dict:
     for arr in (personality,design_side):
         sun=next(x for x in arr if x.body=="sun")
         earth_lon=(sun.longitude+180)%360
-        eg,el=gate_line(earth_lon)
-        arr.insert(1,Activation("earth",arr[0].imprint,arr[0].timestamp_utc,earth_lon,eg,el))
+        eg,el,ec,et,eb=substructure(earth_lon)
+        arr.insert(1,Activation("earth",arr[0].imprint,arr[0].timestamp_utc,earth_lon,eg,el,ec,et,eb))
         node=next(x for x in arr if x.body=="north_node")
-        sg,sl=gate_line((node.longitude+180)%360)
+        sg,sl,sc,st,sb=substructure((node.longitude+180)%360)
         idx=next(i for i,x in enumerate(arr) if x.body=="north_node")+1
-        arr.insert(idx,Activation("south_node",arr[0].imprint,node.timestamp_utc,(node.longitude+180)%360,sg,sl))
+        arr.insert(idx,Activation("south_node",arr[0].imprint,node.timestamp_utc,
+                                   (node.longitude+180)%360,sg,sl,sc,st,sb))
     return {"personality":[asdict(x) for x in personality],
             "design":[asdict(x) for x in design_side]}
 
