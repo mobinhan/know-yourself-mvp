@@ -113,6 +113,8 @@ jobs:
         run: node engine/test_knowledge_retrieval.mjs
       - name: Run grounded reasoning adapter test
         run: node engine/test_reasoning-adapter.mjs
+      - name: Run answer composer test
+        run: node engine/test_answer-composer.mjs
       - name: Write JavaScript validation marker
         if: always()
         run: |
