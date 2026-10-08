@@ -1,0 +1,91 @@
+{
+  "version": "1.0.0",
+  "purpose": "Controlled contract for AI question understanding and evidence-grounded reasoning.",
+  "rules": [
+    "Deterministic chart mechanics remain authoritative.",
+    "The AI may interpret but must not calculate or alter mechanical facts.",
+    "Every factual chart statement must be traceable to supplied evidence.",
+    "Source knowledge must retain source IDs and locators.",
+    "Interpretation must be distinguishable from mechanical fact.",
+    "If supplied evidence is insufficient, the system must say so rather than invent facts.",
+    "Connection interpretation cannot assert dominance, compatibility, attraction, or relationship quality as mechanical facts.",
+    "Temporal claims require supplied temporal evidence; the AI must not infer astronomical timing."
+  ],
+  "question": {
+    "required": [
+      "question",
+      "intent",
+      "domains",
+      "evidence_targets",
+      "requires_timing"
+    ],
+    "intent_values": [
+      "factual",
+      "interpretive",
+      "comparative",
+      "timing",
+      "reflective"
+    ],
+    "domain_values": [
+      "career_purpose",
+      "money_prosperity",
+      "relationships_love",
+      "life_direction_major_decisions",
+      "self_personal_development",
+      "timing_life_events",
+      "general"
+    ],
+    "evidence_targets": [
+      "activations",
+      "gates",
+      "channels",
+      "centres",
+      "definition",
+      "type",
+      "strategy",
+      "authority",
+      "profile",
+      "cross",
+      "temporal_state",
+      "lifecycle_event",
+      "connection"
+    ]
+  },
+  "reasoning_input": {
+    "required": [
+      "question_context",
+      "question",
+      "evidence",
+      "knowledge"
+    ],
+    "evidence_record_fields": [
+      "id",
+      "claim",
+      "inputs",
+      "result",
+      "calculation"
+    ],
+    "knowledge_record_fields": [
+      "id",
+      "concept",
+      "claim",
+      "source_ids",
+      "locator",
+      "use"
+    ]
+  },
+  "answer": {
+    "required": [
+      "answer",
+      "factual_basis",
+      "knowledge_basis",
+      "interpretation",
+      "limitations",
+      "critic"
+    ],
+    "critic_required": [
+      "passed",
+      "issues"
+    ]
+  }
+}
