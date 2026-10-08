@@ -119,6 +119,8 @@ jobs:
         run: node engine/test_conversation-context.mjs
       - name: Run Step 5 stress tests
         run: node engine/test_step5_stress.mjs
+      - name: Run Step 5 adversarial tests
+        run: node engine/test_step5_adversarial.mjs
       - name: Write JavaScript validation marker
         if: always()
         run: |
