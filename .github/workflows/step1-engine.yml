@@ -117,6 +117,8 @@ jobs:
         run: node engine/test_knowledge_retrieval.mjs
       - name: Run grounded reasoning adapter test
         run: node engine/test_reasoning-adapter.mjs
+      - name: Debug answer composer completeness guidance
+        run: node --input-type=module -e 'import { buildReasoningPromptInput } from "./engine/answer-composer.js"; const p=buildReasoningPromptInput({ready_for_reasoning:true,question:"x",question_context:{},evidence:[],knowledge:[]}); console.log(JSON.stringify(p.instructions)); console.log(p.instructions.includes("incarnation-cross components"));'
       - name: Run answer composer test
         run: node engine/test_answer-composer.mjs
       - name: Run conversation context test
