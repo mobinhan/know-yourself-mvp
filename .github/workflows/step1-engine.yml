@@ -124,7 +124,7 @@ jobs:
       - name: Run reasoning provider contract test
         run: node engine/test_reasoning-provider.mjs
       - name: Run extended evidence test
-        run: node engine/test_extended-evidence.mjs
+        run: node engine/test_extended-evidence.mjs\n      - name: Validate Step 5\n        run: node engine/test_step5_acceptance.mjs
       - name: Write JavaScript validation marker
         if: always()
         run: |
