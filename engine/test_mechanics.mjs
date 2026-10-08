@@ -44,11 +44,16 @@ assert.equal(manifestor.strategy, "inform");
 
 const projector = run([channel("projector", 11, 56, ["ajna","throat"])], [11,56]);
 assert.equal(projector.type, "projector");
-assert.equal(projector.strategy, null);
+assert.equal(projector.strategy, "wait_for_invitation");
+
+const mental = run([channel("mental", 11, 56, ["ajna","head"])], [11,56]);
+assert.equal(mental.type, "projector");
+assert.equal(mental.authority, "mental");
 
 /* No defined centres */
 const reflector = deriveStructuralChart({ activations: { personality: [], design: [] }, channel_catalog: [] });
 assert.equal(reflector.type, "reflector");
 assert.equal(reflector.authority, "lunar_or_none");
+assert.equal(reflector.strategy, "wait_for_lunar_cycle");
 
 console.log("MECHANICAL EDGE CASES PASS");
