@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const contract=JSON.parse(fs.readFileSync(new URL('./chart-contract.json',import.meta.url)));
+const required=['body','imprint','timestamp_utc','longitude','gate','line','colour','tone','base'];
+if(contract.contract_version!=='1.0.0') throw new Error('Unexpected contract version');
+if(contract.calculation.mandala_start_gate!==41) throw new Error('Unexpected mandala start gate');
+if(contract.calculation.mandala_offset_degrees!==58) throw new Error('Unexpected mandala offset');
+if(contract.calculation.design_sun_offset_degrees!==88) throw new Error('Unexpected design offset');
+if(JSON.stringify(contract.activation_fields)!==JSON.stringify(required)) throw new Error('Activation contract changed');
+if(contract.interpretation_in_engine!==false) throw new Error('Interpretation must remain outside deterministic engine');
+console.log('chart contract: PASS');
