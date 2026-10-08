@@ -33,3 +33,5 @@ jobs:
         run: node engine/test_evidence.mjs
       - name: Validate chart contract
         run: node engine/validate_contract.mjs
+      - name: Validate canonical chart artifact
+        run: node engine/test_canonical_chart.mjs
