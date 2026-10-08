@@ -24,7 +24,6 @@ export function deriveStructuralChart(input){
  else if(hasSacral)authority='sacral';
  else if(centres.includes('spleen'))authority='splenic';
  else if(centres.includes('heart'))authority='ego';
- else if(centres.includes('heart'))authority='ego';
  else if(centres.includes('g')&&hasThroat)authority='self_projected';
  else if(centres.includes('head')||centres.includes('ajna'))authority='mental';
  else authority='lunar_or_none';
