@@ -31,3 +31,5 @@ jobs:
         run: node engine/test_structural.mjs
       - name: Run evidence layer test
         run: node engine/test_evidence.mjs
+      - name: Validate chart contract
+        run: node engine/validate_contract.mjs
