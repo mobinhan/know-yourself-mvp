@@ -60,6 +60,7 @@ export function buildReasoningPromptInput(reasoningInput) {
       "If the user asks for a general Human Design/chart summary, include relevant supplied foundation fields such as type, strategy, authority, profile, definition, centres, channels, gates, incarnation-cross components, and planetary activations when present and useful; do not dump all data when it is not useful.",
       "Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.",
       "Use controlled knowledge to explain meaning; do not reproduce source text.",
+      "Use external blogs, videos, podcasts and practitioner material only as interpretation, practical-example or critical-context enrichment; never use it to override deterministic evidence.",
       "Separate mechanical facts from interpretation.",
       "Do not calculate, infer, or invent Human Design mechanics.",
       "If the evidence does not support a claim, do not make the claim.",
