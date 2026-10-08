@@ -1,11 +1,12 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "links": [
     {
       "id": "KL-E-GATES",
       "evidence_id": "E-GATES",
       "knowledge_ids": [
-        "HD-KNOW-GATE-001"
+        "HD-KNOW-GATE-001",
+        "HD-KNOW-HOLISTIC-001"
       ]
     },
     {
@@ -13,14 +14,22 @@
       "evidence_id": "E-CHANNELS",
       "knowledge_ids": [
         "HD-KNOW-CHANNEL-001",
-        "HD-KNOW-CIRCUITRY-001"
+        "HD-KNOW-CIRCUITRY-001",
+        "HD-KNOW-FORMAT-ENERGY-001",
+        "HD-KNOW-CHANNEL-3457-001",
+        "HD-KNOW-CHANNEL-360-001",
+        "HD-KNOW-CHANNEL-4253-001",
+        "HD-KNOW-CHANNEL-1156-001",
+        "HD-KNOW-CHANNEL-2838-001",
+        "HD-KNOW-CHANNEL-3254-001"
       ]
     },
     {
       "id": "KL-E-CENTRES",
       "evidence_id": "E-CENTRES",
       "knowledge_ids": [
-        "HD-KNOW-CENTRES-001"
+        "HD-KNOW-CENTRES-001",
+        "HD-KNOW-INTEGRATION-001"
       ]
     },
     {
@@ -28,7 +37,8 @@
       "evidence_id": "E-DEFINITION",
       "knowledge_ids": [
         "HD-KNOW-DEFINITION-001",
-        "HD-KNOW-CIRCUITRY-001"
+        "HD-KNOW-CIRCUITRY-001",
+        "HD-KNOW-HOLISTIC-001"
       ]
     },
     {
@@ -36,7 +46,10 @@
       "evidence_id": "E-TYPE",
       "knowledge_ids": [
         "HD-KNOW-TYPE-001",
-        "HD-KNOW-EXPERIMENT-001"
+        "HD-KNOW-GENERATOR-001",
+        "HD-KNOW-RESPONSE-001",
+        "HD-KNOW-SIGNATURE-FRUSTRATION-001",
+        "HD-KNOW-EXPERIMENTATION-002"
       ]
     },
     {
@@ -44,14 +57,17 @@
       "evidence_id": "E-AUTHORITY",
       "knowledge_ids": [
         "HD-KNOW-AUTHORITY-001",
-        "HD-KNOW-EXPERIMENT-001"
+        "HD-KNOW-SACRAL-AUTHORITY-001",
+        "HD-KNOW-EXPERIMENTATION-002"
       ]
     },
     {
       "id": "KL-E-PROFILE",
       "evidence_id": "E-PROFILE",
       "knowledge_ids": [
-        "HD-KNOW-PROFILE-001"
+        "HD-KNOW-PROFILE-001",
+        "HD-KNOW-LINE-001",
+        "HD-KNOW-HOLISTIC-001"
       ]
     },
     {
@@ -59,15 +75,43 @@
       "evidence_id": "E-ACTIVATIONS",
       "knowledge_ids": [
         "HD-KNOW-FOUNDATION-001",
-        "HD-KNOW-GATE-001"
+        "HD-KNOW-GATE-001",
+        "HD-KNOW-LINE-001",
+        "HD-KNOW-PLANETARY-001",
+        "HD-KNOW-HOLISTIC-001"
       ]
     },
     {
       "id": "KL-E-CROSS",
       "evidence_id": "E-CROSS",
       "knowledge_ids": [
-        "HD-KNOW-FOUNDATION-001",
-        "HD-KNOW-EXPERIMENT-001"
+        "HD-KNOW-CROSS-001",
+        "HD-KNOW-SUN-EARTH-001",
+        "HD-KNOW-PROFILE-001",
+        "HD-KNOW-HOLISTIC-001"
+      ]
+    },
+    {
+      "id": "KL-E-TEMPORAL-STATE",
+      "evidence_id": "E-TEMPORAL-STATE",
+      "knowledge_ids": [
+        "HD-KNOW-TRANSIT-001",
+        "HD-KNOW-PLANETARY-001"
+      ]
+    },
+    {
+      "id": "KL-E-LIFECYCLE-EVENTS",
+      "evidence_id": "E-LIFECYCLE-EVENTS",
+      "knowledge_ids": [
+        "HD-KNOW-LIFECYCLE-001",
+        "HD-KNOW-PLANETARY-001"
+      ]
+    },
+    {
+      "id": "KL-E-CONNECTION",
+      "evidence_id": "E-CONNECTION",
+      "knowledge_ids": [
+        "HD-KNOW-RELATIONSHIP-001"
       ]
     }
   ]
