@@ -117,6 +117,8 @@ jobs:
         run: node engine/test_answer-composer.mjs
       - name: Run conversation context test
         run: node engine/test_conversation-context.mjs
+      - name: Run Step 5 stress tests
+        run: node engine/test_step5_stress.mjs
       - name: Write JavaScript validation marker
         if: always()
         run: |
