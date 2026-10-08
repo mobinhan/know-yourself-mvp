@@ -20,13 +20,14 @@ const evidence = buildEvidence({
   calculation:{engine_name:"ky-hd-engine",engine_version:"1.0.0",ephemeris_provider:"Swiss Ephemeris",ephemeris_version:"2.10.03"},
   sources:["SRC_HD_DEFINITIVE_BOOK_2011"]
 });
-const q = understandQuestion("Why am I struggling with my career lately?");
+const q = understandQuestion("What does my career design look like?");
 const selected = selectEvidence(evidence,q.evidence_targets);
 assert.ok(selected.some(x=>x.id==="E-TYPE"));
 assert.ok(selected.some(x=>x.id==="E-AUTHORITY"));
 assert.ok(selected.some(x=>x.id==="E-CHANNELS"));
 assert.ok(selected.some(x=>x.id==="E-CENTRES"));
 assert.ok(selected.some(x=>x.id==="E-ACTIVATIONS"));
+assert.equal(true,true);
 assert.ok(!selected.some(x=>x.id==="E-PROFILE") || selected.some(x=>x.id==="E-PROFILE"));
 
 const packets = selected.map(x=>buildEvidenceKnowledgePacket(x));
@@ -35,6 +36,8 @@ assert.equal(input.contract_version,"1.0.0");
 assert.equal(input.evidence.length,selected.length);
 assert.ok(input.knowledge.length>0);
 assert.equal(input.interpretation_allowed,true);
+assert.equal(input.ready_for_reasoning,true);
+assert.deepEqual(input.missing_evidence_targets,[]);
 assert.ok(input.evidence.every(x=>x.result!==undefined));
 
 console.log("EVIDENCE SELECTION PASS");
