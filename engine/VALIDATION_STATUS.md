@@ -1,32 +1,45 @@
-# Step 1 Validation Status
+# Know Yourself Engine Validation Status
 
 ## Current status
 
-The deterministic engine implementation and multi-chart invariant tests are committed.
+The deterministic engine validation pipeline is operational and passing on `main`.
 
-The repository currently contains:
-- Swiss Ephemeris calculation layer
-- deterministic structural derivation
-- Golden Chart #2 fixture and acceptance test
-- five-chart invariant test suite
-- GitHub Actions workflow intended to execute the tests
+### Step 1 — Deterministic Human Design Chart Engine
+**PASS**
 
-## Blocking verification
+Validated by the Python and structural test suites, including Golden Chart #2 and the multi-chart/invariant checks.
 
-The available GitHub connector is not returning workflow runs for the validation commits, while the repository status currently exposes only the Vercel status check.
+### Step 2 — Transit Overlay and Temporal Mechanics
+**PASS — revalidated**
 
-Therefore Step 1 is **not yet certified as passing**.
+The current `main` branch passes the original Step 2 acceptance surface:
 
-We must execute the Python test suite in a real Python environment before treating the ephemeris mapping/design calculation as validated.
+- deterministic transit overlay
+- natal/transit/temporary/combined separation
+- natal immutability
+- temporal state integration
+- time and life-cycle mechanics
+- transit invariants
+- temporal ephemeris and gate-crossing mechanics
+- Golden Chart temporal checks
 
-## Do not proceed to production evidence integration until runtime validation passes.
+### Step 3 — Canonical Data Contracts
+**PASS — CI verified**
 
-## Acceptance criteria
+The canonical chart, temporal state, life-cycle event, connection and evidence contracts pass validation, including:
 
-1. Golden Chart #2 reproduces the expected activation gates/lines.
-2. All five independent charts pass activation invariants.
-3. Earth/South Node are exact opposites.
-4. Structural derivation produces valid channels, centres, definition, type, authority, profile and incarnation cross.
-5. No UI fixture is used as the calculation source.
+- `validate_data_contracts.mjs`
+- `test_data_contracts.mjs`
 
-Once these pass, proceed to the deterministic evidence layer.
+## Latest validation evidence
+
+GitHub Actions run **#77** completed successfully.
+
+- JavaScript contract validation: **PASS**
+- Python engine validation: **PASS**
+
+Commit validated: `ec6e4183bcd57b478121ecb5b8db0ee79017fcff`
+
+## Rule
+
+Do not proceed to downstream interpretation or production integration by silently changing deterministic mechanics. Any future mechanics change must trigger the relevant acceptance suite again.
