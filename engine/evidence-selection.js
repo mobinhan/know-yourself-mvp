@@ -28,6 +28,11 @@ export function selectEvidence(evidenceBundle, targets) {
 
 export function buildReasoningInput({ questionContext, question, evidenceBundle, knowledgePackets }) {
   const evidence = selectEvidence(evidenceBundle, questionContext.evidence_targets);
+  const availableEvidenceIds = new Set(evidenceBundle.records.map(x => x.id));
+  const requestedEvidenceIds = questionContext.evidence_targets
+    .map(target => TARGET_TO_EVIDENCE[target])
+    .filter(Boolean);
+  const missing_evidence_targets = [...new Set(requestedEvidenceIds.filter(id => !availableEvidenceIds.has(id)))];
   const allowedIds = new Set(evidence.map(x => x.id));
   const knowledge = (knowledgePackets ?? []).filter(packet => allowedIds.has(packet.evidence.id));
 
@@ -37,6 +42,8 @@ export function buildReasoningInput({ questionContext, question, evidenceBundle,
     question,
     evidence,
     knowledge,
+    missing_evidence_targets,
+    ready_for_reasoning: missing_evidence_targets.length === 0,
     interpretation_allowed: true
   };
 }
