@@ -36,7 +36,7 @@ assert.equal(
 /* Type / strategy */
 const mg = run([channel("motor-throat", 20, 34, ["throat","sacral"])], [20,34]);
 assert.equal(mg.type, "manifesting_generator");
-assert.equal(mg.strategy, "wait_to_respond");
+assert.equal(mg.strategy, "wait_to_respond_then_inform");
 
 const manifestor = run([channel("motor-throat", 21, 45, ["heart","throat"])], [21,45]);
 assert.equal(manifestor.type, "manifestor");
