@@ -1,0 +1,21 @@
+name: Step 1 Engine Validation
+
+on:
+  push:
+    paths:
+      - "engine/**"
+      - ".github/workflows/step1-engine.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r engine/requirements.txt
+      - name: Run golden and structural tests
+        run: python -m pytest -q engine/test_golden.py
