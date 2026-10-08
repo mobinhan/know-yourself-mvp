@@ -39,16 +39,26 @@ const evidenceIds = new Set([
   "E-TYPE","E-AUTHORITY","E-PROFILE","E-CROSS"
 ]);
 const linkIds = new Set();
+const linkedEvidenceIds = new Set();
 for (const link of links.links) {
   if (!link.id || linkIds.has(link.id)) throw new Error("Invalid or duplicate knowledge link id");
   linkIds.add(link.id);
   if (!evidenceIds.has(link.evidence_id)) throw new Error(`Unknown evidence id: ${link.evidence_id}`);
+  if (linkedEvidenceIds.has(link.evidence_id)) throw new Error(`Duplicate evidence link: ${link.evidence_id}`);
+  linkedEvidenceIds.add(link.evidence_id);
   if (!Array.isArray(link.knowledge_ids) || link.knowledge_ids.length === 0) {
     throw new Error(`Knowledge link has no records: ${link.id}`);
   }
+  const linkedKnowledgeIds = new Set();
   for (const knowledgeId of link.knowledge_ids) {
+    if (linkedKnowledgeIds.has(knowledgeId)) throw new Error(`Duplicate knowledge id ${knowledgeId} in ${link.id}`);
+    linkedKnowledgeIds.add(knowledgeId);
     if (!recordIds.has(knowledgeId)) throw new Error(`Unknown knowledge id ${knowledgeId} in ${link.id}`);
   }
+}
+if (linkedEvidenceIds.size !== evidenceIds.size) {
+  const missing = [...evidenceIds].filter(id => !linkedEvidenceIds.has(id));
+  throw new Error(`Missing evidence links: ${missing.join(",")}`);
 }
 
 console.log(`KNOWLEDGE VALIDATION PASS: ${knowledge.records.length} records / ${sources.sources.length} sources`);
