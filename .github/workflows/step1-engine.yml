@@ -105,6 +105,8 @@ jobs:
         run: node engine/validate_ai_reasoning.mjs
       - name: Run AI reasoning contract test
         run: node engine/test_ai_reasoning_contract.mjs
+      - name: Run answer critic test
+        run: node engine/test_answer-critic.mjs
       - name: Run evidence selection test
         run: node engine/test_evidence-selection.mjs
       - name: Run evidence-to-knowledge retrieval test
