@@ -10,10 +10,7 @@ const TARGET_TO_EVIDENCE = {
   strategy: "E-TYPE",
   authority: "E-AUTHORITY",
   profile: "E-PROFILE",
-  cross: "E-CROSS",
-  temporal_state: "E-TEMPORAL-STATE",
-  lifecycle_event: "E-LIFECYCLE-EVENT",
-  connection: "E-CONNECTION"
+  cross: "E-CROSS"
 };
 
 export function selectEvidence(evidenceBundle, targets) {
