@@ -101,6 +101,10 @@ jobs:
         run: node engine/validate_knowledge.mjs
       - name: Run controlled knowledge layer test
         run: node engine/test_knowledge.mjs
+      - name: Validate AI reasoning contract
+        run: node engine/validate_ai_reasoning.mjs
+      - name: Run AI reasoning contract test
+        run: node engine/test_ai_reasoning_contract.mjs
       - name: Run evidence-to-knowledge retrieval test
         run: node engine/test_knowledge_retrieval.mjs
       - name: Write JavaScript validation marker
