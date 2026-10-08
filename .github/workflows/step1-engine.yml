@@ -35,6 +35,8 @@ jobs:
         run: node engine/test_mechanics.mjs
       - name: Run transit overlay mechanics test
         run: node engine/test_transit_overlay.mjs
+      - name: Run time and life-cycle mechanics test
+        run: node engine/test_time_mechanics.mjs
       - name: Validate chart contract
         run: node engine/validate_contract.mjs
       - name: Validate canonical chart artifact
