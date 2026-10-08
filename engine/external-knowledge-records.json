@@ -8,9 +8,15 @@
       "claim": "Jovian Archive identifies itself as the official source for the Human Design System and maintains Ra Uru Hu's recorded teachings and related educational material.",
       "claim_type": "historical",
       "status": "accepted",
-      "allowed_use": ["explain", "contextualize"],
+      "allowed_use": [
+        "explain",
+        "contextualize"
+      ],
       "locator": "About Jovian Archive / FAQ",
-      "topics": ["lineage", "source_quality"]
+      "topics": [
+        "lineage",
+        "source_quality"
+      ]
     },
     {
       "id": "EXT-KNOW-PRACTICAL-001",
@@ -19,9 +25,17 @@
       "claim": "Richard Beaumont's source describes decades of Human Design teaching and a large archive of long-form educational video and audio material, making it useful as a practical interpretation layer.",
       "claim_type": "teaching",
       "status": "accepted",
-      "allowed_use": ["explain", "illustrate", "compare"],
+      "allowed_use": [
+        "explain",
+        "illustrate",
+        "compare"
+      ],
       "locator": "Human.Design About / homepage",
-      "topics": ["teaching", "practical_application", "video"]
+      "topics": [
+        "teaching",
+        "practical_application",
+        "video"
+      ]
     },
     {
       "id": "EXT-KNOW-METHODOLOGY-001",
@@ -30,9 +44,16 @@
       "claim": "The source publishes an explicit methodology that requires mechanical claims to trace to identified teaching material rather than to generic internet repetition.",
       "claim_type": "teaching",
       "status": "accepted",
-      "allowed_use": ["explain", "contextualize"],
+      "allowed_use": [
+        "explain",
+        "contextualize"
+      ],
       "locator": "Editorial Methodology",
-      "topics": ["provenance", "quality_control", "interpretation"]
+      "topics": [
+        "provenance",
+        "quality_control",
+        "interpretation"
+      ]
     },
     {
       "id": "EXT-KNOW-CRITICAL-001",
@@ -41,9 +62,73 @@
       "claim": "Independent commentary can distinguish precisely calculable birth-position astronomy from the interpretive claims made by Human Design and can therefore serve as a critical-context layer.",
       "claim_type": "critical",
       "status": "accepted",
-      "allowed_use": ["contextualize", "question"],
+      "allowed_use": [
+        "contextualize",
+        "question"
+      ],
       "locator": "Is Human Design real? updated 2026-09-29",
-      "topics": ["epistemic_status", "critical_context"]
+      "topics": [
+        "epistemic_status",
+        "critical_context"
+      ]
+    },
+    {
+      "id": "EXT-KNOW-IHDS-STANDARDS-001",
+      "source_id": "EXT_IHDS_OFFICIAL",
+      "title": "Official educational standards and lineage context",
+      "claim": "IHDS describes itself as responsible for Human Design education and training standards according to the original teachings, and as the official certifying agency and record keeper for certified Human Design professionals.",
+      "claim_type": "historical",
+      "status": "accepted",
+      "allowed_use": [
+        "explain",
+        "contextualize"
+      ],
+      "locator": "IHDS About Us",
+      "topics": [
+        "lineage",
+        "source_quality",
+        "educational_standards",
+        "certification"
+      ]
+    },
+    {
+      "id": "EXT-KNOW-IHDS-PRACTICAL-001",
+      "source_id": "EXT_IHDS_OFFICIAL",
+      "title": "Current teaching and practical context",
+      "claim": "The official IHDS publishing stream contains ongoing educational material such as profile explanations, center material and solar-transit commentary, making it valuable as a current teaching and practical-context layer alongside the foundational source material.",
+      "claim_type": "teaching",
+      "status": "accepted",
+      "allowed_use": [
+        "explain",
+        "illustrate",
+        "compare",
+        "contextualize"
+      ],
+      "locator": "Official IHDS blog, 2026 posts",
+      "topics": [
+        "teaching",
+        "practical_application",
+        "transit",
+        "profiles",
+        "current_context"
+      ]
+    },
+    {
+      "id": "EXT-KNOW-IHDS-SOCIAL-001",
+      "source_id": "EXT_IHDS_OFFICIAL",
+      "title": "Official social-media context",
+      "claim": "The user's supplied Facebook share link is treated as an official-source social endpoint for the International Human Design School and is used as a discovery/provenance pointer rather than as an independent authority separate from IHDS.",
+      "claim_type": "historical",
+      "status": "provisional",
+      "allowed_use": [
+        "contextualize"
+      ],
+      "locator": "User-supplied Facebook share URL",
+      "topics": [
+        "social_media",
+        "source_quality",
+        "provenance"
+      ]
     }
   ]
 }
