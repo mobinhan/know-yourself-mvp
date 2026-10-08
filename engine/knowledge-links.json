@@ -1,0 +1,74 @@
+{
+  "version": "1.0.0",
+  "links": [
+    {
+      "id": "KL-E-GATES",
+      "evidence_id": "E-GATES",
+      "knowledge_ids": [
+        "HD-KNOW-GATE-001"
+      ]
+    },
+    {
+      "id": "KL-E-CHANNELS",
+      "evidence_id": "E-CHANNELS",
+      "knowledge_ids": [
+        "HD-KNOW-CHANNEL-001",
+        "HD-KNOW-CIRCUITRY-001"
+      ]
+    },
+    {
+      "id": "KL-E-CENTRES",
+      "evidence_id": "E-CENTRES",
+      "knowledge_ids": [
+        "HD-KNOW-CENTRES-001"
+      ]
+    },
+    {
+      "id": "KL-E-DEFINITION",
+      "evidence_id": "E-DEFINITION",
+      "knowledge_ids": [
+        "HD-KNOW-DEFINITION-001",
+        "HD-KNOW-CIRCUITRY-001"
+      ]
+    },
+    {
+      "id": "KL-E-TYPE",
+      "evidence_id": "E-TYPE",
+      "knowledge_ids": [
+        "HD-KNOW-TYPE-001",
+        "HD-KNOW-EXPERIMENT-001"
+      ]
+    },
+    {
+      "id": "KL-E-AUTHORITY",
+      "evidence_id": "E-AUTHORITY",
+      "knowledge_ids": [
+        "HD-KNOW-AUTHORITY-001",
+        "HD-KNOW-EXPERIMENT-001"
+      ]
+    },
+    {
+      "id": "KL-E-PROFILE",
+      "evidence_id": "E-PROFILE",
+      "knowledge_ids": [
+        "HD-KNOW-PROFILE-001"
+      ]
+    },
+    {
+      "id": "KL-E-ACTIVATIONS",
+      "evidence_id": "E-ACTIVATIONS",
+      "knowledge_ids": [
+        "HD-KNOW-FOUNDATION-001",
+        "HD-KNOW-GATE-001"
+      ]
+    },
+    {
+      "id": "KL-E-CROSS",
+      "evidence_id": "E-CROSS",
+      "knowledge_ids": [
+        "HD-KNOW-FOUNDATION-001",
+        "HD-KNOW-EXPERIMENT-001"
+      ]
+    }
+  ]
+}
