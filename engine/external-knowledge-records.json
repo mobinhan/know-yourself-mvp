@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "records": [
+    {
+      "id": "EXT-KNOW-PROVENANCE-001",
+      "source_id": "EXT_JOVIAN_ARCHIVE",
+      "title": "Primary-source lineage",
+      "claim": "Jovian Archive identifies itself as the official source for the Human Design System and maintains Ra Uru Hu's recorded teachings and related educational material.",
+      "claim_type": "historical",
+      "status": "accepted",
+      "allowed_use": ["explain", "contextualize"],
+      "locator": "About Jovian Archive / FAQ",
+      "topics": ["lineage", "source_quality"]
+    },
+    {
+      "id": "EXT-KNOW-PRACTICAL-001",
+      "source_id": "EXT_RICHARD_BEAUMONT",
+      "title": "Long-form practical teaching",
+      "claim": "Richard Beaumont's source describes decades of Human Design teaching and a large archive of long-form educational video and audio material, making it useful as a practical interpretation layer.",
+      "claim_type": "teaching",
+      "status": "accepted",
+      "allowed_use": ["explain", "illustrate", "compare"],
+      "locator": "Human.Design About / homepage",
+      "topics": ["teaching", "practical_application", "video"]
+    },
+    {
+      "id": "EXT-KNOW-METHODOLOGY-001",
+      "source_id": "EXT_HUMAN_DESIGN_BUSINESS",
+      "title": "Traceable interpretation methodology",
+      "claim": "The source publishes an explicit methodology that requires mechanical claims to trace to identified teaching material rather than to generic internet repetition.",
+      "claim_type": "teaching",
+      "status": "accepted",
+      "allowed_use": ["explain", "contextualize"],
+      "locator": "Editorial Methodology",
+      "topics": ["provenance", "quality_control", "interpretation"]
+    },
+    {
+      "id": "EXT-KNOW-CRITICAL-001",
+      "source_id": "EXT_INNATE_MAP_CRITICAL",
+      "title": "Critical evidence boundary",
+      "claim": "Independent commentary can distinguish precisely calculable birth-position astronomy from the interpretive claims made by Human Design and can therefore serve as a critical-context layer.",
+      "claim_type": "critical",
+      "status": "accepted",
+      "allowed_use": ["contextualize", "question"],
+      "locator": "Is Human Design real? updated 2026-09-29",
+      "topics": ["epistemic_status", "critical_context"]
+    }
+  ]
+}
