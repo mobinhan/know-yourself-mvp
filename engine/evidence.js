@@ -3,7 +3,7 @@
  * This layer does not interpret Human Design and does not generate prose meaning.
  */
 
-export function buildEvidence({ activations, structure, calculation = null, sources = [] }) {
+export function buildEvidence({ activations, structure, calculation = null, sources = [], temporalState = null, lifecycleEvents = null, connection = null }) {
   const records = [];
 
   const add = (id, claim, inputs, result, sourceIds = []) => {
@@ -91,6 +91,30 @@ export function buildEvidence({ activations, structure, calculation = null, sour
     "Incarnation Cross is derived from personality Sun/Earth and design Sun/Earth activations.",
     ["personality_sun", "personality_earth", "design_sun", "design_earth"],
     structure.incarnation_cross,
+    sources
+  );
+
+  if (temporalState) add(
+    "E-TEMPORAL-STATE",
+    "Temporal chart state is the deterministic combination of supplied natal and transit states.",
+    ["temporal_state"],
+    temporalState,
+    sources
+  );
+
+  if (Array.isArray(lifecycleEvents)) add(
+    "E-LIFECYCLE-EVENTS",
+    "Life-cycle events are supplied deterministic astronomical event results with exact timestamps.",
+    ["lifecycle_events"],
+    lifecycleEvents,
+    sources
+  );
+
+  if (connection) add(
+    "E-CONNECTION",
+    "Connection mechanics are deterministic results derived from the supplied charts.",
+    ["connection"],
+    connection,
     sources
   );
 
