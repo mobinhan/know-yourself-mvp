@@ -20,7 +20,7 @@ jobs:
       - name: Run ephemeris tests
         run: python -m pytest -q engine/test_golden.py engine/test_multi_chart.py
 
-  structural-test:
+  javascript-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,3 +29,5 @@ jobs:
           node-version: "22"
       - name: Run deterministic structural test
         run: node engine/test_structural.mjs
+      - name: Run evidence layer test
+        run: node engine/test_evidence.mjs
