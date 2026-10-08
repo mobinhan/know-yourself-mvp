@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "sources": [
+    {
+      "id": "SRC_HD_DEFINITIVE_BOOK_2011",
+      "title": "The Definitive Book of Human Design",
+      "authors": ["Lynda Bunnell", "Ra Uru Hu"],
+      "publisher": "HDC Publishing",
+      "publication_year": 2011,
+      "source_type": "primary_reference_book",
+      "rights_status": "copyrighted",
+      "use_policy": "Internal reference and provenance mapping only. Do not reproduce source text. Commercial publication or licensing requires separate rights review.",
+      "locator_scheme": "Printed section/page references from the supplied reference copy."
+    }
+  ]
+}
