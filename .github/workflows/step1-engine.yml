@@ -33,6 +33,8 @@ jobs:
         run: node engine/test_evidence.mjs
       - name: Run mechanical edge-case tests
         run: node engine/test_mechanics.mjs
+      - name: Run transit overlay mechanics test
+        run: node engine/test_transit_overlay.mjs
       - name: Validate chart contract
         run: node engine/validate_contract.mjs
       - name: Validate canonical chart artifact
