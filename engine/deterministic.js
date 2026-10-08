@@ -19,7 +19,13 @@ export function deriveStructuralChart(input){
  const definition=connectedComponents(centres,channels.map(x=>x.centres));
  const hasSacral=centres.includes('sacral'),hasSolarPlexus=centres.includes('solar_plexus'),hasThroat=centres.includes('throat');
  const motorCentres=['sacral','solar_plexus','root','heart'];
- let authority=null;if(hasSolarPlexus)authority='emotional';else if(hasSacral)authority='sacral';else if(centres.includes('spleen'))authority='splenic';else if(centres.includes('heart'))authority='ego';else if(hasThroat)authority='self_projected';else authority='lunar_or_none';
+ let authority=null;
+ if(hasSolarPlexus)authority='emotional';
+ else if(hasSacral)authority='sacral';
+ else if(centres.includes('spleen'))authority='splenic';
+ else if(centres.includes('heart'))authority='ego';
+ else if(centres.includes('g')&&hasThroat)authority='self_projected';
+ else authority='lunar_or_none';
  const throatComponent=definition.find(c=>c.includes('throat'))||[];
  const motorToThroat=throatComponent.some(c=>motorCentres.includes(c));
  let type;
