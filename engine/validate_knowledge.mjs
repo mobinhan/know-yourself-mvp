@@ -3,8 +3,8 @@ import fs from "node:fs";
 const sources = JSON.parse(fs.readFileSync(new URL("./knowledge-sources.json", import.meta.url), "utf8"));
 const knowledge = JSON.parse(fs.readFileSync(new URL("./knowledge-records.json", import.meta.url), "utf8"));
 
-if (sources.version !== "1.0.0") throw new Error("Unsupported knowledge source registry version");
-if (knowledge.version !== "1.0.0") throw new Error("Unsupported knowledge record version");
+if (!["1.0.0","1.1.0"].includes(sources.version)) throw new Error("Unsupported knowledge source registry version");
+if (!["1.0.0","1.1.0"].includes(knowledge.version)) throw new Error("Unsupported knowledge record version");
 
 const sourceIds = new Set();
 for (const source of sources.sources) {
@@ -29,14 +29,21 @@ for (const record of knowledge.records) {
     if (!sourceIds.has(sourceId)) throw new Error(`Unknown source id ${sourceId} in ${record.id}`);
   }
   if (record.claim.length > 600) throw new Error(`Knowledge claim too long: ${record.id}`);
+  if (record.depth && (!Array.isArray(record.depth) || record.depth.some(x => !["L1","L2","L3","L4"].includes(x)))) {
+    throw new Error(`Invalid depth in ${record.id}`);
+  }
+  if (record.related_concepts && !Array.isArray(record.related_concepts)) {
+    throw new Error(`Invalid related_concepts in ${record.id}`);
+  }
 }
 
 const links = JSON.parse(fs.readFileSync(new URL("./knowledge-links.json", import.meta.url), "utf8"));
 
-if (links.version !== "1.0.0") throw new Error("Unsupported knowledge link version");
+if (!["1.0.0","1.1.0"].includes(links.version)) throw new Error("Unsupported knowledge link version");
 const evidenceIds = new Set([
   "E-ACTIVATIONS","E-GATES","E-CHANNELS","E-CENTRES","E-DEFINITION",
-  "E-TYPE","E-AUTHORITY","E-PROFILE","E-CROSS"
+  "E-TYPE","E-AUTHORITY","E-PROFILE","E-CROSS","E-TEMPORAL-STATE",
+  "E-LIFECYCLE-EVENTS","E-CONNECTION"
 ]);
 const linkIds = new Set();
 const linkedEvidenceIds = new Set();
