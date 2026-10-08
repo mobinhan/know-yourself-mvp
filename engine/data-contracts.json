@@ -1,0 +1,118 @@
+{
+  "contract_version": "1.0.0",
+  "purpose": "Canonical downstream data contracts for Know Yourself deterministic outputs.",
+  "rules": [
+    "Deterministic mechanics are authoritative.",
+    "Downstream layers may consume but must not recalculate or mutate mechanical results.",
+    "Interpretation is outside the deterministic contracts.",
+    "All timestamps are ISO-8601 UTC.",
+    "Arrays representing sets are unique and deterministically sorted where stated."
+  ],
+  "chart": {
+    "contract_version": "1.0.0",
+    "required": [
+      "chart_id",
+      "birth",
+      "calculation",
+      "activations",
+      "structure",
+      "evidence"
+    ],
+    "structure_required": [
+      "channels",
+      "centres",
+      "definition",
+      "type",
+      "strategy",
+      "authority",
+      "profile",
+      "incarnation_cross"
+    ]
+  },
+  "temporal_state": {
+    "contract_version": "1.0.0",
+    "required": [
+      "chart_id",
+      "at",
+      "natal",
+      "transit",
+      "temporary",
+      "combined",
+      "invariants"
+    ],
+    "states": [
+      "natal",
+      "transit",
+      "temporary",
+      "combined"
+    ],
+    "invariants": [
+      "natal_preserved",
+      "combined_contains_natal",
+      "temporary_excludes_natal"
+    ]
+  },
+  "lifecycle_event": {
+    "contract_version": "1.0.0",
+    "required": [
+      "event_id",
+      "type",
+      "timestamp",
+      "source_body",
+      "event_kind"
+    ],
+    "event_kind": [
+      "return",
+      "opposition",
+      "cycle"
+    ],
+    "timestamp_rule": "Exact astronomical event timestamp; nominal age is descriptive only.",
+    "optional": [
+      "nominal_age_years",
+      "age_years",
+      "direction",
+      "source"
+    ]
+  },
+  "connection": {
+    "contract_version": "1.0.0",
+    "required": [
+      "connection_id",
+      "chart_a",
+      "chart_b",
+      "shared_gates",
+      "electromagnetic_channels",
+      "combined",
+      "mutual_complete_channels"
+    ],
+    "chart_side_required": [
+      "gates",
+      "channels"
+    ],
+    "combined_required": [
+      "gates",
+      "channels"
+    ],
+    "interpretation_forbidden": [
+      "dominance",
+      "compatibility",
+      "attraction",
+      "relationship_quality"
+    ]
+  },
+  "evidence": {
+    "contract_version": "1.0.0",
+    "required": [
+      "version",
+      "records"
+    ],
+    "record_required": [
+      "id",
+      "claim",
+      "inputs",
+      "result",
+      "source_ids",
+      "calculation"
+    ]
+  }
+}
