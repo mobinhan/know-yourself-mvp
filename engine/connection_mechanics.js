@@ -40,7 +40,10 @@ export function deriveConnectionMechanics({ chartA={}, chartB={}, channel_catalo
     if (gates.length !== 2) continue;
     const aHas1=aGates.includes(gates[0]), aHas2=aGates.includes(gates[1]);
     const bHas1=bGates.includes(gates[0]), bHas2=bGates.includes(gates[1]);
-    if ((aHas1 && bHas2) || (aHas2 && bHas1)) {
+    const aComplete = aHas1 && aHas2;
+    const bComplete = bHas1 && bHas2;
+    const splitAcrossCharts = (aHas1 && bHas2) || (aHas2 && bHas1);
+    if (splitAcrossCharts && !aComplete && !bComplete) {
       electromagnetic.push(normaliseChannel(c.channel));
     }
   }
