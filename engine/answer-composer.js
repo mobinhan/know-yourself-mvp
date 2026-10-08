@@ -52,6 +52,7 @@ export function buildReasoningPromptInput(reasoningInput) {
     question_context: reasoningInput.question_context,
     evidence: reasoningInput.evidence,
     knowledge: reasoningInput.knowledge,
+    external_knowledge: reasoningInput.external_knowledge ?? [],
     instructions: [
       "Answer the user's question naturally and directly.",
       "Use supplied evidence as the only source of chart mechanics.",
