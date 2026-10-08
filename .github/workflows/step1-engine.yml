@@ -123,6 +123,8 @@ jobs:
         run: node engine/test_step5_adversarial.mjs
       - name: Run reasoning provider contract test
         run: node engine/test_reasoning-provider.mjs
+      - name: Run extended evidence test
+        run: node engine/test_extended-evidence.mjs
       - name: Write JavaScript validation marker
         if: always()
         run: |
