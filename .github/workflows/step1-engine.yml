@@ -111,6 +111,8 @@ jobs:
         run: node engine/test_evidence-selection.mjs
       - name: Run evidence-to-knowledge retrieval test
         run: node engine/test_knowledge_retrieval.mjs
+      - name: Run grounded reasoning adapter test
+        run: node engine/test_reasoning-adapter.mjs
       - name: Write JavaScript validation marker
         if: always()
         run: |
