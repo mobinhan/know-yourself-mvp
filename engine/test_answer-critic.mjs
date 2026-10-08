@@ -16,10 +16,10 @@ assert.equal(good.critic.passed,true);
 assert.deepEqual(good.critic.issues,[]);
 
 const bad = criticAnswer({
-  answer:{answer:"The AI calculated your authority.",factual_basis:["E-FAKE"],knowledge_basis:["HD-FAKE"]},
-  suppliedEvidence:evidence,
-  suppliedKnowledge:knowledge
-});
+  answer:"The AI calculated your authority.",
+  factual_basis:["E-FAKE"],
+  knowledge_basis:["HD-FAKE"]
+}, evidence, knowledge);
 assert.equal(bad.passed,false);
 assert.ok(bad.issues.some(x=>x.startsWith("unknown_factual_basis:")));
 assert.ok(bad.issues.some(x=>x.startsWith("unknown_knowledge_basis:")));
