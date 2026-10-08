@@ -11,7 +11,7 @@ const sourceIds = new Set(registry.sources.map(x => x.id));
 for (const source of registry.sources) {
   assert.ok(source.id);
   assert.ok(sourceIds.has(source.id));
-  assert.match(source.url, /^https?:\\/\\//);
+  assert.match(source.url, /^https?:\/\//);
   assert.ok(["P1","P2","P3","P4"].includes(source.tier));
   assert.ok(source.content_types.length > 0);
   assert.ok(source.rights_policy);
