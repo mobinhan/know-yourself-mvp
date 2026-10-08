@@ -9,7 +9,8 @@
     "Interpretation must be distinguishable from mechanical fact.",
     "If supplied evidence is insufficient, the system must say so rather than invent facts.",
     "Connection interpretation cannot assert dominance, compatibility, attraction, or relationship quality as mechanical facts.",
-    "Temporal claims require supplied temporal evidence; the AI must not infer astronomical timing."
+    "Temporal claims require supplied temporal evidence; the AI must not infer astronomical timing.",
+    "External blogs, videos, podcasts and practitioner material are enrichment only and cannot override deterministic evidence."
   ],
   "question": {
     "required": [
@@ -72,6 +73,15 @@
       "source_ids",
       "locator",
       "use"
+    ],
+    "external_knowledge_fields": [
+      "id",
+      "source_id",
+      "claim",
+      "claim_type",
+      "status",
+      "locator",
+      "allowed_use"
     ]
   },
   "answer": {
