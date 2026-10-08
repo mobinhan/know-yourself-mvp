@@ -40,6 +40,6 @@ export function deriveStructuralChart(input){
 }
 export function compareExpected(actual,expected){
  const fields=['channels','centres','definition','type','authority','profile','incarnation_cross'],mismatches=[];
- for(const field of fields){const got=field==='channels'?actual.channels.map(x=>x.channel):actual[field];const want=field==='channels'?(expected.channels||[]).map(x=>normaliseChannel(x.channel)):expected[field];if(JSON.stringify(got)!==JSON.stringify(want))mismatches.push({field,got,want});}
+ for(const field of fields){const got=field==='channels'?actual.channels.map(x=>x.channel):actual[field];const want=field==='channels'?(expected.channels||[]).map(x=>normaliseChannel(x.channel)):field==='definition'?(expected.definition?.components||[]):expected[field];if(JSON.stringify(got)!==JSON.stringify(want))mismatches.push({field,got,want});}
  return {ok:mismatches.length===0,mismatches};
 }
