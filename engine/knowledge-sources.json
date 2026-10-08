@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "sources": [
     {
       "id": "SRC_HD_DEFINITIVE_BOOK_2011",
@@ -11,6 +11,39 @@
       "rights_status": "copyrighted",
       "use_policy": "Internal reference and provenance mapping only. Do not reproduce source text. Commercial publication or licensing requires separate rights review.",
       "locator_scheme": "Printed section/page references from the supplied reference copy."
+    },
+    {
+      "id": "SRC_RAVE_ABC",
+      "title": "Rave ABC",
+      "authors": ["Ra Uru Hu"],
+      "publisher": "Human Design",
+      "publication_year": null,
+      "source_type": "teaching_reference",
+      "rights_status": "copyrighted",
+      "use_policy": "Internal reference and provenance mapping only. Use concise paraphrase/synthesis; do not reproduce source text. Commercial publication or licensing requires separate rights review.",
+      "locator_scheme": "Supplied PDF page/section locators."
+    },
+    {
+      "id": "SRC_CARTOGRAPHY_COURSE",
+      "title": "Cartography Course",
+      "authors": [],
+      "publisher": null,
+      "publication_year": null,
+      "source_type": "course_reference",
+      "rights_status": "copyrighted",
+      "use_policy": "Internal reference and provenance mapping only. Use concise paraphrase/synthesis; do not reproduce source text. Commercial publication or licensing requires separate rights review.",
+      "locator_scheme": "Supplied PDF page/section locators."
+    },
+    {
+      "id": "SRC_LIFE_FORCE_CHANNELS_2008",
+      "title": "The Life Force: The Channels",
+      "authors": ["Ra Uru Hu"],
+      "publisher": "Jovian Archive Corporation / IHDS",
+      "publication_year": 2008,
+      "source_type": "teaching_reference",
+      "rights_status": "copyrighted",
+      "use_policy": "Internal reference and provenance mapping only. Use concise paraphrase/synthesis; do not reproduce source text. Commercial publication or licensing requires separate rights review.",
+      "locator_scheme": "Supplied PDF page/section locators."
     }
   ]
 }
