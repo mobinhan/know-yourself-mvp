@@ -18,7 +18,7 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install -r engine/requirements.txt pytest
       - name: Run ephemeris tests
-        run: python -m pytest -q engine/test_golden.py engine/test_multi_chart.py
+        run: python -m pytest -q engine/test_golden.py engine/test_multi_chart.py engine/test_boundaries.py
 
   javascript-tests:
     runs-on: ubuntu-latest
