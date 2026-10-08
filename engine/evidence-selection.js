@@ -29,7 +29,9 @@ export function selectEvidence(evidenceBundle, targets) {
   return selectedIds.map(id => getEvidence(evidenceBundle, id)).filter(Boolean);
 }
 
-export function buildReasoningInput({ questionContext, question, evidenceBundle, knowledgePackets }) {
+import { buildExternalKnowledgePacket } from "./external-knowledge.js";
+
+export function buildReasoningInput({ questionContext, question, evidenceBundle, knowledgePackets, externalKnowledge = null }) {
   const evidence = selectEvidence(evidenceBundle, questionContext.evidence_targets);
   const availableEvidenceIds = new Set(evidenceBundle.records.map(x => x.id));
   const requestedEvidenceIds = questionContext.evidence_targets
@@ -45,6 +47,7 @@ export function buildReasoningInput({ questionContext, question, evidenceBundle,
     question,
     evidence,
     knowledge,
+    external_knowledge: externalKnowledge ?? buildExternalKnowledgePacket({ topics: questionContext.domains ?? [], purpose: "explain" }),
     missing_evidence_targets,
     ready_for_reasoning: missing_evidence_targets.length === 0,
     interpretation_allowed: true
