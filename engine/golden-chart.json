@@ -1,0 +1,994 @@
+{
+  "chart_id": "demo-golden-chart",
+  "calculation": {
+    "engine_name": "ky-hd-engine",
+    "engine_version": "1.0.0",
+    "ephemeris_provider": "swiss_ephemeris",
+    "ephemeris_version": null,
+    "timezone_database_version": null,
+    "calculated_at_utc": "2026-10-08T07:57:32.465895Z"
+  },
+  "activations": {
+    "personality": [
+      {
+        "body": "sun",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 24.92825065777895,
+        "gate": 42,
+        "line": 5,
+        "colour": 3,
+        "tone": 5,
+        "base": 3
+      },
+      {
+        "body": "earth",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 204.92825065777896,
+        "gate": 32,
+        "line": 5,
+        "colour": 3,
+        "tone": 5,
+        "base": 3
+      },
+      {
+        "body": "moon",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 280.79471212866895,
+        "gate": 38,
+        "line": 2,
+        "colour": 3,
+        "tone": 2,
+        "base": 4
+      },
+      {
+        "body": "north_node",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 106.97891608599889,
+        "gate": 53,
+        "line": 2,
+        "colour": 6,
+        "tone": 6,
+        "base": 1
+      },
+      {
+        "body": "south_node",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 286.9789160859989,
+        "gate": 54,
+        "line": 2,
+        "colour": 6,
+        "tone": 6,
+        "base": 1
+      },
+      {
+        "body": "mercury",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 28.833268267573445,
+        "gate": 3,
+        "line": 3,
+        "colour": 4,
+        "tone": 5,
+        "base": 2
+      },
+      {
+        "body": "venus",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 339.02608716947475,
+        "gate": 37,
+        "line": 4,
+        "colour": 3,
+        "tone": 6,
+        "base": 5
+      },
+      {
+        "body": "mars",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 184.9126361342629,
+        "gate": 18,
+        "line": 2,
+        "colour": 1,
+        "tone": 4,
+        "base": 5
+      },
+      {
+        "body": "jupiter",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 216.81717768915544,
+        "gate": 28,
+        "line": 6,
+        "colour": 1,
+        "tone": 5,
+        "base": 5
+      },
+      {
+        "body": "saturn",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 198.4456862483885,
+        "gate": 57,
+        "line": 4,
+        "colour": 4,
+        "tone": 2,
+        "base": 3
+      },
+      {
+        "body": "uranus",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 244.07081063355196,
+        "gate": 34,
+        "line": 5,
+        "colour": 2,
+        "tone": 2,
+        "base": 3
+      },
+      {
+        "body": "neptune",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 266.96930752314546,
+        "gate": 11,
+        "line": 5,
+        "colour": 4,
+        "tone": 5,
+        "base": 5
+      },
+      {
+        "body": "pluto",
+        "imprint": "personality",
+        "timestamp_utc": "1982-04-15T05:38:00Z",
+        "longitude": 205.56713866684862,
+        "gate": 32,
+        "line": 6,
+        "colour": 1,
+        "tone": 5,
+        "base": 5
+      }
+    ],
+    "design": [
+      {
+        "body": "sun",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 296.92825065747707,
+        "gate": 60,
+        "line": 1,
+        "colour": 4,
+        "tone": 4,
+        "base": 2
+      },
+      {
+        "body": "earth",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 116.92825065747707,
+        "gate": 56,
+        "line": 1,
+        "colour": 4,
+        "tone": 4,
+        "base": 2
+      },
+      {
+        "body": "moon",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 211.1819419904893,
+        "gate": 50,
+        "line": 6,
+        "colour": 1,
+        "tone": 5,
+        "base": 3
+      },
+      {
+        "body": "north_node",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 112.42725062583682,
+        "gate": 62,
+        "line": 2,
+        "colour": 5,
+        "tone": 5,
+        "base": 3
+      },
+      {
+        "body": "south_node",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 292.4272506258368,
+        "gate": 61,
+        "line": 2,
+        "colour": 5,
+        "tone": 5,
+        "base": 3
+      },
+      {
+        "body": "mercury",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 315.7089385310643,
+        "gate": 13,
+        "line": 3,
+        "colour": 4,
+        "tone": 5,
+        "base": 3
+      },
+      {
+        "body": "venus",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 303.492015253704,
+        "gate": 41,
+        "line": 2,
+        "colour": 4,
+        "tone": 4,
+        "base": 2
+      },
+      {
+        "body": "mars",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 193.07140135107764,
+        "gate": 48,
+        "line": 4,
+        "colour": 5,
+        "tone": 6,
+        "base": 1
+      },
+      {
+        "body": "jupiter",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 218.1714097230492,
+        "gate": 44,
+        "line": 1,
+        "colour": 4,
+        "tone": 3,
+        "base": 5
+      },
+      {
+        "body": "saturn",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 202.07758892339726,
+        "gate": 32,
+        "line": 2,
+        "colour": 3,
+        "tone": 3,
+        "base": 5
+      },
+      {
+        "body": "uranus",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 243.4722156704882,
+        "gate": 34,
+        "line": 4,
+        "colour": 4,
+        "tone": 3,
+        "base": 3
+      },
+      {
+        "body": "neptune",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 265.72678935107643,
+        "gate": 11,
+        "line": 4,
+        "colour": 2,
+        "tone": 6,
+        "base": 1
+      },
+      {
+        "body": "pluto",
+        "imprint": "design",
+        "timestamp_utc": "1982-01-17T09:06:09.053097Z",
+        "longitude": 206.88773939355553,
+        "gate": 50,
+        "line": 1,
+        "colour": 4,
+        "tone": 2,
+        "base": 4
+      }
+    ]
+  },
+  "expected": {
+    "channels": [
+      {
+        "channel": "3-60",
+        "gates": [
+          3,
+          60
+        ],
+        "centres": [
+          "sacral",
+          "root"
+        ]
+      },
+      {
+        "channel": "11-56",
+        "gates": [
+          11,
+          56
+        ],
+        "centres": [
+          "ajna",
+          "throat"
+        ]
+      },
+      {
+        "channel": "28-38",
+        "gates": [
+          28,
+          38
+        ],
+        "centres": [
+          "spleen",
+          "root"
+        ]
+      },
+      {
+        "channel": "32-54",
+        "gates": [
+          32,
+          54
+        ],
+        "centres": [
+          "spleen",
+          "root"
+        ]
+      },
+      {
+        "channel": "34-57",
+        "gates": [
+          34,
+          57
+        ],
+        "centres": [
+          "sacral",
+          "spleen"
+        ]
+      },
+      {
+        "channel": "42-53",
+        "gates": [
+          42,
+          53
+        ],
+        "centres": [
+          "sacral",
+          "root"
+        ]
+      }
+    ],
+    "centres": [
+      "ajna",
+      "root",
+      "sacral",
+      "spleen",
+      "throat"
+    ],
+    "definition": {
+      "type": "split",
+      "components": [
+        [
+          "ajna",
+          "throat"
+        ],
+        [
+          "root",
+          "sacral",
+          "spleen"
+        ]
+      ]
+    },
+    "type": "generator",
+    "strategy": "wait_to_respond",
+    "authority": "sacral",
+    "profile": "5/1",
+    "incarnation_cross": {
+      "personality_sun": {
+        "gate": 42,
+        "line": 5
+      },
+      "personality_earth": {
+        "gate": 32,
+        "line": 5
+      },
+      "design_sun": {
+        "gate": 60,
+        "line": 1
+      },
+      "design_earth": {
+        "gate": 56,
+        "line": 1
+      }
+    }
+  },
+  "channel_catalog": [
+    {
+      "channel": "1-8",
+      "gates": [
+        1,
+        8
+      ],
+      "centres": [
+        "g",
+        "throat"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "2-14",
+      "gates": [
+        2,
+        14
+      ],
+      "centres": [
+        "g",
+        "sacral"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "3-60",
+      "gates": [
+        3,
+        60
+      ],
+      "centres": [
+        "sacral",
+        "root"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "4-63",
+      "gates": [
+        4,
+        63
+      ],
+      "centres": [
+        "ajna",
+        "head"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "5-15",
+      "gates": [
+        5,
+        15
+      ],
+      "centres": [
+        "sacral",
+        "g"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "6-59",
+      "gates": [
+        6,
+        59
+      ],
+      "centres": [
+        "solar_plexus",
+        "sacral"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "7-31",
+      "gates": [
+        7,
+        31
+      ],
+      "centres": [
+        "g",
+        "throat"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "9-52",
+      "gates": [
+        9,
+        52
+      ],
+      "centres": [
+        "sacral",
+        "root"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "10-20",
+      "gates": [
+        10,
+        20
+      ],
+      "centres": [
+        "g",
+        "throat"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "10-34",
+      "gates": [
+        10,
+        34
+      ],
+      "centres": [
+        "g",
+        "sacral"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "10-57",
+      "gates": [
+        10,
+        57
+      ],
+      "centres": [
+        "g",
+        "spleen"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "11-56",
+      "gates": [
+        11,
+        56
+      ],
+      "centres": [
+        "ajna",
+        "throat"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "12-22",
+      "gates": [
+        12,
+        22
+      ],
+      "centres": [
+        "throat",
+        "solar_plexus"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "13-33",
+      "gates": [
+        13,
+        33
+      ],
+      "centres": [
+        "g",
+        "throat"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "16-48",
+      "gates": [
+        16,
+        48
+      ],
+      "centres": [
+        "throat",
+        "spleen"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "17-62",
+      "gates": [
+        17,
+        62
+      ],
+      "centres": [
+        "ajna",
+        "throat"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "18-58",
+      "gates": [
+        18,
+        58
+      ],
+      "centres": [
+        "spleen",
+        "root"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "19-49",
+      "gates": [
+        19,
+        49
+      ],
+      "centres": [
+        "root",
+        "solar_plexus"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "20-34",
+      "gates": [
+        20,
+        34
+      ],
+      "centres": [
+        "throat",
+        "sacral"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "20-57",
+      "gates": [
+        20,
+        57
+      ],
+      "centres": [
+        "throat",
+        "spleen"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "21-45",
+      "gates": [
+        21,
+        45
+      ],
+      "centres": [
+        "heart",
+        "throat"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "23-43",
+      "gates": [
+        23,
+        43
+      ],
+      "centres": [
+        "throat",
+        "ajna"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "24-61",
+      "gates": [
+        24,
+        61
+      ],
+      "centres": [
+        "ajna",
+        "head"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "25-51",
+      "gates": [
+        25,
+        51
+      ],
+      "centres": [
+        "g",
+        "heart"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "26-44",
+      "gates": [
+        26,
+        44
+      ],
+      "centres": [
+        "heart",
+        "spleen"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "27-50",
+      "gates": [
+        27,
+        50
+      ],
+      "centres": [
+        "sacral",
+        "spleen"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "28-38",
+      "gates": [
+        28,
+        38
+      ],
+      "centres": [
+        "spleen",
+        "root"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "29-46",
+      "gates": [
+        29,
+        46
+      ],
+      "centres": [
+        "sacral",
+        "g"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "30-41",
+      "gates": [
+        30,
+        41
+      ],
+      "centres": [
+        "solar_plexus",
+        "root"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "32-54",
+      "gates": [
+        32,
+        54
+      ],
+      "centres": [
+        "spleen",
+        "root"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "34-57",
+      "gates": [
+        34,
+        57
+      ],
+      "centres": [
+        "sacral",
+        "spleen"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "35-36",
+      "gates": [
+        35,
+        36
+      ],
+      "centres": [
+        "throat",
+        "solar_plexus"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "37-40",
+      "gates": [
+        37,
+        40
+      ],
+      "centres": [
+        "solar_plexus",
+        "heart"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "39-55",
+      "gates": [
+        39,
+        55
+      ],
+      "centres": [
+        "root",
+        "solar_plexus"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "42-53",
+      "gates": [
+        42,
+        53
+      ],
+      "centres": [
+        "sacral",
+        "root"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    },
+    {
+      "channel": "47-64",
+      "gates": [
+        47,
+        64
+      ],
+      "centres": [
+        "ajna",
+        "head"
+      ],
+      "source_ids": [
+        "SRC_DEFINITIVE_BOOK",
+        "SRC_KY_ENGINE"
+      ],
+      "detail_status": "mechanical_catalogue"
+    }
+  ]
+}
