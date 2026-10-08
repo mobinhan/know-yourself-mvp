@@ -1,85 +1,647 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "records": [
     {
       "id": "HD-KNOW-FOUNDATION-001",
       "concept": "BodyGraph foundation",
-      "claim": "The Human Design BodyGraph represents activated gates and the connections between them; completed channels connect centres and contribute to chart definition.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section One, The Human Design BodyGraph, pp. 31-43; Section Two, The Nine Centers, pp. 44-103",
-      "use": "educational"
+      "claim": "The BodyGraph represents activated gates and the connections between them; completed channels connect centres and contribute to stable chart definition.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section One, BodyGraph foundation; Section Two, Nine Centers",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L3"
+      ],
+      "related_concepts": [
+        "channel",
+        "centres",
+        "definition"
+      ]
     },
     {
       "id": "HD-KNOW-DEFINITION-001",
       "concept": "Definition",
-      "claim": "Chart definition is formed by completed channels and the centres they connect; the resulting defined structure is treated as a stable component of the natal design.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section Two, Definition in a BodyGraph, printed p. 34; Section Two, The Nine Centers",
-      "use": "educational"
+      "claim": "Definition describes the connected structure created by completed channels and their centres; the shape of that connection is a meaningful part of the natal design.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Two, Definition in a BodyGraph",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L3"
+      ],
+      "related_concepts": [
+        "channel",
+        "centres",
+        "split_definition"
+      ]
     },
     {
       "id": "HD-KNOW-CENTRES-001",
       "concept": "Defined and undefined centres",
-      "claim": "The reference distinguishes defined centres from undefined and completely open centres, with definition represented by connected channel structure and openness represented by absence of complete channel definition.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section Two, The Nine Centers, especially pp. 51-52",
-      "use": "educational"
+      "claim": "Defined centres describe consistent elements of the chart's energetic structure, while openness describes areas available to conditioning and environmental amplification.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Two, The Nine Centers",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "conditioning",
+        "definition"
+      ]
     },
     {
       "id": "HD-KNOW-AUTHORITY-001",
       "concept": "Authority",
-      "claim": "Strategy and Authority are presented as the Human Design decision-making framework, with different Authority forms associated with different chart configurations.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section Three, Authority, pp. 106-112",
-      "use": "educational"
+      "claim": "Authority is the personal decision-making mechanism used with Strategy; the correct authority depends on the chart's defined-centre hierarchy.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011",
+        "SRC_CARTOGRAPHY_COURSE"
+      ],
+      "locator": "Section Three, Authority; Cartography Course, Sacral Authority",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "strategy",
+        "sacral_authority",
+        "emotional_authority"
+      ]
     },
     {
       "id": "HD-KNOW-TYPE-001",
       "concept": "Types and Strategy",
-      "claim": "The reference presents four major Types and associates each with a corresponding Strategy for navigating interaction and decision-making.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section Four, The Four Types and Strategies, pp. 114-145",
-      "use": "educational"
+      "claim": "The major Types are distinguished by their chart mechanics and each has a corresponding Strategy for correct interaction with life.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Four, The Four Types and Strategies",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "generator",
+        "strategy",
+        "signature",
+        "not_self_theme"
+      ]
     },
     {
       "id": "HD-KNOW-CHANNEL-001",
       "concept": "Channels",
-      "claim": "A channel is formed by two gates and connects two centres; the reference describes 36 channels within the BodyGraph system.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section Six, Circuits, Channels and Gates, printed p. 159 and channel index",
-      "use": "educational"
+      "claim": "A channel is a complete pair of harmonic gates linking two centres; channel themes are more informative when interpreted within the full chart rather than in isolation.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Six, Circuits, Channels and Gates",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "gate",
+        "centres",
+        "circuit",
+        "holistic_analysis"
+      ]
     },
     {
       "id": "HD-KNOW-GATE-001",
       "concept": "Gates",
-      "claim": "The BodyGraph contains 64 gates, each functioning as an entry or exit point associated with the channel structure; the reference provides individual gate descriptions and line names.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section Six, Circuits, Channels and Gates, pp. 158-257",
-      "use": "educational"
+      "claim": "Gates are the 64 hexagram positions used in the BodyGraph; each gate has a theme and six line expressions, and a gate should be read in relation to the whole chart.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Six and Section Ten, Hexagram Line Descriptions",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "line",
+        "channel",
+        "planetary_activation",
+        "holistic_analysis"
+      ]
     },
     {
       "id": "HD-KNOW-CIRCUITRY-001",
       "concept": "Circuitry",
-      "claim": "Circuitry groups channels into broader energy-flow structures and is used as an interpretive framework for understanding how channel themes relate within the BodyGraph.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section Six, Circuits, Channels and Gates, pp. 158-159",
-      "use": "educational"
+      "claim": "Circuitry groups channels into broader patterns such as Individual, Collective and Tribal themes, helping explain how separate channel mechanics participate in larger processes.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Six, Circuit Groups",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "channel",
+        "circuit_group",
+        "format_energy"
+      ]
     },
     {
       "id": "HD-KNOW-PROFILE-001",
       "concept": "Profile",
-      "claim": "Profile is derived from the Personality Sun line and Design Sun line and is treated as a major component of the chart description.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Section Five, Profiles, following the Types and Strategies section",
-      "use": "educational"
+      "claim": "Profile comes from the Personality and Design Sun/Earth line structure and describes a role or style through which the chart's purpose is expressed.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Five, Profiles",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "line",
+        "incarnation_cross",
+        "sun_earth"
+      ]
     },
     {
       "id": "HD-KNOW-EXPERIMENT-001",
       "concept": "Experimentation",
-      "claim": "The reference frames Human Design knowledge as something to be tested through personal experience rather than accepted solely as an intellectual belief.",
-      "source_ids": ["SRC_HD_DEFINITIVE_BOOK_2011"],
-      "locator": "Opening message from Ra Uru Hu, March 1, 2011",
-      "use": "educational"
+      "claim": "Human Design presents Strategy and Authority as an experiment to observe in lived experience rather than a belief that needs to be accepted intellectually.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Opening message; glossary, Science of Differentiation",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2"
+      ],
+      "related_concepts": [
+        "strategy",
+        "authority",
+        "conditioning"
+      ]
+    },
+    {
+      "id": "HD-KNOW-GENERATOR-001",
+      "concept": "Generator",
+      "claim": "A Generator is defined by a Sacral centre and is described as having an enveloping aura that operates through response; its core signature is satisfaction and its not-self theme is frustration.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011",
+        "SRC_CARTOGRAPHY_COURSE"
+      ],
+      "locator": "Section Four, Generator Type; glossary, Generator/Response/Signature; Cartography Course, Sacral Authority",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "strategy",
+        "response",
+        "sacral_authority",
+        "signature",
+        "frustration"
+      ]
+    },
+    {
+      "id": "HD-KNOW-RESPONSE-001",
+      "concept": "Generator response",
+      "claim": "Response means allowing something in the environment to come toward the Generator so the body can register whether there is energy to engage, rather than using the mind to force an initiation.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011",
+        "SRC_CARTOGRAPHY_COURSE"
+      ],
+      "locator": "Section Four, Generator strategy; glossary, Response; Cartography Course, Sacral Authority",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "generator",
+        "strategy",
+        "sacral_authority"
+      ]
+    },
+    {
+      "id": "HD-KNOW-SACRAL-AUTHORITY-001",
+      "concept": "Sacral Authority",
+      "claim": "For a Generator with a defined Sacral and no defined Solar Plexus, the Sacral response is treated as the immediate decision authority; the teaching distinguishes this from emotional authority.",
+      "source_ids": [
+        "SRC_CARTOGRAPHY_COURSE",
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Cartography Course, Sacral Authority; Section Three, Authority",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "generator",
+        "response",
+        "strategy",
+        "emotional_authority"
+      ]
+    },
+    {
+      "id": "HD-KNOW-SIGNATURE-FRUSTRATION-001",
+      "concept": "Generator signature and not-self",
+      "claim": "Satisfaction is described as the Generator signature, while frustration is the not-self theme associated with resistance to correct Generator operation.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Four; glossary, Frustration and Signatures",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2"
+      ],
+      "related_concepts": [
+        "generator",
+        "response",
+        "strategy"
+      ]
+    },
+    {
+      "id": "HD-KNOW-CHANNEL-3457-001",
+      "concept": "34-57 Power",
+      "claim": "The 34-57 channel links Sacral power with Splenic intuitive awareness; its teaching emphasizes spontaneous body intelligence and survival-oriented response in the now.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011",
+        "SRC_LIFE_FORCE_CHANNELS_2008"
+      ],
+      "locator": "Section Six, Channel of Power 34-57; The Life Force, Power to Drive and Empower",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "generator",
+        "sacral_authority",
+        "spleen",
+        "integration",
+        "response"
+      ]
+    },
+    {
+      "id": "HD-KNOW-CHANNEL-360-001",
+      "concept": "3-60 Mutation",
+      "claim": "The 3-60 channel is a format energy associated with mutation: pressure and limitation interact with Sacral energy to support new forms, with timing and pulse central to its expression.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011",
+        "SRC_RAVE_ABC"
+      ],
+      "locator": "Section Six, Format Energies; Rave ABC, Channel of Mutation 3-60",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "format_energy",
+        "mutation",
+        "sacral",
+        "root",
+        "gate_60"
+      ]
+    },
+    {
+      "id": "HD-KNOW-CHANNEL-4253-001",
+      "concept": "42-53 Maturation",
+      "claim": "The 42-53 channel is a format energy associated with maturation and cycles; its theme concerns beginning, developing and completing processes rather than treating every phase as interchangeable.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011",
+        "SRC_RAVE_ABC"
+      ],
+      "locator": "Section Six, Format Energies; Rave ABC, format energy 42-53",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "format_energy",
+        "cycles",
+        "sacral",
+        "root"
+      ]
+    },
+    {
+      "id": "HD-KNOW-CHANNEL-1156-001",
+      "concept": "11-56 Curiosity",
+      "claim": "The 11-56 channel belongs to the Abstract/Sensing Collective circuitry and is associated with ideas, stimulation and sharing experience through concepts and stories.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Six, Sensing/Abstract Circuit; channel index 11-56",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "collective",
+        "abstract",
+        "ajna",
+        "throat",
+        "ideas"
+      ]
+    },
+    {
+      "id": "HD-KNOW-CHANNEL-2838-001",
+      "concept": "28-38 Struggle",
+      "claim": "The 28-38 channel is associated with struggle and the search for a worthwhile purpose; its Individual circuitry theme treats struggle as potentially meaningful rather than automatically negative.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Six, Individual Circuit; Gate 38 and channel index",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "individual",
+        "purpose",
+        "struggle",
+        "spleen",
+        "root"
+      ]
+    },
+    {
+      "id": "HD-KNOW-CHANNEL-3254-001",
+      "concept": "32-54 Transformation",
+      "claim": "The 32-54 channel joins Splenic continuity with Root ambition and is associated with transformation, material development and recognition of what can endure.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Six, Tribal Circuit; Gates 32 and 54; channel index",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "tribal",
+        "transformation",
+        "ambition",
+        "spleen",
+        "root"
+      ]
+    },
+    {
+      "id": "HD-KNOW-INTEGRATION-001",
+      "concept": "Integration circuitry",
+      "claim": "The Integration group is described as a distinct structure centered on self-preservation, individuation and self-empowerment; its channels operate as a related system rather than isolated traits.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Six, The Integration Channel, pp. 160-161",
+      "use": "educational",
+      "depth": [
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "34-57",
+        "integration",
+        "individuality",
+        "self_empowerment"
+      ]
+    },
+    {
+      "id": "HD-KNOW-FORMAT-ENERGY-001",
+      "concept": "Format energies",
+      "claim": "The Sacral-to-Root format channels are described as deep circuit frequencies that influence the overall rhythm of a design; 3-60, 42-53 and 9-52 represent different format themes.",
+      "source_ids": [
+        "SRC_RAVE_ABC"
+      ],
+      "locator": "Rave ABC, Format Energies and 3-60/42-53/9-52",
+      "use": "educational",
+      "depth": [
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "3-60",
+        "42-53",
+        "circuit",
+        "root",
+        "sacral"
+      ]
+    },
+    {
+      "id": "HD-KNOW-LINE-001",
+      "concept": "Gate lines",
+      "claim": "Each gate has six lines that refine its expression; line themes should be read together with the gate and then returned to the whole chart rather than treated as standalone personality labels.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Ten, Hexagram Line Descriptions, pp. 342-343",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "gate",
+        "profile",
+        "planetary_activation",
+        "holistic_analysis"
+      ]
+    },
+    {
+      "id": "HD-KNOW-HOLISTIC-001",
+      "concept": "Holistic chart analysis",
+      "claim": "A gate or line is explicitly taught as contextual: its meaning should be considered alongside Type, Strategy, Authority, Profile, Cross, centres, channels and other gates rather than interpreted in isolation.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Ten, opening guidance to Hexagram Line Descriptions",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "gate",
+        "line",
+        "profile",
+        "incarnation_cross",
+        "whole_chart"
+      ]
+    },
+    {
+      "id": "HD-KNOW-CROSS-001",
+      "concept": "Incarnation Cross",
+      "claim": "The Incarnation Cross is formed from the Personality and Design Sun/Earth gates and lines and is used as a life-purpose framework; the specific cross should be determined from the chart evidence.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Seven/Eight, Incarnation Cross; glossary",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "sun_earth",
+        "profile",
+        "geometry",
+        "gate",
+        "line"
+      ]
+    },
+    {
+      "id": "HD-KNOW-SUN-EARTH-001",
+      "concept": "Sun and Earth activations",
+      "claim": "The Personality and Design Sun/Earth activations provide the four mechanical components from which Profile and Incarnation Cross are derived; their exact gate-lines belong to deterministic chart evidence.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Profile and Incarnation Cross sections; glossary",
+      "use": "educational",
+      "depth": [
+        "L3"
+      ],
+      "related_concepts": [
+        "profile",
+        "incarnation_cross",
+        "planetary_activation"
+      ]
+    },
+    {
+      "id": "HD-KNOW-PLANETARY-001",
+      "concept": "Planetary activation roles",
+      "claim": "Planetary activations add thematic nuance to gate and line positions; the reference assigns different thematic roles to the Sun, Earth, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto and Nodes.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Glossary, Planets/planetary transits; Planet Glyphs",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "gate",
+        "line",
+        "transit",
+        "sun_earth"
+      ]
+    },
+    {
+      "id": "HD-KNOW-TRANSIT-001",
+      "concept": "Transits",
+      "claim": "A transit is the movement of a celestial body through the Mandala relative to a natal chart; transit activations can temporarily add conditioning without changing the natal mechanical definition.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Glossary, Transit; Planets/planetary transits",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "planetary_activation",
+        "temporal_state",
+        "natal"
+      ]
+    },
+    {
+      "id": "HD-KNOW-LIFECYCLE-001",
+      "concept": "Life cycles",
+      "claim": "Human Design life-cycle analysis uses planetary returns or oppositions to examine recurring timing patterns against the natal design; exact dates must come from deterministic astronomical calculations.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Glossary, Life Cycle and Kiron Return",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "transit",
+        "return",
+        "temporal_state"
+      ]
+    },
+    {
+      "id": "HD-KNOW-RELATIONSHIP-001",
+      "concept": "Connection mechanics",
+      "claim": "Relationship analysis can distinguish shared definition, electromagnetic connections, companionship and compromise; these are mechanical connection patterns and should not be converted into unsupported claims about relationship quality.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Eleven glossary, Companionship, Compromise, Composite",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3"
+      ],
+      "related_concepts": [
+        "connection",
+        "electromagnetic_channel",
+        "companionship",
+        "compromise"
+      ]
+    },
+    {
+      "id": "HD-KNOW-EXPERIMENTATION-002",
+      "concept": "Personal verification",
+      "claim": "A useful reading should invite observation and experimentation with Strategy and Authority rather than asking the user to accept interpretations as fixed facts about their personality.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011",
+        "SRC_CARTOGRAPHY_COURSE"
+      ],
+      "locator": "Glossary, Science of Differentiation; Cartography Course, Generator material",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2"
+      ],
+      "related_concepts": [
+        "strategy",
+        "authority",
+        "holistic_analysis"
+      ]
     }
   ]
 }
