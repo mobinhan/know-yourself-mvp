@@ -24,7 +24,9 @@ export function deriveStructuralChart(input){
  else if(hasSacral)authority='sacral';
  else if(centres.includes('spleen'))authority='splenic';
  else if(centres.includes('heart'))authority='ego';
+ else if(centres.includes('heart'))authority='ego';
  else if(centres.includes('g')&&hasThroat)authority='self_projected';
+ else if(centres.includes('head')||centres.includes('ajna'))authority='mental';
  else authority='lunar_or_none';
  const throatComponent=definition.find(c=>c.includes('throat'))||[];
  const motorToThroat=throatComponent.some(c=>motorCentres.includes(c));
@@ -33,7 +35,7 @@ export function deriveStructuralChart(input){
  else if(motorToThroat) type='manifestor';
  else if(centres.length===0) type='reflector';
  else type='projector';
- const strategy=type==='generator'||type==='manifesting_generator'?'wait_to_respond':type==='manifestor'?'inform':null;
+ const strategy=type==='generator'?'wait_to_respond':type==='manifesting_generator'?'wait_to_respond_then_inform':type==='manifestor'?'inform':type==='projector'?'wait_for_invitation':type==='reflector'?'wait_for_lunar_cycle':null;
  const profile=personalitySun&&designSun?String(personalitySun.line)+'/'+String(designSun.line):null;
  const byBody=arr=>Object.fromEntries(arr.map(a=>[a.body,{gate:Number(a.gate),line:Number(a.line)}]));
  const pb=byBody(activations.personality||[]),db=byBody(activations.design||[]);
