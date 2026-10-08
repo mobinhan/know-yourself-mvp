@@ -85,6 +85,16 @@ def _signed_delta(a: float, b: float) -> float:
     return ((a - b + 180.0) % 360.0) - 180.0
 
 
+def _event_direction(body: str, root_ts: float, target: float) -> str:
+    eps = 60.0
+    before = longitude(julian_day(datetime.fromtimestamp(root_ts-eps, tz=timezone.utc)), BODIES[body])
+    after = longitude(julian_day(datetime.fromtimestamp(root_ts+eps, tz=timezone.utc)), BODIES[body])
+    delta = _signed_delta(after, before)
+    if abs(delta) < 1e-12:
+        return "stationary"
+    return "forward" if delta > 0 else "retrograde"
+
+
 def _bisect_crossing(fn: Callable[[float], float], lo: float, hi: float,
                      iterations: int = 60) -> float:
     flo, fhi = fn(lo), fn(hi)
