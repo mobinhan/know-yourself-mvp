@@ -7,13 +7,13 @@ from zoneinfo import ZoneInfo
 
 import swisseph as swe
 
+# Rave Mandala order: Gate 41 begins the zodiac wheel.
 GATE_ORDER = [
-    25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,15,52,
-    39,53,62,56,31,33,7,4,29,59,40,64,47,6,46,18,48,57,
-    32,50,28,44,1,43,14,34,9,5,26,11,10,58,38,54,61,60,
-    41,19,13,49,30,55,37,63,22,36
+    41,19,13,49,30,55,37,63,22,36,25,17,21,51,42,3,27,24,2,23,8,20,16,35,
+    45,12,15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,46,18,48,57,32,50,
+    28,44,1,43,14,34,9,5,26,11,10,58,38,54,61,60
 ]
-MANDALA_OFFSET_DEG = 1.875
+MANDALA_OFFSET_DEG = 58.0
 GATE_SIZE_DEG = 360.0 / 64.0
 LINE_SIZE_DEG = GATE_SIZE_DEG / 6.0
 COLOUR_SIZE_DEG = LINE_SIZE_DEG / 6.0
@@ -63,18 +63,19 @@ def longitude(jd: float, body_id: int) -> float:
     return float(values[0]) % 360.0
 
 def substructure(lon: float) -> tuple[int,int,int,int,int]:
-    """Return gate, line, colour, tone, base from the canonical nested divisions."""
     x = (lon + MANDALA_OFFSET_DEG) % 360.0
-    gate_index = min(63, int(x / GATE_SIZE_DEG))
-    within_gate = x - gate_index * GATE_SIZE_DEG
-    line = min(6, int(within_gate / LINE_SIZE_DEG) + 1)
-    within_line = within_gate - (line - 1) * LINE_SIZE_DEG
-    colour = min(6, int(within_line / COLOUR_SIZE_DEG) + 1)
-    within_colour = within_line - (colour - 1) * COLOUR_SIZE_DEG
-    tone = min(6, int(within_colour / TONE_SIZE_DEG) + 1)
-    within_tone = within_colour - (tone - 1) * TONE_SIZE_DEG
-    base = min(5, int(within_tone / BASE_SIZE_DEG) + 1)
-    return GATE_ORDER[gate_index], line, colour, tone, base
+    position = x / 360.0 * 64.0
+    gate_index = min(63, int(position))
+    line_position = position * 6.0
+    colour_position = line_position * 6.0
+    tone_position = colour_position * 6.0
+    base_position = tone_position * 5.0
+    gate = GATE_ORDER[gate_index]
+    line = int(line_position % 6) + 1
+    colour = int(colour_position % 6) + 1
+    tone = int(tone_position % 6) + 1
+    base = int(base_position % 5) + 1
+    return gate, line, colour, tone, base
 
 def gate_line(lon: float) -> tuple[int,int]:
     gate, line, _, _, _ = substructure(lon)
