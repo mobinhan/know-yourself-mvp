@@ -37,6 +37,6 @@ export function criticAnswer({ answer, suppliedEvidence = [], suppliedKnowledge 
 }
 
 export function finalizeAnswer({ answer, evidence, knowledge }) {
-  const critic = criticAnswer({answer,evidence,knowledge});
+  const critic = criticAnswer({answer,suppliedEvidence:evidence,suppliedKnowledge:knowledge});
   return {...answer, critic};
 }
