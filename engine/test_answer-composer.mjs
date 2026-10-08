@@ -10,6 +10,8 @@ const input={
 };
 const prompt=buildReasoningPromptInput(input);
 if(prompt.mode!=="grounded_reasoning" || !prompt.instructions.includes("Do not calculate, infer, or invent Human Design mechanics.")) throw new Error("prompt boundary failed");
+if(!prompt.instructions.includes("Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.")) throw new Error("availability boundary failed");
+if(!prompt.instructions.includes("incarnation-cross components")) throw new Error("chart completeness guidance failed");
 
 const answer=composeAnswer({
   reasoningInput:input,
@@ -21,8 +23,8 @@ const answer=composeAnswer({
     limitations:[]
   }
 });
-if(JSON.stringify(answer.factual_basis)!=="["E-AUTHORITY"]") throw new Error("factual basis was not constrained");
-if(JSON.stringify(answer.knowledge_basis)!=="["HD-KNOW-AUTHORITY-001"]") throw new Error("knowledge basis was not constrained");
+if(JSON.stringify(answer.factual_basis)!=="[\"E-AUTHORITY\"]") throw new Error("factual basis was not constrained");
+if(JSON.stringify(answer.knowledge_basis)!=="[\"HD-KNOW-AUTHORITY-001\"]") throw new Error("knowledge basis was not constrained");
 
 const blocked={...input,ready_for_reasoning:false,missing_evidence_targets:["E-TEMPORAL"]};
 const blockedPrompt=buildReasoningPromptInput(blocked);
