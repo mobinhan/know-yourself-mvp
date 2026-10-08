@@ -40,4 +40,14 @@ assert.equal(input.ready_for_reasoning,true);
 assert.deepEqual(input.missing_evidence_targets,[]);
 assert.ok(input.evidence.every(x=>x.result!==undefined));
 
+const timing = understandQuestion("When is this transit affecting me?");
+const timingInput = buildReasoningInput({
+  questionContext: timing,
+  question: timing.question,
+  evidenceBundle: evidence,
+  knowledgePackets: []
+});
+assert.equal(timingInput.ready_for_reasoning,false);
+assert.ok(timingInput.missing_evidence_targets.length > 0);
+
 console.log("EVIDENCE SELECTION PASS");
