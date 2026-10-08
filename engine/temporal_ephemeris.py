@@ -148,6 +148,16 @@ def find_longitude_event(body: str, natal_longitude: float,
     next_t = min(t + step.total_seconds(), stop)
     events = []
 
+    if t == stop and abs(fn(t)) < 1e-10:
+        dt = datetime.fromtimestamp(t, tz=timezone.utc)
+        return [{
+            "type": f"{body}_{'return' if target_degrees == 0 else 'opposition'}",
+            "body": body,
+            "timestamp": _iso(dt),
+            "target_degrees": target_degrees,
+            "direction": _event_direction(body, t, (natal_longitude + target_degrees) % 360.0),
+        }]
+
     while t < stop:
         a = fn(t)
         b = fn(next_t)
@@ -181,3 +191,66 @@ def find_longitude_event(body: str, natal_longitude: float,
             seen.add(key)
             unique.append(event)
     return unique
+
+
+def find_gate_crossings(body: str, start_utc: datetime, end_utc: datetime,
+                        step_hours: float = 6.0) -> list[dict]:
+    """Find exact gate-boundary crossings, including retrograde motion."""
+    if body not in BODIES:
+        raise ValueError(f"Unknown body: {body}")
+    if end_utc < start_utc:
+        raise ValueError("end precedes start")
+    if step_hours <= 0:
+        raise ValueError("step_hours must be positive")
+
+    start = start_utc.astimezone(timezone.utc)
+    end = end_utc.astimezone(timezone.utc)
+    step = timedelta(hours=step_hours)
+
+    def transformed(ts: float) -> float:
+        dt = datetime.fromtimestamp(ts, tz=timezone.utc)
+        lon = longitude(julian_day(dt), BODIES[body])
+        return (lon + 58.0) % 360.0
+
+    def boundary_distance(ts: float, boundary: float) -> float:
+        return _signed_delta(transformed(ts), boundary)
+
+    events = []
+    t = start.timestamp()
+    stop = end.timestamp()
+    while t < stop:
+        next_t = min(t + step.total_seconds(), stop)
+        a = transformed(t)
+        b = transformed(next_t)
+        span = (b - a) % 360.0
+        if span > 180.0:
+            span -= 360.0
+        direction = 1 if span >= 0 else -1
+        distance = abs(span)
+
+        if distance > 1e-9:
+            n = max(1, int(distance / 5.625) + 1)
+            for k in range(1, n + 1):
+                boundary = (a + direction * min(k * 5.625, distance)) % 360.0
+                if abs(_signed_delta(boundary, b)) > 1e-7:
+                    continue
+                root = _bisect_crossing(lambda ts: boundary_distance(ts, boundary), t, next_t)
+                dt = datetime.fromtimestamp(root, tz=timezone.utc)
+                gate_after, _ = gate_line(longitude(julian_day(dt + timedelta(seconds=2)), BODIES[body]))
+                events.append({
+                    "type": "gate_change",
+                    "body": body,
+                    "timestamp_utc": _iso(dt),
+                    "gate_after": gate_after,
+                    "direction": _event_direction(body, root, boundary),
+                })
+        t = next_t
+
+    unique = []
+    seen = set()
+    for event in events:
+        key = (event["body"], event["timestamp_utc"])
+        if key not in seen:
+            seen.add(key)
+            unique.append(event)
+    return sorted(unique, key=lambda e: e["timestamp_utc"])
