@@ -67,3 +67,31 @@ Append or update these fields in the active project checkpoint:
 ## Current recovery note — 2026-10-09
 
 The desktop checkpoint commit `7e49fbdef140a1a79333235d891a40726ff9dc39` is on `feature/live-api-v1`, timestamped 15:53:15 ICT. Its associated Gate-line regression workflow run #18 passed. The latest known main-branch commit is different; do not treat `main` as a replacement for the feature branch. The open PR #1 remains unmerged. Vercel has shown a build-rate-limit blocker, and live interpretation has not been verified. Recheck all of these before acting because statuses can change.
+
+
+## Mandatory trigger phrase: “save mcp”
+
+Whenever the user says **“save mcp”** (case-insensitive; punctuation does not matter), treat it as an instruction to execute this full save-and-recovery procedure—not merely to summarize the conversation.
+
+### Required actions, in order
+
+1. **Freeze scope:** do not start new feature work until the save is verified. Do not reset, overwrite, force-push, or merge branches.
+2. **Establish current state:** inspect all relevant GitHub branches, open PRs, latest commits, CI results, and deployment status. Identify the active working branch from the current task; never assume `main`.
+3. **Capture the work:** summarize decisions, completed work, exact next task, changed files, known limitations, test outcomes, failures, deployment blockers, and any user decision still needed.
+4. **Check for local-only work:** if the available environment cannot inspect the desktop working tree, explicitly record **“local working tree not inspected; unpushed edits cannot be ruled out.”** Never imply that remote checks prove local files were saved.
+5. **Update recovery files:** update this protocol only if needed, update `docs/PROJECT_CHECKPOINT_2026-10-09.md` with a timestamp in ICT (UTC+7), and maintain the root `RESUME.md` as the short entry point. The checkpoint must name the active branch, verified remote HEAD, work completed, tests and links, deployment state, local-only uncertainty, and exact next action.
+6. **Validate safely:** run relevant tests when the available tools support it. Clearly distinguish tests actually run from prior CI results and from tests not run. Do not trigger unnecessary paid builds or expose secrets.
+7. **Save to the intended branch:** commit the checkpoint/recovery files and all relevant code changes that are accessible and reviewed. Never claim inaccessible desktop-only changes were committed. Do not merge a PR without explicit approval.
+8. **Verify the remote save:** re-read the branch head and checkpoint from GitHub after the commit. Confirm the expected commit SHA and links. Check CI independently; if a workflow has not run for the latest commit, say so.
+9. **Respond with a compact recovery receipt:** include branch, commit SHA/link, Vietnam-time save timestamp, test/CI state, deployment state, any unsaved/local-only risk, and the exact one-line instruction for resuming.
+10. **If blocked:** do not silently stop or claim success. Save all safe, accessible recovery notes possible; state what could not be saved, why, and the single action needed to unblock.
+
+### Required success condition
+
+“Save mcp” is complete only when the remote checkpoint/recovery files have been re-read from the intended branch and their commit is confirmed. If code or local changes could not be saved, report a **partial save** and identify the risk plainly. A checkpoint is not a substitute for committing accessible code changes.
+
+### Standard resume instruction
+
+Use the following as the default next-chat instruction, updating the branch/task only when verified:
+
+> Resume Know Yourself. First read `RESUME.md` and the project checkpoint on the latest verified `feature/live-api-v1` branch head. Check all relevant branch heads, open PRs, CI, and deployment status. Preserve local desktop files; do not reset, overwrite, or merge. Continue from the checkpoint’s exact next action and do not repeat verified work.
