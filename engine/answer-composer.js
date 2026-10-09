@@ -229,6 +229,8 @@ export function buildReasoningPromptInput(reasoningInput) {
       "Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.",
       "Use controlled knowledge to explain meaning; do not reproduce source text.",
       "Use holistic_context to connect relevant concepts only through supplied validated relationships and supporting knowledge-record IDs.",
+      "For gate-and-line interpretations, distinguish the gate meaning, the general line mechanics, and the specific gate-line synthesis. Never derive the specific synthesis merely by appending generic line keywords to a gate.",
+      "Use gate-line-specific knowledge only when its exact gate and line conditions match the supplied activation or explicit question. Preserve the named archetype and its polarity when sourced; do not replace it with a generic paraphrase that changes the concept. If no validated gate-line-specific record is supplied, describe only the separately supported gate and line themes and do not invent their synthesis.",
       "For every material cross-concept claim, include the relevant supplied validated graph relationship ID in relationship_basis. Never cite an absent, pending or unrelated relationship.",
       "Treat holistic_context.unresolved_context as evidence gaps, never as established claims. Do not invent Quarter or Rave Psychology interpretations when supporting records are absent.",
       "Quarter mapping context is provisional where labelled provisional; disclose that status when it materially affects the answer.",
