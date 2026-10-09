@@ -52,3 +52,17 @@ This is deterministic pattern-based validation, not a proof that all natural-lan
 ## Next action
 
 Continue Step 3: broaden offline semantic-quality fixtures across representative Human Design concepts and query types, not only Gate 57. Cover chart mechanics, source fidelity, natal-versus-transit distinctions, uncertainty calibration, and unsupported cross-concept claims. Keep the deterministic chart engine authoritative and do not add a second LLM unless the user explicitly changes the 3framework decision.
+
+
+## Step 3 update — expanded offline quality checks
+
+The initial guardrail has been expanded to compare explicit profile, type, and authority statements with canonical `core` values when present; check exact gate-line activation rather than only gate membership; and compare explicit transit gate claims against the supplied `transit_gates` set. Centre labels normalize underscores to spaces.
+
+Regression fixtures now include both positive and negative cases for these mechanics, exact source/validated relationship matching, and a deliberate cross-concept mismatch (a source valid for Gate 34.2 must not support a Gate 57.4 claim).
+
+- Rubric and coverage plan: [`docs/INTERPRETATION_QUALITY_RUBRIC.md`](INTERPRETATION_QUALITY_RUBRIC.md).
+- Focused suite passed 27 tests: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387
+- Full Step 1 Engine Validation passed on the same code/test commit: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912452
+- Later commits update documentation/checkpoint only. Current branch head should be verified before resuming.
+
+The validator remains pattern-based. It cannot guarantee semantic source faithfulness for all paraphrases, uncertainty, depth, personalization, or broad cross-concept reasoning. Those need curated and human-scored fixtures; no live OpenAI output has been evaluated.
