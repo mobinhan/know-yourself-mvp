@@ -13,6 +13,17 @@ const prompt=buildReasoningPromptInput(input);
 let conversation = createConversationContext({ conversationId: "conv-test", userId: "private-user-id" });
 conversation = appendTurn(conversation, { role: "user", question: "What about my authority?" });
 conversation = appendTurn(conversation, { role: "assistant", answer: "An earlier answer says sacral authority.", factual_basis: ["E-AUTHORITY"] });
+const memoryPrompt = buildReasoningPromptInput({
+  ...input,
+  now: "2026-10-09T00:00:00.000Z",
+  user_memory_records: [
+    { id: "memory-active", category: "goal", value: "Understand how my patterns affect work", origin: "explicit", status: "active", user_consent: true, user_confirmed: true, source_turn_id: "turn-5" },
+    { id: "memory-inference", category: "goal", value: "May dislike long answers", origin: "inferred", status: "proposed", user_consent: true, user_confirmed: false, source_turn_id: "turn-6" }
+  ]
+});
+if (memoryPrompt.active_user_memory.length !== 1 || memoryPrompt.active_user_memory[0].id !== "memory-active") throw new Error("only governed active memory should enter the prompt");
+if (memoryPrompt.adaptive_response_policy.user_context.some(item => item.category === "chart_truth")) throw new Error("memory must not override chart truth");
+
 const contextPrompt = buildReasoningPromptInput({ ...input, conversation_context: conversation });
 if (contextPrompt.conversation_context?.turns.length !== 2) throw new Error("bounded conversation continuity was not passed");
 if ("user_id" in contextPrompt.conversation_context) throw new Error("private user ID leaked into reasoning context");
