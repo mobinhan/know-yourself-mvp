@@ -49,6 +49,21 @@ assert.ok(missingRelationshipBasis.issues.includes("missing_relationship_basis:R
 assert.ok(missingRelationshipBasis.issues.includes("missing_relationship_basis:REL-PERSONALITY-SUN-RP-MOTIVATION"));
 assert.ok(missingRelationshipBasis.issues.includes("missing_relationship_basis:REL-PERSONALITY-NODES-RP-VIEW"));
 
+const unsupportedCrossMechanics = criticAnswer({
+  answer: "My Incarnation Cross is formed by Personality Sun Gate 42 and the other Sun/Earth activations.",
+  factual_basis: ["E-ACTIVATIONS"],
+  suppliedEvidence: [{ id: "E-ACTIVATIONS" }, { id: "E-GATES" }]
+});
+assert.equal(unsupportedCrossMechanics.passed, false);
+assert.ok(unsupportedCrossMechanics.issues.includes("missing_factual_basis:E-CROSS"));
+
+const supportedCrossMechanics = criticAnswer({
+  answer: "My Incarnation Cross is formed by the four verified Sun/Earth activations.",
+  factual_basis: ["E-CROSS", "E-ACTIVATIONS"],
+  suppliedEvidence: [{ id: "E-CROSS" }, { id: "E-ACTIVATIONS" }]
+});
+assert.equal(supportedCrossMechanics.passed, true);
+
 const supportedLink = criticAnswer({
   answer: "Gate 34 falls in the Mutation quarter. Personality Sun Color is linked to Motivation, and Personality Nodes Color is linked to View.",
   relationship_basis: ["REL-GATE-QUARTER","REL-PERSONALITY-SUN-RP-MOTIVATION","REL-PERSONALITY-NODES-RP-VIEW"],
