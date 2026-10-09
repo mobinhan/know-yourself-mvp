@@ -19,6 +19,11 @@ export function composeAnswer({ reasoningInput, synthesis }) {
 
   const evidenceIds = new Set((reasoningInput.evidence ?? []).map(x => x.id));
   const knowledgeIds = new Set((reasoningInput.knowledge ?? []).map(x => x.id));
+  const promptContext = buildReasoningPromptInput(reasoningInput);
+  const allowedRelationshipIds = new Set([
+    ...(promptContext.holistic_context ?? []).flatMap(context => (context.relationships ?? []).filter(edge => edge.status === "validated").map(edge => edge.id)),
+    ...(promptContext.rave_psychology_context?.framework?.relationships ?? []).filter(edge => edge.status === "validated").map(edge => edge.id)
+  ]);
 
   const factual_basis = [...new Set(synthesis.factual_basis ?? [])]
     .filter(id => evidenceIds.has(id));
