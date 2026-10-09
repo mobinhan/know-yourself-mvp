@@ -131,6 +131,8 @@ jobs:
         run: node engine/test_extended-evidence.mjs
       - name: Run holistic cross-concept retrieval test
         run: node engine/test_holistic_retrieval.mjs
+      - name: Run holistic chart integration test
+        run: node engine/test_holistic_chart_integration.mjs
       - name: Validate Step 5
         run: node engine/test_step5_acceptance.mjs
       - name: Write JavaScript validation marker
