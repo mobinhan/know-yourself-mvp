@@ -53,9 +53,9 @@ When the user says **“save mcp”**, execute the full procedure in [docs/CONTI
 
 ## Current next action
 
-Read the latest Step 3 section in `docs/PROJECT_CHECKPOINT_2026-10-09.md` and `docs/INTERPRETATION_QUALITY_RUBRIC.md`.
+Read `docs/PROJECT_CHECKPOINT_2026-10-09.md`, `docs/LOVABLE_MIGRATION_PLAN.md`, and `docs/INTERPRETATION_QUALITY_RUBRIC.md`. The immediate task is the no-credit, read-only Lovable migration compatibility audit: inventory the frontend tree, resolve the `/web/app.js` and `/web/sw.js` references, and establish the API runtime/routing assumptions. Do not create a Lovable project or spend credits without separate, specific approval.
 
-**Step 2 is implemented; Step 3 is in progress.** The active 3framework provider sends Layers 1 and 2 directly to ChatGPT for Layer 3 synthesis. It performs ordinary response normalization and evidence-ID filtering, but does not run a separate critic or post-synthesis reasoning layer. The standalone critic helper is not wired into this path.
+**Interpretation Step 3 remains in progress; the immediate task is the migration compatibility audit before any Lovable pilot.** The active 3framework provider sends Layers 1 and 2 directly to ChatGPT for Layer 3 synthesis. It performs ordinary response normalization and evidence-ID filtering, but does not run a separate critic or post-synthesis reasoning layer. The standalone critic helper is not wired into this path.
 
 - Historical focused regression suite: 27 tests passed before the direct-synthesis correction — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387. New CI must verify the corrected path.
 - Full Step 1 Engine Validation passed on code/test commit `10a96297d96d07e6762d7d2356857dcd7a1fcb6b` — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912452
