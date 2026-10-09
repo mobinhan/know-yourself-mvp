@@ -3,7 +3,8 @@ import fs from "node:fs";
 import { buildEvidence } from "./evidence.js";
 import { understandQuestion } from "./question-understanding.js";
 import { buildReasoningInput } from "./evidence-selection.js";
-import { buildReasoningPromptInput } from "./answer-composer.js";
+import { buildReasoningPromptInput, composeAnswer } from "./answer-composer.js";
+import { buildGroundedAnswer } from "./reasoning-adapter.js";
 
 const chart = JSON.parse(fs.readFileSync(new URL("./golden-chart.json", import.meta.url), "utf8"));
 const activations = chart.activations;
@@ -71,5 +72,37 @@ assert.ok(rp.framework.external_records.some(item => item.id === "EXT-KNOW-RP-VI
 assert.ok(rp.framework.external_records.some(item => item.id === "EXT-KNOW-RP-MOTIVATION-001"));
 assert.match(rp.relevance_note, /do not infer either from the queried gate alone/i);
 assert.ok(prompt.instructions.some(item => item.includes("A gate's Quarter is wheel-level context")));
+
+const supportedDraft = composeAnswer({
+  reasoningInput,
+  synthesis: {
+    answer: "Gate 34 falls in the Mutation quarter. Personality Sun Color is linked to Motivation, and Personality Nodes Color is linked to View.",
+    factual_basis: ["E-GATES", "E-ACTIVATIONS"],
+    knowledge_basis: [],
+    relationship_basis: ["REL-GATE-QUARTER", "REL-PERSONALITY-SUN-RP-MOTIVATION", "REL-PERSONALITY-NODES-RP-VIEW"],
+    interpretation: "This combines a provisional wheel mapping with source-backed substructure relationships.",
+    limitations: ["The gate-to-quarter mapping remains provisional pending primary-source validation."]
+  }
+});
+const supportedFinal = buildGroundedAnswer({ reasoningInput, draft: supportedDraft });
+assert.equal(supportedFinal.critic.passed, true, JSON.stringify(supportedFinal.critic.issues));
+assert.ok(supportedFinal.relationship_basis.includes("REL-GATE-QUARTER"));
+assert.ok(supportedFinal.relationship_basis.includes("REL-PERSONALITY-SUN-RP-MOTIVATION"));
+assert.ok(supportedFinal.relationship_basis.includes("REL-PERSONALITY-NODES-RP-VIEW"));
+
+const unsupportedDraft = composeAnswer({
+  reasoningInput,
+  synthesis: {
+    answer: "Gate 34 determines your Motivation in Rave Psychology.",
+    factual_basis: ["E-GATES"],
+    knowledge_basis: [],
+    relationship_basis: ["REL-GATE-RAVE-PSYCHOLOGY"],
+    interpretation: "",
+    limitations: []
+  }
+});
+const unsupportedFinal = buildGroundedAnswer({ reasoningInput, draft: unsupportedDraft });
+assert.equal(unsupportedFinal.critic.passed, false);
+assert.ok(unsupportedFinal.critic.issues.includes("unsupported_cross_concept_claim:gate_to_rave_psychology"));
 
 console.log("HOLISTIC CHART INTEGRATION PASS: gate + quarter + actual Personality Sun/Node substructure");
