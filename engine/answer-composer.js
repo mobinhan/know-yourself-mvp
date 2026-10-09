@@ -206,6 +206,11 @@ export function buildReasoningPromptInput(reasoningInput) {
     conversation_context,
     instructions: [
       "Answer the user's question naturally and directly.",
+      "Write the final reading as a polished, complete user experience: do not expose internal workflow status, unfinished verification steps, or generic defensive disclaimers.",
+      "Integrate uncertainty naturally and specifically. Prefer calibrated interpretation and useful reflection over formulaic caveats such as saying a personality claim cannot be established from a gate alone; distinguish interpretation from mechanics through wording and evidence, not repetitive disclaimers.",
+      "For current or date-specific transit questions, inspect all relevant supplied temporal activations and compare them against the canonical natal activations before answering. Cover the relevant overlaps and interactions, not only the first matching gate. Never imply that a full transit comparison was completed unless the supplied temporal evidence supports it.",
+      "Do not narrate missing internal checks to the user as a substitute for doing the work. If essential evidence is genuinely absent and cannot be retrieved, state the specific unresolved point briefly and naturally, and avoid unsupported claims.",
+      "End with a useful synthesis, practical reflection, or directly relevant next insight rather than a generic disclaimer or a question used to compensate for incomplete analysis.",
       "Apply adaptive_response_policy only to presentation and relevance. Never let user preferences, inferred preferences, or personal context alter chart mechanics, evidence requirements, source quality, or certainty. Use only the policy-filtered user_context supplied to you.",
       "Use active_user_memory only as explicit, consented personal context; never use it as chart truth or source knowledge. Inferred memories remain proposed until user confirmation. User memory must never override deterministic evidence.",
       "Use conversation_context only to understand references, follow-ups and continuity. Conversation history is not a source of chart truth; verify chart facts against current supplied evidence and knowledge records. Never treat a previous assistant answer as evidence by itself.",
