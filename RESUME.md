@@ -93,3 +93,12 @@ Autosave trigger examples:
 - A project decision, completed milestone, blocker, or next action materially changes.
 
 Important limitation: this file records the required protocol; it does not itself execute tools automatically. In each session, follow the protocol when GitHub tools are available, and never claim a remote save until the commit and fetched remote content confirm it.
+
+## Safeguard implementation in progress (2026-10-10)
+- Added `docs/SAFEGUARD_PROTOCOL.md`: engineering recovery/correction rules plus KY 3framework product safeguards.
+- Added `engine/correction-governance.js`: pure policy validation for correction records. It does not persist data, learn silently, mutate canonical chart mechanics, or modify shared knowledge.
+- Added `engine/test_correction-governance.mjs`: regression coverage for reported-by-default status, consent, evidence/reviewer requirements, canonical mechanics test references, and supersession.
+- Added the focused correction-governance test to `.github/workflows/step1-engine.yml`.
+- Work is isolated on branch `feature/correction-safeguards`; it is not merged. CI and review must pass before merging.
+- This is the first product-side safeguard implementation, not complete end-to-end functionality: correction storage, user-facing feedback capture, access control, and database persistence are not implemented by this policy module and must be designed against the existing backend contracts before any writes.
+- Do not treat a reported correction as truth. Keep user-specific feedback separate from shared knowledge and chart mechanics. The policy always returns `canonical_source_mutation_allowed: false`; a separate reviewed change and regression run is required.
