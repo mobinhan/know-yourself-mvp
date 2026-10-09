@@ -12,6 +12,8 @@ assert.ok(html.includes("birth:state.chart.birth_data"), "question context reque
 assert.ok(html.includes("No AI reading has been generated."), "UI must not present local template text as live AI output");
 assert.ok(!html.includes("const fr=await fetch('/v1/charts/'+raw.id+'/foundation')"), "UI must not depend on server-side guest chart storage");
 assert.ok(api.includes("provider_not_configured"), "API must be explicit about missing live AI provider");
+assert.ok(api.includes("generate_interpretation"), "chart question and transit routes must call the live interpretation provider");
+assert.ok(html.includes("ctx.answer"), "Ask UI must render the provider answer rather than local hard-coded reading templates");
 assert.ok(api.includes("mechanics_only") || api.includes("mechanical_values_only"), "unverified PHS teaching must remain unasserted");
 assert.ok(vercel.rewrites.some(r => r.source === "/v1/:path*" && r.destination.includes("/api/index?route=/v1/:path*")), "V1 routes must reach the Python API handler");
 console.log("V1 FRONTEND/API CONTRACT PASS");
