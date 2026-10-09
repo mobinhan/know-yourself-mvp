@@ -1,5 +1,7 @@
 # Know Yourself — Resume Here
 
+> **HARDWIRED ARCHITECTURE DECISION:** The user explicitly confirmed 3framework. Active path = (1) Canonical Chart + source-linked Evidence, (2) Adaptive User Context, (3) direct ChatGPT synthesis. The 5framework is comparison-only. Never add/invoke a separate critic or extra reasoning layer in the 3framework path. Keep ordinary schema validation and evidence-ID filtering. If a proposed change crosses this boundary, stop and ask the user first.
+
 > **MANDATORY LOVABLE APPROVAL RULE: Do not make any amendments, send prompts, run builds, or otherwise spend Lovable credits unless the user gives explicit permission for that specific Lovable work. “Proceed” alone is not permission. Before requesting approval, explain why Lovable access is necessary, what non-Lovable alternatives exist, and the expected credit cost if it can be estimated. Check the project checkpoint for this rule before any Lovable action.**
 
 > **MANDATORY PLATFORM RULE: We do not use Vercel for Know Yourself. Do not open, configure, troubleshoot, or deploy through Vercel. Use Lovable for the live app interface, GitHub for source control and recovery, GitHub Actions for tests, and Supabase for backend/data. Only reconsider Vercel if the user explicitly asks to reinstate it. Read this rule before taking any action.**
@@ -46,12 +48,12 @@ When the user says **“save mcp”**, execute the full procedure in [docs/CONTI
 
 Read the latest Step 3 section in `docs/PROJECT_CHECKPOINT_2026-10-09.md` and `docs/INTERPRETATION_QUALITY_RUBRIC.md`.
 
-**Step 2 is implemented; Step 3 is in progress.** The deterministic post-synthesis quality gate checks explicit gate/channel/centre/profile/type/authority conflicts, exact gate-line activation and source/relationship support, and transit gate assertions against supplied temporal gate evidence. It adds no second LLM and preserves 3framework.
+**Step 2 is implemented; Step 3 is in progress.** The active 3framework provider sends Layers 1 and 2 directly to ChatGPT for Layer 3 synthesis. It performs ordinary response normalization and evidence-ID filtering, but does not run a separate critic or post-synthesis reasoning layer. The standalone critic helper is not wired into this path.
 
-- Focused regression suite: 27 tests passed — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387
+- Historical focused regression suite: 27 tests passed before the direct-synthesis correction — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387. New CI must verify the corrected path.
 - Full Step 1 Engine Validation passed on code/test commit `10a96297d96d07e6762d7d2356857dcd7a1fcb6b` — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912452
 - Latest work is pushed to `feature/live-api-v1`; verify branch HEAD before continuing.
-- Next: broaden the fixture corpus with independently sourced gate/line examples plus channel, centre, transit, and cross-concept questions. Review false positives/negatives before changing fail-closed rules.
+- Next: run focused and full CI for the direct-synthesis correction; then broaden source-grounded fixtures without introducing a critic layer.
 - These are offline/mocked checks, not proof of live model quality. No live OpenAI request has been sent.
 - Do not access or amend Lovable without explicit approval. Do not use Vercel or merge PR #1 without explicit approval. Preserve desktop-only work; this environment cannot inspect the desktop working tree.
 ## Confirmed platform workflow
