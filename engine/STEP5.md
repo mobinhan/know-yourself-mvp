@@ -36,6 +36,16 @@ The answering experience should be conversational and intelligent, comparable in
 - Holistic synthesis must connect relevant chart mechanics and interpretive frameworks, while distinguishing source-backed relationships from interpretation and never inventing mechanics.
 - `test_holistic_retrieval.mjs` validates graph edges, quarter mapping coverage and primary-source provenance; `test_holistic_chart_integration.mjs` checks a chart-specific gate + quarter + Rave Psychology prompt and unsupported-link rejection.
 
+## Gate–line synthesis safeguard — implemented for the Gate 57.4 reference case
+
+- Added `GATE_LINE_SYNTHESIS_POLICY.md` requiring separate gate meaning, general line mechanics, and exact gate–line synthesis evidence.
+- Registered a concise, rights-aware paraphrase of the IHDS Daily View Gate 57.4 source as `EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001`; the record preserves the Director archetype and its directing/dictatorial polarity.
+- Added a conditional graph relationship `REL-GATE-57-LINE-4-DIRECTOR` that applies only when Gate 57 and line 4 are present in the supplied context.
+- Holistic retrieval now filters gate-line-specific relationships against exact activation/query context. The answer prompt explicitly prohibits deriving a specific synthesis by appending generic line keywords to a gate.
+- Regression tests check generic Gate 57, exact Gate 57.4, a mismatching Gate 57.2, and answer-prompt inclusion.
+
+This is a source-backed reference-case implementation and deterministic contract coverage. It is not yet a comprehensive, source-verified catalog of all 384 gate-line combinations, and a live-model acceptance test is still required.
+
 ## Current limitation
 The current reasoning adapter deliberately provides a provider-neutral boundary and a deterministic mock for testing. It does not call an external LLM. Conversation state and production model integration remain separate concerns.
 
