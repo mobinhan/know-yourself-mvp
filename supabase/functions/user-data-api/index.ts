@@ -255,6 +255,51 @@ Deno.serve(async (req: Request) => {
       return respond(405, { error: "method_not_allowed_for_conversations" });
     }
 
+    if (resource === "continuity") {
+      if (req.method !== "GET" || resourceId) return respond(405, { error: "method_not_allowed_for_continuity" });
+      const { data: preferences, error: preferenceError } = await supabase.from("ky_user_preferences")
+        .select("personalization_enabled,personal_context_enabled,language,knowledge_level,tone,language_confirmed,knowledge_level_confirmed,tone_confirmed")
+        .eq("user_id", user.id).maybeSingle();
+      if (preferenceError) throw preferenceError;
+
+      const { data: conversations, error: conversationsError } = await supabase.from("ky_conversations")
+        .select("id,title,chart_id,status,updated_at")
+        .eq("user_id", user.id).eq("status", "active")
+        .order("updated_at", { ascending: false }).limit(3);
+      if (conversationsError) throw conversationsError;
+
+      const turnsByConversation: Record<string, unknown[]> = {};
+      for (const conversation of conversations ?? []) {
+        const { data: turns, error: turnsError } = await supabase.from("ky_conversation_turns")
+          .select("id,role,question,answer,factual_basis,knowledge_basis,relationship_basis,created_at")
+          .eq("user_id", user.id).eq("conversation_id", conversation.id)
+          .in("role", ["user", "assistant"]).order("sequence_number", { ascending: false }).limit(6);
+        if (turnsError) throw turnsError;
+        turnsByConversation[conversation.id] = (turns ?? []).reverse();
+      }
+
+      let memories: unknown[] = [];
+      let savedInsights: unknown[] = [];
+      if (preferences?.personalization_enabled === true) {
+        const { data: memoryRows, error: memoryError } = await supabase.from("ky_user_memories")
+          .select("id,category,value,origin,status,confidence,user_consent,user_confirmed,created_at,expires_at")
+          .eq("user_id", user.id).eq("status", "active").eq("user_consent", true).eq("user_confirmed", true)
+          .or("expires_at.is.null,expires_at.gt." + new Date().toISOString())
+          .order("updated_at", { ascending: false }).limit(50);
+        if (memoryError) throw memoryError;
+        memories = memoryRows ?? [];
+        const { data: insightRows, error: insightError } = await supabase.from("ky_saved_insights")
+          .select("id,chart_id,title,content,factual_basis,knowledge_basis,relationship_basis,created_at")
+          .eq("user_id", user.id).order("created_at", { ascending: false }).limit(5);
+        if (insightError) throw insightError;
+        savedInsights = insightRows ?? [];
+      }
+
+      const { buildContinuityContext } = await import("../../continuity-context.mjs");
+      const context = buildContinuityContext({ preferences, memories, conversations: conversations ?? [], turnsByConversation, savedInsights });
+      return respond(200, { data: context });
+    }
+
     if (resource === "saved-insights") {
       if (req.method === "GET" && !resourceId) {
         const { data, error } = await supabase.from("ky_saved_insights")
