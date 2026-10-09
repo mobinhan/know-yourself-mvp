@@ -3,6 +3,15 @@
 **Applies to:** desktop and mobile ChatGPT work, GitHub, CI, and deployment.
 **Purpose:** Resume safely without relying on conversational memory alone or overwriting newer work.
 
+## Hardwired architecture decision — user confirmed 2026-10-09
+
+- Know Yourself's active interpretation architecture is **3framework**, as explicitly confirmed by the user.
+- The three layers are: (1) Canonical Chart + source-linked Evidence, (2) Adaptive User Context, (3) direct ChatGPT synthesis.
+- The 5framework is comparison-only. Never silently blend it into the active path or invoke a separate interpretation critic, answer critic, reasoning adapter, or other post-synthesis reasoning layer from the 3framework provider.
+- Normal response-schema validation, JSON normalization, and filtering returned evidence IDs to records actually supplied are allowed contract handling.
+- The canonical implementation contract is `engine/THREE_FRAMEWORK.md`; also read the hardwired decision at the top of `RESUME.md`.
+- If a future proposal would cross this boundary, stop and obtain an explicit architectural decision from the user first. “Proceed” is not authorization to change the architecture.
+
 ## Source-of-truth order
 
 1. **Working-tree changes on the active desktop workspace** may contain newer, unpushed work. Never overwrite, reset, or discard them during recovery.
