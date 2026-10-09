@@ -6,11 +6,13 @@ on:
       - feature/live-api-v1
     paths:
       - "api/interpretation_provider.py"
+      - "api/interpretation_critic.py"
       - "engine/knowledge-records.json"
       - "engine/external-knowledge-records.json"
       - "engine/knowledge-relationships.json"
       - "tests/test_gate_line_retrieval.py"
       - "tests/test_gate_line_synthesis_contract.py"
+      - "tests/test_interpretation_critic.py"
       - ".github/workflows/gate-line-tests.yml"
   pull_request:
     paths:
@@ -38,4 +40,7 @@ jobs:
           python-version: "3.12"
       - name: Run focused gate-line tests
         run: |
-          python -m unittest             tests/test_gate_line_retrieval.py             tests/test_gate_line_synthesis_contract.py             -v
+          python -m unittest             tests/test_gate_line_retrieval.py \
+            tests/test_gate_line_synthesis_contract.py \
+            tests/test_interpretation_critic.py \
+            -v
