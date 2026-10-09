@@ -44,19 +44,16 @@ When the user says **“save mcp”**, execute the full procedure in [docs/CONTI
 
 ## Current next action
 
-Read the latest section in `docs/PROJECT_CHECKPOINT_2026-10-09.md` and the updated `docs/INTERPRETATION_CONTRACT_AUDIT_2026-10-09.md`.
+Read the latest Step 3 section in `docs/PROJECT_CHECKPOINT_2026-10-09.md` and `docs/INTERPRETATION_QUALITY_RUBRIC.md`.
 
-**Step 2 implementation verified:** a deterministic post-synthesis quality gate is connected to the Python API route. It checks high-confidence chart contradictions, defined-channel/centre claims, exact gate-line support, and transit claims without temporal evidence. It adds no second LLM and preserves the 3framework design.
+**Step 2 is implemented; Step 3 is in progress.** The deterministic post-synthesis quality gate checks explicit gate/channel/centre/profile/type/authority conflicts, exact gate-line activation and source/relationship support, and transit gate assertions against supplied temporal gate evidence. It adds no second LLM and preserves 3framework.
 
-- Verified implementation branch SHA: `ef96b1872ac24c56be86569446136f1c2feb52bd`.
-- Focused Gate-line regression passed: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37913796218
-- Full Step 1 Engine Validation passed: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37913789162
-- The subsequent audit/checkpoint/resume commits are documentation-only; verify the latest branch head before continuing.
-- Next: Step 3, expand semantic-quality fixtures across representative Human Design concepts and query types. Gate 57 is a reference fixture, not sufficient coverage.
-- Live OpenAI behavior remains unverified. Do not access or amend Lovable without explicit approval. Do not use Vercel or merge PR #1 without explicit approval.
-
-**Important limitation:** GitHub cannot prove whether unpushed edits remain on the user's desktop. If the desktop workspace has not been inspected, say so and preserve it.
-
+- Focused regression suite: 27 tests passed — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387
+- Full Step 1 Engine Validation passed on code/test commit `10a96297d96d07e6762d7d2356857dcd7a1fcb6b` — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912452
+- Latest work is pushed to `feature/live-api-v1`; verify branch HEAD before continuing.
+- Next: broaden the fixture corpus with independently sourced gate/line examples plus channel, centre, transit, and cross-concept questions. Review false positives/negatives before changing fail-closed rules.
+- These are offline/mocked checks, not proof of live model quality. No live OpenAI request has been sent.
+- Do not access or amend Lovable without explicit approval. Do not use Vercel or merge PR #1 without explicit approval. Preserve desktop-only work; this environment cannot inspect the desktop working tree.
 ## Confirmed platform workflow
 
 - **Lovable:** primary web-app build/preview interface used in this project.
