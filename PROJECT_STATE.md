@@ -3,7 +3,7 @@
 **State captured:** 2026-10-09
 **Repository:** `mobinhan/know-yourself-mvp`
 **Branch:** `main`
-**Latest verified commit:** `abf9919d1c2fb51a1cb03ca763fb5a86ba45fcc7`
+**Latest verified commit:** `ddd13c6004dbb8cf4591b65c5d6cd38eb15a1801`
 
 ## Working rule
 
@@ -73,7 +73,7 @@ Reasoning safeguards include:
 
 ## Verification at capture
 
-GitHub Actions for commit `abf9919d1c2fb51a1cb03ca763fb5a86ba45fcc7`:
+GitHub Actions for commit `ddd13c6004dbb8cf4591b65c5d6cd38eb15a1801`:
 - JavaScript contract validation — success
 - Python engine validation — success
 
@@ -201,8 +201,8 @@ Run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37887033375
 
 ## Step 5 implementation checkpoint — 2026-10-09
 
-Latest verified implementation commit: `abf9919d1c2fb51a1cb03ca763fb5a86ba45fcc7`.
-GitHub Actions run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37889531663
+Latest verified implementation commit: `ddd13c6004dbb8cf4591b65c5d6cd38eb15a1801`.
+GitHub Actions run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37889764211
 - Python engine validation: success
 - JavaScript contract validation: success
 
@@ -227,3 +227,13 @@ GitHub Actions run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/3
 - Conversation context is still a bounded in-memory turn window, not persistent user memory.
 - No production quarterly knowledge-source scheduler/refresh execution yet.
 - Real-model adversarial, multi-user privacy and end-to-end acceptance tests remain necessary before claiming the complete AI system is finished.
+
+### Additional Step 5 integration — verified 2026-10-09
+- Reasoning prompt assembly now receives three separated, governed inputs: adaptive response policy, active user memory, and bounded conversation continuity.
+- Conversation history is used only to resolve references/follow-ups. It is not a chart-truth source; prior assistant answers cannot replace current evidence. The user ID is excluded from reasoning context.
+- Added governed memory candidate lifecycle contract: consent is required, explicit memories require user confirmation, inferred candidates require confidence >= 0.8 and consent but remain proposed until confirmed, and expired/ineligible records are excluded.
+- Only active, consented, non-expired user memory in allowed personal categories enters the prompt. Chart truth, source knowledge and system instructions cannot be stored as user memory.
+- Answer critic now requires both `E-CROSS` and `E-ACTIVATIONS` for personal Incarnation Cross mechanics claims.
+- CI verifies the Cross context, adaptation policy, memory governance, conversation separation, critic checks and full Step 5 acceptance. The latest run passed both Python and JavaScript validation.
+
+These remain contract/policy foundations. No durable cross-session storage, production user controls, real LLM provider, automatic preference learning or production quarterly source-refresh scheduler is claimed complete.
