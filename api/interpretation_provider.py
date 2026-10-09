@@ -12,11 +12,6 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-try:
-    from api.interpretation_critic import review_interpretation
-except ModuleNotFoundError:  # Support the API's direct-module import mode.
-    from interpretation_critic import review_interpretation
-
 ROOT = Path(__file__).resolve().parent.parent
 ENGINE = ROOT / "engine"
 DEFAULT_MODEL = "gpt-5-mini"
@@ -208,7 +203,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         "layer_separation": {
             "layer_1": "Canonical chart mechanics and source-linked knowledge above.",
             "layer_2": "Only the current question and explicitly supplied context; do not infer private user traits.",
-            "layer_3": "ChatGPT synthesizes directly; deterministic post-synthesis checks block high-confidence chart contradictions. No second AI model is used."
+            "layer_3": "ChatGPT synthesizes directly from Layers 1 and 2. No separate critic or additional reasoning layer is part of 3framework."
         }
     }
     instructions = (
@@ -334,36 +329,8 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     result["one_line"] = (one_line.strip() if isinstance(one_line, str) and one_line.strip() else result["answer"])[:500]
     result["interpretation"] = result.get("interpretation") if isinstance(result.get("interpretation"), str) else ""
 
-    # The 3framework still uses ChatGPT as its sole synthesis model. This
-    # deterministic post-synthesis gate checks high-confidence claims without
-    # adding another LLM call or allowing the model to override canonical facts.
-    quality_review = review_interpretation(
-        answer=result["answer"],
-        foundation=foundation,
-        temporal_context=temporal_context,
-        external_knowledge=external,
-        relationships=relationships,
-    )
-    result["quality_review"] = quality_review
-    if not quality_review["passed"]:
-        safe_answer = (
-            "I couldn't verify one or more chart-specific claims against the supplied "
-            "canonical evidence. I won't present those claims as facts."
-        )
-        result["answer"] = safe_answer
-        result["one_line"] = safe_answer
-        result["cards"] = []
-        result["factual_basis"] = []
-        result["knowledge_basis"] = []
-        result["relationship_basis"] = []
-        result["interpretation"] = ""
-        result["limitations"] = list(dict.fromkeys(
-            result["limitations"] + [
-                "A chart-specific claim failed the deterministic evidence quality check."
-            ]
-        ))[:8]
-        result["interpretation_status"] = "needs_review"
-    else:
-        result["interpretation_status"] = "ready"
+    # 3framework ends with direct ChatGPT synthesis. Do not route this answer
+    # through the separate critic/reasoning path associated with the 5framework.
+    result["interpretation_status"] = "ready"
     result["model"] = model
     return result
