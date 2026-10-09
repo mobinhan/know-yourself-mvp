@@ -12,7 +12,10 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-from api.interpretation_critic import review_interpretation
+try:
+    from api.interpretation_critic import review_interpretation
+except ModuleNotFoundError:  # Support the API's direct-module import mode.
+    from interpretation_critic import review_interpretation
 
 ROOT = Path(__file__).resolve().parent.parent
 ENGINE = ROOT / "engine"
