@@ -4,7 +4,7 @@ import os
 import unittest
 from unittest.mock import patch
 
-from api.interpretation_provider import generate_interpretation
+from api.interpretation_provider import InterpretationProviderError, generate_interpretation
 
 
 class FakeResponse:
@@ -212,7 +212,7 @@ class GateLineSynthesisContractTests(unittest.TestCase):
             return_value=FakeResponse(provider_payload),
         ):
             with self.assertRaisesRegex(
-                Exception, "Model output is missing the required answer"
+                InterpretationProviderError, "Model output is missing the required answer"
             ):
                 generate_interpretation("Explain my chart", foundation)
 
