@@ -42,7 +42,7 @@ export function buildReasoningInput({ questionContext, question, evidenceBundle,
   const knowledge = (knowledgePackets ?? []).filter(packet => allowedIds.has(packet.evidence.id));
 
   return {
-    contract_version: "1.1.0",
+    contract_version: "1.2.0",
     question_context: questionContext,
     question,
     evidence,
