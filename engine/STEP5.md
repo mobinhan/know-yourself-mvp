@@ -39,3 +39,16 @@ The current reasoning adapter deliberately provides a provider-neutral boundary 
 
 ## Acceptance
 Step 5 progresses only when each boundary is tested independently and the full deterministic suite remains green.
+
+### Chart-specific holistic integration checkpoint — 2026-10-09
+
+- Added `engine/quarter-gate-map.json` with all 64 gates assigned once across four 16-gate quarters. Automated checks verify 64 unique assignments, 16 gates per quarter, and start-gate boundaries 13 / 2 / 7 / 1.
+- The official Jovian Archive glossary supports the four-quarter framework; the individual gate lists currently come from a secondary educational reference and are deliberately marked **provisional** pending permitted primary-source validation. The answer prompt must disclose this status when material.
+- Added individually identified external knowledge records for the four-quarter framework, the provisional gate mapping, Rave Psychology foundations, View and Motivation, each retaining source IDs, a source locator, claim type, status and permitted use.
+- Rave Psychology is now connected through the correct chart-specific substructure: Personality Sun Color to Motivation, and Personality Node Color to View. The prompt explicitly prohibits inferring either from the queried gate alone.
+- The answer contract now includes `relationship_basis`. The critic checks required graph relationship IDs for gate/quarter and Personality Sun/Node claims, rejects unsupported gate-to-Rave-Psychology causality, and rejects unknown relationship IDs.
+- External knowledge packets now expose explicit conflict sets when separately registered records in a conflict group make distinct claims. The system is instructed to preserve provenance and disclose disagreement rather than silently merging claims.
+- Tests include a chart-specific integration fixture and a synthetic conflicting-source fixture. These validate retrieval, prompt assembly, provenance and critic behavior; they do **not** constitute a live LLM reading.
+
+Current acceptance boundary: deterministic mechanics remain authoritative; gate-to-quarter mapping is still provisional; the external LLM remains unconnected. Do not describe the full production holistic interpretation capability as complete until primary-source mapping validation, record-level lifecycle governance, and real-model acceptance tests are finished.
+
