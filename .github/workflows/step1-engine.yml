@@ -140,6 +140,8 @@ jobs:
         run: node engine/test_user-adaptation.mjs
       - name: Run V1 frontend/API contract test
         run: node engine/test_v1_frontend_contract.mjs
+      - name: Check inline frontend JavaScript syntax
+        run: node engine/test_frontend_syntax.mjs
       - name: Run user memory governance test
         run: node engine/test_user-memory-governance.mjs
       - name: Run conversation context test
