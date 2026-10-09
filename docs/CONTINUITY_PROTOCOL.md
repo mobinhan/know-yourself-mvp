@@ -136,3 +136,23 @@ Use the following as the default next-chat instruction, updating the branch/task
 - Before asking for permission, state why a Lovable action is necessary, what alternatives can be completed through GitHub/offline tests/Supabase inspection without Lovable credits, and the expected credit cost if it can be estimated. Do not invent a cost estimate; say when it is unknown.
 - Prefer repository inspection, code review, GitHub Actions, and offline tests first. Keep Lovable read-only unless explicit permission has been given.
 - This restriction is also recorded in the project checkpoint under **Hard constraints and approvals**. Read `RESUME.md` and the latest checkpoint before acting.
+
+
+## HARDWIRED MOBILE/DESKTOP PARITY — USER REQUIREMENT, 2026-10-09
+
+**The user explicitly reports that work on mobile has been operating at a lower level than the current desktop work. This is a continuity failure to correct, not a reason to reduce scope. The same project state, architecture, standards, tools, and next-step discipline must carry across desktop and mobile.**
+
+### Mandatory rules for every device and new MCP/chat session
+
+1. **Start from the repository, not from a shallow conversational recap.** Read the latest verified `RESUME.md`, this protocol, the current project checkpoint, the architecture contract, and the relevant rubric before making a recommendation or editing code.
+2. **Use the same engineering standard on mobile as desktop.** Continue at the recorded maturity level. Do not restart from beginner instructions, repeat completed work, simplify the architecture, omit existing safeguards, or substitute generic advice merely because the user is on a phone.
+3. **Preserve the exact agreed architecture and constraints.** Active 3framework = canonical chart/source evidence → adaptive user context → direct ChatGPT synthesis. No separate critic in the active path. Lovable requires explicit specific approval and a cost/alternative explanation first. Vercel remains out of the workflow. Do not merge PR #1 without explicit approval.
+4. **MCP is an execution and continuity mechanism, not a lower-capability mode.** When repository tools are available, inspect the actual files, branches, commits, PRs, and CI; make safe, reviewable GitHub changes where appropriate; verify them after writing. Do not only tell the user what they could do manually when the tools can safely do the work.
+5. **Do not confuse device continuity with workspace continuity.** Mobile may not expose unpushed desktop files. Never claim those are saved; do not reset, overwrite, force-push, or merge while local-only changes may exist. Record that limitation and continue with verified remote work when safe.
+6. **Continue autonomously until a real blocker or material decision.** Use the checkpoint's exact next action, run appropriate tests when possible, and update the checkpoint after meaningful work. Ask only when an architectural decision, authorization, credential, or inaccessible external state genuinely requires the user.
+7. **Make progress visible and verifiable.** Report concrete changed files, commit SHA/link, CI results, and what remains unverified. Clearly distinguish completed implementation, mocked tests, real model quality, and live-app behaviour.
+8. **Do not let a mobile handoff erase current work.** When the user says “continue on mobile,” “resume,” or “save mcp,” automatically retrieve this protocol and latest checkpoint first. Treat prior confirmed decisions as binding unless the user explicitly changes them.
+
+### Required first response after a mobile/new-chat handoff
+
+Briefly confirm the current verified branch/checkpoint, state the exact next engineering task, and proceed with the task rather than asking the user to re-explain the project. If live state cannot be verified, state the precise gap and do the safe work that remains possible.
