@@ -100,5 +100,6 @@ Important limitation: this file records the required protocol; it does not itsel
 - Added `engine/test_correction-governance.mjs`: regression coverage for reported-by-default status, consent, evidence/reviewer requirements, canonical mechanics test references, and supersession.
 - Added the focused correction-governance test to `.github/workflows/step1-engine.yml`.
 - Work is isolated on branch `feature/correction-safeguards`; it is not merged. CI and review must pass before merging.
+- GitHub Actions run `38003149403` (commit `002b7286bdc7e3ca8bb8572d60bc86a808cc4733`): the focused `Run correction governance regression test` step completed successfully; the full JavaScript workflow was still in progress at last check, so overall CI is not yet confirmed green.
 - This is the first product-side safeguard implementation, not complete end-to-end functionality: correction storage, user-facing feedback capture, access control, and database persistence are not implemented by this policy module and must be designed against the existing backend contracts before any writes.
 - Do not treat a reported correction as truth. Keep user-specific feedback separate from shared knowledge and chart mechanics. The policy always returns `canonical_source_mutation_allowed: false`; a separate reviewed change and regression run is required.
