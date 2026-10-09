@@ -78,6 +78,22 @@ if (!gatePrompt.instructions.some(x => x.includes("do not infer these values fro
   throw new Error("Rave Psychology evidence boundary instruction missing");
 }
 
+const gateLinePrompt = buildReasoningPromptInput({
+  ...input,
+  question: "Tell me more about my Gate 57.4",
+  question_context: { intent: "interpretive", domains: ["self_personal_development"], evidence_targets: ["gates"] },
+  evidence: [
+    { id: "E-GATES", claim: "Verified gate evidence", result: [57] },
+    { id: "E-ACTIVATIONS", claim: "Verified planetary activation", result: { personality: [
+      { body: "saturn", imprint: "personality", gate: 57, line: 4, colour: 4, tone: 2, base: 3 }
+    ], design: [] } }
+  ],
+  knowledge: [{ id: "HD-KNOW-GATE-001", concept: "Gate", claim: "Gate 57 context", source_ids: ["SRC_HD_DEFINITIVE_BOOK_2011"], locator: "section" }]
+});
+const gate57Context = gateLinePrompt.holistic_context.find(item => item.concept === "gate");
+if (!gate57Context?.external_records.some(item => item.id === "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001")) throw new Error("exact chart gate-line context did not retrieve the Gate 57.4 teaching");
+if (!gateLinePrompt.instructions.some(item => item.includes("specific gate-line synthesis"))) throw new Error("gate-line synthesis boundary missing");
+
 const answer=composeAnswer({
   reasoningInput:input,
   synthesis:{
