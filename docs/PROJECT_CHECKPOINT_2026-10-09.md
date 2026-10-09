@@ -187,3 +187,14 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - This environment cannot inspect the user's desktop working tree; **local working tree not inspected; unpushed desktop edits cannot be ruled out**. Do not reset, overwrite, force-push, or merge during mobile recovery.
 - The checkpoint/recovery documentation was read through the newly available MCP tooling. This save is documentation-only; no application code, Lovable project, Supabase configuration, deployment, or PR state was changed. No tests were run as part of this documentation-only save.
 - **Resume instruction:** on mobile, read `RESUME.md` and this checkpoint from the latest verified `feature/live-api-v1` head, verify the current feature/main heads and CI, then continue Step 3. Do not repeat completed work unless current CI or code inspection shows a regression.
+
+
+## Mobile/desktop parity hardwire — 2026-10-09 23:00 ICT
+
+- User explicitly reported that mobile sessions have not been operating at the same level as desktop. This is now a binding continuity requirement, not a request to simplify work for mobile.
+- Added a mandatory **HARDWIRED MOBILE/DESKTOP PARITY** section to `docs/CONTINUITY_PROTOCOL.md` and a prominent rule to the root `RESUME.md`.
+- New rule: on every device/new chat, retrieve the latest verified repository checkpoint, architecture contract, rubric, branches, PRs, and CI through MCP before proceeding; continue from the exact next engineering task at the same maturity level; do not ask the user to repeat settled decisions or redo verified work; make safe, reviewable changes and verify them; clearly report test/live status.
+- All prior hard constraints remain in force: active 3framework with direct ChatGPT synthesis; no separate critic in the active path; no Lovable actions without specific explicit approval and a prior cost/alternatives explanation; no Vercel; no PR merge without explicit approval.
+- Latest documentation commits: protocol update `d28db69b10048b4e7bdade0d56a089c6b04c0f12`; resume entry update `61c9a587404d027caa9a1c53a8ae7cfbb3280f0e`.
+- This was a documentation/continuity change only; no application code was changed and no tests were run. The next engineering task remains Step 3: broaden concept-diverse, source-grounded offline evaluation fixtures for the active 3framework path, after checking current branch/CI state.
+- Local desktop working tree remains uninspected; unpushed local edits cannot be ruled out. No reset, overwrite, force-push, or merge was performed.
