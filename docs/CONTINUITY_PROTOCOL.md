@@ -47,7 +47,7 @@
 - Do not merge an open PR without explicit user approval.
 - Do not force-push or rewrite branch history as a continuity fix.
 - If branches diverge or contain distinct architectures, preserve both and inspect the diff before deciding what to do.
-- Treat Vercel build-rate limits as deployment blockers, not automatically as source-code failures.
+- Vercel is not an approved project deployment path. Do not invoke or troubleshoot Vercel unless the user explicitly reinstates it.
 
 ## Checkpoint template
 
@@ -66,7 +66,7 @@ Append or update these fields in the active project checkpoint:
 
 ## Current recovery note — 2026-10-09
 
-The desktop checkpoint commit `7e49fbdef140a1a79333235d891a40726ff9dc39` is on `feature/live-api-v1`, timestamped 15:53:15 ICT. Its associated Gate-line regression workflow run #18 passed. The latest known main-branch commit is different; do not treat `main` as a replacement for the feature branch. The open PR #1 remains unmerged. Vercel has shown a build-rate-limit blocker, and live interpretation has not been verified. Recheck all of these before acting because statuses can change.
+The desktop checkpoint commit `7e49fbdef140a1a79333235d891a40726ff9dc39` is on `feature/live-api-v1`, timestamped 15:53:15 ICT. Its associated Gate-line regression workflow run #18 passed. The latest known main-branch commit is different; do not treat `main` as a replacement for the feature branch. The open PR #1 remains unmerged. The repository's Vercel configuration has since been removed by explicit user decision. The external Vercel project/integration could not be accessed for deletion (403 scope authorization). Live interpretation has not been verified. Recheck all of these before acting because statuses can change.
 
 
 ## Mandatory trigger phrase: “save mcp”
@@ -96,14 +96,14 @@ Use the following as the default next-chat instruction, updating the branch/task
 
 > Resume Know Yourself. First read `RESUME.md` and the project checkpoint on the latest verified `feature/live-api-v1` branch head. Check all relevant branch heads, open PRs, CI, and deployment status. Preserve local desktop files; do not reset, overwrite, or merge. Continue from the checkpoint’s exact next action and do not repeat verified work.
 
-## Know Yourself development and deployment workflow — confirmed 2026-10-09
+## Know Yourself development and deployment workflow — confirmed 2026-10-09, updated 2026-10-09
 
 ### Platform responsibilities
 - **Lovable is the primary live web-app build/preview environment** used for the Know Yourself interface. Use it for the interface workflow the user is actually using.
 - **GitHub is the source-control and recovery record**: keep reviewed work and checkpoints on the intended branch; never assume `main` is the latest branch.
 - **GitHub Actions is the automated test/CI layer**. CI success proves only the tests that ran; it does not prove the live Lovable app or real model output works.
 - **Supabase is the backend/data layer** for the project, including the configured database and backend functions.
-- **Vercel is not part of the routine build/test loop by default.** Do not trigger Vercel builds, troubleshoot its build limits, or make Vercel the assumed live interface path unless a separate Vercel deployment is explicitly required and verified.
+- **Vercel has been removed from the project workflow by explicit user decision.** `vercel.json` was deleted, Vercel-specific ignore/CI references were removed, and the repository documentation now identifies Lovable as the live app environment. Do not reintroduce Vercel configuration unless the user explicitly requests it. External Vercel account/project cleanup is still pending because the connected Vercel tool returned a 403 scope authorization error.
 
 ### Standard work cycle
 1. Resume from `RESUME.md` and the latest verified checkpoint/active feature branch.
@@ -112,7 +112,7 @@ Use the following as the default next-chat instruction, updating the branch/task
 4. Run relevant GitHub Actions tests and report exactly what passed or remains untested.
 5. Verify the Lovable preview/live app separately when interface behaviour needs checking; do not equate a green CI run with a live-app check.
 6. Verify Supabase-backed behaviour separately when backend/data behaviour is in scope.
-7. Use Vercel only when there is a specific, confirmed reason to deploy there. A Vercel build-rate-limit or access issue is not automatically a code/CI failure and should not block unrelated development.
+7. Do not use Vercel for this project. If the user later chooses to reinstate it, explicitly configure and validate the new deployment path then.
 
 ### Safety and truthfulness
 - Do not assume Lovable's running app automatically contains every latest GitHub commit; verify the actual synchronization/source state before claiming it does.
