@@ -25,4 +25,35 @@ assert.ok(bad.issues.some(x=>x.startsWith("unknown_factual_basis:")));
 assert.ok(bad.issues.some(x=>x.startsWith("unknown_knowledge_basis:")));
 assert.ok(bad.issues.some(x=>x.startsWith("forbidden_mechanical_claim:")));
 
+const supportedRelationships = [
+  { id: "REL-GATE-QUARTER", status: "validated" },
+  { id: "REL-PERSONALITY-SUN-RP-MOTIVATION", status: "validated" },
+  { id: "REL-PERSONALITY-NODES-RP-VIEW", status: "validated" }
+];
+
+const unsupportedLink = criticAnswer({
+  answer: "Gate 34 determines your Motivation in Rave Psychology.",
+  relationship_basis: [],
+  suppliedRelationships: supportedRelationships
+});
+assert.equal(unsupportedLink.passed, false);
+assert.ok(unsupportedLink.issues.includes("unsupported_cross_concept_claim:gate_to_rave_psychology"));
+
+const missingRelationshipBasis = criticAnswer({
+  answer: "Gate 34 falls in the Mutation quarter. Personality Sun Color is linked to Motivation, and Personality Nodes Color is linked to View.",
+  relationship_basis: [],
+  suppliedRelationships: supportedRelationships
+});
+assert.equal(missingRelationshipBasis.passed, false);
+assert.ok(missingRelationshipBasis.issues.includes("missing_relationship_basis:REL-GATE-QUARTER"));
+assert.ok(missingRelationshipBasis.issues.includes("missing_relationship_basis:REL-PERSONALITY-SUN-RP-MOTIVATION"));
+assert.ok(missingRelationshipBasis.issues.includes("missing_relationship_basis:REL-PERSONALITY-NODES-RP-VIEW"));
+
+const supportedLink = criticAnswer({
+  answer: "Gate 34 falls in the Mutation quarter. Personality Sun Color is linked to Motivation, and Personality Nodes Color is linked to View.",
+  relationship_basis: ["REL-GATE-QUARTER","REL-PERSONALITY-SUN-RP-MOTIVATION","REL-PERSONALITY-NODES-RP-VIEW"],
+  suppliedRelationships: supportedRelationships
+});
+assert.equal(supportedLink.passed, true);
+
 console.log("ANSWER CRITIC PASS");
