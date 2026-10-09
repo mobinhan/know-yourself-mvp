@@ -58,7 +58,8 @@ def _defined_channels(foundation: dict) -> set[str]:
         if isinstance(value, str):
             match = re.fullmatch(r"\s*(\d{1,2})\s*[-–/]\s*(\d{1,2})\s*", value)
             if match:
-                result.add("-".join(sorted((int(match.group(1)), int(match.group(2)))))
+                a, b = sorted((int(match.group(1)), int(match.group(2))))
+                result.add(f"{a}-{b}")
     return result
 
 
