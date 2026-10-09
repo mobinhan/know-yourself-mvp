@@ -30,6 +30,8 @@ export function composeAnswer({ reasoningInput, synthesis }) {
     .filter(id => evidenceIds.has(id));
   const knowledge_basis = [...new Set(synthesis.knowledge_basis ?? [])]
     .filter(id => knowledgeIds.has(id));
+  const relationship_basis = [...new Set(synthesis.relationship_basis ?? [])]
+    .filter(id => allowedRelationshipIds.has(id));
 
   const answer = synthesis.answer.trim();
   if (answer.length > MAX_ANSWER_CHARS) {
