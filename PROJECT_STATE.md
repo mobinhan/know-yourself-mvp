@@ -107,19 +107,23 @@ Continue hardening Step 5 AI reasoning/answering until a major decision or major
 
 **Confirmed:** 2026-10-09
 
-The knowledge system should run a quarterly review of registered Human Design sources and controlled knowledge records. This is a maintenance pipeline, not permission for an unconstrained AI self-update.
+This is a requirement of the **eventual production Know Yourself Human Design knowledge base and AI system itself**, not merely a manual or developer maintenance task during the build.
 
-Quarterly workflow:
-1. Revisit registered source URLs and official source indexes; detect changed, moved, newly published or unavailable material.
-2. Prioritise P1 primary / lineage-controlled sources, while reviewing relevant P2–P4 sources according to their roles.
-3. Record source provenance, author/publisher, URL, observed or publication date where available, access/check date, tier, topic coverage and rights/use restrictions.
-4. Deduplicate new material; extract only permitted metadata and concise paraphrases; preserve attribution and source links.
-5. Classify each proposed record as foundational, interpretive, experiential or critical/contested.
-6. Compare new material against existing records and flag contradictions, uncertain provenance, unsupported claims and source-quality changes.
-7. Keep proposed knowledge changes staged and auditable until validation checks pass. Changes to deterministic mechanics or canonical chart rules must never be made by this source-refresh pipeline.
-8. Produce a quarterly change report listing additions, changes, removals/unavailable sources, conflicts, rights concerns and items requiring human review.
-9. Run the relevant retrieval, evidence-traceability and answer-critic tests before approved records enter the active knowledge layer.
-10. Retain a versioned audit trail so answers and knowledge records can be traced to the source snapshot used.
+The completed product should independently execute a scheduled quarterly review of its registered Human Design source ecosystem and controlled knowledge records. This is a governed, auditable knowledge-maintenance capability, not permission for unconstrained AI self-modification.
 
-The intended cadence is once per quarter. The implementation stage and scheduler are still to be built/verified; this entry records the confirmed product requirement, not a claim that the automated pipeline is already running.
+Quarterly production workflow:
+1. Automatically trigger once per quarter using a production scheduler.
+2. Revisit registered source URLs, official source indexes and permitted discovery channels; detect changed, moved, newly published or unavailable material.
+3. Prioritise P1 primary / lineage-controlled sources, while reviewing relevant P2–P4 sources according to their roles.
+4. Record provenance, author/publisher, URL, publication/observed date where available, review date, tier, topic coverage and rights/use restrictions.
+5. Deduplicate new material; extract only permitted metadata and concise paraphrases; preserve attribution and source links.
+6. Classify records as foundational, interpretive, experiential or critical/contested.
+7. Compare proposed additions and revisions against existing records; flag contradictions, uncertain provenance, unsupported claims, outdated content and source-quality changes.
+8. Keep candidate updates versioned and staged. The system can automatically ingest low-risk, rights-cleared changes only when defined validation gates pass; ambiguous, conflicting, high-impact or rights-sensitive changes require review.
+9. Never allow this source-refresh pipeline to change deterministic chart mechanics or canonical chart rules. Those remain governed by the deterministic engine and separately controlled releases.
+10. Run retrieval, evidence traceability, answer-critic, regression and source-permission checks before updated records become active.
+11. Produce an in-product quarterly change report recording additions, revisions, unavailable sources, conflicts, rights concerns, validation results and any items awaiting review.
+12. Retain version history and audit trails so an answer can be traced to the knowledge version and sources used at the time.
+13. If a scheduled run fails or sources cannot be reached, record the failure and retry safely; never present an uncompleted review as successful or silently discard the previous valid knowledge base.
 
+The intended production cadence is once per quarter. The scheduler, refresh pipeline and operational controls remain to be implemented and verified; this entry records the confirmed product requirement, not a claim that the production capability is already running.
