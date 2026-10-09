@@ -158,3 +158,18 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - No Lovable access, no Vercel use, no live OpenAI request, and no PR merge.
 - Local working tree not inspected; unpushed desktop edits cannot be ruled out.
 - **Next action:** run the new focused and full engine CI; verify branch HEAD and inspect the updated provider and recovery docs. Continue 3framework fixture expansion only after the corrected path passes.
+
+
+## Post-correction verification — hardwired 3framework
+
+- Verified branch head before this checkpoint update: `8f1f7416497a2de5960486e5395a6d0c48c71ebc`.
+- Active provider correction: `api/interpretation_provider.py` no longer imports or calls `review_interpretation`, no longer returns `quality_review` or critic-based `needs_review`, and its instructions explicitly require direct ChatGPT synthesis without a separate critic.
+- Provider contract test changed to verify direct synthesis and absence of a critic-generated `quality_review`.
+- Focused Gate-line regression passed on current corrected path: run #87 — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37915509731
+- Full Step 1 Engine Validation passed on corrected provider code/prompt commit `1a2da5da06c96ec44b9f2d3064350d37c637193d`: run #384 — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37915475617
+- The later commit `8f1f7416497a2de5960486e5395a6d0c48c71ebc` updates the rubric only; the provider/test correction is unchanged.
+- Canonical rule is now recorded in `engine/THREE_FRAMEWORK.md`, `docs/CONTINUITY_PROTOCOL.md`, `docs/INTERPRETATION_QUALITY_RUBRIC.md`, this checkpoint, and the top of `RESUME.md`.
+- The standalone critic helper and its tests remain isolated comparison/legacy material only; they are not invoked by the active provider.
+- PR #1 remains open, draft, unmerged; its latest metadata temporarily reports `mergeable: false`. Do not merge.
+- No Lovable access, no Vercel use, no live OpenAI request. Local working tree not inspected; unpushed desktop edits cannot be ruled out.
+- **Next action:** continue Step 3 by building concept-diverse, source-grounded evaluation fixtures for direct ChatGPT synthesis. Do not reinstate a post-synthesis critic. Re-check CI for any future code changes.
