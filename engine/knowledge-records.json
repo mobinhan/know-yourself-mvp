@@ -752,6 +752,74 @@
         "transference",
         "rave_psychology"
       ]
+    },
+    {
+      "id": "HD-KNOW-RP-MOTIVATION-COLOR-003",
+      "concept": "Personality Sun Color 3 — Desire",
+      "claim": "The supplied Rave Psychology course identifies the third Color in the Personality Sun/Earth context as Desire and links it to motivation. Use this label only when the deterministic Personality Sun substructure supplies Color 3; do not infer it from a gate theme.",
+      "source_ids": [
+        "SRC_RP_YEAR1_SEM2"
+      ],
+      "locator": "Lesson Ten, Tonal Trajectory Fixing, printed pp. 218–219",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "personality_sun",
+        "personality_color",
+        "motivation",
+        "desire",
+        "rave_psychology"
+      ]
+    },
+    {
+      "id": "HD-KNOW-RP-NODES-COLOR-006",
+      "concept": "Personality Node Color 6 — Innocence / seeing",
+      "claim": "The supplied Rave Psychology course identifies the sixth Color in the Personality Nodes/seeing context as Innocence and describes it as an observing stance. Apply this as a source-backed interpretive lens only when verified Personality Node substructure supplies Color 6; do not infer a complete View label from Color alone.",
+      "source_ids": [
+        "SRC_RP_YEAR1_SEM2"
+      ],
+      "locator": "The Nodes: 6th Color/Innocence, printed p. 150; Tonal Trajectory Fixing, printed p. 219",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "personality_nodes",
+        "personality_color",
+        "view",
+        "innocence",
+        "rave_psychology"
+      ]
+    },
+    {
+      "id": "HD-KNOW-RP-TRANSFERENCE-3-6-001",
+      "concept": "Personality Color 6-to-3 transference relationship",
+      "claim": "The supplied Rave Psychology course explicitly discusses the sixth Color transferring to the third Color. When the verified Personality Nodes are Color 6 and the Personality Sun is Color 3, this is a relevant framework for observing possible Color transference—not proof that the person is currently in transference or a deterministic psychological diagnosis.",
+      "source_ids": [
+        "SRC_RP_YEAR1_SEM2"
+      ],
+      "locator": "Lesson Six, The 6th Color Transferring to the 3rd Color, printed pp. 123–124",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "personality_sun",
+        "personality_nodes",
+        "personality_color",
+        "transference",
+        "motivation",
+        "view",
+        "rave_psychology"
+      ]
     }
   ]
 }
