@@ -98,6 +98,30 @@ class InterpretationCriticTests(unittest.TestCase):
         )
         self.assertTrue(result["passed"], result["issues"])
 
+    def test_rejects_source_and_relationship_for_different_gate_line(self):
+        source = {
+            "id": "EXT-KNOW-IHDS-GATE-34-2-OTHER-001",
+            "title": "Gate 34.2 — Other Theme",
+            "claim": "Gate 34.2 is known as another archetype.",
+            "applies_when": {"gate_number": 34, "line_number": 2},
+        }
+        relationship = {
+            "id": "REL-GATE-34-LINE-2-OTHER",
+            "status": "validated",
+            "external_knowledge_ids": [source["id"]],
+            "applies_when": {"gate_number": 34, "line_number": 2},
+        }
+        result = self.review(
+            "Gate 57.4 is known as the Director archetype.",
+            external=[source], relationships=[relationship],
+        )
+        self.assertFalse(result["passed"])
+        self.assertIn("unsupported_gate_line_synthesis:gate_57_line_4", result["issues"])
+
+    def test_accepts_defined_centre_claim(self):
+        result = self.review("Your spleen centre is defined.")
+        self.assertTrue(result["passed"], result["issues"])
+
     def test_detects_profile_type_and_authority_conflicts(self):
         cases = [
             ("Your profile is 5/1.", "canonical_profile_conflict:5/1"),
