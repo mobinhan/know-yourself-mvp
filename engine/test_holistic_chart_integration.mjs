@@ -70,16 +70,20 @@ assert.deepEqual(
 );
 assert.ok(rp.framework.external_records.some(item => item.id === "EXT-KNOW-RP-VIEW-001"));
 assert.ok(rp.framework.external_records.some(item => item.id === "EXT-KNOW-RP-MOTIVATION-001"));
+assert.ok(rp.framework.records.some(item => item.id === "HD-KNOW-RP-MOTIVATION-COLOR-003"));
+assert.ok(rp.framework.records.some(item => item.id === "HD-KNOW-RP-NODES-COLOR-006"));
+assert.ok(rp.framework.records.some(item => item.id === "HD-KNOW-RP-TRANSFERENCE-3-6-001"));
+assert.ok(rp.framework.relationships.some(item => item.id === "REL-PERSONALITY-SUN-NODES-COLOR-TRANSFERENCE-3-6"));
 assert.match(rp.relevance_note, /do not infer either from the queried gate alone/i);
 assert.ok(prompt.instructions.some(item => item.includes("A gate's Quarter is wheel-level context")));
 
 const supportedDraft = composeAnswer({
   reasoningInput,
   synthesis: {
-    answer: "Gate 34 falls in the Mutation quarter. Personality Sun Color is linked to Motivation, and Personality Nodes Color is linked to View.",
+    answer: "Gate 34 falls in the Mutation quarter. Personality Sun Color 3 is Desire, and Personality Node Color 6 is described as Innocence in the seeing context. The supplied Rave Psychology course discusses Color 6-to-3 transference as a framework to observe, not proof that I am currently in transference. Personality Sun Color is linked to Motivation, and Personality Nodes Color is linked to View.",
     factual_basis: ["E-GATES", "E-ACTIVATIONS"],
     knowledge_basis: [],
-    relationship_basis: ["REL-GATE-QUARTER", "REL-PERSONALITY-SUN-RP-MOTIVATION", "REL-PERSONALITY-NODES-RP-VIEW"],
+    relationship_basis: ["REL-GATE-QUARTER", "REL-PERSONALITY-SUN-RP-MOTIVATION", "REL-PERSONALITY-NODES-RP-VIEW", "REL-PERSONALITY-SUN-NODES-COLOR-TRANSFERENCE-3-6"],
     interpretation: "This combines the source-validated wheel mapping with source-backed substructure relationships.",
     limitations: ["Quarter mapping is cross-checked against the supplied primary reference; Rave Psychology is interpreted only through verified Personality substructure."]
   }
@@ -89,6 +93,7 @@ assert.equal(supportedFinal.critic.passed, true, JSON.stringify(supportedFinal.c
 assert.ok(supportedFinal.relationship_basis.includes("REL-GATE-QUARTER"));
 assert.ok(supportedFinal.relationship_basis.includes("REL-PERSONALITY-SUN-RP-MOTIVATION"));
 assert.ok(supportedFinal.relationship_basis.includes("REL-PERSONALITY-NODES-RP-VIEW"));
+assert.ok(supportedFinal.relationship_basis.includes("REL-PERSONALITY-SUN-NODES-COLOR-TRANSFERENCE-3-6"));
 
 const unsupportedDraft = composeAnswer({
   reasoningInput,
