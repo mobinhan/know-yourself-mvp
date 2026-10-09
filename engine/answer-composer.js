@@ -71,7 +71,7 @@ export function buildReasoningPromptInput(reasoningInput) {
   const gateEvidence = (reasoningInput.evidence ?? []).find(record => record.id === "E-GATES");
   const activationEvidence = (reasoningInput.evidence ?? []).find(record => record.id === "E-ACTIVATIONS");
   const chartGateSet = Array.isArray(gateEvidence?.result) ? gateEvidence.result : [];
-  const explicitGateMatch = reasoningInput.question.match(/\\b(?:gate|gates)\\s*(\\d{1,2})\\b/i);
+  const explicitGateMatch = reasoningInput.question.match(/\b(?:gate|gates)\s*(\d{1,2})\b/i);
   const explicitGate = explicitGateMatch ? Number(explicitGateMatch[1]) : null;
   const relevantGates = explicitGate != null ? [explicitGate] : chartGateSet;
   const holistic_context = holisticConcepts.map(concept =>
