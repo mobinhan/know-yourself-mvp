@@ -119,3 +119,11 @@ Use the following as the default next-chat instruction, updating the branch/task
 - Do not claim an app is live, deployed, or tested unless that exact state was checked.
 - Do not expose secrets or trigger unnecessary paid builds.
 - Do not merge PR #1 without explicit user approval.
+
+
+## Mandatory Lovable credit approval — read before any app work
+
+- **Never amend the Lovable project, send a prompt to its agent, trigger a build, or take another action that may consume Lovable credits without the user's explicit permission for that specific work.** A general “proceed” is not approval to spend credits.
+- Before asking for permission, state why a Lovable action is necessary, what alternatives can be completed through GitHub/offline tests/Supabase inspection without Lovable credits, and the expected credit cost if it can be estimated. Do not invent a cost estimate; say when it is unknown.
+- Prefer repository inspection, code review, GitHub Actions, and offline tests first. Keep Lovable read-only unless explicit permission has been given.
+- This restriction is also recorded in the project checkpoint under **Hard constraints and approvals**. Read `RESUME.md` and the latest checkpoint before acting.
