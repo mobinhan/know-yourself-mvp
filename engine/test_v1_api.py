@@ -50,3 +50,66 @@ def test_invalid_timezone_fails_closed():
         assert "timezone" in str(exc).lower() or "not found" in str(exc).lower() or exc.__class__.__name__ == "ZoneInfoNotFoundError"
     else:
         raise AssertionError("invalid IANA timezone should not be accepted")
+
+
+def test_interpretation_provider_fails_closed_without_api_key(monkeypatch):
+    import sys
+    provider = sys.modules["interpretation_provider"]
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    foundation = API.build_foundation({
+        "date": "1982-04-15", "time": "07:38:00", "location": "Baarn",
+        "timezone": "Europe/Amsterdam", "latitude": 52.211, "longitude": 5.287,
+    })
+    result = provider.generate_interpretation("Explain my Gate 57.4", foundation)
+    assert result["interpretation_status"] == "provider_not_configured"
+    assert result["answer"] is None
+
+
+def test_interpretation_provider_uses_responses_api_and_filters_evidence(monkeypatch):
+    import sys
+    provider = sys.modules["interpretation_provider"]
+    monkeypatch.setenv("OPENAI_API_KEY", "test-secret-not-a-real-key")
+    monkeypatch.setenv("OPENAI_MODEL", "gpt-5-mini")
+    foundation = API.build_foundation({
+        "date": "1982-04-15", "time": "07:38:00", "location": "Baarn",
+        "timezone": "Europe/Amsterdam", "latitude": 52.211, "longitude": 5.287,
+    })
+    expected = {
+        "answer": "Gate 57.4 is described in the supplied source as The Director.",
+        "one_line": "Clarity in interrelationships.",
+        "cards": [],
+        "factual_basis": ["activations.personality", "not-a-real-evidence-id"],
+        "knowledge_basis": ["EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001", "not-a-real-knowledge-id"],
+        "relationship_basis": ["REL-GATE-57-LINE-4-DIRECTOR", "not-a-real-relationship-id"],
+        "interpretation": "Source-specific synthesis.",
+        "limitations": [],
+    }
+    captured = {}
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            return False
+        def read(self):
+            return json.dumps({"output_text": json.dumps(expected)}).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        captured["url"] = request.full_url
+        captured["headers"] = dict(request.header_items())
+        captured["body"] = json.loads(request.data.decode("utf-8"))
+        captured["timeout"] = timeout
+        return FakeResponse()
+
+    monkeypatch.setattr(provider, "urlopen", fake_urlopen)
+    result = provider.generate_interpretation("Explain my Gate 57.4", foundation)
+
+    assert captured["url"] == "https://api.openai.com/v1/responses"
+    assert captured["body"]["model"] == "gpt-5-mini"
+    assert captured["body"]["store"] is False
+    assert captured["body"]["text"]["format"]["type"] == "json_object"
+    assert "1982-04-15" not in captured["body"]["input"]
+    assert result["interpretation_status"] == "ready"
+    assert result["knowledge_basis"] == ["EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"]
+    assert result["relationship_basis"] == ["REL-GATE-57-LINE-4-DIRECTOR"]
+    assert result["factual_basis"] == ["activations.personality"]
