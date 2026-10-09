@@ -83,3 +83,19 @@ Read `docs/PROJECT_CHECKPOINT_2026-10-09.md`, `docs/LOVABLE_MIGRATION_PLAN.md`, 
 - Mobile resume point: read `docs/PROJECT_CHECKPOINT_2026-10-09.md` from the latest `feature/live-api-v1` head, verify branch heads and CI, then continue Step 3 offline evaluation fixture expansion. No live model-quality pass is claimed.
 - GitHub search surfaced main HEAD `9b503db604b680fccbc7b962a59ce9fa19776a39`; do not mistake it for the feature branch head or replace the feature branch with main.
 - Local desktop working tree has not been inspected, so unpushed local edits cannot be ruled out. Do not reset, overwrite, force-push, or merge during recovery.
+
+
+## Latest checkpoint — 2026-10-10: Vercel preview diagnosis
+
+**This section supersedes older platform instructions only for the limited diagnostic work described here.** The user explicitly asked to try Vercel again. This is authorization to inspect and test the existing Vercel project/preview, not to commit to Vercel permanently or to change production settings.
+
+- Production Vercel project is visible and its app opens. Production screenshot/PDF shows the My Chart screen rendering.
+- Production browser Console showed `Uncaught SyntaxError: Unexpected identifier 'chart'` at `(index):113`, plus a 404 for `/web/app.js`.
+- Root cause identified in `index.html`: HTML fragments containing `onclick="go('chart')"` were embedded inside single-quoted JavaScript strings. Four occurrences were escaped as `onclick="go(&quot;chart&quot;)"` in a dedicated fix branch.
+- Fix branch: `fix/my-chart-inline-handler`, commit `8f2b568d46467ea1a472838c3492fed8b8417ebb`.
+- Draft PR #2: https://github.com/mobinhan/know-yourself-mvp/pull/2 — “Fix My Chart inline JavaScript syntax”. It is not merged; production remains unchanged.
+- Vercel reported a successful deployment/check for the PR commit. User confirmed My Chart opens in preview. User then tested clicking BodyGraph centres/channels and reported **no detail opens**. The PDF preview shows the My Chart screen and bodygraph/channel labels, but does not prove the API/calculations or interactions work.
+- Current next task: read the full current `index.html` on `fix/my-chart-inline-handler`; trace SVG channel hit targets, centre click handlers, delegated event binding and any JavaScript console errors. Reproduce/validate before making a separate targeted fix. Then verify chart API endpoints and tests. Do not merge PR #2 or PR #1 without explicit approval.
+- The GitHub integration's workflow-run lookup returned no Actions runs for the fix commit; combined commit status showed Vercel success only. Do not claim automated tests passed.
+- User asked to save this checkpoint and will likely resume with **“Resume KY”**. On resume, re-check branch heads, PR #1/#2 state, current deployment/checks and read this checkpoint before acting.
+- Existing guardrails remain: preserve 3framework and no separate critic in active path; no Lovable credits/actions without specific explicit approval; no production merge without approval; avoid overwriting desktop-only work. Vercel use is currently authorized only for diagnosis/testing of this existing project, not as an irrevocable architecture decision.
