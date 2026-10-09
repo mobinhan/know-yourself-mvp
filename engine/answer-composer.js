@@ -8,6 +8,7 @@ export function composeAnswer({ reasoningInput, synthesis }) {
       answer: "I don't have enough verified information to answer that reliably yet.",
       factual_basis: [],
       knowledge_basis: [],
+      relationship_basis: [],
       interpretation: "",
       limitations: reasoningInput?.missing_evidence_targets ?? []
     };
@@ -39,6 +40,7 @@ export function composeAnswer({ reasoningInput, synthesis }) {
     answer,
     factual_basis,
     knowledge_basis,
+    relationship_basis,
     interpretation: typeof synthesis.interpretation === "string" ? synthesis.interpretation.trim() : "",
     limitations: Array.isArray(synthesis.limitations) ? synthesis.limitations : []
   };
