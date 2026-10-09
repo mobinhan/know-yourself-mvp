@@ -72,7 +72,7 @@ def _defined_centres(foundation: dict) -> set[str]:
     aliases = {"g": "g", "heart": "heart", "ego": "heart", "solar plexus": "solar plexus"}
     values = foundation.get("core", {}).get("centres", [])
     return {
-        aliases.get(value.strip().lower(), value.strip().lower())
+        aliases.get(value.strip().lower().replace("_", " "), value.strip().lower().replace("_", " "))
         for value in values if isinstance(value, str)
     } if isinstance(values, list) else set()
 
