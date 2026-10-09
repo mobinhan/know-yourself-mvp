@@ -101,3 +101,9 @@ Important limitation: this file records the required protocol; it does not itsel
 - Added authenticated `GET /functions/v1/user-data-api/continuity`: returns up to 3 active conversations with up to 6 latest turns each, plus up to 50 eligible memories and 5 saved insights when personalization is enabled. The endpoint is user-scoped and uses the existing caller JWT.
 - Added the continuity contract test to GitHub Actions and assertions to the existing user-data API security contract.
 - No schema changes or production Edge Function deployment were made. This is a proposed repository change; CI, PR review, and authenticated end-to-end verification remain required. The current endpoint uses recency-bounded retrieval, not semantic relevance ranking. The live LLM and frontend integration remain separate outstanding work.
+
+
+## Live-use integration blocker (2026-10-10)
+- Inspected the actual `index.html` on this branch: its `sendAsk()` function constructs client-side canned responses and calls `/v1/charts/.../questions/context`. The page does not currently authenticate with Supabase and does not call the new `/continuity` endpoint.
+- Therefore, continuity retrieval is implemented as a backend capability proposal, but it is **not yet active in the app's real-life conversations**. Do not claim otherwise.
+- Next: trace the existing `/v1` backend and its authentication/session model, then integrate continuity into the real answer path while preserving guest exploration and the 3framework. Do not put API secrets in browser code, bypass canonical chart/evidence contracts, or deploy before the actual runtime path is verified.
