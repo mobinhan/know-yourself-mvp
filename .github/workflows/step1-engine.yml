@@ -136,6 +136,8 @@ jobs:
         run: node engine/test_user-adaptation.mjs
       - name: Run user memory governance test
         run: node engine/test_user-memory-governance.mjs
+      - name: Run correction governance regression test
+        run: node engine/test_correction-governance.mjs
       - name: Run conversation context test
         run: node engine/test_conversation-context.mjs
       - name: Run Step 5 stress tests
