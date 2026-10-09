@@ -455,7 +455,7 @@
         "rights_use_status": "metadata_and_concise_paraphrase_only",
         "source_change_action": "revalidate_claim_status_and_dependent_relationships",
         "supersedes": [],
-        "conflict_group": "GATE-57-4-INTERPRETATION"
+        "conflict_group": null
       }
     }
   ]
