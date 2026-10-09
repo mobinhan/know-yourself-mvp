@@ -44,7 +44,7 @@ assert.deepEqual(crossQuarter.gate_quarter_context.map(x => [x.gate,x.quarter]),
 ]);
 assert.ok(crossQuarter.gate_quarter_context.every(x => x.chart_defined && x.mapping_status === "validated"));
 assert.ok(crossQuarter.external_records.some(x => x.id === "EXT-KNOW-QUARTERS-001" && x.status === "accepted"));
-assert.ok(crossQuarter.external_records.some(x => x.id === "EXT-KNOW-QUARTER-GATE-MAP-001" && x.status === "provisional"));
+assert.ok(crossQuarter.external_records.some(x => x.id === "EXT-KNOW-QUARTER-GATE-MAP-001" && x.status === "accepted"));
 
 const rpNodes = retrieveHolisticContext({ concept: "personality_nodes" });
 assert.ok(rpNodes.external_records.some(x => x.id === "EXT-KNOW-RP-VIEW-001"));
