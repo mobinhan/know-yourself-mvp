@@ -11,6 +11,10 @@
 
 **Purpose:** Single entry point for continuing work across ChatGPT desktop/mobile conversations.
 
+## Canonical short resume command — HARDWIRED
+
+**When the user says exactly `Resume KY`, treat it as the canonical cross-device recovery command.** Immediately read this `RESUME.md` from the latest verified active GitHub branch, then follow the full recovery procedure below: read `docs/CONTINUITY_PROTOCOL.md` and the latest project checkpoint; verify current branch heads, open PRs, relevant CI and accessible backend/app state; preserve desktop-only work; and continue the exact next engineering task at the established technical level. Do not ask the user to repeat settled decisions. This command is a short alias for the complete recovery workflow, not a request to merely explain the file.
+
 ## Mandatory rule
 
 When the user says **“save mcp”**, execute the full procedure in [docs/CONTINUITY_PROTOCOL.md](docs/CONTINUITY_PROTOCOL.md). Do not treat it as a request for a verbal summary only.
