@@ -29,6 +29,11 @@ _TRANSIT_ASSERTION = re.compile(
     r"\b(?:today'?s? transit|current transit|currently transiting|transit is activating|transit activates|the transit activates)\b",
     re.I,
 )
+_PROFILE_CLAIM = re.compile(r"\b(?:your|my|this chart(?:'s)?)\s+profile\s+(?:is|equals)\s+(\d\s*/\s*\d)\b", re.I)
+_TYPE_CLAIM = re.compile(r"\b(?:your|my|this chart(?:'s)?)\s+type\s+(?:is|equals)\s+([a-z]+(?:\s+[a-z]+){0,2})", re.I)
+_AUTHORITY_CLAIM = re.compile(r"\b(?:your|my|this chart(?:'s)?)\s+authority\s+(?:is|equals)\s+([a-z]+(?:\s+[a-z]+){0,2})", re.I)
+_GATE_LINE_STATUS = re.compile(r"\b(?:your|my|this chart(?:'s)?)?\s*gate\s*(\d{1,2})\s*[./-]\s*(\d)\s+(?:is|was|remains)\s+(not\s+)?(?:activated|active)\b", re.I)
+_TRANSIT_GATE = re.compile(r"\b(?:activates?|activating|activated)\s+gate\s*(\d{1,2})\b", re.I)
 
 
 def _active_gates(foundation: dict) -> set[int]:
@@ -140,8 +145,50 @@ def review_interpretation(
         if not matching_sources:
             issues.append(f"unsupported_gate_line_synthesis:gate_{gate}_line_{line}")
 
-    if _TRANSIT_ASSERTION.search(answer) and not temporal_context:
-        issues.append("transit_claim_without_temporal_evidence")
+    # Explicit profile, type, and authority claims are chart mechanics too.
+    core = foundation.get("core", {}) if isinstance(foundation.get("core"), dict) else {}
+    expected_profile = core.get("profile")
+    for match in _PROFILE_CLAIM.finditer(answer):
+        claimed = re.sub(r"\s+", "", match.group(1))
+        expected = re.sub(r"\s+", "", expected_profile) if isinstance(expected_profile, str) else None
+        if expected and claimed != expected:
+            issues.append(f"canonical_profile_conflict:{claimed}")
+
+    def canonical_label(value):
+        return re.sub(r"[_\s-]+", " ", value.strip().lower()) if isinstance(value, str) else None
+
+    for pattern, key, issue_name in (
+        (_TYPE_CLAIM, "type", "canonical_type_conflict"),
+        (_AUTHORITY_CLAIM, "authority", "canonical_authority_conflict"),
+    ):
+        expected = canonical_label(core.get(key))
+        for match in pattern.finditer(answer):
+            claimed = canonical_label(match.group(1))
+            if expected and claimed and claimed != expected:
+                if not (expected == "manifesting generator" and claimed == "mg"):
+                    issues.append(f"{issue_name}:{claimed}")
+
+    for match in _GATE_LINE_STATUS.finditer(answer):
+        gate, line = int(match.group(1)), int(match.group(2))
+        says_not = bool(match.group(3))
+        activations = foundation.get("activations", {})
+        line_active = any(
+            isinstance(item, dict) and item.get("gate") == gate and item.get("line") == line
+            for group in ("personality", "design")
+            for item in (activations.get(group, []) if isinstance(activations, dict) else [])
+        )
+        if says_not == line_active:
+            issues.append(f"canonical_gate_line_status_conflict:gate_{gate}_line_{line}")
+
+    if _TRANSIT_ASSERTION.search(answer):
+        transit_gates = temporal_context.get("transit_gates") if isinstance(temporal_context, dict) else None
+        if not isinstance(transit_gates, list):
+            issues.append("transit_claim_without_temporal_evidence")
+        else:
+            for match in _TRANSIT_GATE.finditer(answer):
+                gate = int(match.group(1))
+                if gate not in transit_gates:
+                    issues.append(f"transit_gate_not_present:gate_{gate}")
 
     # Preserve issue order while avoiding duplicate reports from overlapping patterns.
     issues = list(dict.fromkeys(issues))
