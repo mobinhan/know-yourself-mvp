@@ -207,3 +207,14 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - Resume entry commit: `7914cf2ae60fc01b265eb27b7d4171fe1834745e`.
 - Continuity protocol commit: `fece0da870f8aaf56d4901577200363963ce8add`.
 - Documentation only; no application code changed and no tests were run. Desktop working tree remains inaccessible from this environment.
+
+
+## Lovable migration path selected — 2026-10-10
+
+- User selected **Option A: preserve the existing implementation and migrate deliberately**.
+- Read-only inventory confirmed: `index.html` is a ~128 KB self-contained V22 UI; `api/index.py` serves the deterministic Python engine and API; `api/interpretation_provider.py` implements the active direct 3framework ChatGPT synthesis path; `engine/THREE_FRAMEWORK.md` is the architecture contract. UI calls birthplace/timezone, chart creation, today/transit, contextual questions, gate and channel endpoints.
+- Added `docs/LOVABLE_MIGRATION_PLAN.md` with phased, reversible migration, required compatibility audit, safeguards and credit approval gate.
+- Plan commit: `53952a80c1317f586a5abbed3847cf4eac311632`.
+- No Lovable project created, no prompt sent, and no credits spent. User's selection authorizes the migration approach, not an unbounded or surprise credit-consuming action; specific approval is still required before Lovable work.
+- Next action: continue read-only audit of frontend assets/runtime and API deployment/routing, then present the smallest safe pilot with alternatives and estimated credit cost (or clearly state cost is unknown) before asking permission for any Lovable action.
+- Existing safeguards remain binding: no Vercel, active 3framework/no critic, no PR #1 merge without explicit approval, preserve desktop-only work.
