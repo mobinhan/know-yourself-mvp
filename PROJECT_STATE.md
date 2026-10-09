@@ -237,3 +237,38 @@ GitHub Actions run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/3
 - CI verifies the Cross context, adaptation policy, memory governance, conversation separation, critic checks and full Step 5 acceptance. The latest run passed both Python and JavaScript validation.
 
 These remain contract/policy foundations. No durable cross-session storage, production user controls, real LLM provider, automatic preference learning or production quarterly source-refresh scheduler is claimed complete.
+
+## Supabase persistence implementation checkpoint — 2026-10-09
+
+### Live project and applied migrations
+- Existing Supabase project `djtpqqjenmcsrdcguttk` is active and healthy (PostgreSQL 17.6.1).
+- Applied and recorded migrations:
+  - `20261009054427_know_yourself_persistence_foundation_v1`
+  - `20261009054455_know_yourself_persistence_integrity_and_policy_hardening`
+  - `20261009054831_know_yourself_persistence_indexes_and_timestamps`
+  - `20261009054934_know_yourself_client_write_boundaries_and_user_turns`
+  - `20261009055012_know_yourself_safe_chart_metadata_updates`
+- Migration SQL is tracked under `supabase/migrations/`.
+
+### Schema and security boundary
+- Added user-owned profile/preferences, saved chart artifact metadata, conversations/turns, governed memories, saved insights, and transit snapshots.
+- Added server-managed source/knowledge/relationship/dependency/review/audit tables with no client access.
+- RLS is enabled on all new tables. Owner policies use `auth.uid()`; anonymous clients have no select privileges on user tables.
+- Direct client insert/update of canonical chart artifacts, AI-generated saved insights and transit snapshots is revoked. Chart metadata can only update label/primary flag.
+- User clients can append only their own user-role turns. The sequence-safe `ky_append_user_turn` RPC uses `SECURITY INVOKER` and row-level ownership checks; a trigger rejects client-supplied assistant answers or evidence.
+- Memory records require consent, confirmation before activation, allowed categories, confidence threshold for inference and a source turn. Deleting a source turn cascades to derived memory to avoid dangling provenance.
+- Added foreign-key indexes and `updated_at` triggers.
+
+### Deployed authenticated Edge Function
+- `user-data-api` is deployed and active, JWT verification enabled, current deployed version 4.
+- Function uses a user-scoped Supabase client with the caller's bearer token and does not use a service-role/secret key.
+- Implemented routes for profile, preferences, chart listing/metadata edits/deletion, conversation CRUD, reading turns and appending user questions, and memory inspection/create/update/delete/reset.
+- Partial preference updates preserve existing settings.
+- The function does **not** create canonical charts: that remains blocked until a trusted deterministic-engine API is integrated. It does not generate assistant interpretations, save AI answers, or create transit snapshots yet.
+
+### Verification and remaining boundary
+- Security advisor after initial schema hardening reported only the pre-existing unrelated `public.Terugkeer` table as having RLS enabled without policies and publicly discoverable; it was not modified because it predates this project work and ownership/purpose is unknown.
+- Security checks confirmed RLS is enabled for all `ky_*` tables, client grants are revoked on server-only knowledge/audit tables, and composite foreign keys preserve user IDs on chart/turn unlinking.
+- `supabase/test_user_data_api.mjs` and CI Deno type-checking are being added to the repository workflow; wait for the latest run before marking CI verification green.
+- No real authenticated end-to-end request has yet been exercised with a test account/token. Do not claim this is fully production-accepted until those tests pass.
+- Live LLM provider, critic-backed answer endpoint, deterministic chart calculation endpoint, user-facing frontend, and quarterly source-refresh execution remain outstanding.
