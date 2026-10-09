@@ -23,7 +23,7 @@ for (const edge of graph.edges) {
 
 
 const quarterMap = getQuarterGateMap();
-assert.equal(quarterMap.status, "provisional");
+assert.equal(quarterMap.status, "validated");
 const mappedGates = quarterMap.quarters.flatMap(quarter => quarter.gates);
 assert.equal(mappedGates.length, 64);
 assert.equal(new Set(mappedGates).size, 64);
