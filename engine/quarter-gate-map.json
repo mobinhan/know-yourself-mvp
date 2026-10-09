@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "status": "provisional",
+  "status": "validated",
   "purpose": "Source-traceable lookup from gate number to quarter context; does not alter deterministic chart mechanics.",
-  "source_id": "EXT_HUMAN_DESIGN_SO",
+  "source_id": "SRC_HD_DEFINITIVE_BOOK_2011",
   "official_framework_source_id": "EXT_JOVIAN_ARCHIVE",
   "validation": {
     "expected_gate_count": 64,
@@ -14,7 +14,7 @@
       "duality": 7,
       "mutation": 1
     },
-    "note": "Integrity checks validate coverage, uniqueness, counts and boundaries. They do not convert the secondary mapping source into primary authority."
+    "note": "Cross-checked against the supplied Definitive Book of Human Design's gate-specific sections under each quarter heading. The secondary educational list is an independent cross-check; the supplied primary reference is authoritative for this lookup."
   },
   "quarters": [
     {
@@ -117,5 +117,7 @@
         19
       ]
     }
-  ]
+  ],
+  "source_locator": "Section Eight, The Global Incarnation Cross Index, printed pp. 294–309; gate headings grouped beneath each quarter heading.",
+  "secondary_crosscheck_source_id": "EXT_HUMAN_DESIGN_SO"
 }
