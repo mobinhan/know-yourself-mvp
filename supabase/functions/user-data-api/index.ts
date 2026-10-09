@@ -255,6 +255,42 @@ Deno.serve(async (req: Request) => {
       return respond(405, { error: "method_not_allowed_for_conversations" });
     }
 
+    if (resource === "saved-insights") {
+      if (req.method === "GET" && !resourceId) {
+        const { data, error } = await supabase.from("ky_saved_insights")
+          .select("id,chart_id,conversation_turn_id,title,content,factual_basis,knowledge_basis,relationship_basis,created_at")
+          .eq("user_id", user.id).order("created_at", { ascending: false });
+        if (error) throw error;
+        return respond(200, { data });
+      }
+      if (req.method === "DELETE" && resourceId) {
+        const { data, error } = await supabase.from("ky_saved_insights").delete()
+          .eq("user_id", user.id).eq("id", resourceId).select("id").maybeSingle();
+        if (error) throw error;
+        if (!data) return respond(404, { error: "saved_insight_not_found" });
+        return respond(200, { deleted: true, id: data.id });
+      }
+      return respond(405, { error: "method_not_allowed_for_saved_insights" });
+    }
+
+    if (resource === "transit-snapshots") {
+      if (req.method === "GET" && !resourceId) {
+        const { data, error } = await supabase.from("ky_transit_snapshots")
+          .select("id,chart_id,snapshot_at,engine_version,transit_artifact,created_at")
+          .eq("user_id", user.id).order("snapshot_at", { ascending: false });
+        if (error) throw error;
+        return respond(200, { data });
+      }
+      if (req.method === "DELETE" && resourceId) {
+        const { data, error } = await supabase.from("ky_transit_snapshots").delete()
+          .eq("user_id", user.id).eq("id", resourceId).select("id").maybeSingle();
+        if (error) throw error;
+        if (!data) return respond(404, { error: "transit_snapshot_not_found" });
+        return respond(200, { deleted: true, id: data.id });
+      }
+      return respond(405, { error: "method_not_allowed_for_transit_snapshots" });
+    }
+
     if (resource === "memories") {
       if (req.method === "GET") {
         const { data, error } = await supabase.from("ky_user_memories")
@@ -353,7 +389,7 @@ Deno.serve(async (req: Request) => {
       return respond(405, { error: "method_not_allowed_for_memories" });
     }
 
-    return respond(404, { error: "unknown_resource", supported_resources: ["profile","preferences","charts","conversations","memories"] });
+    return respond(404, { error: "unknown_resource", supported_resources: ["profile","preferences","charts","conversations","saved-insights","transit-snapshots","memories"] });
   } catch (error) {
     // Do not return raw database errors, which can disclose schema details.
     console.error("user-data-api request failed", error instanceof Error ? error.message : "unknown_error");
