@@ -74,3 +74,12 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - On every save, distinguish pushed/verified code from local-only or uncommitted work. This environment cannot inspect the user's desktop working tree; unless inspected, local-only edits cannot be ruled out.
 - Do not merge PR #1 without explicit approval. Do not reset/overwrite the desktop workspace during recovery.
 - Resume instruction: read `RESUME.md`, then this checkpoint and the full protocol from the latest verified feature branch; verify all relevant branch heads, open PRs, CI, and deployment status before continuing.
+
+## Platform workflow clarification — 2026-10-09
+
+- User confirmed that **Lovable is the live web-app interface/build environment currently being used**.
+- Workflow roles: Lovable = interface build/preview; GitHub = source control and recovery; GitHub Actions = automated tests; Supabase = backend/data.
+- **Vercel is not required for the routine workflow by default.** Leave the existing Vercel project untouched; do not make Vercel deployment/build-rate-limit troubleshooting the next task unless a separate Vercel deployment need is established.
+- Do not assume Lovable has synchronized every latest GitHub commit; verify synchronization and test live behaviour separately from CI.
+- No Lovable, Vercel, Supabase, deployment, or app configuration was changed as part of recording this documentation clarification.
+- Resume action: follow this workflow in `docs/CONTINUITY_PROTOCOL.md` and `RESUME.md`; continue from the existing checkpoint's next engineering task, while preserving desktop-only changes and the no-merge-without-approval rule.
