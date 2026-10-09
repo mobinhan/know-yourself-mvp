@@ -167,16 +167,23 @@
       "from": "gate",
       "to": "quarter",
       "type": "located_in",
-      "status": "pending_evidence",
-      "knowledge_ids": []
+      "status": "validated",
+      "knowledge_ids": [],
+      "external_knowledge_ids": [
+        "EXT-KNOW-QUARTERS-001",
+        "EXT-KNOW-QUARTER-GATE-MAP-001"
+      ]
     },
     {
       "id": "REL-QUARTER-MANDALA",
       "from": "quarter",
       "to": "mandala",
       "type": "part_of",
-      "status": "pending_evidence",
-      "knowledge_ids": []
+      "status": "validated",
+      "knowledge_ids": [],
+      "external_knowledge_ids": [
+        "EXT-KNOW-QUARTERS-001"
+      ]
     },
     {
       "id": "REL-GATE-RAVE-PSYCHOLOGY",
