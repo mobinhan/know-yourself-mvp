@@ -32,9 +32,9 @@ export function criticAnswer({ answer, factual_basis = [], knowledge_basis = [],
   const text = String(candidate.answer ?? "").toLowerCase();
   const relationBasis = new Set(candidate.relationship_basis ?? []);
   const factualBasis = new Set(candidate.factual_basis ?? []);
-  const crossMechanicsClaim = /\\b(incarnation cross|cross of incarnation)\\b/.test(text) &&
-    (/\\b(your|my|this)\\s+(incarnation cross|cross)\\b.{0,100}\\b(is|includes|consists|formed|has|defined)\\b/.test(text) ||
-     /\\b(personality sun|personality earth|design sun|design earth)\\b/.test(text));
+  const crossMechanicsClaim = /\b(incarnation cross|cross of incarnation)\b/.test(text) &&
+    (/\b(your|my|this)\s+(incarnation cross|cross)\b.{0,100}\b(is|includes|consists|formed|has|defined)\b/.test(text) ||
+     /\b(personality sun|personality earth|design sun|design earth)\b/.test(text));
   if (crossMechanicsClaim && !factualBasis.has("E-CROSS")) {
     issues.push("missing_factual_basis:E-CROSS");
   }
