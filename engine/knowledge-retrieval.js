@@ -42,7 +42,18 @@ export function buildEvidenceKnowledgePacket(evidenceRecord, options = {}) {
       locator: record.locator,
       use: record.use,
       depth: record.depth ?? [],
-      related_concepts: record.related_concepts ?? []
+      related_concepts: record.related_concepts ?? [],
+      record_version: record.record_metadata?.record_version ?? null,
+      lifecycle_status: record.record_metadata?.lifecycle_status ?? "active",
+      epistemic_class: record.record_metadata?.epistemic_class ?? null,
+      review_status: record.record_metadata?.review_status ?? "legacy_review_required",
+      last_reviewed_at: record.record_metadata?.last_reviewed_at ?? null,
+      next_review_due: record.record_metadata?.next_review_due ?? null,
+      rights_use_status: record.record_metadata?.rights_use_status ?? "internal_paraphrase_only",
+      source_provenance: record.source_ids.map(sourceId => {
+        const source = getSource(sourceId);
+        return { source_id: sourceId, title: source?.title ?? null, authority_tier: source?.authority_tier ?? null, rights_status: source?.rights_status ?? null };
+      })
     })),
     interpretation_allowed: false
   };
