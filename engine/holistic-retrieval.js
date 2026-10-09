@@ -1,10 +1,15 @@
 import fs from "node:fs";
 
 const knowledge = JSON.parse(fs.readFileSync(new URL("./knowledge-records.json", import.meta.url), "utf8"));
+const externalRegistry = JSON.parse(fs.readFileSync(new URL("./external-source-registry.json", import.meta.url), "utf8"));
+const externalKnowledge = JSON.parse(fs.readFileSync(new URL("./external-knowledge-records.json", import.meta.url), "utf8"));
+const quarterGateMap = JSON.parse(fs.readFileSync(new URL("./quarter-gate-map.json", import.meta.url), "utf8"));
 const graph = JSON.parse(fs.readFileSync(new URL("./knowledge-relationships.json", import.meta.url), "utf8"));
 
 const nodesById = new Map(graph.nodes.map(node => [node.id, node]));
-const normalize = value => String(value ?? "").trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ");
+const externalSourcesById = new Map(externalRegistry.sources.map(source => [source.id, source]));
+const externalRecordsById = new Map(externalKnowledge.records.map(record => [record.id, record]));
+const normalize = value => String(value ?? "").trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\\s+/g, " ");
 
 function resolveNode(value) {
   const query = normalize(value);
@@ -15,14 +20,37 @@ function resolveNode(value) {
   ) ?? null;
 }
 
+function getQuarterForGate(gateNumber) {
+  const gate = Number(gateNumber);
+  if (!Number.isInteger(gate) || gate < 1 || gate > 64) return null;
+  const quarter = quarterGateMap.quarters.find(item => item.gates.includes(gate));
+  if (!quarter) return null;
+  return {
+    gate,
+    quarter_id: quarter.id,
+    quarter: quarter.name,
+    quarter_theme: quarter.theme,
+    mapping_status: quarterGateMap.status,
+    mapping_source_id: quarterGateMap.source_id,
+    mapping_source_tier: externalSourcesById.get(quarterGateMap.source_id)?.tier ?? null,
+    framework_source_id: quarterGateMap.official_framework_source_id,
+    framework_record_id: "EXT-KNOW-QUARTERS-001",
+    mapping_record_id: "EXT-KNOW-QUARTER-GATE-MAP-001"
+  };
+}
+
 export function getKnowledgeRelationships() {
   return graph;
 }
 
-export function retrieveHolisticContext({ concept, maxHops = 1, includePending = true } = {}) {
+export function getQuarterGateMap() {
+  return quarterGateMap;
+}
+
+export function retrieveHolisticContext({ concept, maxHops = 1, includePending = true, gateNumber = null, gateNumbers = [], chartGateSet = [] } = {}) {
   const start = resolveNode(concept);
   if (!start) {
-    return { concept: concept ?? null, records: [], relationships: [], unresolved_context: [], missing_concept: true };
+    return { concept: concept ?? null, records: [], external_records: [], relationships: [], unresolved_context: [], gate_quarter_context: [], missing_concept: true };
   }
 
   const visited = new Set([start.id]);
@@ -67,18 +95,10 @@ export function retrieveHolisticContext({ concept, maxHops = 1, includePending =
     if (!frontier.length) break;
   }
 
-  const relatedNodeIds = new Set([start.id, ...selectedEdges.flatMap(edge => [edge.from, edge.to])]);
-  const aliases = new Set([...relatedNodeIds].flatMap(id => {
-    const node = nodesById.get(id);
-    return [id, node?.label, ...(node?.aliases ?? [])].filter(Boolean).map(normalize);
-  }));
-  const allowedRecordIds = new Set(selectedEdges.flatMap(edge => edge.knowledge_ids));
+  const allowedRecordIds = new Set(selectedEdges.flatMap(edge => edge.knowledge_ids ?? []));
+  const allowedExternalRecordIds = new Set(selectedEdges.flatMap(edge => edge.external_knowledge_ids ?? []));
   const records = knowledge.records
-    .filter(record => {
-      const names = [record.concept, ...(record.related_concepts ?? [])].map(normalize);
-      return (allowedRecordIds.has(record.id) || record.id === "HD-KNOW-HOLISTIC-001") &&
-        names.some(name => aliases.has(name) || (start.id === "gate" && name === "gates"));
-    })
+    .filter(record => allowedRecordIds.has(record.id) || record.id === "HD-KNOW-HOLISTIC-001")
     .map(record => ({
       id: record.id,
       concept: record.concept,
@@ -87,17 +107,47 @@ export function retrieveHolisticContext({ concept, maxHops = 1, includePending =
       locator: record.locator,
       depth: record.depth ?? []
     }));
+  const external_records = [...allowedExternalRecordIds]
+    .map(id => externalRecordsById.get(id))
+    .filter(Boolean)
+    .map(record => ({
+      id: record.id,
+      source_id: record.source_id,
+      source_tier: externalSourcesById.get(record.source_id)?.tier ?? null,
+      title: record.title,
+      claim: record.claim,
+      claim_type: record.claim_type,
+      status: record.status,
+      locator: record.locator,
+      allowed_use: record.allowed_use,
+      topics: record.topics
+    }));
+
+  const requestedGates = [...new Set([
+    ...(gateNumber == null ? [] : [gateNumber]),
+    ...(Array.isArray(gateNumbers) ? gateNumbers : [])
+  ])].map(Number).filter(gate => Number.isInteger(gate) && gate >= 1 && gate <= 64);
+  const gate_quarter_context = start.id === "gate"
+    ? requestedGates.map(getQuarterForGate).filter(Boolean).map(item => ({
+        ...item,
+        chart_defined: Array.isArray(chartGateSet) ? chartGateSet.includes(item.gate) : false
+      }))
+    : [];
 
   return {
     concept: start.id,
     records,
+    external_records,
     relationships: selectedEdges.map(edge => ({
       id: edge.id,
       from: edge.from,
       to: edge.to,
       type: edge.type,
-      knowledge_ids: edge.knowledge_ids
+      status: edge.status,
+      knowledge_ids: edge.knowledge_ids ?? [],
+      external_knowledge_ids: edge.external_knowledge_ids ?? []
     })),
+    gate_quarter_context,
     unresolved_context: unresolved,
     missing_concept: false
   };
