@@ -129,6 +129,105 @@
         "source_quality",
         "provenance"
       ]
+    },
+    {
+      "id": "EXT-KNOW-QUARTERS-001",
+      "source_id": "EXT_JOVIAN_ARCHIVE",
+      "title": "Four-quarter structure of the Rave Mandala",
+      "claim": "The Rave Mandala is divided into four Quarters—Initiation, Civilization, Duality and Mutation—each containing sixteen consecutive hexagrams. The quarter framework adds a broad purpose context to the wheel; it does not change a gate's mechanical properties or a chart's deterministic calculation.",
+      "claim_type": "teaching",
+      "status": "accepted",
+      "allowed_use": [
+        "explain",
+        "contextualize"
+      ],
+      "locator": "Human Design Dictionary, entry 'Quarters' (https://jovianarchive.com/pages/human-design-dictionary)",
+      "topics": [
+        "quarters",
+        "mandala",
+        "holistic_analysis",
+        "gate_context"
+      ]
+    },
+    {
+      "id": "EXT-KNOW-QUARTER-GATE-MAP-001",
+      "source_id": "EXT_HUMAN_DESIGN_SO",
+      "title": "Quarter-to-gate grouping reference",
+      "claim": "A secondary educational reference lists sixteen gates for each of the four quarters. This grouping is stored as a provisional lookup and should be treated as a sourced reference mapping, not as primary-source authority, until checked against a permitted primary teaching source.",
+      "claim_type": "teaching",
+      "status": "provisional",
+      "allowed_use": [
+        "explain",
+        "contextualize",
+        "compare"
+      ],
+      "locator": "The Four Quarters, gate lists for Initiation, Civilization, Duality and Mutation (https://humandesign.so/foundations/the-four-quarters)",
+      "topics": [
+        "quarters",
+        "mandala",
+        "gate_context",
+        "reference_mapping"
+      ]
+    },
+    {
+      "id": "EXT-KNOW-RP-FOUNDATION-001",
+      "source_id": "EXT_IHDS_OFFICIAL",
+      "title": "Rave Psychology and Personality motivation",
+      "claim": "IHDS describes Rave Psychology as the study of the underlying motivations of the Personality, based on Personality Color and Transference. This is a distinct interpretive layer and does not replace Strategy and Authority as the system's decision-making framework.",
+      "claim_type": "teaching",
+      "status": "accepted",
+      "allowed_use": [
+        "explain",
+        "contextualize"
+      ],
+      "locator": "Differentiation Degree Program — RP (Rave Psychology), IHDS (https://ihdschool.com/digital-products/categories/104/differentiation-degree-program-rp-rave-psychology)",
+      "topics": [
+        "rave_psychology",
+        "personality_color",
+        "transference",
+        "holistic_analysis"
+      ]
+    },
+    {
+      "id": "EXT-KNOW-RP-VIEW-001",
+      "source_id": "EXT_JOVIAN_ARCHIVE",
+      "title": "Rave Psychology: View",
+      "claim": "Jovian Archive describes View as a Rave Psychology aspect associated with how the mind perceives and conceptualizes the world, and links it to the Color of the Personality Nodes. Chart-specific View interpretation therefore requires verified Personality Node substructure, not merely a gate number.",
+      "claim_type": "teaching",
+      "status": "accepted",
+      "allowed_use": [
+        "explain",
+        "contextualize"
+      ],
+      "locator": "Seeing Through Your Unique Perspective: Understanding View in Human Design (https://jovianarchive.com/pages/seeing-through-your-unique-perspective-understanding-view-in-human-design)",
+      "topics": [
+        "rave_psychology",
+        "view",
+        "personality_nodes",
+        "color",
+        "holistic_analysis"
+      ]
+    },
+    {
+      "id": "EXT-KNOW-RP-MOTIVATION-001",
+      "source_id": "EXT_JOVIAN_ARCHIVE",
+      "title": "Rave Psychology: Motivation and Transference",
+      "claim": "Jovian Archive describes Motivation as a Rave Psychology aspect associated with the Color of the Personality Sun and distinguishes aligned Motivation from Transference. Chart-specific interpretation requires verified Personality Sun substructure and should not be inferred from a gate theme alone.",
+      "claim_type": "teaching",
+      "status": "accepted",
+      "allowed_use": [
+        "explain",
+        "contextualize"
+      ],
+      "locator": "The Gift of Awareness: Understanding Motivation in Human Design (https://jovianarchive.com/pages/the-gift-of-awareness-understanding-motivation-in-human-design)",
+      "topics": [
+        "rave_psychology",
+        "motivation",
+        "transference",
+        "personality_sun",
+        "color",
+        "holistic_analysis"
+      ]
     }
   ]
 }
