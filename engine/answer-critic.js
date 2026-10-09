@@ -4,13 +4,14 @@ const FORBIDDEN_MECHANICAL_CLAIMS = [
   "the chart was calculated from this answer"
 ];
 
-export function criticAnswer({ answer, factual_basis = [], knowledge_basis = [], suppliedEvidence = [], suppliedKnowledge = [] }) {
+export function criticAnswer({ answer, factual_basis = [], knowledge_basis = [], relationship_basis = [], suppliedEvidence = [], suppliedKnowledge = [], suppliedRelationships = [] }) {
   const candidate = typeof answer === "string"
     ? { answer, factual_basis, knowledge_basis }
     : (answer ?? {});
   const issues = [];
   const evidenceIds = new Set(suppliedEvidence.map(x => x.id));
   const knowledgeIds = new Set(suppliedKnowledge.map(x => x.id));
+  const relationshipIds = new Set(suppliedRelationships.filter(x => x.status === "validated").map(x => x.id));
 
   if (!candidate || typeof candidate.answer !== "string" || !candidate.answer.trim()) {
     issues.push("answer_missing");
@@ -25,6 +26,23 @@ export function criticAnswer({ answer, factual_basis = [], knowledge_basis = [],
   }
 
   const text = String(candidate.answer ?? "").toLowerCase();
+  const relationBasis = new Set(candidate.relationship_basis ?? []);
+  const hasGateQuarterClaim = /\\bgate\\s*\\d*\\b.{0,100}\\b(quarter|initiation|civilization|duality|mutation)\\b/.test(text) &&
+    /\\b(is in|belongs to|falls in|located in|sits in|quarter)\\b/.test(text);
+  if (hasGateQuarterClaim && !relationBasis.has("REL-GATE-QUARTER")) {
+    issues.push("missing_relationship_basis:REL-GATE-QUARTER");
+  }
+  const hasSunMotivationClaim = /personality sun/.test(text) && /\\b(motivation|transference)\\b/.test(text);
+  if (hasSunMotivationClaim && !relationBasis.has("REL-PERSONALITY-SUN-RP-MOTIVATION")) {
+    issues.push("missing_relationship_basis:REL-PERSONALITY-SUN-RP-MOTIVATION");
+  }
+  const hasNodeViewClaim = /personality (north |south )?nodes?/.test(text) && /\\b(view|perspective)\\b/.test(text);
+  if (hasNodeViewClaim && !relationBasis.has("REL-PERSONALITY-NODES-RP-VIEW")) {
+    issues.push("missing_relationship_basis:REL-PERSONALITY-NODES-RP-VIEW");
+  }
+  if (/\\bgate\\s*\\d*\\b.{0,80}\\b(determines|causes|defines|establishes)\\b.{0,40}\\b(rave psychology|motivation|view|perspective)\\b/.test(text)) {
+    issues.push("unsupported_cross_concept_claim:gate_to_rave_psychology");
+  }
   for (const phrase of FORBIDDEN_MECHANICAL_CLAIMS) {
     if (text.includes(phrase)) issues.push(`forbidden_mechanical_claim:${phrase}`);
   }
