@@ -119,23 +119,22 @@ class GateLineRetrievalTests(unittest.TestCase):
                 "claim": "General contextual material about relationships and clarity.",
                 "summary": "General gate context.",
             }
-            for i in range(10)
+            for i in range(8)
         ]
         with patch(
             "api.interpretation_provider._read_json",
             side_effect=[
                 {"records": []},
-                {"records": generic_records + [director_only]},
+                {"records": [director_only] + generic_records + [GATE_574]},
                 {"edges": []},
             ],
         ):
             _, external, _ = _select_knowledge(
                 "Explain Gate 57.4", foundation(active=True)
             )
-        self.assertNotIn(
-            "EXT-GENERIC-DIRECTOR",
-            {record["id"] for record in external},
-        )
+        selected_ids = {record["id"] for record in external}
+        self.assertIn(GATE_574["id"], selected_ids)
+        self.assertNotIn("EXT-GENERIC-DIRECTOR", selected_ids)
 
 
 
