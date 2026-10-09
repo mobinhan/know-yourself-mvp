@@ -107,3 +107,16 @@ Important limitation: this file records the required protocol; it does not itsel
 - Inspected the actual `index.html` on this branch: its `sendAsk()` function constructs client-side canned responses and calls `/v1/charts/.../questions/context`. The page does not currently authenticate with Supabase and does not call the new `/continuity` endpoint.
 - Therefore, continuity retrieval is implemented as a backend capability proposal, but it is **not yet active in the app's real-life conversations**. Do not claim otherwise.
 - Next: trace the existing `/v1` backend and its authentication/session model, then integrate continuity into the real answer path while preserving guest exploration and the 3framework. Do not put API secrets in browser code, bypass canonical chart/evidence contracts, or deploy before the actual runtime path is verified.
+
+## Major operating decision: ChatGPT-first framework validation (2026-10-10)
+- **Decision confirmed by the user:** continue testing and refining the 3framework directly inside ChatGPT before connecting Know Yourself to external sources or activating external continuity integration.
+- The purpose of this stage is to establish sufficient confidence through natural, real-life conversations before adding integration complexity. There is no deployment or external-connection deadline implied by this decision.
+- Keep the agreed 3framework unchanged:
+  1. **Canonical Chart + Immutable Evidence** — deterministic mechanics and verified source evidence remain authoritative.
+  2. **Adaptive User Context** — relevant personal context and user-confirmed learning inform interpretation without silently changing canonical facts.
+  3. **ChatGPT live reasoning** — ChatGPT reasons directly from Layers 1 and 2. Do not add a separate reasoning/critic layer or drift into the 5framework.
+- During ChatGPT testing, evaluate separately: (a) chart/evidence accuracy, (b) correct and restrained use of personal context, (c) relevance and usefulness of interpretation, (d) warm, natural, personal communication, (e) retention of corrections, and (f) clear handling of uncertainty.
+- A compelling interpretation is not proof of correct chart mechanics. Keep factual accuracy and interpretive usefulness as separate evaluation dimensions. User feedback can correct interpretation and context; canonical mechanics change only after evidence-based verification and the established correction safeguards.
+- The user will use ChatGPT naturally and observe how it behaves in real life; no rigid test script is required. Capture meaningful corrections and recurring failure patterns in the project checkpoint and add regression checks where appropriate.
+- **External integration is deliberately deferred** until the user is satisfied with the framework. Do not connect external sources, deploy the continuity endpoint, or spend Lovable credits during this validation stage without a new explicit decision.
+- Current status: this is an operating decision for the ChatGPT validation stage, not a claim that external continuity is integrated or that the repository/app has been deployed. The continuity PR remains review-only until the user later decides to proceed.
