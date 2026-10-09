@@ -189,7 +189,10 @@
         "article",
         "video",
         "course",
-        "social_media"
+        "social_media",
+        "daily_gate_line_transit_articles",
+        "gate_line_interpretations",
+        "transit_context"
       ],
       "lineage": "Official International Human Design School associated with the original educational standards, certification and teacher-training lineage of Human Design.",
       "authority_scope": [
@@ -197,7 +200,10 @@
         "educational_standards",
         "certification_context",
         "original_media",
-        "practical_context"
+        "practical_context",
+        "official educational context",
+        "gate/line teaching context",
+        "daily transit commentary"
       ],
       "quality": {
         "authorship": 5,
@@ -206,7 +212,7 @@
         "experience": 5,
         "independence": 2
       },
-      "rights_policy": "Store metadata, source links, concise paraphrase and provenance. Do not reproduce copyrighted posts, videos, images or transcripts unless rights explicitly permit fuller use.",
+      "rights_policy": "Store URLs, metadata and concise original paraphrase only. Do not reproduce newsletter text or artwork; source explicitly states copyright restrictions. Keep transit/date-specific interpretation separate from timeless gate mechanics. Commercial publication or licensing requires separate rights review.",
       "status": "seeded"
     },
     {
