@@ -133,11 +133,16 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     model = os.environ.get("OPENAI_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL
     knowledge, external, relationships = _select_knowledge(question, foundation)
     activations = foundation.get("activations", {})
+    def model_safe_activations(items):
+        # Exclude ephemeris timestamps and longitudes: neither is needed for interpretation,
+        # and timestamps can reveal the user's birth date/time.
+        fields = ("body", "imprint", "gate", "line", "colour", "tone", "base")
+        return [{key: item.get(key) for key in fields if key in item} for item in items]
     chart_evidence = {
         "core": foundation.get("core", {}),
         "activations": {
-            "personality": activations.get("personality", []),
-            "design": activations.get("design", [])
+            "personality": model_safe_activations(activations.get("personality", [])),
+            "design": model_safe_activations(activations.get("design", []))
         },
         "phs": foundation.get("phs", {}),
         "temporal_context": temporal_context,
