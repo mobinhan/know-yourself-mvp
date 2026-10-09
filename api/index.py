@@ -1,8 +1,8 @@
-"""Know Yourself v1 API — deterministic chart and evidence-context endpoints.
+"""Know Yourself v1 API — deterministic chart mechanics and 3framework interpretation.
 
 Guest charts are computed per request and kept in the browser's local storage.
-This API does not persist guest birth data, invent Human Design mechanics, or
-pretend that a live LLM provider is connected.
+The chart engine remains deterministic; optional AI interpretation is server-side,
+source-grounded, and disabled until OPENAI_API_KEY is configured.
 """
 from __future__ import annotations
 
