@@ -107,9 +107,19 @@ def test_interpretation_provider_uses_responses_api_and_filters_evidence(monkeyp
     assert captured["url"] == "https://api.openai.com/v1/responses"
     assert captured["body"]["model"] == "gpt-5-mini"
     assert captured["body"]["store"] is False
+    assert captured["body"]["max_output_tokens"] == 1800
     assert captured["body"]["text"]["format"]["type"] == "json_object"
     assert "1982-04-15" not in captured["body"]["input"]
     assert result["interpretation_status"] == "ready"
     assert result["knowledge_basis"] == ["EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"]
     assert result["relationship_basis"] == ["REL-GATE-57-LINE-4-DIRECTOR"]
     assert result["factual_basis"] == ["activations.personality"]
+
+
+def test_ai_routes_apply_per_ip_request_limit():
+    API._AI_REQUESTS_BY_IP.clear()
+    instance = API.handler.__new__(API.handler)
+    instance.headers = {"x-real-ip": "198.51.100.44"}
+    assert all(instance._allow_ai_request() for _ in range(API.AI_RATE_MAX_REQUESTS))
+    assert instance._allow_ai_request() is False
+    API._AI_REQUESTS_BY_IP.clear()
