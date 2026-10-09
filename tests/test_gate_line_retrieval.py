@@ -125,7 +125,7 @@ class GateLineRetrievalTests(unittest.TestCase):
             "api.interpretation_provider._read_json",
             side_effect=[
                 {"records": []},
-                {"records": [director_only] + generic_records + [GATE_574]},
+                {"records": generic_records + [director_only, GATE_574]},
                 {"edges": []},
             ],
         ):
