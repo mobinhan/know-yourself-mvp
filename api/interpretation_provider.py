@@ -218,6 +218,10 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     allowed_knowledge = {record.get("id") for record in knowledge}
     allowed_external = {record.get("id") for record in external}
     allowed_relationships = {edge.get("id") for edge in relationships}
+    allowed_sources = {
+        source_id for record in knowledge for source_id in record.get("source_ids", [])
+        if isinstance(source_id, str)
+    } | {record.get("source_id") for record in external if isinstance(record.get("source_id"), str)}
     result["factual_basis"] = [
         item for item in result.get("factual_basis", [])
         if isinstance(item, str) and item in {"core", "activations.personality", "activations.design", "phs", "temporal_context"}
@@ -231,7 +235,25 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         if isinstance(item, str) and item in allowed_relationships
     ]
     result["limitations"] = [str(item)[:300] for item in result.get("limitations", [])[:8]]
-    result["cards"] = result.get("cards", []) if isinstance(result.get("cards", []), list) else []
+    raw_cards = result.get("cards", []) if isinstance(result.get("cards", []), list) else []
+    allowed_gates = set(foundation.get("core", {}).get("gate_set", []))
+    allowed_channels = {item.get("channel") for item in foundation.get("core", {}).get("channels", [])}
+    allowed_centres = set(foundation.get("core", {}).get("centres", []))
+    safe_cards = []
+    for card in raw_cards[:6]:
+        if not isinstance(card, dict):
+            continue
+        safe_cards.append({
+            "title": str(card.get("title") or "A pattern to notice")[:120],
+            "summary": str(card.get("summary") or "")[:1200],
+            "reflection": str(card.get("reflection") or "")[:800],
+            "evidence_class": str(card.get("evidence_class") or "interpretation")[:60],
+            "source_ids": [source for source in card.get("source_ids", []) if isinstance(source, str) and source in allowed_sources][:8],
+            "gate": card.get("gate") if card.get("gate") in allowed_gates else None,
+            "channels": [channel for channel in card.get("channels", []) if channel in allowed_channels][:8],
+            "centres": [centre for centre in card.get("centres", []) if centre in allowed_centres][:9],
+        })
+    result["cards"] = safe_cards
     result["one_line"] = str(result.get("one_line") or result["answer"])[:500]
     result["interpretation_status"] = "ready"
     result["model"] = model
