@@ -103,5 +103,41 @@ class GateLineRetrievalTests(unittest.TestCase):
 
 
 
+    def test_director_keyword_alone_does_not_count_as_exact_gate_line(self):
+        director_only = {
+            "id": "EXT-GENERIC-DIRECTOR",
+            "source_id": "EXT_GENERIC",
+            "title": "Director relationship theme",
+            "claim": "General intuitive clarity and relationships.",
+            "summary": "Gate context for relationships.",
+        }
+        generic_records = [
+            {
+                "id": f"EXT-GENERIC-{i}",
+                "source_id": "EXT_GENERIC",
+                "title": "Gate 57 relationship intuitive clarity context",
+                "claim": "General contextual material about relationships and clarity.",
+                "summary": "General gate context.",
+            }
+            for i in range(10)
+        ]
+        with patch(
+            "api.interpretation_provider._read_json",
+            side_effect=[
+                {"records": []},
+                {"records": generic_records + [director_only]},
+                {"edges": []},
+            ],
+        ):
+            _, external, _ = _select_knowledge(
+                "Explain Gate 57.4", foundation(active=True)
+            )
+        self.assertNotIn(
+            "EXT-GENERIC-DIRECTOR",
+            {record["id"] for record in external},
+        )
+
+
+
 if __name__ == "__main__":
     unittest.main()
