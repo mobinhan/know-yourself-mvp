@@ -90,7 +90,9 @@ export function buildExternalKnowledgePacket({ topics = [], purpose = "explain" 
       locator: record.locator,
       allowed_use: record.allowed_use,
       topics: record.topics,
-      conflict_group: record.conflict_group ?? null
+      conflict_group: record.conflict_group ?? null,
+      record_metadata: record.record_metadata ?? null,
+      rights_use_status: record.record_metadata?.rights_use_status ?? "internal_paraphrase_only"
     }))
     .sort(compareExternalAuthority);
 
