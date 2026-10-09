@@ -67,9 +67,12 @@ Deno.serve(async (req: Request) => {
         if (displayName !== undefined && (typeof displayName !== "string" || displayName.trim().length > 120)) {
           return respond(400, { error: "invalid_display_name" });
         }
+        const { data: currentProfile, error: currentProfileError } = await supabase.from("ky_profiles")
+          .select("display_name").eq("user_id", user.id).maybeSingle();
+        if (currentProfileError) throw currentProfileError;
         const { data, error } = await supabase.from("ky_profiles").upsert({
           user_id: user.id,
-          ...(displayName !== undefined ? { display_name: displayName.trim() || null } : {}),
+          display_name: displayName !== undefined ? (displayName.trim() || null) : (currentProfile?.display_name ?? null),
           updated_at: new Date().toISOString()
         }, { onConflict: "user_id" }).select("user_id,display_name,created_at,updated_at").single();
         if (error) throw error;
