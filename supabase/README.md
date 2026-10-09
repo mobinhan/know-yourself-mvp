@@ -22,6 +22,8 @@ All calls require `Authorization: Bearer <Supabase access token>`.
 - `GET /conversations`; `POST /conversations` — list/create conversations. An optional `chart_id` must refer to the caller's own chart.
 - `GET /conversations/:id`; `PATCH /conversations/:id`; `DELETE /conversations/:id` — read/update/archive/delete an owned conversation.
 - `GET /conversations/:id/turns`; `POST /conversations/:id/turns` — read turns and append a user question. Sequence allocation is serialized by the `ky_append_user_turn` database function.
+- `GET /saved-insights`; `DELETE /saved-insights/:id` — read/delete saved AI insights. Client-side creation is intentionally disabled until a critic-validated server answer path exists.
+- `GET /transit-snapshots`; `DELETE /transit-snapshots/:id` — read/delete saved transit snapshots. Client-side creation is disabled until the trusted deterministic engine endpoint is integrated.
 - `GET /memories`; `POST /memories`; `PATCH /memories/:id`; `DELETE /memories/:id`; `DELETE /memories` — inspect, create, update/confirm, delete one, or reset all user memories. Creation requires per-record consent and a source turn; inferred memories require confidence >= 0.8.
 
 ## Security and truth boundaries
