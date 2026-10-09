@@ -125,6 +125,136 @@ Deno.serve(async (req: Request) => {
       return respond(405, { error: "method_not_allowed_for_preferences" });
     }
 
+    if (resource === "charts") {
+      if (req.method === "GET" && !resourceId) {
+        const { data, error } = await supabase.from("ky_charts")
+          .select("id,user_id,label,engine_name,engine_version,chart_fingerprint,is_primary,created_at,updated_at")
+          .eq("user_id", user.id).order("created_at", { ascending: true });
+        if (error) throw error;
+        return respond(200, { data, creation_requires_deterministic_engine: true });
+      }
+      if (req.method === "GET" && resourceId) {
+        const { data, error } = await supabase.from("ky_charts")
+          .select("id,user_id,label,engine_name,engine_version,chart_fingerprint,is_primary,created_at,updated_at")
+          .eq("user_id", user.id).eq("id", resourceId).maybeSingle();
+        if (error) throw error;
+        if (!data) return respond(404, { error: "chart_not_found" });
+        return respond(200, { data });
+      }
+      if (req.method === "PATCH" && resourceId) {
+        const body = parseJson(await req.json());
+        const patch: Record<string, unknown> = {};
+        if (hasOwn(body, "label")) {
+          if (typeof body.label !== "string" || !body.label.trim() || body.label.trim().length > 120) return respond(400, { error: "invalid_chart_label" });
+          patch.label = body.label.trim();
+        }
+        if (hasOwn(body, "is_primary")) {
+          if (typeof body.is_primary !== "boolean") return respond(400, { error: "invalid_primary_flag" });
+          patch.is_primary = body.is_primary;
+        }
+        if (!Object.keys(patch).length) return respond(400, { error: "no_supported_chart_fields" });
+        const { data, error } = await supabase.from("ky_charts").update(patch)
+          .eq("user_id", user.id).eq("id", resourceId)
+          .select("id,user_id,label,engine_name,engine_version,chart_fingerprint,is_primary,created_at,updated_at").maybeSingle();
+        if (error) throw error;
+        if (!data) return respond(404, { error: "chart_not_found" });
+        return respond(200, { data });
+      }
+      if (req.method === "DELETE" && resourceId) {
+        const { data, error } = await supabase.from("ky_charts").delete()
+          .eq("user_id", user.id).eq("id", resourceId).select("id").maybeSingle();
+        if (error) throw error;
+        if (!data) return respond(404, { error: "chart_not_found" });
+        return respond(200, { deleted: true, id: data.id });
+      }
+      return respond(405, { error: "method_not_allowed_for_charts" });
+    }
+
+    if (resource === "conversations") {
+      const conversationId = resourceId;
+      const subresource = routeSegments[2] ?? null;
+      if (req.method === "GET" && !conversationId) {
+        const { data, error } = await supabase.from("ky_conversations")
+          .select("id,user_id,chart_id,title,status,created_at,updated_at")
+          .eq("user_id", user.id).neq("status", "deleted").order("updated_at", { ascending: false });
+        if (error) throw error;
+        return respond(200, { data });
+      }
+      if (req.method === "POST" && !conversationId) {
+        const body = parseJson(await req.json());
+        if (body.title !== undefined && (typeof body.title !== "string" || body.title.trim().length > 200)) return respond(400, { error: "invalid_conversation_title" });
+        if (body.chart_id !== undefined && body.chart_id !== null && (typeof body.chart_id !== "string" || !/^[0-9a-f-]{36}$/i.test(body.chart_id))) return respond(400, { error: "invalid_chart_id" });
+        const { data, error } = await supabase.from("ky_conversations").insert({
+          user_id: user.id,
+          chart_id: body.chart_id ?? null,
+          title: typeof body.title === "string" && body.title.trim() ? body.title.trim() : null,
+          status: "active"
+        }).select("id,user_id,chart_id,title,status,created_at,updated_at").single();
+        if (error) throw error;
+        return respond(201, { data });
+      }
+      if (conversationId && subresource === "turns") {
+        if (req.method === "GET") {
+          const { data, error } = await supabase.from("ky_conversation_turns")
+            .select("id,user_id,conversation_id,sequence_number,role,question,answer,factual_basis,knowledge_basis,relationship_basis,critic_result,reasoning_model,prompt_version,created_at")
+            .eq("user_id", user.id).eq("conversation_id", conversationId).order("sequence_number", { ascending: true });
+          if (error) throw error;
+          return respond(200, { data });
+        }
+        if (req.method === "POST") {
+          const body = parseJson(await req.json());
+          if (typeof body.question !== "string" || !body.question.trim() || body.question.length > 12000) return respond(400, { error: "invalid_question" });
+          const { data, error } = await supabase.rpc("ky_append_user_turn", {
+            p_conversation_id: conversationId,
+            p_question: body.question.trim()
+          });
+          if (error) {
+            if (error.code === "P0002") return respond(404, { error: "conversation_not_found_or_inactive" });
+            if (error.code === "42501") return respond(403, { error: "conversation_access_denied" });
+            if (error.code === "22023") return respond(400, { error: "invalid_question" });
+            throw error;
+          }
+          return respond(201, { data });
+        }
+        return respond(405, { error: "method_not_allowed_for_turns" });
+      }
+      if (conversationId && !subresource && req.method === "GET") {
+        const { data, error } = await supabase.from("ky_conversations")
+          .select("id,user_id,chart_id,title,status,created_at,updated_at")
+          .eq("user_id", user.id).eq("id", conversationId).maybeSingle();
+        if (error) throw error;
+        if (!data) return respond(404, { error: "conversation_not_found" });
+        return respond(200, { data });
+      }
+      if (conversationId && !subresource && req.method === "PATCH") {
+        const body = parseJson(await req.json());
+        const patch: Record<string, unknown> = {};
+        if (hasOwn(body, "title")) {
+          if (body.title !== null && (typeof body.title !== "string" || body.title.trim().length > 200)) return respond(400, { error: "invalid_conversation_title" });
+          patch.title = typeof body.title === "string" && body.title.trim() ? body.title.trim() : null;
+        }
+        if (hasOwn(body, "status")) {
+          if (!["active","archived","deleted"].includes(String(body.status))) return respond(400, { error: "invalid_conversation_status" });
+          patch.status = body.status;
+        }
+        if (!Object.keys(patch).length) return respond(400, { error: "no_supported_conversation_fields" });
+        const { data, error } = await supabase.from("ky_conversations").update(patch)
+          .eq("user_id", user.id).eq("id", conversationId)
+          .select("id,user_id,chart_id,title,status,created_at,updated_at").maybeSingle();
+        if (error) throw error;
+        if (!data) return respond(404, { error: "conversation_not_found" });
+        return respond(200, { data });
+      }
+      if (conversationId && !subresource && req.method === "DELETE") {
+        const { data, error } = await supabase.from("ky_conversations").delete()
+          .eq("user_id", user.id).eq("id", conversationId).select("id").maybeSingle();
+        if (error) throw error;
+        if (!data) return respond(404, { error: "conversation_not_found" });
+        return respond(200, { deleted: true, id: data.id });
+      }
+      return respond(405, { error: "method_not_allowed_for_conversations" });
+    }
+
     if (resource === "memories") {
       if (req.method === "GET") {
         const { data, error } = await supabase.from("ky_user_memories")
@@ -223,7 +353,7 @@ Deno.serve(async (req: Request) => {
       return respond(405, { error: "method_not_allowed_for_memories" });
     }
 
-    return respond(404, { error: "unknown_resource", supported_resources: ["profile","preferences","memories"] });
+    return respond(404, { error: "unknown_resource", supported_resources: ["profile","preferences","charts","conversations","memories"] });
   } catch (error) {
     // Do not return raw database errors, which can disclose schema details.
     console.error("user-data-api request failed", error instanceof Error ? error.message : "unknown_error");
