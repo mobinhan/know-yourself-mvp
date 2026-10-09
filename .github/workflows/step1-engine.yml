@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - "engine/**"
+      - "supabase/**"
       - ".github/workflows/step1-engine.yml"
   workflow_dispatch:
 
@@ -71,6 +72,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Run Supabase user data API security contract
+        run: node supabase/test_user_data_api.mjs
+      - name: Type-check Supabase user data API
+        run: deno check supabase/functions/user-data-api/index.ts
       - name: Run deterministic structural test
         run: node engine/test_structural.mjs
       - name: Run evidence layer test
