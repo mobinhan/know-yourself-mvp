@@ -141,6 +141,7 @@ export function buildReasoningPromptInput(reasoningInput) {
       "Quarter mapping context is provisional where labelled provisional; disclose that status when it materially affects the answer.",
       "Use Rave Psychology only through supplied, traceable Personality Sun / Personality Node substructure. Motivation is linked to Personality Sun Color and View to Personality Node Color; do not infer these values from a gate theme or from missing data.",
       "A gate's Quarter is wheel-level context, while Rave Psychology is a separate substructure lens; do not imply that the gate alone determines a person's Motivation or View.",
+      "If external_knowledge.conflict_sets contains a relevant disagreement, preserve the distinct claims and their provenance, disclose uncertainty, and do not silently merge or choose a winner.",
       "Use external blogs, videos, podcasts and practitioner material only as interpretation, practical-example or critical-context enrichment; never use it to override deterministic evidence.",
       "Separate mechanical facts from interpretation.",
       "Do not calculate, infer, or invent Human Design mechanics.",
