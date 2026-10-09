@@ -25,6 +25,7 @@ ENGINE_DIR = ROOT / "engine"
 sys.path.insert(0, str(ENGINE_DIR))
 from ephemeris import calculate_chart  # noqa: E402
 from temporal_ephemeris import transit_activations  # noqa: E402
+from interpretation_provider import generate_interpretation, InterpretationProviderError  # noqa: E402
 
 CHANNEL_CATALOG = json.loads((ENGINE_DIR / "channel-catalog.json").read_text())
 GATE_CATALOG = json.loads((ENGINE_DIR / "gate-catalog.json").read_text())
@@ -347,15 +348,31 @@ class handler(BaseHTTPRequestHandler):
                     if at.tzinfo is None:
                         at = at.replace(tzinfo=timezone.utc)
                     transit = build_transit_result(foundation, at)
+                    try:
+                        reading = generate_interpretation(
+                            "Explain the current transit overlay in relation to this natal design. Focus on verified overlaps, newly activated gates, temporary channels and what to observe; do not imply the natal chart has changed.",
+                            foundation,
+                            temporal_context=transit["result"],
+                        )
+                    except InterpretationProviderError:
+                        return self._send(503, {"error": "interpretation_provider_unavailable", "interpretation_status": "provider_error"})
+                    if reading.get("interpretation_status") == "provider_not_configured":
+                        reading = {
+                            **reading,
+                            "one_line": "Transit mechanics are calculated. Personalised AI interpretation is not connected yet.",
+                            "cards": [],
+                            "boundaries": ["Natal mechanics remain unchanged.", "Transit activations are temporary.", "No AI interpretation has been generated."],
+                        }
+                    else:
+                        reading["status"] = reading.get("interpretation_status", "ready")
+                        reading["boundaries"] = [
+                            "Natal activations remain distinct from temporary transit activations.",
+                            "Interpretation is grounded in the supplied chart and temporal evidence.",
+                        ]
                     return self._send(200, {
                         "chart_id": chart_id,
                         "transit": transit,
-                        "reading": {
-                            "status": "provider_not_configured",
-                            "one_line": "Transit mechanics are calculated. Personalised AI interpretation is not connected yet.",
-                            "cards": [],
-                            "boundaries": ["Natal mechanics remain unchanged.", "Transit activations are temporary.", "No AI interpretation is claimed by this endpoint."],
-                        },
+                        "reading": reading,
                     })
                 if len(segments) == 5 and segments[3] == "questions" and segments[4] == "context" and method == "POST":
                     body = self._read_json()
@@ -363,13 +380,27 @@ class handler(BaseHTTPRequestHandler):
                     question = str(body.get("question") or "").strip()
                     if not question or len(question) > 4000:
                         return self._send(400, {"error": "question_must_be_1_to_4000_characters"})
+                    at_raw = body.get("at")
+                    temporal_context = None
+                    needs_temporal = bool(at_raw) or any(token in question.lower() for token in ("today", "now", "transit", "current moment", "right now"))
+                    if needs_temporal:
+                        at = datetime.fromisoformat(str(at_raw).replace("Z", "+00:00")) if at_raw else datetime.now(timezone.utc)
+                        if at.tzinfo is None:
+                            at = at.replace(tzinfo=timezone.utc)
+                        temporal_context = build_transit_result(foundation, at)["result"]
+                    try:
+                        interpretation = generate_interpretation(question, foundation, temporal_context=temporal_context)
+                    except InterpretationProviderError:
+                        return self._send(503, {"error": "interpretation_provider_unavailable", "interpretation_status": "provider_error"})
                     return self._send(200, {
                         "chart": foundation["core"],
                         "activations": foundation["activations"],
                         "phs": foundation["phs"],
                         "question": question,
-                        "interpretation_status": "provider_not_configured",
+                        "interpretation_status": interpretation.get("interpretation_status", "provider_error"),
                         "evidence_status": "mechanics_recalculated_from_birth_data",
+                        **interpretation,
+                        "temporal_context": temporal_context,
                     })
             if segments[:3] == ["v1", "knowledge", "gates"] and len(segments) == 3 and method == "GET":
                 return self._send(200, GATE_CATALOG["gates"])
