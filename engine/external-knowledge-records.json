@@ -451,7 +451,7 @@
         "review_status": "reviewed",
         "metadata_registered_at": "2026-10-09",
         "last_reviewed_at": "2026-10-09",
-        "next_review_due": null,
+        "next_review_due": "2027-04-09",
         "rights_use_status": "metadata_and_concise_paraphrase_only",
         "source_change_action": "revalidate_claim_status_and_dependent_relationships",
         "supersedes": [],
