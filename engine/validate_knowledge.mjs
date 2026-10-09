@@ -10,7 +10,7 @@ const sourceIds = new Set();
 for (const source of sources.sources) {
   if (!source.id || sourceIds.has(source.id)) throw new Error("Invalid or duplicate source id");
   sourceIds.add(source.id);
-  if (!source.title || !source.source_type || !source.rights_status || !source.use_policy) {
+  if (!source.title || !source.source_type || !source.rights_status || !source.use_policy || source.authority_tier !== "P1") {
     throw new Error(`Incomplete source registry record: ${source.id}`);
   }
 }
@@ -34,6 +34,25 @@ for (const record of knowledge.records) {
   }
   if (record.related_concepts && !Array.isArray(record.related_concepts)) {
     throw new Error(`Invalid related_concepts in ${record.id}`);
+  }
+  const metadata = record.record_metadata;
+  if (!metadata || metadata.record_version !== "1.0.0" || metadata.lifecycle_status !== "active") {
+    throw new Error(`Missing or invalid record lifecycle metadata: ${record.id}`);
+  }
+  if (!["foundational","interpretive","experiential","critical_contested"].includes(metadata.epistemic_class)) {
+    throw new Error(`Invalid epistemic class in ${record.id}`);
+  }
+  if (!["reviewed","legacy_review_required","review_due","conflict_requires_review"].includes(metadata.review_status)) {
+    throw new Error(`Invalid review status in ${record.id}`);
+  }
+  if (!metadata.metadata_registered_at || !metadata.rights_use_status || !metadata.source_change_action || !Array.isArray(metadata.supersedes)) {
+    throw new Error(`Incomplete record governance metadata: ${record.id}`);
+  }
+  if (metadata.review_status === "reviewed" && (!metadata.last_reviewed_at || !metadata.next_review_due)) {
+    throw new Error(`Reviewed record lacks review dates: ${record.id}`);
+  }
+  if (metadata.conflict_group != null && typeof metadata.conflict_group !== "string") {
+    throw new Error(`Invalid conflict group in ${record.id}`);
   }
 }
 
