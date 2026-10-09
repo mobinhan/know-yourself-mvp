@@ -33,3 +33,13 @@ When the user says **“save mcp”**, execute the full procedure in [docs/CONTI
 Verify the latest feature-branch state and CI, then continue safely with live-integration verification and offline interpretation-quality validation. Do not merge PR #1 without explicit approval.
 
 **Important limitation:** GitHub cannot prove whether unpushed edits remain on the user's desktop. If the desktop workspace has not been inspected, say so and preserve it.
+
+## Confirmed platform workflow
+
+- **Lovable:** primary web-app build/preview interface used in this project.
+- **GitHub:** source control, reviewed checkpoints, and cross-device recovery.
+- **GitHub Actions:** automated regression/contract tests.
+- **Supabase:** backend and data services.
+- **Vercel:** optional separate deployment only; not required for the routine Lovable workflow by default. Do not spend time on Vercel build limits unless a specific Vercel deployment is intentionally needed.
+- Verify Lovable/GitHub synchronization before assuming the live interface includes the latest branch changes. Check CI and live behaviour as separate things.
+- Full process: [docs/CONTINUITY_PROTOCOL.md](docs/CONTINUITY_PROTOCOL.md), section “Know Yourself development and deployment workflow”.
