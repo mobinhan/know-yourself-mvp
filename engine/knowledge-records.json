@@ -18,7 +18,20 @@
         "channel",
         "centres",
         "definition"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-DEFINITION-001",
@@ -37,7 +50,20 @@
         "channel",
         "centres",
         "split_definition"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CENTRES-001",
@@ -56,7 +82,20 @@
       "related_concepts": [
         "conditioning",
         "definition"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-AUTHORITY-001",
@@ -77,7 +116,20 @@
         "strategy",
         "sacral_authority",
         "emotional_authority"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-TYPE-001",
@@ -98,7 +150,20 @@
         "strategy",
         "signature",
         "not_self_theme"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CHANNEL-001",
@@ -119,7 +184,20 @@
         "centres",
         "circuit",
         "holistic_analysis"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-GATE-001",
@@ -140,7 +218,20 @@
         "channel",
         "planetary_activation",
         "holistic_analysis"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CIRCUITRY-001",
@@ -160,7 +251,20 @@
         "channel",
         "circuit_group",
         "format_energy"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-PROFILE-001",
@@ -180,7 +284,20 @@
         "line",
         "incarnation_cross",
         "sun_earth"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-EXPERIMENT-001",
@@ -199,7 +316,20 @@
         "strategy",
         "authority",
         "conditioning"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "experiential",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-GENERATOR-001",
@@ -222,7 +352,20 @@
         "sacral_authority",
         "signature",
         "frustration"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-RESPONSE-001",
@@ -243,7 +386,20 @@
         "generator",
         "strategy",
         "sacral_authority"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-SACRAL-AUTHORITY-001",
@@ -265,7 +421,20 @@
         "response",
         "strategy",
         "emotional_authority"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-SIGNATURE-FRUSTRATION-001",
@@ -284,7 +453,20 @@
         "generator",
         "response",
         "strategy"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CHANNEL-3457-001",
@@ -307,7 +489,20 @@
         "spleen",
         "integration",
         "response"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CHANNEL-360-001",
@@ -330,7 +525,20 @@
         "sacral",
         "root",
         "gate_60"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CHANNEL-4253-001",
@@ -352,7 +560,20 @@
         "cycles",
         "sacral",
         "root"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CHANNEL-1156-001",
@@ -374,7 +595,20 @@
         "ajna",
         "throat",
         "ideas"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CHANNEL-2838-001",
@@ -396,7 +630,20 @@
         "struggle",
         "spleen",
         "root"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CHANNEL-3254-001",
@@ -418,7 +665,20 @@
         "ambition",
         "spleen",
         "root"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-INTEGRATION-001",
@@ -438,7 +698,20 @@
         "integration",
         "individuality",
         "self_empowerment"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-FORMAT-ENERGY-001",
@@ -459,7 +732,20 @@
         "circuit",
         "root",
         "sacral"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-LINE-001",
@@ -480,7 +766,20 @@
         "profile",
         "planetary_activation",
         "holistic_analysis"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-HOLISTIC-001",
@@ -502,7 +801,20 @@
         "profile",
         "incarnation_cross",
         "whole_chart"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-CROSS-001",
@@ -524,7 +836,20 @@
         "geometry",
         "gate",
         "line"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-SUN-EARTH-001",
@@ -542,7 +867,20 @@
         "profile",
         "incarnation_cross",
         "planetary_activation"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-PLANETARY-001",
@@ -563,7 +901,20 @@
         "line",
         "transit",
         "sun_earth"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-TRANSIT-001",
@@ -582,7 +933,20 @@
         "planetary_activation",
         "temporal_state",
         "natal"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-LIFECYCLE-001",
@@ -601,7 +965,20 @@
         "transit",
         "return",
         "temporal_state"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-RELATIONSHIP-001",
@@ -621,7 +998,20 @@
         "electromagnetic_channel",
         "companionship",
         "compromise"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-EXPERIMENTATION-002",
@@ -641,7 +1031,20 @@
         "strategy",
         "authority",
         "holistic_analysis"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "experiential",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-QUARTER-001",
@@ -663,7 +1066,20 @@
         "quarter",
         "incarnation_cross",
         "gate"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-QUARTER-GATE-MAP-001",
@@ -684,7 +1100,20 @@
         "quarter",
         "mandala",
         "holistic_analysis"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-RP-FOUNDATION-001",
@@ -708,7 +1137,20 @@
         "motivation",
         "strategy",
         "authority"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-RP-VIEW-001",
@@ -729,7 +1171,20 @@
         "personality_color",
         "view",
         "rave_psychology"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-RP-MOTIVATION-001",
@@ -751,7 +1206,20 @@
         "motivation",
         "transference",
         "rave_psychology"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-RP-MOTIVATION-COLOR-003",
@@ -773,7 +1241,20 @@
         "motivation",
         "desire",
         "rave_psychology"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-RP-NODES-COLOR-006",
@@ -795,7 +1276,20 @@
         "view",
         "innocence",
         "rave_psychology"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "HD-KNOW-RP-TRANSFERENCE-3-6-001",
@@ -819,7 +1313,20 @@
         "motivation",
         "view",
         "rave_psychology"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     }
   ]
 }
