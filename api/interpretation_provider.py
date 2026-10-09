@@ -59,8 +59,8 @@ def _select_knowledge(question: str, foundation: dict) -> tuple[list[dict], list
             scored.append((score, record))
     selected = [record for _, record in sorted(scored, key=lambda x: x[0], reverse=True)[:MAX_KNOWLEDGE_RECORDS]]
 
-    selected_external = []
-    for record in external:
+    ranked_external = []
+    for index, record in enumerate(external):
         searchable = " ".join([
             str(record.get("title", "")), str(record.get("claim", "")),
             str(record.get("summary", "")), str(record.get("concept", "")),
@@ -75,8 +75,11 @@ def _select_knowledge(question: str, foundation: dict) -> tuple[list[dict], list
         )
         overlap = len(terms.intersection(set(re.findall(r"[a-z0-9-]+", searchable))))
         if exact_gate_line or overlap >= 2:
-            selected_external.append(record)
-    selected_external = selected_external[:MAX_EXTERNAL_RECORDS]
+            # Reserve the limited external-evidence budget for an exact, active
+            # gate-line source before generic keyword matches can crowd it out.
+            ranked_external.append((1 if exact_gate_line else 0, index, record))
+    ranked_external.sort(key=lambda item: (-item[0], item[1]))
+    selected_external = [record for _, _, record in ranked_external[:MAX_EXTERNAL_RECORDS]]
 
     allowed_ids = {record.get("id") for record in selected}
     allowed_external_ids = {record.get("id") for record in selected_external}
