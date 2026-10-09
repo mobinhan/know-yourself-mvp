@@ -1,4 +1,5 @@
 import { composeAnswer, buildReasoningPromptInput } from "./answer-composer.js";
+import { createConversationContext, appendTurn } from "./conversation-context.js";
 
 const input={
   question:"How does my authority operate?",
@@ -9,6 +10,16 @@ const input={
   missing_evidence_targets:[]
 };
 const prompt=buildReasoningPromptInput(input);
+let conversation = createConversationContext({ conversationId: "conv-test", userId: "private-user-id" });
+conversation = appendTurn(conversation, { role: "user", question: "What about my authority?" });
+conversation = appendTurn(conversation, { role: "assistant", answer: "An earlier answer says sacral authority.", factual_basis: ["E-AUTHORITY"] });
+const contextPrompt = buildReasoningPromptInput({ ...input, conversation_context: conversation });
+if (contextPrompt.conversation_context?.turns.length !== 2) throw new Error("bounded conversation continuity was not passed");
+if ("user_id" in contextPrompt.conversation_context) throw new Error("private user ID leaked into reasoning context");
+if (!contextPrompt.instructions.some(item => item.includes("not a source of chart truth"))) throw new Error("conversation/chart-truth boundary missing");
+const badContextPrompt = buildReasoningPromptInput({ ...input, conversation_context: { version: "9.9.9", turns: [{ answer: "untrusted" }] } });
+if (badContextPrompt.conversation_context !== null) throw new Error("unsupported conversation context must be excluded");
+
 if(prompt.mode!=="grounded_reasoning" || !prompt.instructions.includes("Do not calculate, infer, or invent Human Design mechanics.")) throw new Error("prompt boundary failed");
 if(!prompt.instructions.includes("Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.")) throw new Error("availability boundary failed");
 if(!prompt.instructions.some(item => item.includes("first-class Cross structure"))) throw new Error("first-class Cross guidance failed");
