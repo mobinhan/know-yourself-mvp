@@ -25,6 +25,10 @@ export function criticAnswer({ answer, factual_basis = [], knowledge_basis = [],
     if (!knowledgeIds.has(id)) issues.push(`unknown_knowledge_basis:${id}`);
   }
 
+  for (const id of candidate.relationship_basis ?? []) {
+    if (!relationshipIds.has(id)) issues.push(`unknown_relationship_basis:${id}`);
+  }
+
   const text = String(candidate.answer ?? "").toLowerCase();
   const relationBasis = new Set(candidate.relationship_basis ?? []);
   const hasGateQuarterClaim = /\bgate\s*\d*\b.{0,100}\b(quarter|initiation|civilization|duality|mutation)\b/.test(text) &&
