@@ -85,6 +85,13 @@ export function buildReasoningPromptInput(reasoningInput) {
   const chartGateSet = Array.isArray(gateEvidence?.result) ? gateEvidence.result : [];
   const explicitGateMatch = reasoningInput.question.match(/\b(?:gate|gates)\s*(\d{1,2})\b/i);
   const explicitGate = explicitGateMatch ? Number(explicitGateMatch[1]) : null;
+  const explicitGateLineMatch = reasoningInput.question.match(/\bgate\s*(\d{1,2})\s*[.\/-]\s*(\d)\b/i);
+  const activationResultForLines = activationEvidence?.result ?? {};
+  const gateLineContexts = [
+    ...(Array.isArray(activationResultForLines.personality) ? activationResultForLines.personality : []),
+    ...(Array.isArray(activationResultForLines.design) ? activationResultForLines.design : [])
+  ].filter(item => Number.isInteger(Number(item.gate)) && Number.isInteger(Number(item.line))).map(item => ({ gate: Number(item.gate), line: Number(item.line), body: item.body, imprint: item.imprint }));
+  if (explicitGateLineMatch) gateLineContexts.push({ gate: Number(explicitGateLineMatch[1]), line: Number(explicitGateLineMatch[2]), source: "explicit_question" });
   const relevantGates = explicitGate != null ? [explicitGate] : chartGateSet;
   const holistic_context = holisticConcepts.map(concept =>
     retrieveHolisticContext({
@@ -92,6 +99,7 @@ export function buildReasoningPromptInput(reasoningInput) {
       maxHops: 1,
       includePending: true,
       gateNumbers: concept === "gate" ? relevantGates : [],
+      gateLineContexts,
       chartGateSet
     })
   );
