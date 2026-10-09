@@ -1,6 +1,7 @@
 import fs from "node:fs";
 
 const knowledge = JSON.parse(fs.readFileSync(new URL("./knowledge-records.json", import.meta.url), "utf8"));
+const knowledgeSources = JSON.parse(fs.readFileSync(new URL("./knowledge-sources.json", import.meta.url), "utf8"));
 const externalRegistry = JSON.parse(fs.readFileSync(new URL("./external-source-registry.json", import.meta.url), "utf8"));
 const externalKnowledge = JSON.parse(fs.readFileSync(new URL("./external-knowledge-records.json", import.meta.url), "utf8"));
 const quarterGateMap = JSON.parse(fs.readFileSync(new URL("./quarter-gate-map.json", import.meta.url), "utf8"));
@@ -8,6 +9,7 @@ const graph = JSON.parse(fs.readFileSync(new URL("./knowledge-relationships.json
 
 const nodesById = new Map(graph.nodes.map(node => [node.id, node]));
 const externalSourcesById = new Map(externalRegistry.sources.map(source => [source.id, source]));
+const knowledgeSourcesById = new Map(knowledgeSources.sources.map(source => [source.id, source]));
 const externalRecordsById = new Map(externalKnowledge.records.map(record => [record.id, record]));
 const normalize = value => String(value ?? "").trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\\s+/g, " ");
 
@@ -32,10 +34,13 @@ function getQuarterForGate(gateNumber) {
     quarter_theme: quarter.theme,
     mapping_status: quarterGateMap.status,
     mapping_source_id: quarterGateMap.source_id,
-    mapping_source_tier: externalSourcesById.get(quarterGateMap.source_id)?.tier ?? null,
+    mapping_source_title: knowledgeSourcesById.get(quarterGateMap.source_id)?.title ?? externalSourcesById.get(quarterGateMap.source_id)?.name ?? null,
+    mapping_source_type: knowledgeSourcesById.get(quarterGateMap.source_id)?.source_type ?? null,
+    mapping_source_locator: quarterGateMap.source_locator ?? null,
+    secondary_crosscheck_source_id: quarterGateMap.secondary_crosscheck_source_id ?? null,
     framework_source_id: quarterGateMap.official_framework_source_id,
     framework_record_id: "EXT-KNOW-QUARTERS-001",
-    mapping_record_id: "EXT-KNOW-QUARTER-GATE-MAP-001"
+    mapping_record_id: "HD-KNOW-QUARTER-GATE-MAP-001"
   };
 }
 
