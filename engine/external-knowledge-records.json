@@ -422,6 +422,41 @@
         "supersedes": [],
         "conflict_group": null
       }
+    },
+    {
+      "id": "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001",
+      "source_id": "EXT_IHDS_OFFICIAL",
+      "title": "Gate 57.4 — The Director",
+      "claim": "The Gate 57.4 teaching combines Gate 57's intuitive clarity in the present with the fourth line's specific Director theme: mastering relationships through clarity and sensitivity to interrelationships, with a polarity between directing collaboratively and becoming dictatorial.",
+      "claim_type": "teaching",
+      "status": "accepted",
+      "allowed_use": [
+        "explain",
+        "compare",
+        "contextualize"
+      ],
+      "locator": "The Daily View, Gate 57.4 — Capacity for beneficial relationships or not is key; https://myemail.constantcontact.com/The-Daily-View--Gate-57-4---Capacity-for-beneficial-relationships-or-not-is-key.html?aid=PJH8RE2ypYU&soid=1101642878733",
+      "topics": [
+        "gate_57",
+        "line_4",
+        "gate_line_synthesis",
+        "the_director",
+        "relationships",
+        "intuitive_clarity"
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-04-09",
+        "rights_use_status": "metadata_and_concise_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     }
   ]
 }

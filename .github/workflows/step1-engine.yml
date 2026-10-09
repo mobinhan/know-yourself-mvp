@@ -7,6 +7,10 @@ on:
     paths:
       - "engine/**"
       - "supabase/**"
+      - "api/**"
+      - "tests/**"
+      - "index.html"
+      - "requirements.txt"
       - ".github/workflows/step1-engine.yml"
   workflow_dispatch:
 
@@ -28,13 +32,14 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install Python dependencies
-        run: python -m pip install -r engine/requirements.txt pytest
+        run: python -m pip install -r requirements.txt -r engine/requirements.txt pytest
       - name: Run ephemeris tests
         run: |
           set -o pipefail
           python -m pytest -q \
             engine/test_golden.py \
             engine/test_channel_catalog.py \
+            engine/test_v1_api.py \
             engine/test_multi_chart.py \
             engine/test_boundaries.py \
             engine/test_timezone.py \
@@ -43,6 +48,8 @@ jobs:
             engine/test_temporal_ephemeris.py \
             engine/test_temporal_edge_mechanics.py \
             engine/test_temporal_golden.py 2>&1 | tee python-validation.txt
+      - name: Run interpretation provider quality-gate tests
+        run: python -m pytest -q tests/test_gate_line_synthesis_contract.py tests/test_interpretation_critic.py
       - name: Publish Python validation result
         if: always()
         run: |
@@ -132,8 +139,14 @@ jobs:
         run: node engine/test_reasoning-adapter.mjs
       - name: Run answer composer test
         run: node engine/test_answer-composer.mjs
+      - name: Run 3framework evidence-first test
+        run: node engine/test_three-framework.mjs
       - name: Run user adaptation policy test
         run: node engine/test_user-adaptation.mjs
+      - name: Run V1 frontend/API contract test
+        run: node engine/test_v1_frontend_contract.mjs
+      - name: Check inline frontend JavaScript syntax
+        run: node engine/test_frontend_syntax.mjs
       - name: Run user memory governance test
         run: node engine/test_user-memory-governance.mjs
       - name: Run conversation context test

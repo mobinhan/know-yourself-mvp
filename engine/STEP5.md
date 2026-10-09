@@ -36,6 +36,16 @@ The answering experience should be conversational and intelligent, comparable in
 - Holistic synthesis must connect relevant chart mechanics and interpretive frameworks, while distinguishing source-backed relationships from interpretation and never inventing mechanics.
 - `test_holistic_retrieval.mjs` validates graph edges, quarter mapping coverage and primary-source provenance; `test_holistic_chart_integration.mjs` checks a chart-specific gate + quarter + Rave Psychology prompt and unsupported-link rejection.
 
+## Gate–line synthesis safeguard — implemented for the Gate 57.4 reference case
+
+- Added `GATE_LINE_SYNTHESIS_POLICY.md` requiring separate gate meaning, general line mechanics, and exact gate–line synthesis evidence.
+- Registered a concise, rights-aware paraphrase of the IHDS Daily View Gate 57.4 source as `EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001`; the record preserves the Director archetype and its directing/dictatorial polarity.
+- Added a conditional graph relationship `REL-GATE-57-LINE-4-DIRECTOR` that applies only when Gate 57 and line 4 are present in the supplied context.
+- Holistic retrieval now filters gate-line-specific relationships against exact activation/query context. The answer prompt explicitly prohibits deriving a specific synthesis by appending generic line keywords to a gate.
+- Regression tests check generic Gate 57, exact Gate 57.4, a mismatching Gate 57.2, and answer-prompt inclusion.
+
+This is a source-backed reference-case implementation and deterministic contract coverage. It is not yet a comprehensive, source-verified catalog of all 384 gate-line combinations, and a live-model acceptance test is still required.
+
 ## Current limitation
 The current reasoning adapter deliberately provides a provider-neutral boundary and a deterministic mock for testing. It does not call an external LLM. Conversation state and production model integration remain separate concerns.
 
@@ -76,3 +86,26 @@ Current acceptance boundary: deterministic mechanics remain authoritative; the q
 - Only active, consented, non-expired records in approved personal-memory categories can enter the prompt. Chart truth, source knowledge and system instructions are excluded.
 - Prompt assembly now keeps three distinct inputs separate: adaptive response policy, governed active user memory, and bounded conversation continuity. Conversation history is only for references/follow-ups; prior assistant responses are never chart evidence.
 - These modules are policy and contract groundwork, not persistent learning. Cross-session storage, memory inspection/edit/reset/delete controls, consent UX, audit trails and authenticated multi-user isolation must be implemented in the backend before claiming user memory is operational.
+
+
+## 3framework direct-answer path — implementation checkpoint (2026-10-09)
+
+- Added `engine/THREE_FRAMEWORK.md` to define the three layers: Canonical Chart + Evidence; Adaptive User Context; ChatGPT directly on top.
+- Added `engine/three-framework.js` to build a separated three-layer input envelope without invoking the separate 5framework critic.
+- Added canonical gate verification based on `E-ACTIVATIONS` and `E-GATES`; catalogue membership alone cannot establish personal activation. Incomplete evidence returns `unknown`.
+- Strengthened the reasoning prompt and contract with the evidence-first rule, natal/transit distinction, and the rule that Layer 2 cannot override Layer 1.
+- Added `engine/test_three-framework.mjs` for Gate 7 / Gate 31 absence, Gate 57.4 activation, fail-closed evidence handling, and layer separation.
+
+**Boundary:** this is an implemented contract and direct-model input envelope. The repository still has a provider-neutral/mock reasoning provider; an actual external ChatGPT/OpenAI call and live-model acceptance test are not yet connected. The 3framework can be tested here conversationally, but production provider integration is a separate step.
+
+
+## Live 3framework provider — implementation checkpoint (2026-10-09)
+
+- Added `api/interpretation_provider.py`, a server-side OpenAI Responses API adapter. Default model: `gpt-5-mini`; `OPENAI_MODEL` can override it.
+- Chart-question and transit-reading endpoints now call the provider when configured and return explicit status when it is not configured.
+- The Ask UI now renders the server-generated answer instead of substituting local template interpretations.
+- The provider sends calculated chart mechanics, selected source-linked knowledge, and validated relationships; it does not send birth date, time, birthplace or coordinates to the model.
+- Requests use `store: false`. Returned evidence, knowledge and relationship IDs are filtered against the supplied context.
+- Added mocked provider tests for missing credentials, Responses API request shape, PII exclusion and source/relationship ID filtering.
+
+**Remaining deployment prerequisite:** `OPENAI_API_KEY` must be set as an encrypted server environment variable. The deployment account's environment-management access is currently unavailable from this session, and no API key is available here. The provider path is implemented; a real provider call and live UI acceptance test remain blocked until the key is configured.

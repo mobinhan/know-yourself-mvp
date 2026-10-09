@@ -44,11 +44,13 @@ function getQuarterForGate(gateNumber) {
   };
 }
 
-function relationshipApplies(edge, { personalitySunColour = null, personalityNodeColours = [] } = {}) {
+function relationshipApplies(edge, { personalitySunColour = null, personalityNodeColours = [], gateLineContexts = [] } = {}) {
   if (!edge.applies_when) return true;
   const condition = edge.applies_when;
   if (condition.personality_sun_colour != null && Number(personalitySunColour) !== Number(condition.personality_sun_colour)) return false;
   if (condition.personality_node_colour != null && !(personalityNodeColours ?? []).some(value => Number(value) === Number(condition.personality_node_colour))) return false;
+  if (condition.gate_number != null && !(gateLineContexts ?? []).some(item => Number(item.gate) === Number(condition.gate_number) && (condition.line_number == null || Number(item.line) === Number(condition.line_number)))) return false;
+  if (condition.line_number != null && condition.gate_number == null && !(gateLineContexts ?? []).some(item => Number(item.line) === Number(condition.line_number))) return false;
   return true;
 }
 
@@ -60,7 +62,7 @@ export function getQuarterGateMap() {
   return quarterGateMap;
 }
 
-export function retrieveHolisticContext({ concept, maxHops = 1, includePending = true, gateNumber = null, gateNumbers = [], chartGateSet = [], personalitySunColour = null, personalityNodeColours = [] } = {}) {
+export function retrieveHolisticContext({ concept, maxHops = 1, includePending = true, gateNumber = null, gateNumbers = [], chartGateSet = [], personalitySunColour = null, personalityNodeColours = [], gateLineContexts = [] } = {}) {
   const start = resolveNode(concept);
   if (!start) {
     return { concept: concept ?? null, records: [], external_records: [], relationships: [], unresolved_context: [], gate_quarter_context: [], missing_concept: true };
@@ -77,7 +79,7 @@ export function retrieveHolisticContext({ concept, maxHops = 1, includePending =
       const edges = graph.edges.filter(edge =>
         edge.status === "validated" &&
         (edge.from === nodeId || edge.to === nodeId) &&
-        relationshipApplies(edge, { personalitySunColour, personalityNodeColours })
+        relationshipApplies(edge, { personalitySunColour, personalityNodeColours, gateLineContexts })
       );
       for (const edge of edges) {
         if (!selectedEdges.some(existing => existing.id === edge.id)) selectedEdges.push(edge);

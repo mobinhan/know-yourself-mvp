@@ -101,6 +101,28 @@ assert.ok(gateContext.unresolved_context.every(item => item.reason.includes("No 
 const deeper = retrieveHolisticContext({ concept: "gate", maxHops: 2 });
 assert.ok(deeper.records.some(record => record.id === "HD-KNOW-HOLISTIC-001"));
 
+const genericGate57 = retrieveHolisticContext({ concept: "gate", gateNumbers: [57], chartGateSet: [57] });
+assert.ok(!genericGate57.external_records.some(record => record.id === "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"), "Gate 57.4-specific teaching must not leak into a generic Gate 57 reading");
+assert.ok(!genericGate57.relationships.some(edge => edge.id === "REL-GATE-57-LINE-4-DIRECTOR"), "gate-line-specific relationship must remain inactive without matching line context");
+
+const specificGate574 = retrieveHolisticContext({
+  concept: "gate",
+  gateNumbers: [57],
+  chartGateSet: [57],
+  gateLineContexts: [{ gate: 57, line: 4 }]
+});
+assert.ok(specificGate574.relationships.some(edge => edge.id === "REL-GATE-57-LINE-4-DIRECTOR"), "exact Gate 57.4 context should activate its validated relationship");
+assert.ok(specificGate574.external_records.some(record => record.id === "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"), "exact Gate 57.4 context should retrieve its source-checked teaching");
+assert.ok(specificGate574.external_records.find(record => record.id === "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001").claim.includes("directing collaboratively and becoming dictatorial"), "Gate 57.4 polarity should be preserved");
+
+const otherLine57 = retrieveHolisticContext({
+  concept: "gate",
+  gateNumbers: [57],
+  chartGateSet: [57],
+  gateLineContexts: [{ gate: 57, line: 2 }]
+});
+assert.ok(!otherLine57.external_records.some(record => record.id === "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"), "Gate 57.4 teaching must not apply to Gate 57.2");
+
 const unknown = retrieveHolisticContext({ concept: "made_up_concept" });
 assert.equal(unknown.missing_concept, true);
 assert.equal(unknown.records.length, 0);

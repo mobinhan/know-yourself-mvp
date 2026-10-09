@@ -1,0 +1,50 @@
+name: Gate-line regression tests
+
+on:
+  push:
+    branches:
+      - feature/live-api-v1
+    paths:
+      - "api/interpretation_provider.py"
+      - "api/interpretation_critic.py"
+      - "api/interpretation_critic.py"
+      - "engine/knowledge-records.json"
+      - "engine/external-knowledge-records.json"
+      - "engine/knowledge-relationships.json"
+      - "tests/test_gate_line_retrieval.py"
+      - "tests/test_gate_line_synthesis_contract.py"
+      - "tests/test_interpretation_critic.py"
+      - "tests/test_interpretation_critic.py"
+      - ".github/workflows/gate-line-tests.yml"
+  pull_request:
+    paths:
+      - "api/interpretation_provider.py"
+      - "api/interpretation_critic.py"
+      - "engine/knowledge-records.json"
+      - "engine/external-knowledge-records.json"
+      - "engine/knowledge-relationships.json"
+      - "tests/test_gate_line_retrieval.py"
+      - "tests/test_gate_line_synthesis_contract.py"
+      - "tests/test_interpretation_critic.py"
+      - ".github/workflows/gate-line-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  focused-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run focused gate-line tests
+        run: |
+          python -m unittest             tests/test_gate_line_retrieval.py \
+            tests/test_gate_line_synthesis_contract.py \
+            tests/test_interpretation_critic.py \
+            -v

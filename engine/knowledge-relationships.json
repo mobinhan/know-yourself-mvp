@@ -115,6 +115,16 @@
         "personality sun activation"
       ],
       "status": "active"
+    },
+    {
+      "id": "gate_line_synthesis",
+      "label": "Gate–line synthesis",
+      "aliases": [
+        "gate-line synthesis",
+        "gate and line combination",
+        "specific gate line"
+      ],
+      "status": "active"
     }
   ],
   "edges": [
@@ -278,6 +288,22 @@
         "personality_node_colour": 6
       },
       "note": "Conditional relationship: include only when the verified Personality Sun and Personality Node Color fields match."
+    },
+    {
+      "id": "REL-GATE-57-LINE-4-DIRECTOR",
+      "from": "gate",
+      "to": "gate_line_synthesis",
+      "type": "interpreted_as_specific_gate_line",
+      "status": "validated",
+      "knowledge_ids": [],
+      "external_knowledge_ids": [
+        "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"
+      ],
+      "applies_when": {
+        "gate_number": 57,
+        "line_number": 4
+      },
+      "note": "Gate-specific interpretation. Retrieve only when the supplied chart/question context identifies Gate 57, line 4; never generalize it to Line 4 or other gates."
     }
   ]
 }

@@ -85,6 +85,13 @@ export function buildReasoningPromptInput(reasoningInput) {
   const chartGateSet = Array.isArray(gateEvidence?.result) ? gateEvidence.result : [];
   const explicitGateMatch = reasoningInput.question.match(/\b(?:gate|gates)\s*(\d{1,2})\b/i);
   const explicitGate = explicitGateMatch ? Number(explicitGateMatch[1]) : null;
+  const explicitGateLineMatch = reasoningInput.question.match(/\bgate\s*(\d{1,2})\s*[.\/-]\s*(\d)\b/i);
+  const activationResultForLines = activationEvidence?.result ?? {};
+  const gateLineContexts = [
+    ...(Array.isArray(activationResultForLines.personality) ? activationResultForLines.personality : []),
+    ...(Array.isArray(activationResultForLines.design) ? activationResultForLines.design : [])
+  ].filter(item => Number.isInteger(Number(item.gate)) && Number.isInteger(Number(item.line))).map(item => ({ gate: Number(item.gate), line: Number(item.line), body: item.body, imprint: item.imprint }));
+  if (explicitGateLineMatch) gateLineContexts.push({ gate: Number(explicitGateLineMatch[1]), line: Number(explicitGateLineMatch[2]), source: "explicit_question" });
   const relevantGates = explicitGate != null ? [explicitGate] : chartGateSet;
   const holistic_context = holisticConcepts.map(concept =>
     retrieveHolisticContext({
@@ -92,6 +99,7 @@ export function buildReasoningPromptInput(reasoningInput) {
       maxHops: 1,
       includePending: true,
       gateNumbers: concept === "gate" ? relevantGates : [],
+      gateLineContexts,
       chartGateSet
     })
   );
@@ -206,16 +214,26 @@ export function buildReasoningPromptInput(reasoningInput) {
     conversation_context,
     instructions: [
       "Answer the user's question naturally and directly.",
+      "Write the final reading as a polished, complete user experience: do not expose internal workflow status, unfinished verification steps, or generic defensive disclaimers.",
+      "Integrate uncertainty naturally and specifically. Prefer calibrated interpretation and useful reflection over formulaic caveats such as saying a personality claim cannot be established from a gate alone; distinguish interpretation from mechanics through wording and evidence, not repetitive disclaimers.",
+      "For current or date-specific transit questions, inspect all relevant supplied temporal activations and compare them against the canonical natal activations before answering. Cover the relevant overlaps and interactions, not only the first matching gate. Never imply that a full transit comparison was completed unless the supplied temporal evidence supports it.",
+      "Do not narrate missing internal checks to the user as a substitute for doing the work. If essential evidence is genuinely absent and cannot be retrieved, state the specific unresolved point briefly and naturally, and avoid unsupported claims.",
+      "End with a useful synthesis, practical reflection, or directly relevant next insight rather than a generic disclaimer or a question used to compensate for incomplete analysis.",
       "Apply adaptive_response_policy only to presentation and relevance. Never let user preferences, inferred preferences, or personal context alter chart mechanics, evidence requirements, source quality, or certainty. Use only the policy-filtered user_context supplied to you.",
       "Use active_user_memory only as explicit, consented personal context; never use it as chart truth or source knowledge. Inferred memories remain proposed until user confirmation. User memory must never override deterministic evidence.",
       "Use conversation_context only to understand references, follow-ups and continuity. Conversation history is not a source of chart truth; verify chart facts against current supplied evidence and knowledge records. Never treat a previous assistant answer as evidence by itself.",
       "Use supplied evidence as the only source of chart mechanics.",
+      "Before presenting any chart-specific gate, line, channel, centre, planetary activation, type, strategy, authority, profile or temporal claim, verify it against the relevant canonical evidence records. A gate/channel catalogue is not proof that the item is activated/defined in this chart.",
+      "For a gate activation question, inspect E-ACTIVATIONS and E-GATES. Check natal activation records separately from temporal/transit records. If canonical evidence is complete and the gate is absent, say it is not activated; if the required evidence is missing, say the status cannot be verified. Never infer activation from a catalogue entry or from a prior assistant answer.",
+      "The 3framework path is Layer 1 Canonical Chart + Evidence, Layer 2 Adaptive User Context, then ChatGPT directly. Layer 2 may shape relevance and presentation but must not override Layer 1. Do not claim a separate critic validated a 3framework answer.",
       "Use all relevant supplied evidence; do not omit a relevant mechanical result merely because it is not a headline field.",
       "Use incarnation_cross_context as the first-class Cross structure. When complete, connect all four Sun/Earth gate-line activations, their separately sourced quarter contexts, profile if supplied, and the Personality Sun quarter as the primary Cross anchor. Do not invent a Cross name if deterministic evidence does not supply one. If the context is incomplete, state the missing elements rather than presenting a complete Cross reading.",
       "If the user asks for a general Human Design/chart summary, include relevant supplied foundation fields such as type, strategy, authority, profile, definition, centres, channels, gates, incarnation-cross components, and planetary activations when present and useful; do not dump all data when it is not useful.",
       "Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.",
       "Use controlled knowledge to explain meaning; do not reproduce source text.",
       "Use holistic_context to connect relevant concepts only through supplied validated relationships and supporting knowledge-record IDs.",
+      "For gate-and-line interpretations, distinguish the gate meaning, the general line mechanics, and the specific gate-line synthesis. Never derive the specific synthesis merely by appending generic line keywords to a gate.",
+      "Use gate-line-specific knowledge only when its exact gate and line conditions match the supplied activation or explicit question. Preserve the named archetype and its polarity when sourced; do not replace it with a generic paraphrase that changes the concept. If no validated gate-line-specific record is supplied, describe only the separately supported gate and line themes and do not invent their synthesis.",
       "For every material cross-concept claim, include the relevant supplied validated graph relationship ID in relationship_basis. Never cite an absent, pending or unrelated relationship.",
       "Treat holistic_context.unresolved_context as evidence gaps, never as established claims. Do not invent Quarter or Rave Psychology interpretations when supporting records are absent.",
       "Quarter mapping context is provisional where labelled provisional; disclose that status when it materially affects the answer.",
