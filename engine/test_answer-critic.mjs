@@ -64,6 +64,26 @@ const supportedCrossMechanics = criticAnswer({
 });
 assert.equal(supportedCrossMechanics.passed, true);
 
+const gate57Line4Unsupported = criticAnswer({
+  answer: "Your Gate 57.4 is The Director, combining intuitive clarity with relationship mastery.",
+  knowledge_basis: [],
+  relationship_basis: [],
+  suppliedKnowledge: [],
+  suppliedRelationships: [{ id: "REL-GATE-57-LINE-4-DIRECTOR", status: "validated" }]
+});
+assert.equal(gate57Line4Unsupported.passed, false);
+assert.ok(gate57Line4Unsupported.issues.includes("missing_knowledge_basis:EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"));
+assert.ok(gate57Line4Unsupported.issues.includes("missing_relationship_basis:REL-GATE-57-LINE-4-DIRECTOR"));
+
+const gate57Line4Supported = criticAnswer({
+  answer: "Your Gate 57.4 is described in the registered IHDS teaching as The Director.",
+  knowledge_basis: ["EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"],
+  relationship_basis: ["REL-GATE-57-LINE-4-DIRECTOR"],
+  suppliedKnowledge: [{ id: "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001" }],
+  suppliedRelationships: [{ id: "REL-GATE-57-LINE-4-DIRECTOR", status: "validated" }]
+});
+assert.equal(gate57Line4Supported.passed, true);
+
 const supportedLink = criticAnswer({
   answer: "Gate 34 falls in the Mutation quarter. Personality Sun Color is linked to Motivation, and Personality Nodes Color is linked to View.",
   relationship_basis: ["REL-GATE-QUARTER","REL-PERSONALITY-SUN-RP-MOTIVATION","REL-PERSONALITY-NODES-RP-VIEW"],
