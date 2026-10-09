@@ -45,6 +45,24 @@ const reasoningInput = buildReasoningInput({
 assert.equal(reasoningInput.ready_for_reasoning, true);
 
 const prompt = buildReasoningPromptInput(reasoningInput);
+const cross = prompt.incarnation_cross_context;
+assert.ok(cross, "First-class Incarnation Cross context must be supplied");
+assert.equal(cross.status, "complete");
+assert.equal(cross.activations.length, 4);
+assert.deepEqual(cross.activations.map(item => [item.slot, item.gate, item.line]), [
+  ["personality_sun", 42, 5],
+  ["personality_earth", 32, 5],
+  ["design_sun", 60, 1],
+  ["design_earth", 56, 1]
+]);
+assert.equal(cross.primary_quarter_anchor, "personality_sun");
+assert.equal(cross.primary_quarter.name, "Initiation");
+assert.ok(cross.activations.every(item => item.quarter && item.quarter.mapping_status === "validated"),
+  "Each Cross activation must have its own validated quarter context");
+assert.equal(cross.cross_name, null, "Do not invent an Incarnation Cross name absent from deterministic evidence");
+assert.equal(cross.cross_name_status, "not_supplied_do_not_invent");
+assert.ok(prompt.instructions.some(item => item.includes("first-class Cross structure")));
+
 const gateContext = prompt.holistic_context.find(item => item.concept === "gate");
 assert.ok(gateContext, "Gate context must be included");
 assert.ok(gateContext.gate_quarter_context.some(item =>
