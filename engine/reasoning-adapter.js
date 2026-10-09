@@ -1,3 +1,4 @@
+import { buildReasoningPromptInput } from "./answer-composer.js";
 import { finalizeAnswer } from "./answer-critic.js";
 
 export function buildGroundedAnswer({ reasoningInput, draft }) {
@@ -8,7 +9,7 @@ export function buildGroundedAnswer({ reasoningInput, draft }) {
       knowledge_basis: [],
       interpretation: "The required evidence is not currently available in the deterministic evidence layer.",
       limitations: reasoningInput?.missing_evidence_targets ?? []
-    }, reasoningInput?.evidence ?? [], reasoningInput?.knowledge ?? []);
+    }, reasoningInput?.evidence ?? [], reasoningInput?.knowledge ?? [], []);
   }
 
   if (!draft || typeof draft.answer !== "string") {
@@ -17,8 +18,12 @@ export function buildGroundedAnswer({ reasoningInput, draft }) {
 
   const allowedEvidence = new Set((reasoningInput.evidence ?? []).map(x => x.id));
   const allowedKnowledge = new Set((reasoningInput.knowledge ?? []).map(x => x.id));
+  const prompt = buildReasoningPromptInput(reasoningInput);
+  const suppliedRelationships = [\n    ...(prompt.holistic_context ?? []).flatMap(context => context.relationships ?? []),\n    ...(prompt.rave_psychology_context?.framework?.relationships ?? [])\n  ];
+  const allowedRelationships = new Set(suppliedRelationships.filter(x => x.status === "validated").map(x => x.id));
   const factual_basis = [...new Set((draft.factual_basis ?? []).filter(id => allowedEvidence.has(id)))];
   const knowledge_basis = [...new Set((draft.knowledge_basis ?? []).filter(id => allowedKnowledge.has(id)))];
+  const relationship_basis = [...new Set((draft.relationship_basis ?? []).filter(id => allowedRelationships.has(id)))];
 
   return finalizeAnswer({
     answer: draft.answer,
@@ -26,7 +31,7 @@ export function buildGroundedAnswer({ reasoningInput, draft }) {
     knowledge_basis,
     interpretation: draft.interpretation ?? "",
     limitations: draft.limitations ?? []
-  }, reasoningInput.evidence ?? [], reasoningInput.knowledge ?? []);
+  }, reasoningInput.evidence ?? [], reasoningInput.knowledge ?? [], suppliedRelationships);
 }
 
 export function createMockReasoningDraft(reasoningInput) {
