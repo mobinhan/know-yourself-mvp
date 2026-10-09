@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { getKnowledgeRelationships, retrieveHolisticContext } from "./holistic-retrieval.js";
+import { getKnowledgeRelationships, getQuarterGateMap, retrieveHolisticContext } from "./holistic-retrieval.js";
 
 const graph = getKnowledgeRelationships();
 assert.ok(graph.nodes.some(node => node.id === "quarter"));
@@ -15,6 +15,36 @@ for (const edge of graph.edges) {
   if (edge.status === "pending_evidence") assert.equal(edge.knowledge_ids.length, 0);
   if (edge.status === "validated") assert.ok(edge.knowledge_ids.length > 0);
 }
+
+
+const quarterMap = getQuarterGateMap();
+assert.equal(quarterMap.status, "provisional");
+const mappedGates = quarterMap.quarters.flatMap(quarter => quarter.gates);
+assert.equal(mappedGates.length, 64);
+assert.equal(new Set(mappedGates).size, 64);
+assert.deepEqual([...mappedGates].sort((a,b)=>a-b), Array.from({length:64},(_,i)=>i+1));
+for (const quarter of quarterMap.quarters) assert.equal(quarter.gates.length, 16);
+assert.equal(quarterMap.quarters.find(q => q.id === "initiation").gates[0], 13);
+assert.equal(quarterMap.quarters.find(q => q.id === "civilization").gates[0], 2);
+assert.equal(quarterMap.quarters.find(q => q.id === "duality").gates[0], 7);
+assert.equal(quarterMap.quarters.find(q => q.id === "mutation").gates[0], 1);
+
+const crossQuarter = retrieveHolisticContext({
+  concept: "gate",
+  gateNumbers: [34, 42, 53],
+  chartGateSet: [34, 42, 53]
+});
+assert.deepEqual(crossQuarter.gate_quarter_context.map(x => [x.gate,x.quarter]), [
+  [34,"Mutation"], [42,"Initiation"], [53,"Civilization"]
+]);
+assert.ok(crossQuarter.gate_quarter_context.every(x => x.chart_defined && x.mapping_status === "provisional"));
+assert.ok(crossQuarter.external_records.some(x => x.id === "EXT-KNOW-QUARTERS-001" && x.status === "accepted"));
+assert.ok(crossQuarter.external_records.some(x => x.id === "EXT-KNOW-QUARTER-GATE-MAP-001" && x.status === "provisional"));
+
+const rpNodes = retrieveHolisticContext({ concept: "personality_nodes" });
+assert.ok(rpNodes.external_records.some(x => x.id === "EXT-KNOW-RP-VIEW-001"));
+const rpSun = retrieveHolisticContext({ concept: "personality_sun" });
+assert.ok(rpSun.external_records.some(x => x.id === "EXT-KNOW-RP-MOTIVATION-001"));
 
 const gateContext = retrieveHolisticContext({ concept: "gate", maxHops: 1 });
 assert.equal(gateContext.missing_concept, false);
