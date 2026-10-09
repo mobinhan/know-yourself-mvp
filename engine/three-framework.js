@@ -68,8 +68,9 @@ export function buildThreeFrameworkInput({ reasoningInput }) {
     layer_3_chatgpt: {
       mode: composed.mode,
       instructions: [
-        ...composed.instructions,
+        ...(composed.instructions ?? []),
         "3framework protocol: before making any chart-specific claim, check the relevant canonical evidence supplied in layer_1_canonical_chart_and_evidence.",
+        "If mode is insufficient_evidence, do not answer chart-specific claims; state the specific evidence target that is missing.",
         "Use canonical_gate_checks for gate questions. activated means the natal activation is present; not_activated means the complete supplied canonical natal evidence does not contain it; unknown means the required evidence is incomplete.",
         "Do not treat a gate catalogue or channel catalogue as evidence of activation or definition.",
         "Layer 2 shapes relevance and presentation only. It must never override layer 1 chart mechanics, evidence, or source-backed claims.",
