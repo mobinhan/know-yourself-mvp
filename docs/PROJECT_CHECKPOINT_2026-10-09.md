@@ -11,7 +11,7 @@
 - Workflow: `.github/workflows/gate-line-tests.yml`. It runs Python 3.12 unittest tests on relevant pushes/PRs and supports manual dispatch.
 - Draft validation PR #1 remains open and unmerged: https://github.com/mobinhan/know-yourself-mvp/pull/1
 - PR #1 is a large change set (previously reported as about 75 commits / 27 files); review before any merge.
-- Vercel check has been blocked by a build-rate-limit message: https://vercel.com/mobinhan-7634?upgradeToPro=build-rate-limit. This is distinct from the passing Python regression tests.
+- Historical note: Vercel previously reported build-rate-limit failures; the user subsequently instructed that Vercel be removed from this project. Repository configuration has been removed; this historical failure is no longer an active deployment task.
 - No successful live interpretation from the deployed app has been verified. OpenAI key/configuration and a working live endpoint have not been confirmed.
 
 ## Architecture contract
@@ -38,7 +38,7 @@ In `api/interpretation_provider.py`, `_select_knowledge`:
 
 ## Next work — continue autonomously
 1. Inspect `api/interpretation_provider.py`, the synthesis contract tests, and endpoint/deployment configuration for request schema and response normalization.
-2. Identify a safe way to verify live integration without exposing secrets or triggering unnecessary Vercel builds.
+2. Identify a safe way to verify live integration without exposing secrets. Lovable is the live web-app environment; do not trigger Vercel builds.
 3. Add an optional, explicitly gated live integration test only if it can safely avoid logging secrets; do not assume `OPENAI_API_KEY` exists.
 4. Build/maintain an offline interpretation-quality rubric and fixtures for source fidelity, chart-fact integrity, personalization, depth, uncertainty, and unsupported-claim control.
 5. Clearly distinguish offline/mock contract validation from real model-quality evaluation. Do not claim live quality has passed until real outputs are assessed.
@@ -60,7 +60,7 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - Recovered desktop checkpoint: `7e49fbdef140a1a79333235d891a40726ff9dc39`, committed at 15:53:15 ICT on 2026-10-09.
 - The Gate-line regression workflow run #18 passed for checkpoint commit `7e49fbdef140a1a79333235d891a40726ff9dc39`: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37907754627
 - Branch heads differ: `main` currently points to `9b503db604b680fccbc7b962a59ce9fa19776a39`; `feature/live-api-v1` contains the newer desktop checkpoint and must be preserved. Do not merge PR #1 without explicit approval.
-- Deployment remains unverified; the prior Vercel build-rate-limit blocker is not evidence of a code failure.
+- Lovable live behaviour remains unverified. Vercel is removed from the repository workflow by user decision.
 - Next action: resume the feature branch from the checkpoint, verify live integration safely without exposing secrets, then improve offline interpretation-quality fixtures. Inspect the desktop working tree before any pull/reset/merge if local-only edits may exist.
 
 
@@ -79,7 +79,18 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 
 - User confirmed that **Lovable is the live web-app interface/build environment currently being used**.
 - Workflow roles: Lovable = interface build/preview; GitHub = source control and recovery; GitHub Actions = automated tests; Supabase = backend/data.
-- **Vercel is not required for the routine workflow by default.** Leave the existing Vercel project untouched; do not make Vercel deployment/build-rate-limit troubleshooting the next task unless a separate Vercel deployment need is established.
+- **Vercel has been removed from the repository workflow.** `vercel.json` deleted; `.gitignore`, CI triggers, README, and recovery docs updated. Do not use or reintroduce Vercel unless the user explicitly asks.
 - Do not assume Lovable has synchronized every latest GitHub commit; verify synchronization and test live behaviour separately from CI.
-- No Lovable, Vercel, Supabase, deployment, or app configuration was changed as part of recording this documentation clarification.
+- Repository-side Vercel config changes were made after the user explicitly requested removal. Lovable and Supabase configurations were not changed. The connected Vercel account could not be accessed to delete its external project (403 scope authorization), so dashboard cleanup remains user-action-only.
 - Resume action: follow this workflow in `docs/CONTINUITY_PROTOCOL.md` and `RESUME.md`; continue from the existing checkpoint's next engineering task, while preserving desktop-only changes and the no-merge-without-approval rule.
+
+
+## Vercel removal execution checkpoint — 2026-10-09
+
+- User explicitly requested: remove Vercel from the project entirely; reinstall later only if needed.
+- Deleted `vercel.json` from `feature/live-api-v1`.
+- Removed `.vercel/` from `.gitignore` and removed `vercel.json` from the Step 1 CI path filters.
+- Updated `README.md`, `RESUME.md`, and this protocol/checkpoint to make Lovable the live app environment and Vercel not part of the workflow.
+- External Vercel project deletion was attempted via the connected Vercel integration but blocked by HTTP 403 scope authorization (`mobinhan-7634`). No claim is made that the external Vercel project or GitHub App integration has been deleted.
+- No PR merged; PR #1 remains open/draft. API source code was preserved to avoid deleting application logic without validating the Lovable/Supabase runtime dependency.
+- Next: verify remote branch HEAD and file contents; run focused regression CI; then continue interpretation-quality/live integration validation using Lovable and Supabase, not Vercel.
