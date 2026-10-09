@@ -81,7 +81,7 @@ const supportedDraft = composeAnswer({
     knowledge_basis: [],
     relationship_basis: ["REL-GATE-QUARTER", "REL-PERSONALITY-SUN-RP-MOTIVATION", "REL-PERSONALITY-NODES-RP-VIEW"],
     interpretation: "This combines a provisional wheel mapping with source-backed substructure relationships.",
-    limitations: ["The gate-to-quarter mapping remains provisional pending primary-source validation."]
+    limitations: ["Quarter mapping is cross-checked against the supplied primary reference; Rave Psychology is interpreted only through verified Personality substructure."]
   }
 });
 const supportedFinal = buildGroundedAnswer({ reasoningInput, draft: supportedDraft });
