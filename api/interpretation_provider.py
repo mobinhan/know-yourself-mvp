@@ -74,6 +74,15 @@ def _select_knowledge(question: str, foundation: dict) -> tuple[list[dict], list
             and (gate_number, line_number) in active_gate_lines
         )
         overlap = len(terms.intersection(set(re.findall(r"[a-z0-9-]+", searchable))))
+        is_gate_line_specific = (
+            "gate-line synthesis" in searchable
+            or "gate_line_synthesis" in searchable
+            or re.search(r"\b57[.-]4\b", str(record.get("id", "")).lower()) is not None
+        )
+        # Never admit a specific Gate 57.4 archetype through generic keyword
+        # overlap when the queried activation is absent from the canonical chart.
+        if is_gate_line_specific and gate_number == 57 and line_number == 4 and not exact_gate_line:
+            continue
         if exact_gate_line or overlap >= 2:
             # Reserve the limited external-evidence budget for an exact, active
             # gate-line source before generic keyword matches can crowd it out.
