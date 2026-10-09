@@ -1,0 +1,1268 @@
+{
+  "version": "1.0.0",
+  "gates": [
+    {
+      "gate": 1,
+      "title": "SELF-EXPRESSION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 6,
+      "detail_status": "source_metadata",
+      "channels": [
+        "1-8"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 2,
+      "title": "HIGHER KNOWING",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 8,
+      "detail_status": "source_metadata",
+      "channels": [
+        "2-14"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 3,
+      "title": "ORDERING",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 10,
+      "detail_status": "source_metadata",
+      "channels": [
+        "3-60"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 4,
+      "title": "FORMULIZATION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 12,
+      "detail_status": "source_metadata",
+      "channels": [
+        "4-63"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 5,
+      "title": "FIXED RHYTHMS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 14,
+      "detail_status": "source_metadata",
+      "channels": [
+        "5-15"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 6,
+      "title": "FRICTION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 16,
+      "detail_status": "source_metadata",
+      "channels": [
+        "6-59"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 7,
+      "title": "THE ROLE OF THE SELF",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 18,
+      "detail_status": "source_metadata",
+      "channels": [
+        "7-31"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 8,
+      "title": "CONTRIBUTION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 20,
+      "detail_status": "source_metadata",
+      "channels": [
+        "1-8"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 9,
+      "title": "FOCUS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 22,
+      "detail_status": "source_metadata",
+      "channels": [
+        "9-52"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 10,
+      "title": "THE BEHAVIOUR OF THE SELF",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 24,
+      "detail_status": "source_metadata",
+      "channels": [
+        "10-20",
+        "10-34",
+        "10-57"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 11,
+      "title": "IDEAS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 26,
+      "detail_status": "source_metadata",
+      "channels": [
+        "11-56"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 12,
+      "title": "CAUTION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 28,
+      "detail_status": "source_metadata",
+      "channels": [
+        "12-22"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 13,
+      "title": "THE LISTENER",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 30,
+      "detail_status": "source_metadata",
+      "channels": [
+        "13-33"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 14,
+      "title": "POWER SKILLS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 32,
+      "detail_status": "source_metadata",
+      "channels": [
+        "2-14"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 15,
+      "title": "EXTREMES",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 34,
+      "detail_status": "source_metadata",
+      "channels": [
+        "5-15"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 16,
+      "title": "SKILLS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 36,
+      "detail_status": "source_metadata",
+      "channels": [
+        "16-48"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 17,
+      "title": "OPINIONS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 38,
+      "detail_status": "source_metadata",
+      "channels": [
+        "17-62"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 18,
+      "title": "CORRECTION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 40,
+      "detail_status": "source_metadata",
+      "channels": [
+        "18-58"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 19,
+      "title": "WANTING",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 42,
+      "detail_status": "source_metadata",
+      "channels": [
+        "19-49"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 20,
+      "title": "THE NOW",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 44,
+      "detail_status": "source_metadata",
+      "channels": [
+        "10-20",
+        "20-34",
+        "20-57"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 21,
+      "title": "THE HUNTER/HUNTRESS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 46,
+      "detail_status": "source_metadata",
+      "channels": [
+        "21-45"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 22,
+      "title": "OPENNESS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 48,
+      "detail_status": "source_metadata",
+      "channels": [
+        "12-22"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 23,
+      "title": "ASSIMILATION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 50,
+      "detail_status": "source_metadata",
+      "channels": [
+        "23-43"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 24,
+      "title": "RATIONALIZING",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 52,
+      "detail_status": "source_metadata",
+      "channels": [
+        "24-61"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 25,
+      "title": "THE SPIRIT OF THE SELF",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 54,
+      "detail_status": "source_metadata",
+      "channels": [
+        "25-51"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 26,
+      "title": "THE EGOIST",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 56,
+      "detail_status": "source_metadata",
+      "channels": [
+        "26-44"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 27,
+      "title": "CARING",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 58,
+      "detail_status": "source_metadata",
+      "channels": [
+        "27-50"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 28,
+      "title": "THE GAME PLAYER",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 60,
+      "detail_status": "source_metadata",
+      "channels": [
+        "28-38"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 29,
+      "title": "SAYING YES",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 62,
+      "detail_status": "source_metadata",
+      "channels": [
+        "29-46"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 30,
+      "title": "RECOGNITION OF FEELINGS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 64,
+      "detail_status": "source_metadata",
+      "channels": [
+        "30-41"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 31,
+      "title": "LEADING",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 66,
+      "detail_status": "source_metadata",
+      "channels": [
+        "7-31"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 32,
+      "title": "CONTINUITY",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 68,
+      "detail_status": "source_metadata",
+      "channels": [
+        "32-54"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 33,
+      "title": "PRIVACY",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 70,
+      "detail_status": "source_metadata",
+      "channels": [
+        "13-33"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 34,
+      "title": "POWER",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 32,
+      "detail_status": "source_metadata",
+      "channels": [
+        "10-34",
+        "20-34",
+        "34-57"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 35,
+      "title": "CHANGE",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 74,
+      "detail_status": "source_metadata",
+      "channels": [
+        "35-36"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 36,
+      "title": "CRISIS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 76,
+      "detail_status": "source_metadata",
+      "channels": [
+        "35-36"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 37,
+      "title": "FRIENDSHIP",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 78,
+      "detail_status": "source_metadata",
+      "channels": [
+        "37-40"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 38,
+      "title": "THE FIGHTER",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 80,
+      "detail_status": "source_metadata",
+      "channels": [
+        "28-38"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 39,
+      "title": "THE PROVOCATEUR",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 82,
+      "detail_status": "source_metadata",
+      "channels": [
+        "39-55"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 40,
+      "title": "ALONENESS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 84,
+      "detail_status": "source_metadata",
+      "channels": [
+        "37-40"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 41,
+      "title": "CONTRACTION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 86,
+      "detail_status": "source_metadata",
+      "channels": [
+        "30-41"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 42,
+      "title": "GROWTH",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 88,
+      "detail_status": "source_metadata",
+      "channels": [
+        "42-53"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 43,
+      "title": "INSIGHT",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 90,
+      "detail_status": "source_metadata",
+      "channels": [
+        "23-43"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 44,
+      "title": "ALERTNESS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 92,
+      "detail_status": "source_metadata",
+      "channels": [
+        "26-44"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 45,
+      "title": "THE GATHERER",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 94,
+      "detail_status": "source_metadata",
+      "channels": [
+        "21-45"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 46,
+      "title": "THE DETERMINATION OF THE SELF",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 96,
+      "detail_status": "source_metadata",
+      "channels": [
+        "29-46"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 47,
+      "title": "REALIZING",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 98,
+      "detail_status": "source_metadata",
+      "channels": [
+        "47-64"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 48,
+      "title": "DEPTH",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 100,
+      "detail_status": "source_metadata",
+      "channels": [
+        "16-48"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 49,
+      "title": "PRINCIPLES",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 102,
+      "detail_status": "source_metadata",
+      "channels": [
+        "19-49"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 50,
+      "title": "VALUES",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 104,
+      "detail_status": "source_metadata",
+      "channels": [
+        "27-50"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 51,
+      "title": "SHOCK",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 106,
+      "detail_status": "source_metadata",
+      "channels": [
+        "25-51"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 52,
+      "title": "INACTION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 108,
+      "detail_status": "source_metadata",
+      "channels": [
+        "9-52"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 53,
+      "title": "BEGINNINGS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 110,
+      "detail_status": "source_metadata",
+      "channels": [
+        "42-53"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 54,
+      "title": "AMBITION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 112,
+      "detail_status": "source_metadata",
+      "channels": [
+        "32-54"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 55,
+      "title": "SPIRIT",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 114,
+      "detail_status": "source_metadata",
+      "channels": [
+        "39-55"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 56,
+      "title": "STIMULATION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 116,
+      "detail_status": "source_metadata",
+      "channels": [
+        "11-56"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 57,
+      "title": "INTUITIVE INSIGHT",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 118,
+      "detail_status": "source_metadata",
+      "channels": [
+        "10-57",
+        "20-57",
+        "34-57"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 58,
+      "title": "ALIVENESS",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 120,
+      "detail_status": "source_metadata",
+      "channels": [
+        "18-58"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 59,
+      "title": "SEXUALITY",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 122,
+      "detail_status": "source_metadata",
+      "channels": [
+        "6-59"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 60,
+      "title": "ACCEPTANCE",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 124,
+      "detail_status": "source_metadata",
+      "channels": [
+        "3-60"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 61,
+      "title": "MYSTERY",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 126,
+      "detail_status": "source_metadata",
+      "channels": [
+        "24-61"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 62,
+      "title": "DETAIL",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 128,
+      "detail_status": "source_metadata",
+      "channels": [
+        "17-62"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 63,
+      "title": "DOUBT",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 130,
+      "detail_status": "source_metadata",
+      "channels": [
+        "4-63"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    },
+    {
+      "gate": 64,
+      "title": "CONFUSION",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 132,
+      "detail_status": "source_metadata",
+      "channels": [
+        "47-64"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "source_metadata"
+      ],
+      "note": "Source-backed gate title and catalogue relationships. Detailed teaching text remains gated by source/licensing policy."
+    }
+  ],
+  "centres": [
+    {
+      "id": "head",
+      "title": "Head"
+    },
+    {
+      "id": "ajna",
+      "title": "Ajna"
+    },
+    {
+      "id": "throat",
+      "title": "Throat"
+    },
+    {
+      "id": "g",
+      "title": "G / Identity"
+    },
+    {
+      "id": "heart",
+      "title": "Heart / Ego"
+    },
+    {
+      "id": "sacral",
+      "title": "Sacral"
+    },
+    {
+      "id": "solar_plexus",
+      "title": "Solar Plexus"
+    },
+    {
+      "id": "spleen",
+      "title": "Spleen"
+    },
+    {
+      "id": "root",
+      "title": "Root"
+    }
+  ],
+  "detailed_records": {
+    "34": {
+      "gate": 34,
+      "title": "Gate 34: POWER",
+      "source_id": "SRC_RAVE_ICHING",
+      "source_page": 34,
+      "detail_status": "source_backed",
+      "channels": [
+        "10-34",
+        "20-34",
+        "34-57"
+      ],
+      "source_ids": [
+        "SRC_RAVE_ICHING"
+      ],
+      "claim_kinds": [
+        "mechanical_fact",
+        "official_teaching"
+      ],
+      "note": "Detailed teaching is transcribed/paraphrased only from the verified Complete Rave I’Ching extraction; no missing interpretation has been filled from general Human Design knowledge.",
+      "source_title": "THE GATE OF POWER",
+      "channel_teachings": {
+        "34-57": "Power, A design of an archetype",
+        "20-34": "Charisma, A design where thoughts must be deeds",
+        "10-34": "Exploration, A design of following one's convictions"
+      },
+      "centre": "Sacral",
+      "circuit": "Centering",
+      "teaching": "The source presents Gate 34 as powerful Sacral energy: available for use, capable of fuelling three different channels, and closely connected with independent action and conviction. It also stresses that this power is not aware in itself, and that awareness matters in how the power is expressed.",
+      "keynote": "Power is only great when its display or use serves the common good.",
+      "lines": [
+        {
+          "line": 6,
+          "title": "Common sense",
+          "theme": "Knowing when enough is enough."
+        },
+        {
+          "line": 5,
+          "title": "Annihilation",
+          "theme": "The total elimination of resistance."
+        },
+        {
+          "line": 4,
+          "title": "Triumph",
+          "theme": "The freedom in absolute victory to unlimited use of power."
+        },
+        {
+          "line": 3,
+          "title": "Machismo",
+          "theme": "The indiscriminate display of power."
+        },
+        {
+          "line": 2,
+          "title": "Momentum",
+          "theme": "The power that grows when victory is in sight."
+        },
+        {
+          "line": 1,
+          "title": "The bully",
+          "theme": "The indiscriminate use of power."
+        }
+      ],
+      "source_note": "Detailed teaching is transcribed/paraphrased only from the verified Complete Rave I’Ching extraction; no missing interpretation has been filled from general Human Design knowledge."
+    }
+  }
+}
