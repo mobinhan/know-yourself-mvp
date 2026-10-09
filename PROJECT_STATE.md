@@ -82,3 +82,44 @@ The GitHub commit status also contains a separate Vercel deployment-rate-limit f
 ## Next logical stage
 
 Continue hardening Step 5 AI reasoning/answering until a major decision or major update is reached. Then proceed to Supabase, using the installed Supabase skill and the persistence requirements revealed by Step 5.
+
+## Confirmed Step 5 requirements — adaptive interpretation and persistent continuity
+
+**Confirmed:** 2026-10-09
+
+### Adaptive Interpretation
+- Adapt explanation depth to the user's Human Design knowledge level.
+- Adapt language, tone, structure and examples to the user's preferences and current question.
+- Use user-provided circumstances and relevant conversation history when they improve the answer.
+- Learn preferences gradually; distinguish explicit user statements from tentative inferences.
+- Allow users to inspect, correct, reset and delete remembered preferences/context.
+- Personalisation changes presentation and relevance, never chart mechanics, evidence standards, or the certainty of a claim.
+- Do not simply affirm the user's assumptions. The critic must guard against confirmation loops, over-personalisation and unsupported claims about the user.
+
+### Persistent memory and project continuity
+- Treat persistent, cross-session memory as a product requirement, not an assumption about the model's conversational memory.
+- Keep user preferences, personal context, conversation summaries, chart truth and project/build state logically separated.
+- On resumption, retrieve the latest authoritative project checkpoint and verify repository state before continuing.
+- Checkpoints should record completed and verified work, current stage, latest relevant commit, outstanding issues, test results and next action.
+- Canonical chart data remains the sole authority for chart mechanics; user memory and conversation history must never override it.
+
+## Confirmed quarterly knowledge-source review
+
+**Confirmed:** 2026-10-09
+
+The knowledge system should run a quarterly review of registered Human Design sources and controlled knowledge records. This is a maintenance pipeline, not permission for an unconstrained AI self-update.
+
+Quarterly workflow:
+1. Revisit registered source URLs and official source indexes; detect changed, moved, newly published or unavailable material.
+2. Prioritise P1 primary / lineage-controlled sources, while reviewing relevant P2–P4 sources according to their roles.
+3. Record source provenance, author/publisher, URL, observed or publication date where available, access/check date, tier, topic coverage and rights/use restrictions.
+4. Deduplicate new material; extract only permitted metadata and concise paraphrases; preserve attribution and source links.
+5. Classify each proposed record as foundational, interpretive, experiential or critical/contested.
+6. Compare new material against existing records and flag contradictions, uncertain provenance, unsupported claims and source-quality changes.
+7. Keep proposed knowledge changes staged and auditable until validation checks pass. Changes to deterministic mechanics or canonical chart rules must never be made by this source-refresh pipeline.
+8. Produce a quarterly change report listing additions, changes, removals/unavailable sources, conflicts, rights concerns and items requiring human review.
+9. Run the relevant retrieval, evidence-traceability and answer-critic tests before approved records enter the active knowledge layer.
+10. Retain a versioned audit trail so answers and knowledge records can be traced to the source snapshot used.
+
+The intended cadence is once per quarter. The implementation stage and scheduler are still to be built/verified; this entry records the confirmed product requirement, not a claim that the automated pipeline is already running.
+
