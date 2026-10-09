@@ -1,0 +1,121 @@
+{
+  "version": "1.0.0",
+  "status": "provisional",
+  "purpose": "Source-traceable lookup from gate number to quarter context; does not alter deterministic chart mechanics.",
+  "source_id": "EXT_HUMAN_DESIGN_SO",
+  "official_framework_source_id": "EXT_JOVIAN_ARCHIVE",
+  "validation": {
+    "expected_gate_count": 64,
+    "gates_per_quarter": 16,
+    "unique_gate_assignments": true,
+    "boundary_gates": {
+      "initiation": 13,
+      "civilization": 2,
+      "duality": 7,
+      "mutation": 1
+    },
+    "note": "Integrity checks validate coverage, uniqueness, counts and boundaries. They do not convert the secondary mapping source into primary authority."
+  },
+  "quarters": [
+    {
+      "id": "initiation",
+      "name": "Initiation",
+      "theme": "purpose fulfilled through mind",
+      "start_gate": 13,
+      "end_gate": 24,
+      "gates": [
+        13,
+        49,
+        30,
+        55,
+        37,
+        63,
+        22,
+        36,
+        25,
+        17,
+        21,
+        51,
+        42,
+        3,
+        27,
+        24
+      ]
+    },
+    {
+      "id": "civilization",
+      "name": "Civilization",
+      "theme": "purpose fulfilled through form",
+      "start_gate": 2,
+      "end_gate": 33,
+      "gates": [
+        2,
+        23,
+        8,
+        20,
+        16,
+        35,
+        45,
+        12,
+        15,
+        52,
+        39,
+        53,
+        62,
+        56,
+        31,
+        33
+      ]
+    },
+    {
+      "id": "duality",
+      "name": "Duality",
+      "theme": "purpose fulfilled through bonding",
+      "start_gate": 7,
+      "end_gate": 44,
+      "gates": [
+        7,
+        4,
+        29,
+        59,
+        40,
+        64,
+        47,
+        6,
+        46,
+        18,
+        48,
+        57,
+        32,
+        50,
+        28,
+        44
+      ]
+    },
+    {
+      "id": "mutation",
+      "name": "Mutation",
+      "theme": "purpose fulfilled through transformation",
+      "start_gate": 1,
+      "end_gate": 19,
+      "gates": [
+        1,
+        43,
+        14,
+        34,
+        9,
+        5,
+        26,
+        11,
+        10,
+        58,
+        38,
+        54,
+        61,
+        60,
+        41,
+        19
+      ]
+    }
+  ]
+}
