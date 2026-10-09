@@ -173,3 +173,17 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - PR #1 remains open, draft, and unmerged. One intermediate metadata read reported `mergeable: false`; the final recheck reports `mergeable: true`. Do not merge without explicit user approval.
 - No Lovable access, no Vercel use, no live OpenAI request. Local working tree not inspected; unpushed desktop edits cannot be ruled out.
 - **Next action:** continue Step 3 by building concept-diverse, source-grounded evaluation fixtures for direct ChatGPT synthesis. Do not reinstate a post-synthesis critic. Re-check CI for any future code changes.
+
+
+## Cross-device save receipt — 2026-10-09 22:57 ICT
+
+- User requested that the work created so far be saved because a new MCP connection/tooling is available and they intend to continue on mobile.
+- Re-read this checkpoint, `RESUME.md`, `docs/CONTINUITY_PROTOCOL.md`, and `docs/INTERPRETATION_QUALITY_RUBRIC.md` from `feature/live-api-v1` before saving this receipt.
+- The current working architecture remains the user-confirmed **3framework**: (1) Canonical Chart + source-linked Evidence, (2) Adaptive User Context, (3) direct ChatGPT synthesis. The separate critic path must not be wired into the active provider.
+- Current next engineering task remains Step 3: expand concept-diverse, source-grounded offline evaluation fixtures for direct synthesis; then evaluate live model output only when live integration is safely available. Do not claim live model quality is verified.
+- The latest main-branch commit surfaced by GitHub search is `9b503db604b680fccbc7b962a59ce9fa19776a39` (“Run channel catalogue integrity checks in Python CI”). This is a main-branch commit, **not** proof of the feature branch head. Preserve the feature branch separately; do not replace or merge branches based on this result.
+- Pull request #1 remains the draft validation PR and must not be merged without explicit approval: https://github.com/mobinhan/know-yourself-mvp/pull/1
+- Platform boundaries remain binding: GitHub for source control/recovery, GitHub Actions for CI, Supabase for backend/data; Vercel is removed from the project workflow; Lovable remains read-only unless the user explicitly approves a specific action and its expected credit cost is explained first.
+- This environment cannot inspect the user's desktop working tree; **local working tree not inspected; unpushed desktop edits cannot be ruled out**. Do not reset, overwrite, force-push, or merge during mobile recovery.
+- The checkpoint/recovery documentation was read through the newly available MCP tooling. This save is documentation-only; no application code, Lovable project, Supabase configuration, deployment, or PR state was changed. No tests were run as part of this documentation-only save.
+- **Resume instruction:** on mobile, read `RESUME.md` and this checkpoint from the latest verified `feature/live-api-v1` head, verify the current feature/main heads and CI, then continue Step 3. Do not repeat completed work unless current CI or code inspection shows a regression.
