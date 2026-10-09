@@ -29,6 +29,7 @@ export function buildGroundedAnswer({ reasoningInput, draft }) {
     answer: draft.answer,
     factual_basis,
     knowledge_basis,
+    relationship_basis,
     interpretation: draft.interpretation ?? "",
     limitations: draft.limitations ?? []
   }, reasoningInput.evidence ?? [], reasoningInput.knowledge ?? [], suppliedRelationships);
@@ -52,6 +53,7 @@ export function createMockReasoningDraft(reasoningInput) {
     answer: `Based on your verified chart evidence, I can answer: ${q}`,
     factual_basis: evidenceIds,
     knowledge_basis: knowledgeIds,
+    relationship_basis: [],
     interpretation: "This is an interpretation of the supplied evidence and controlled knowledge, not a recalculation of the chart.",
     limitations: []
   };
