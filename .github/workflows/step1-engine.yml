@@ -8,6 +8,7 @@ on:
       - "engine/**"
       - "supabase/**"
       - "api/**"
+      - "tests/**"
       - "index.html"
       - "requirements.txt"
       - ".github/workflows/step1-engine.yml"
