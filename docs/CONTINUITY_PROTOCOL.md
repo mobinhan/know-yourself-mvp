@@ -156,3 +156,8 @@ Use the following as the default next-chat instruction, updating the branch/task
 ### Required first response after a mobile/new-chat handoff
 
 Briefly confirm the current verified branch/checkpoint, state the exact next engineering task, and proceed with the task rather than asking the user to re-explain the project. If live state cannot be verified, state the precise gap and do the safe work that remains possible.
+
+
+## Canonical command alias: `Resume KY`
+
+Whenever the user sends `Resume KY`, execute the full cross-device recovery workflow. Start by reading the latest verified `RESUME.md` on the active branch; then read this protocol and the latest checkpoint, verify current GitHub branch/PR/CI state and accessible backend/app state, protect unpushed desktop work, and continue the recorded next engineering task without requiring the user to restate settled decisions. Treat `Resume KY` as an execution command, not a request for instructions or a summary. Keep all architecture and platform approval constraints in force.
