@@ -19,7 +19,10 @@ export function buildGroundedAnswer({ reasoningInput, draft }) {
   const allowedEvidence = new Set((reasoningInput.evidence ?? []).map(x => x.id));
   const allowedKnowledge = new Set((reasoningInput.knowledge ?? []).map(x => x.id));
   const prompt = buildReasoningPromptInput(reasoningInput);
-  const suppliedRelationships = [\n    ...(prompt.holistic_context ?? []).flatMap(context => context.relationships ?? []),\n    ...(prompt.rave_psychology_context?.framework?.relationships ?? [])\n  ];
+  const suppliedRelationships = [
+    ...(prompt.holistic_context ?? []).flatMap(context => context.relationships ?? []),
+    ...(prompt.rave_psychology_context?.framework?.relationships ?? [])
+  ];
   const allowedRelationships = new Set(suppliedRelationships.filter(x => x.status === "validated").map(x => x.id));
   const factual_basis = [...new Set((draft.factual_basis ?? []).filter(id => allowedEvidence.has(id)))];
   const knowledge_basis = [...new Set((draft.knowledge_basis ?? []).filter(id => allowedKnowledge.has(id)))];
