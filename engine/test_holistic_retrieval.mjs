@@ -69,6 +69,24 @@ assert.ok(rpNodes.external_records.some(x => x.id === "EXT-KNOW-RP-VIEW-001"));
 const rpSun = retrieveHolisticContext({ concept: "personality_sun" });
 assert.ok(rpSun.external_records.some(x => x.id === "EXT-KNOW-RP-MOTIVATION-001"));
 
+const rpColorMatch = retrieveHolisticContext({
+  concept: "rave_psychology",
+  maxHops: 2,
+  personalitySunColour: 3,
+  personalityNodeColours: [6,6]
+});
+assert.ok(rpColorMatch.relationships.some(x => x.id === "REL-PERSONALITY-SUN-NODES-COLOR-TRANSFERENCE-3-6"));
+assert.ok(rpColorMatch.records.some(x => x.id === "HD-KNOW-RP-TRANSFERENCE-3-6-001"));
+
+const rpColorMismatch = retrieveHolisticContext({
+  concept: "rave_psychology",
+  maxHops: 2,
+  personalitySunColour: 2,
+  personalityNodeColours: [6,6]
+});
+assert.ok(!rpColorMismatch.relationships.some(x => x.id === "REL-PERSONALITY-SUN-NODES-COLOR-TRANSFERENCE-3-6"));
+assert.ok(!rpColorMismatch.records.some(x => x.id === "HD-KNOW-RP-TRANSFERENCE-3-6-001"));
+
 const gateContext = retrieveHolisticContext({ concept: "gate", maxHops: 1 });
 assert.equal(gateContext.missing_concept, false);
 assert.ok(gateContext.records.some(record => record.id === "HD-KNOW-GATE-001"));
