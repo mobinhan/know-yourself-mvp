@@ -78,5 +78,30 @@ class GateLineRetrievalTests(unittest.TestCase):
         )
 
 
+    def test_relationship_is_not_attached_when_source_evidence_is_missing(self):
+        relationship = {
+            "id": "REL-GATE-57-LINE-4-DIRECTOR",
+            "status": "validated",
+            "external_knowledge_ids": [GATE_574["id"]],
+        }
+        with patch(
+            "api.interpretation_provider._read_json",
+            side_effect=[
+                {"records": []},
+                {"records": []},
+                {"edges": [relationship]},
+            ],
+        ):
+            _, external, relationships = _select_knowledge(
+                "Explain Gate 57.4", foundation(active=True)
+            )
+        self.assertEqual(external, [])
+        self.assertNotIn(
+            "REL-GATE-57-LINE-4-DIRECTOR",
+            {edge["id"] for edge in relationships},
+        )
+
+
+
 if __name__ == "__main__":
     unittest.main()
