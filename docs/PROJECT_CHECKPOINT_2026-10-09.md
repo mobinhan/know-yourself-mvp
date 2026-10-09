@@ -143,3 +143,18 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - Quality checks remain intentionally conservative and pattern-based. They do not prove general prose/source faithfulness or live model quality. Human-scored fixtures for depth, uncertainty, personalization, and broad paraphrase fidelity remain future work.
 - No Lovable access or changes, no Vercel use, no live OpenAI request, and no PR merge.
 - Next: extend the fixture corpus with several independently sourced gate/line records and representative channel/centre/transit questions; review any potential false positives/negatives before changing fail-closed behaviour.
+
+
+## Hardwired 3framework architecture decision — 2026-10-09
+
+- **User explicitly confirmed 3framework. This is binding and must persist across desktop/mobile, MCP/GitHub recovery, code, prompts, tests, and future continuation.**
+- Canonical specification: [`engine/THREE_FRAMEWORK.md`](../blob/feature/live-api-v1/engine/THREE_FRAMEWORK.md).
+- Active path is exactly: (1) Canonical Chart + source-linked Evidence, (2) Adaptive User Context, (3) direct ChatGPT synthesis.
+- The 5framework remains available for comparison only. Do not blend it into the active 3framework path. No separate interpretation critic, answer critic, reasoning adapter, or extra reasoning layer may be invoked by the 3framework provider without a new explicit user decision.
+- Ordinary response-schema validation, JSON normalization, and filtering evidence IDs to records actually supplied remain allowed as contract/safety handling.
+- Corrected `api/interpretation_provider.py` to remove the post-synthesis `review_interpretation` call and stop returning critic-generated `quality_review` / `needs_review` output. Updated provider contract tests to assert direct synthesis.
+- The standalone `api/interpretation_critic.py` and its tests remain isolated comparison/legacy material only; they are not wired into the active provider path.
+- Prior 27-test and full-engine CI results predate this correction and do not validate the corrected code. Run fresh focused and full CI now.
+- No Lovable access, no Vercel use, no live OpenAI request, and no PR merge.
+- Local working tree not inspected; unpushed desktop edits cannot be ruled out.
+- **Next action:** run the new focused and full engine CI; verify branch HEAD and inspect the updated provider and recovery docs. Continue 3framework fixture expansion only after the corrected path passes.
