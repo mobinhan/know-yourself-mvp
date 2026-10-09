@@ -23,6 +23,7 @@ from timezonefinder import TimezoneFinder
 ROOT = Path(__file__).resolve().parent.parent
 ENGINE_DIR = ROOT / "engine"
 sys.path.insert(0, str(ENGINE_DIR))
+sys.path.insert(0, str(ROOT / "api"))
 from ephemeris import calculate_chart  # noqa: E402
 from temporal_ephemeris import transit_activations  # noqa: E402
 from interpretation_provider import generate_interpretation, InterpretationProviderError  # noqa: E402
