@@ -41,7 +41,7 @@ export function criticAnswer({ answer, factual_basis = [], knowledge_basis = [],
   if (crossMechanicsClaim && !factualBasis.has("E-ACTIVATIONS")) {
     issues.push("missing_factual_basis:E-ACTIVATIONS");
   }
-  const hasSpecificGate57Line4Claim = /\\bgate\\s*57\\s*[.\\/-]\\s*4\\b|\\bgate\\s*57\\s+line\\s+4\\b|\\bgate\\s+57.{0,30}\\bfourth line\\b/.test(text);
+  const hasSpecificGate57Line4Claim = /\bgate\s*57\s*[.\/-]\s*4\b|\bgate\s*57\s+line\s+4\b|\bgate\s+57.{0,30}\bfourth line\b/.test(text);
   if (hasSpecificGate57Line4Claim && !knowledgeIds.has("EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001")) {
     issues.push("missing_knowledge_basis:EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001");
   }
