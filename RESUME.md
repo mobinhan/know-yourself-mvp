@@ -20,6 +20,16 @@ When the user says **“save mcp”**, execute the full procedure in [docs/CONTI
 - main and feature/live-api-v1 have different histories/heads; do not replace one with the other.
 - Pull request #1 was recorded as open and unmerged; verify current status before acting and do not merge without explicit approval.
 
+## Latest verified project state — Vercel removal
+
+- Verified branch before this final resume-file update: `feature/live-api-v1` at `e8972067c011ef243c3b424a7290f1417e3a3d22`.
+- Vercel repository configuration removed: `vercel.json` deleted; `.vercel/` ignore entry removed; CI no longer watches `vercel.json`; README and recovery docs updated.
+- `vercel.json` absence verified through GitHub (404 for the deleted path). `.gitignore` and `.github/workflows/step1-engine.yml` verified without Vercel references.
+- Focused gate-line regression workflow previously passed on the pre-removal code checkpoint: [run #25](https://github.com/mobinhan/know-yourself-mvp/actions/runs/37909816257). The repository config/doc changes themselves have not been followed by a new full regression run.
+- PR #1 remains open, draft, and unmerged. The Vercel status still appears on older commit checks because the external Vercel project/GitHub integration remains attached.
+- Attempted external Vercel project deletion was blocked by 403 scope authorization. Repository cleanup is complete; external dashboard/integration deletion is not verified and requires authorized dashboard access.
+- Lovable remains the primary live web-app environment; do not use Vercel unless the user explicitly reinstates it.
+
 ## Last verified checkpoint before this recovery update
 
 - Desktop checkpoint: [7e49fbdef140a1a79333235d891a40726ff9dc39](https://github.com/mobinhan/know-yourself-mvp/commit/7e49fbdef140a1a79333235d891a40726ff9dc39), committed at 15:53:15 ICT on 2026-10-09.
