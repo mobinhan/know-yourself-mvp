@@ -183,3 +183,16 @@ Important limitation: this is the first retrieval scaffold, not completion of ho
 
 Run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37887033375
 
+## Holistic chart integration — implementation checkpoint
+
+**Updated:** 2026-10-09
+
+- Registered a secondary quarter mapping source at P3 and stored a provisional 64-gate / four-quarter lookup in `engine/quarter-gate-map.json`. The data-integrity test checks 64 unique gate assignments, 16 gates per quarter, and the four start-gate boundaries. The official Jovian Archive glossary validates the four-quarter framework; the individual gate list remains provisional until checked against permitted primary-source material.
+- Added official-source external knowledge records for quarter framework and Rave Psychology foundations, View, and Motivation. Rave Psychology context is assembled from the deterministic Personality Sun and Personality Node activation fields in `E-ACTIVATIONS`, not inferred from the question's gate.
+- Expanded the relationship graph with source-backed gate-to-quarter, quarter-to-Mandala, Personality Sun-to-Motivation and Personality Nodes-to-View relationships. Direct gate-to-Rave-Psychology causality remains pending and is explicitly rejected by the critic.
+- Added `relationship_basis` to the AI reasoning contract (v1.1.0); the answer composer filters relationships to retrieved validated graph edges and the critic requires the appropriate relationship IDs for key cross-concept claims.
+- Added conflict-set packaging for external knowledge records sharing a `conflict_group`; claims remain individually attributable and are surfaced for review rather than silently merged. The new synthetic conflict test validates this behavior; no claim is made that an existing real-source conflict was found.
+- Added `engine/test_holistic_chart_integration.mjs`, which uses the golden chart fixture matching the confirmed 15 April 1982 chart data to test Gate 34 → Mutation quarter context and actual Personality Sun / Node substructure. It also verifies that a supported cross-concept draft passes and an unsupported claim that Gate 34 determines Motivation is rejected.
+
+**Verification boundary:** the automated test covers evidence selection, prompt construction and answer-critic behavior—not live model output. Quarter-to-gate assignments remain provisional; the external LLM is not connected. Individual record lifecycle timestamps, dependency tracking, quarterly source refresh automation and production persistence are still outstanding.
+
