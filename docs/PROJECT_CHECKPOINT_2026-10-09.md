@@ -51,3 +51,14 @@ In `api/interpretation_provider.py`, `_select_knowledge`:
 
 ## Resume note
 On mobile, continue from this checkpoint and the open PR. First verify the branch’s current state and CI status, then proceed with live-integration and interpretation-quality validation. Latest verified regression run at checkpoint: run #17 passed all 7 tests.
+
+
+## Cross-device continuity — protocol added 2026-10-09
+
+- Mandatory procedure: `docs/CONTINUITY_PROTOCOL.md`.
+- Protocol commit on `feature/live-api-v1`: `7edd68f201387e768d5add8fa9645e6408789ca3` (cross-device continuity protocol).
+- Recovered desktop checkpoint: `7e49fbdef140a1a79333235d891a40726ff9dc39`, committed at 15:53:15 ICT on 2026-10-09.
+- The Gate-line regression workflow run #18 passed for checkpoint commit `7e49fbdef140a1a79333235d891a40726ff9dc39`: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37907754627
+- Branch heads differ: `main` currently points to `9b503db604b680fccbc7b962a59ce9fa19776a39`; `feature/live-api-v1` contains the newer desktop checkpoint and must be preserved. Do not merge PR #1 without explicit approval.
+- Deployment remains unverified; the prior Vercel build-rate-limit blocker is not evidence of a code failure.
+- Next action: resume the feature branch from the checkpoint, verify live integration safely without exposing secrets, then improve offline interpretation-quality fixtures. Inspect the desktop working tree before any pull/reset/merge if local-only edits may exist.
