@@ -95,3 +95,27 @@ Whenever the user says **“save mcp”** (case-insensitive; punctuation does no
 Use the following as the default next-chat instruction, updating the branch/task only when verified:
 
 > Resume Know Yourself. First read `RESUME.md` and the project checkpoint on the latest verified `feature/live-api-v1` branch head. Check all relevant branch heads, open PRs, CI, and deployment status. Preserve local desktop files; do not reset, overwrite, or merge. Continue from the checkpoint’s exact next action and do not repeat verified work.
+
+## Know Yourself development and deployment workflow — confirmed 2026-10-09
+
+### Platform responsibilities
+- **Lovable is the primary live web-app build/preview environment** used for the Know Yourself interface. Use it for the interface workflow the user is actually using.
+- **GitHub is the source-control and recovery record**: keep reviewed work and checkpoints on the intended branch; never assume `main` is the latest branch.
+- **GitHub Actions is the automated test/CI layer**. CI success proves only the tests that ran; it does not prove the live Lovable app or real model output works.
+- **Supabase is the backend/data layer** for the project, including the configured database and backend functions.
+- **Vercel is not part of the routine build/test loop by default.** Do not trigger Vercel builds, troubleshoot its build limits, or make Vercel the assumed live interface path unless a separate Vercel deployment is explicitly required and verified.
+
+### Standard work cycle
+1. Resume from `RESUME.md` and the latest verified checkpoint/active feature branch.
+2. Make or guide interface changes through the established Lovable workflow only when the user has explicitly authorized Lovable use; do not infer approval from “proceed.”
+3. Keep the code and decisions synchronized to the intended GitHub branch, taking care not to overwrite desktop-only work.
+4. Run relevant GitHub Actions tests and report exactly what passed or remains untested.
+5. Verify the Lovable preview/live app separately when interface behaviour needs checking; do not equate a green CI run with a live-app check.
+6. Verify Supabase-backed behaviour separately when backend/data behaviour is in scope.
+7. Use Vercel only when there is a specific, confirmed reason to deploy there. A Vercel build-rate-limit or access issue is not automatically a code/CI failure and should not block unrelated development.
+
+### Safety and truthfulness
+- Do not assume Lovable's running app automatically contains every latest GitHub commit; verify the actual synchronization/source state before claiming it does.
+- Do not claim an app is live, deployed, or tested unless that exact state was checked.
+- Do not expose secrets or trigger unnecessary paid builds.
+- Do not merge PR #1 without explicit user approval.
