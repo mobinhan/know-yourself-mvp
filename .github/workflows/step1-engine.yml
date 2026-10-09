@@ -8,6 +8,7 @@ on:
       - "engine/**"
       - "supabase/**"
       - "api/**"
+      - "index.html"
       - "requirements.txt"
       - "vercel.json"
       - ".github/workflows/step1-engine.yml"
