@@ -1,5 +1,8 @@
 # 3framework — Canonical Evidence + Adaptive Context + ChatGPT
 
+> **HARDWIRED USER DECISION:** Know Yourself uses the 3framework as its active interpretation architecture. Do not substitute, blend in, or silently route through the 5framework. This decision is binding for implementation, prompts, tests, checkpoints, and future continuation work.
+
+
 ## Purpose
 3framework is the deliberately simplified answering architecture for Know Yourself:
 
@@ -7,7 +10,7 @@
 2. **Adaptive User Context** — the current request, explicit preferences, confirmed corrections, consented user context and bounded conversation continuity.
 3. **ChatGPT** — directly synthesizes the first two layers into a natural answer. There is no separate interpretation model or mandatory AI critic in this path.
 
-The existing 5framework remains available for comparison. Do not silently treat 3framework as 5framework or route a 3framework answer through the separate critic as if it were part of this design.
+The existing 5framework remains available for comparison only. Its additional reasoning/critic path is not part of the active 3framework request path. Do not silently treat 3framework as 5framework or route a 3framework answer through the separate critic.
 
 ## Invariants
 - Layer 1 is authoritative for natal mechanics, activations, lines, channels, centres, type, strategy, authority, profile and temporal claims.
@@ -31,6 +34,14 @@ The direct ChatGPT input keeps separate fields for:
 - chart/evidence/knowledge packets.
 
 The context fields are intentionally not merged into canonical evidence.
+
+## Implementation guardrail
+
+- The active provider path must pass Layer 1 evidence and Layer 2 context directly to ChatGPT for Layer 3 synthesis.
+- Do not import or invoke `interpretation_critic`, `answer-critic`, `reasoning-adapter`, or any separate post-synthesis reasoning/critic component from the 3framework provider.
+- Normal schema validation, safe JSON normalization, and filtering returned evidence IDs to records actually supplied are input/output contract handling, not an additional interpretation layer; keep these controls.
+- A critic implementation may remain in the repository for isolated comparison/testing, but it must not be called by the 3framework provider or represented as part of its answer path.
+- If a future proposal would change this boundary, stop and ask the user for an explicit architectural decision before implementing it.
 
 ## Status boundary
 This implements the 3framework contract and direct-model input envelope in the repository. It does not by itself connect an external ChatGPT/OpenAI model provider or prove model behaviour; provider integration and live acceptance tests remain separate work. The current repository's provider boundary is provider-neutral.
