@@ -3,7 +3,7 @@
 **State captured:** 2026-10-09
 **Repository:** `mobinhan/know-yourself-mvp`
 **Branch:** `main`
-**Latest verified commit at capture:** `9a4ceb6ec25b2436d6d62e9431f0cec4bc86e358`
+**Latest verified commit:** `abf9919d1c2fb51a1cb03ca763fb5a86ba45fcc7`
 
 ## Working rule
 
@@ -73,11 +73,11 @@ Reasoning safeguards include:
 
 ## Verification at capture
 
-GitHub Actions for commit `9a4ceb6ec25b2436d6d62e9431f0cec4bc86e358`:
+GitHub Actions for commit `abf9919d1c2fb51a1cb03ca763fb5a86ba45fcc7`:
 - JavaScript contract validation — success
 - Python engine validation — success
 
-The GitHub commit status also contains a separate Vercel deployment-rate-limit failure. That is deployment infrastructure and does not invalidate the engine validation. Vercel is not the authority for engine correctness.
+The engine and contract validation are green for this checkpoint.
 
 ## Next logical stage
 
@@ -198,3 +198,32 @@ Run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37887033375
 
 **Verification boundary:** the automated test covers evidence selection, prompt construction and answer-critic behavior—not live model output. Quarter-to-gate assignments are source-validated; the external LLM is not connected. Individual record lifecycle timestamps, dependency tracking, quarterly source refresh automation and production persistence are still outstanding.
 
+
+## Step 5 implementation checkpoint — 2026-10-09
+
+Latest verified implementation commit: `abf9919d1c2fb51a1cb03ca763fb5a86ba45fcc7`.
+GitHub Actions run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37889531663
+- Python engine validation: success
+- JavaScript contract validation: success
+
+### First-class Incarnation Cross context
+- Added dedicated `incarnation_cross_context` to reasoning prompt assembly.
+- The four Cross slots are checked against canonical `E-CROSS` and `E-ACTIVATIONS` evidence: Personality Sun/Earth and Design Sun/Earth, each with gate and line.
+- Each gate gets its own quarter lookup; Personality Sun quarter is explicitly identified as the primary Cross anchor.
+- Profile is included only when supplied by deterministic profile evidence.
+- Cross name is not inferred if absent. Missing or mismatched activations return an incomplete context with explicit missing slots.
+- Question understanding now requests `E-CROSS` when the user asks about the Incarnation Cross/Cross.
+
+### User adaptation policy groundwork
+- Added `engine/user-adaptation.js` and CI tests.
+- Explicit confirmed knowledge-level, tone and language preferences outrank inferred preferences.
+- Inferred preferences require user consent and confidence >= 0.8; personal context requires separate consent and must be explicit.
+- Chart truth, source knowledge and system instructions are not eligible as remembered personal context.
+- Policy is wired into prompt assembly and explicitly restricted to presentation/relevance—not chart mechanics, evidence standards or claim certainty.
+
+### Still incomplete
+- No live external LLM provider; the reasoning provider remains mock/provider-neutral.
+- No durable cross-session preference or memory storage, learning lifecycle, user inspection/correction/reset/delete workflow, or production personalization controls yet.
+- Conversation context is still a bounded in-memory turn window, not persistent user memory.
+- No production quarterly knowledge-source scheduler/refresh execution yet.
+- Real-model adversarial, multi-user privacy and end-to-end acceptance tests remain necessary before claiming the complete AI system is finished.
