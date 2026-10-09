@@ -208,6 +208,29 @@
       },
       "rights_policy": "Store metadata, source links, concise paraphrase and provenance. Do not reproduce copyrighted posts, videos, images or transcripts unless rights explicitly permit fuller use.",
       "status": "seeded"
+    },
+    {
+      "id": "EXT_HUMAN_DESIGN_SO",
+      "name": "HumanDesign.so — Human Design Foundations",
+      "url": "https://humandesign.so/foundations/the-four-quarters",
+      "tier": "P3",
+      "content_types": [
+        "article"
+      ],
+      "lineage": "Independent educational explainer; used as a secondary cross-check for gate groupings, not as primary lineage authority.",
+      "authority_scope": [
+        "interpretation",
+        "reference_mapping"
+      ],
+      "quality": {
+        "authorship": 3,
+        "lineage": 2,
+        "traceability": 4,
+        "experience": 3,
+        "independence": 3
+      },
+      "rights_policy": "Store URL, metadata and concise paraphrase only; do not reproduce source text. Treat gate-grouping data as provisional pending primary-source validation.",
+      "status": "provisional"
     }
   ]
 }
