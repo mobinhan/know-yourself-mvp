@@ -117,3 +117,16 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - PR #1 remains open/draft/unmerged. Latest observed metadata marked it non-mergeable; do not merge. Inspect divergence/conflicts separately before considering review.
 - **Local working tree not inspected; unpushed desktop edits cannot be ruled out.**
 - Next action: continue offline semantic-quality fixtures and inspect PR divergence safely. Any live-app validation remains blocked until the user explicitly authorizes Lovable access.
+
+
+## Latest interpretation-quality checkpoint — 2026-10-09
+
+- Feature branch head at implementation verification: `ef96b1872ac24c56be86569446136f1c2feb52bd`.
+- Step 2 gap is addressed for the Python API route by `api/interpretation_critic.py`, a deterministic post-synthesis quality gate. It does not add a second AI model or alter the 3framework contract.
+- High-confidence explicit chart contradictions and unsupported source-specific gate-line synthesis fail closed; clean answers remain ready. This is not comprehensive semantic validation.
+- Added `tests/test_interpretation_critic.py`, expanded `tests/test_gate_line_synthesis_contract.py`, and wired both into `.github/workflows/step1-engine.yml`.
+- Focused Gate-line regression passed: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37913796218
+- Full Step 1 Engine Validation passed: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37913789162
+- Fixed the V1 frontend/API contract test so it no longer requires the user-deleted `vercel.json`; CI now tests the Python route handler instead.
+- No OpenAI live request was sent. No Lovable access or changes. No Vercel action. PR #1 remains open and unmerged.
+- Next action: Step 3 — expand semantic-quality fixtures across representative gates/lines, channels, centres, chart mechanics, source faithfulness, natal-versus-transit distinctions, and cross-concept claims. Gate 57 is one fixture, not the whole coverage strategy.
