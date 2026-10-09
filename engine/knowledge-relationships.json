@@ -1,0 +1,151 @@
+{
+  "version": "1.0.0",
+  "purpose": "Evidence-backed cross-concept relationships for holistic Human Design retrieval.",
+  "nodes": [
+    {
+      "id": "gate",
+      "label": "Gate",
+      "aliases": [
+        "gate",
+        "gates"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "line",
+      "label": "Line",
+      "aliases": [
+        "line",
+        "lines",
+        "gate line"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "channel",
+      "label": "Channel",
+      "aliases": [
+        "channel",
+        "channels"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "planetary_activation",
+      "label": "Planetary activation",
+      "aliases": [
+        "planetary activation",
+        "planetary role",
+        "planet"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "holistic_analysis",
+      "label": "Holistic chart analysis",
+      "aliases": [
+        "holistic analysis",
+        "whole chart",
+        "whole-chart context"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "quarter",
+      "label": "Quarter",
+      "aliases": [
+        "quarter",
+        "quarters",
+        "quarter theme"
+      ],
+      "status": "pending_evidence"
+    },
+    {
+      "id": "mandala",
+      "label": "Mandala",
+      "aliases": [
+        "mandala"
+      ],
+      "status": "pending_evidence"
+    },
+    {
+      "id": "rave_psychology",
+      "label": "Rave Psychology",
+      "aliases": [
+        "rave psychology",
+        "psychological framework"
+      ],
+      "status": "pending_evidence"
+    }
+  ],
+  "edges": [
+    {
+      "id": "REL-GATE-LINE",
+      "from": "gate",
+      "to": "line",
+      "type": "interpreted_with",
+      "status": "validated",
+      "knowledge_ids": [
+        "HD-KNOW-GATE-001",
+        "HD-KNOW-LINE-001"
+      ]
+    },
+    {
+      "id": "REL-GATE-CHANNEL",
+      "from": "gate",
+      "to": "channel",
+      "type": "interpreted_with",
+      "status": "validated",
+      "knowledge_ids": [
+        "HD-KNOW-GATE-001",
+        "HD-KNOW-CHANNEL-001"
+      ]
+    },
+    {
+      "id": "REL-GATE-PLANETARY",
+      "from": "gate",
+      "to": "planetary_activation",
+      "type": "contextualized_by",
+      "status": "validated",
+      "knowledge_ids": [
+        "HD-KNOW-GATE-001",
+        "HD-KNOW-PLANETARY-001"
+      ]
+    },
+    {
+      "id": "REL-GATE-HOLISTIC",
+      "from": "gate",
+      "to": "holistic_analysis",
+      "type": "requires_context",
+      "status": "validated",
+      "knowledge_ids": [
+        "HD-KNOW-GATE-001",
+        "HD-KNOW-HOLISTIC-001"
+      ]
+    },
+    {
+      "id": "REL-GATE-QUARTER",
+      "from": "gate",
+      "to": "quarter",
+      "type": "located_in",
+      "status": "pending_evidence",
+      "knowledge_ids": []
+    },
+    {
+      "id": "REL-QUARTER-MANDALA",
+      "from": "quarter",
+      "to": "mandala",
+      "type": "part_of",
+      "status": "pending_evidence",
+      "knowledge_ids": []
+    },
+    {
+      "id": "REL-GATE-RAVE-PSYCHOLOGY",
+      "from": "gate",
+      "to": "rave_psychology",
+      "type": "interpreted_through",
+      "status": "pending_evidence",
+      "knowledge_ids": []
+    }
+  ]
+}
