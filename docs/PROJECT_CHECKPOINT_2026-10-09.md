@@ -198,3 +198,12 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - Latest documentation commits: protocol update `d28db69b10048b4e7bdade0d56a089c6b04c0f12`; resume entry update `61c9a587404d027caa9a1c53a8ae7cfbb3280f0e`.
 - This was a documentation/continuity change only; no application code was changed and no tests were run. The next engineering task remains Step 3: broaden concept-diverse, source-grounded offline evaluation fixtures for the active 3framework path, after checking current branch/CI state.
 - Local desktop working tree remains uninspected; unpushed local edits cannot be ruled out. No reset, overwrite, force-push, or merge was performed.
+
+
+## Canonical recovery command hardwired — 2026-10-10
+
+- User approved the short command **`Resume KY`** as the canonical cross-device recovery alias.
+- Hardwired in root `RESUME.md` and `docs/CONTINUITY_PROTOCOL.md`: read the latest verified resume entry and checkpoint, verify live GitHub branch/PR/CI state and accessible app/backend state, preserve unpushed desktop work, and continue from the exact next task without asking the user to repeat decisions.
+- Resume entry commit: `7914cf2ae60fc01b265eb27b7d4171fe1834745e`.
+- Continuity protocol commit: `fece0da870f8aaf56d4901577200363963ce8add`.
+- Documentation only; no application code changed and no tests were run. Desktop working tree remains inaccessible from this environment.
