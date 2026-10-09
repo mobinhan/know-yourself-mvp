@@ -26,6 +26,17 @@ for (const record of records.records) {
   assert.ok(record.locator);
   if (record.conflict_group != null) assert.ok(typeof record.conflict_group === "string" && record.conflict_group.length > 0);
   assert.ok(record.allowed_use.every(x => contract.allowed_use.includes(x)));
+  const metadata = record.record_metadata;
+  assert.ok(metadata && metadata.record_version === "1.0.0" && metadata.lifecycle_status === "active");
+  assert.ok(["foundational","interpretive","experiential","critical_contested"].includes(metadata.epistemic_class));
+  assert.ok(["reviewed","legacy_review_required","review_due","conflict_requires_review"].includes(metadata.review_status));
+  assert.ok(metadata.metadata_registered_at && metadata.rights_use_status && metadata.source_change_action);
+  assert.ok(Array.isArray(metadata.supersedes));
+  if (metadata.review_status === "reviewed") {
+    assert.ok(metadata.last_reviewed_at);
+    assert.ok(metadata.next_review_due);
+  }
+  if (metadata.conflict_group != null) assert.equal(metadata.conflict_group, record.conflict_group ?? null);
 }
 assert.ok(records.records.some(x => x.claim_type === "critical"));
 assert.ok(records.records.some(x => x.claim_type === "teaching"));
