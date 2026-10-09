@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "purpose": "Controlled contract for AI question understanding and evidence-grounded reasoning.",
   "rules": [
     "Deterministic chart mechanics remain authoritative.",
@@ -12,7 +12,9 @@
     "Temporal claims require supplied temporal evidence; the AI must not infer astronomical timing.",
     "External blogs, videos, podcasts and practitioner material are enrichment only and cannot override deterministic evidence.",
     "Material cross-concept claims must cite supplied validated relationship IDs in relationship_basis; the critic must reject missing, unknown or unsupported links.",
-    "A gate's quarter context is wheel-level context; Rave Psychology interpretation must use supplied Personality Sun/Node substructure and must not be inferred from a gate alone."
+    "A gate's quarter context is wheel-level context; Rave Psychology interpretation must use supplied Personality Sun/Node substructure and must not be inferred from a gate alone.",
+    "Every controlled and external knowledge record must carry individual lifecycle, review, epistemic-class and rights-use metadata; source changes must be traceable to dependent records.",
+    "Legacy records marked legacy_review_required remain visible for controlled migration, but should not be presented as newly reviewed; when material claims depend only on them, qualify the claim and surface a review limitation."
   ],
   "question": {
     "required": [
@@ -74,7 +76,15 @@
       "claim",
       "source_ids",
       "locator",
-      "use"
+      "use",
+      "record_version",
+      "lifecycle_status",
+      "epistemic_class",
+      "review_status",
+      "last_reviewed_at",
+      "next_review_due",
+      "rights_use_status",
+      "source_provenance"
     ],
     "external_knowledge_fields": [
       "id",
@@ -83,7 +93,13 @@
       "claim_type",
       "status",
       "locator",
-      "allowed_use"
+      "allowed_use",
+      "record_version",
+      "lifecycle_status",
+      "epistemic_class",
+      "review_status",
+      "rights_use_status",
+      "conflict_group"
     ]
   },
   "answer": {
