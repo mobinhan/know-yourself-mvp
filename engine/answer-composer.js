@@ -1,6 +1,7 @@
 import { retrieveHolisticContext } from "./holistic-retrieval.js";
 import { buildAdaptiveResponsePolicy } from "./user-adaptation.js";
 import { buildConversationContextForReasoning } from "./conversation-context.js";
+import { selectActiveMemoryForPrompt } from "./user-memory-governance.js";
 
 const MAX_ANSWER_CHARS = 12000;
 
@@ -59,7 +60,12 @@ export function buildReasoningPromptInput(reasoningInput) {
     };
   }
 
-  const adaptive_response_policy = buildAdaptiveResponsePolicy(reasoningInput.user_adaptation ?? {});
+  const active_user_memory = selectActiveMemoryForPrompt(reasoningInput.user_memory_records ?? [], { now: reasoningInput.now ?? new Date().toISOString() });
+  const adaptationInput = reasoningInput.user_adaptation ?? {};
+  const adaptive_response_policy = buildAdaptiveResponsePolicy({
+    ...adaptationInput,
+    user_context: [...(adaptationInput.user_context ?? []), ...active_user_memory.map(item => ({ ...item, user_consent: true }))]
+  });
   const conversation_context = reasoningInput.conversation_context?.version === "1.0.0"
     ? buildConversationContextForReasoning(reasoningInput.conversation_context)
     : null;
@@ -196,10 +202,12 @@ export function buildReasoningPromptInput(reasoningInput) {
     rave_psychology_context,
     incarnation_cross_context,
     adaptive_response_policy,
+    active_user_memory,
     conversation_context,
     instructions: [
       "Answer the user's question naturally and directly.",
       "Apply adaptive_response_policy only to presentation and relevance. Never let user preferences, inferred preferences, or personal context alter chart mechanics, evidence requirements, source quality, or certainty. Use only the policy-filtered user_context supplied to you.",
+      "Use active_user_memory only as explicit, consented personal context; never use it as chart truth or source knowledge. Inferred memories remain proposed until user confirmation. User memory must never override deterministic evidence.",
       "Use conversation_context only to understand references, follow-ups and continuity. Conversation history is not a source of chart truth; verify chart facts against current supplied evidence and knowledge records. Never treat a previous assistant answer as evidence by itself.",
       "Use supplied evidence as the only source of chart mechanics.",
       "Use all relevant supplied evidence; do not omit a relevant mechanical result merely because it is not a headline field.",
