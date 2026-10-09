@@ -1,0 +1,23 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+
+const source = fs.readFileSync(new URL("./functions/user-data-api/index.ts", import.meta.url), "utf8");
+const migration = fs.readFileSync(new URL("../migrations/20261009054427_know_yourself_persistence_foundation_v1.sql", import.meta.url), "utf8");
+const hardening = fs.readFileSync(new URL("../migrations/20261009054455_know_yourself_persistence_integrity_and_policy_hardening.sql", import.meta.url), "utf8");
+
+assert.match(source, /npm:@supabase\/supabase-js@2\.57\.0/, "Supabase client dependency must be pinned");
+assert.match(source, /Authorization: authHeader/, "forward user JWT to enforce RLS");
+assert.match(source, /supabase\.auth\.getUser\(token\)/, "validate the caller identity");
+assert.match(source, /const functionIndex = segments\.lastIndexOf\("user-data-api"\)/, "route parser must support nested resource paths");
+assert.match(source, /currentPreferences\?\.personalization_enabled/, "partial preference updates must preserve existing settings");
+assert.match(source, /memory_consent_required/, "memory writes require explicit consent");
+assert.match(source, /inferred_memory_confidence_invalid/, "inferred memory confidence must be validated");
+assert.match(source, /memory_source_turn_required/, "memory provenance must include a source turn");
+assert.match(source, /\.eq\("user_id", user\.id\)/, "data access must be scoped to the verified user");
+assert.doesNotMatch(source, /SUPABASE_SERVICE_ROLE_KEY|SUPABASE_SECRET_KEYS/, "user API must not use a service key");
+assert.match(migration, /enable row level security/i, "RLS must be enabled in schema migration");
+assert.match(migration, /create policy ky_charts_owner_all[\s\S]*auth\.uid\(\)/i, "chart rows must have owner-bound RLS");
+assert.match(migration, /revoke all[\s\S]*ky_knowledge_sources[\s\S]*from anon, authenticated/i, "raw knowledge tables must not be client-readable");
+assert.match(hardening, /on delete set null \(chart_id\)/i, "composite foreign keys must preserve user_id when chart is removed");
+assert.match(hardening, /ky_knowledge_records_deny_clients[\s\S]*using \(false\)/i, "backend-only knowledge policy must deny client access");
+console.log("USER DATA API SECURITY CONTRACT PASS");
