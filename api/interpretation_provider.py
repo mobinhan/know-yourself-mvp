@@ -69,8 +69,10 @@ def _select_knowledge(question: str, foundation: dict) -> tuple[list[dict], list
         exact_gate_line = (
             gate_number is not None and line_number is not None
             and gate_number == 57 and line_number == 4
-            and ("57-4" in str(record.get("id", "")).lower()
-                 or "57.4" in searchable or "director" in searchable)
+            and (
+                re.search(r"\\b57[.-]4\\b", str(record.get("id", "")).lower()) is not None
+                or re.search(r"\\bgate\\s*57\\s*[./-]\\s*4\\b", searchable) is not None
+            )
             and (gate_number, line_number) in active_gate_lines
         )
         overlap = len(terms.intersection(set(re.findall(r"[a-z0-9-]+", searchable))))
