@@ -127,3 +127,27 @@ Quarterly production workflow:
 13. If a scheduled run fails or sources cannot be reached, record the failure and retry safely; never present an uncompleted review as successful or silently discard the previous valid knowledge base.
 
 The intended production cadence is once per quarter. The scheduler, refresh pipeline and operational controls remain to be implemented and verified; this entry records the confirmed product requirement, not a claim that the production capability is already running.
+
+## Confirmed production requirement — individual knowledge-record provenance
+
+**Confirmed:** 2026-10-09
+
+The eventual production Human Design knowledge base and AI system must maintain provenance and governance at the **individual knowledge-record / claim level**, not only at the source or website level. This is a product requirement and applies to ongoing operation and quarterly refreshes.
+
+Each knowledge record should retain, where applicable:
+- Stable record ID and version, with created/updated/reviewed timestamps.
+- Exact source ID, source URL, author/publisher, title, publication date and retrieval/review date where available.
+- Source tier (P1–P4), topic/concept family and epistemic classification: foundational, interpretive, experiential, or critical/contested.
+- The specific claim or permitted concise paraphrase, with enough context to avoid changing its meaning.
+- Rights, licence, attribution and permitted-use constraints; retain only content the system is allowed to store and use.
+- Confidence/quality assessment, supporting evidence, caveats, and known disagreements or contradictions.
+- Lifecycle state: proposed, validated, active, superseded, disputed, withdrawn, or unavailable.
+- Links to records and answers that depend on it, so changes can trigger targeted review and regression tests.
+- Audit history of ingestion, validation, edits, approvals, supersession and reactivation.
+
+At answer time, material knowledge claims should be traceable to the specific active record IDs used, alongside the relevant canonical chart/evidence IDs. At quarterly refresh, the system should assess which individual records are affected by new, changed, conflicting or unavailable source material and version the resulting changes.
+
+Do not treat a source-level registration as proof that every page or claim from that source is verified. Do not allow a knowledge record, regardless of source tier, to override deterministic chart mechanics. Rights-sensitive, materially conflicting, or high-impact changes must remain staged for review under the production governance policy.
+
+This is a confirmed production requirement. Full record-level lineage, dependency tracking, lifecycle controls and quarterly automation remain to be implemented and verified before they can be claimed as operational.
+
