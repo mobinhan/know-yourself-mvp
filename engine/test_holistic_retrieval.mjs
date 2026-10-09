@@ -7,13 +7,18 @@ assert.ok(graph.nodes.some(node => node.id === "quarter"));
 assert.ok(graph.nodes.some(node => node.id === "rave_psychology"));
 
 const knownIds = new Set(JSON.parse(fs.readFileSync(new URL("./knowledge-records.json", import.meta.url), "utf8")).records.map(record => record.id));
+const externalIds = new Set(JSON.parse(fs.readFileSync(new URL("./external-knowledge-records.json", import.meta.url), "utf8")).records.map(record => record.id));
 const nodeIds = new Set(graph.nodes.map(node => node.id));
 for (const edge of graph.edges) {
   assert.ok(nodeIds.has(edge.from), `Unknown relationship source node: ${edge.id}`);
   assert.ok(nodeIds.has(edge.to), `Unknown relationship target node: ${edge.id}`);
-  for (const id of edge.knowledge_ids) assert.ok(knownIds.has(id), `Unknown knowledge record ${id} in ${edge.id}`);
-  if (edge.status === "pending_evidence") assert.equal(edge.knowledge_ids.length, 0);
-  if (edge.status === "validated") assert.ok(edge.knowledge_ids.length > 0);
+  for (const id of edge.knowledge_ids ?? []) assert.ok(knownIds.has(id), `Unknown knowledge record ${id} in ${edge.id}`);
+  for (const id of edge.external_knowledge_ids ?? []) assert.ok(externalIds.has(id), `Unknown external knowledge record ${id} in ${edge.id}`);
+  if (edge.status === "pending_evidence") {
+    assert.equal((edge.knowledge_ids ?? []).length, 0);
+    assert.equal((edge.external_knowledge_ids ?? []).length, 0);
+  }
+  if (edge.status === "validated") assert.ok((edge.knowledge_ids ?? []).length + (edge.external_knowledge_ids ?? []).length > 0);
 }
 
 
