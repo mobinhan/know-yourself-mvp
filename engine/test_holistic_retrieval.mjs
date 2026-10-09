@@ -22,8 +22,16 @@ for (const edge of graph.edges) {
 }
 
 
+const controlledSources = JSON.parse(fs.readFileSync(new URL("./knowledge-sources.json", import.meta.url), "utf8"));
+const externalSources = JSON.parse(fs.readFileSync(new URL("./external-source-registry.json", import.meta.url), "utf8"));
+const controlledSourceIds = new Set(controlledSources.sources.map(source => source.id));
+const externalSourceById = new Map(externalSources.sources.map(source => [source.id, source]));
+
 const quarterMap = getQuarterGateMap();
 assert.equal(quarterMap.status, "validated");
+assert.ok(controlledSourceIds.has(quarterMap.source_id));
+assert.ok(quarterMap.source_locator.includes("pp. 294–309"));
+assert.equal(externalSourceById.get(quarterMap.secondary_crosscheck_source_id)?.tier, "P3");
 const mappedGates = quarterMap.quarters.flatMap(quarter => quarter.gates);
 assert.equal(mappedGates.length, 64);
 assert.equal(new Set(mappedGates).size, 64);
