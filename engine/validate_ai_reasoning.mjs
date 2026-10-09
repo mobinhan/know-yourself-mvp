@@ -1,6 +1,6 @@
 import fs from "node:fs";
 const c = JSON.parse(fs.readFileSync(new URL("./ai-reasoning-contract.json", import.meta.url), "utf8"));
-if (!["1.0.0","1.1.0"].includes(c.version)) throw new Error("Unsupported AI reasoning contract version");
+if (!["1.0.0","1.1.0","1.2.0"].includes(c.version)) throw new Error("Unsupported AI reasoning contract version");
 for (const section of ["question","reasoning_input","answer"]) {
   if (!c[section] || !Array.isArray(c[section].required)) throw new Error(`Invalid AI contract section: ${section}`);
 }
