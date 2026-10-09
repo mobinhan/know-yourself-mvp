@@ -41,7 +41,14 @@ export function criticAnswer({ answer, factual_basis = [], knowledge_basis = [],
   if (crossMechanicsClaim && !factualBasis.has("E-ACTIVATIONS")) {
     issues.push("missing_factual_basis:E-ACTIVATIONS");
   }
-  const hasGateQuarterClaim = /\bgate\s*\d*\b.{0,100}\b(quarter|initiation|civilization|duality|mutation)\b/.test(text) &&
+  const hasSpecificGate57Line4Claim = /\\bgate\\s*57\\s*[.\\/-]\\s*4\\b|\\bgate\\s*57\\s+line\\s+4\\b|\\bgate\\s+57.{0,30}\\bfourth line\\b/.test(text);
+  if (hasSpecificGate57Line4Claim && !knowledgeIds.has("EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001")) {
+    issues.push("missing_knowledge_basis:EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001");
+  }
+  if (hasSpecificGate57Line4Claim && !relationBasis.has("REL-GATE-57-LINE-4-DIRECTOR")) {
+    issues.push("missing_relationship_basis:REL-GATE-57-LINE-4-DIRECTOR");
+  }
+  const hasGateQuarterClaim = /\\bgate\\s*\\d*\\b.{0,100}\\b(quarter|initiation|civilization|duality|mutation)\\b/.test(text) &&
     /\b(is in|belongs to|falls in|located in|sits in|quarter)\b/.test(text);
   if (hasGateQuarterClaim && !relationBasis.has("REL-GATE-QUARTER")) {
     issues.push("missing_relationship_basis:REL-GATE-QUARTER");
