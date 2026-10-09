@@ -62,3 +62,15 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - Branch heads differ: `main` currently points to `9b503db604b680fccbc7b962a59ce9fa19776a39`; `feature/live-api-v1` contains the newer desktop checkpoint and must be preserved. Do not merge PR #1 without explicit approval.
 - Deployment remains unverified; the prior Vercel build-rate-limit blocker is not evidence of a code failure.
 - Next action: resume the feature branch from the checkpoint, verify live integration safely without exposing secrets, then improve offline interpretation-quality fixtures. Inspect the desktop working tree before any pull/reset/merge if local-only edits may exist.
+
+
+## Mandatory “save mcp” continuity protocol — 2026-10-09
+
+- Trigger: whenever the user says “save mcp” (case-insensitive), execute the full save, checkpoint, push, and verification procedure in `docs/CONTINUITY_PROTOCOL.md`. Do not merely summarize or promise to save.
+- One-page recovery entry point: `RESUME.md`.
+- Protocol commit: `58998ba0dfad2f86a9a0419ada9342500b908a4b`.
+- Recovery entry-point commit: `21651be5d6114561454dfd0e9cc0666dd2126a03`.
+- This checkpoint update will be the latest commit on `feature/live-api-v1`; verify the resulting remote HEAD after saving.
+- On every save, distinguish pushed/verified code from local-only or uncommitted work. This environment cannot inspect the user's desktop working tree; unless inspected, local-only edits cannot be ruled out.
+- Do not merge PR #1 without explicit approval. Do not reset/overwrite the desktop workspace during recovery.
+- Resume instruction: read `RESUME.md`, then this checkpoint and the full protocol from the latest verified feature branch; verify all relevant branch heads, open PRs, CI, and deployment status before continuing.
