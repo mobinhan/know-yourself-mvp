@@ -7,7 +7,8 @@
 
 - Layer 1 remains the authority for chart mechanics and source-linked knowledge.
 - Layer 2 may personalize relevance and continuity but must not invent traits or override Layer 1.
-- Layer 3 remains ChatGPT synthesis. The deterministic critic is a guardrail, not another language model or a claim of complete semantic understanding.
+- Layer 3 is direct ChatGPT synthesis. The active 3framework provider must not invoke a separate critic or additional reasoning layer.
+- The standalone `api/interpretation_critic.py` helper and its unit tests are retained only as isolated comparison/legacy material; they are not part of the active 3framework response path and must not be used to describe 3framework behaviour.
 - Offline mocked-provider tests establish contract behaviour only. They do not prove real-world model quality.
 
 ## Fixture matrix
@@ -28,7 +29,7 @@
 
 ## Current automated coverage
 
-Implemented in `tests/test_interpretation_critic.py` and `tests/test_gate_line_synthesis_contract.py`:
+Implemented in `tests/test_gate_line_synthesis_contract.py`:
 
 - Active/inactive natal gate claims.
 - Exact active gate-line status.
@@ -37,12 +38,16 @@ Implemented in `tests/test_interpretation_critic.py` and `tests/test_gate_line_s
 - Profile, type, and authority conflicts and matching claims.
 - Gate-line archetype without exact support, and with exact source plus validated relationship.
 - Transit claims without temporal data, with incomplete temporal data, and with gates missing from the supplied transit set.
-- Provider-level fail-closed behaviour for chart-mechanics contradictions.
+- Direct ChatGPT synthesis without a post-synthesis critic; provider output is not rewritten by a separate interpretation layer.
 - Evidence-ID filtering, malformed optional fields, missing answer, and provider-not-configured/no-network behaviour.
 
 Focused CI run (27 tests): https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387
 
-## Latest Step 3 implementation update\n\nThe critic now checks explicit profile, type, and authority claims when canonical values are present; exact gate-line activation status; and transit gate claims against the supplied `transit_gates` list (a generic date field alone is insufficient). Added a cross-concept mismatch fixture proving that a valid source/relationship for Gate 34.2 cannot support a Gate 57.4 archetype claim. The focused suite ran 27 tests and passed. Full engine validation on the same code commit is being checked separately.\n\n## Known limitations / next expansion
+## Active 3framework provider contract
+
+The active API provider sends canonical evidence and adaptive context to ChatGPT, then performs response-schema normalization and filters evidence identifiers against supplied records. It does not run a separate post-synthesis critic. The prior critic-related CI run predates this correction and must not be treated as verification of the current path.
+
+## Known limitations / next expansion
 
 1. Pattern matching cannot reliably understand every paraphrase, negation, hypothetical, or long-range cross-concept claim.
 2. Current source-specific synthesis enforcement focuses on gate-line archetypes. General knowledge claims still rely on retrieval selection, allowed-ID filtering, and prompt instructions; ID validity is not proof of semantic support.
