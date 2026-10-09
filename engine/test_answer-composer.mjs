@@ -11,7 +11,7 @@ const input={
 const prompt=buildReasoningPromptInput(input);
 if(prompt.mode!=="grounded_reasoning" || !prompt.instructions.includes("Do not calculate, infer, or invent Human Design mechanics.")) throw new Error("prompt boundary failed");
 if(!prompt.instructions.includes("Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.")) throw new Error("availability boundary failed");
-if(!prompt.instructions.includes("incarnation-cross components")) throw new Error("chart completeness guidance failed");
+if(!prompt.instructions.some(item => item.includes("first-class Cross structure"))) throw new Error("first-class Cross guidance failed");
 
 const gatePrompt = buildReasoningPromptInput({
   ...input,
