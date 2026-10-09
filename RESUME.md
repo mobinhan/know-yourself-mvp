@@ -93,3 +93,31 @@ Autosave trigger examples:
 - A project decision, completed milestone, blocker, or next action materially changes.
 
 Important limitation: this file records the required protocol; it does not itself execute tools automatically. In each session, follow the protocol when GitHub tools are available, and never claim a remote save until the commit and fetched remote content confirm it.
+
+## Safeguard implementation in progress (2026-10-10)
+- Added `docs/SAFEGUARD_PROTOCOL.md`: engineering recovery/correction rules plus KY 3framework product safeguards.
+- Added `engine/correction-governance.js`: pure policy validation for correction records. It does not persist data, learn silently, mutate canonical chart mechanics, or modify shared knowledge.
+- Added `engine/test_correction-governance.mjs`: regression coverage for reported-by-default status, consent, evidence/reviewer requirements, canonical mechanics test references, and supersession.
+- Added the focused correction-governance test to `.github/workflows/step1-engine.yml`.
+- Work is isolated on branch `feature/correction-safeguards`; it is not merged. CI and review must pass before merging.
+- GitHub Actions run `38003149403` (commit `002b7286bdc7e3ca8bb8572d60bc86a808cc4733`) completed successfully. The focused correction-governance regression step passed, and the full JavaScript contract workflow plus Python engine workflow both completed successfully. The latest checkpoint-only commit does not change tested code.
+- This is the first product-side safeguard implementation, not complete end-to-end functionality: correction storage, user-facing feedback capture, access control, and database persistence are not implemented by this policy module and must be designed against the existing backend contracts before any writes.
+- Do not treat a reported correction as truth. Keep user-specific feedback separate from shared knowledge and chart mechanics. The policy always returns `canonical_source_mutation_allowed: false`; a separate reviewed change and regression run is required.
+
+
+## Universal Project Resume Protocol
+This project follows the user's universal recovery procedure, shared across their projects:
+
+1. The user may invoke this project with the short command **“Resume KY”** or by referring to this project's `RESUME.md`.
+2. Retrieve this checkpoint and inspect the live authoritative repository state before continuing: branch heads, recent commits, relevant pull requests, and CI/tests as applicable.
+3. Reconcile the checkpoint against verified live state. If they conflict, live verified state wins; update the checkpoint when a durable correction is needed.
+4. Resume from the last verified stopping point. Do not make the user repeat established decisions or restart completed work without a reason.
+5. Keep project contexts separate. For KY, preserve the confirmed **3framework** and project-specific restrictions above.
+6. Proceed autonomously on reversible, low-risk work. Pause for major architectural, commercial, licensing, data-loss, or other irreversible decisions.
+7. Save meaningful state changes and verify remote content after writing. Never claim a save, test, push, merge, or deployment unless verified.
+8. If a required repository or file is inaccessible, state the limitation and do not pretend recovery succeeded.
+
+For the user's other projects, apply the same procedure using that project's own designated checkpoint and short command. Do not assume their checkpoint locations or mix their decisions with KY. A new chat does not automatically execute files: retrieve and follow the checkpoint when the user invokes the resume command.
+
+## Safeguard protocol reference
+After recovering this checkpoint, read `docs/SAFEGUARD_PROTOCOL.md` on this branch for the detailed correction, repetition, evidence, and canonical-source safeguards. This reference becomes available on `main` only after the safeguard pull request is merged.
