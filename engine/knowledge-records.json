@@ -642,6 +642,116 @@
         "authority",
         "holistic_analysis"
       ]
+    },
+    {
+      "id": "HD-KNOW-QUARTER-001",
+      "concept": "Four Quarters of the Rave Mandala",
+      "claim": "The Rave Mandala is divided into four quarters—Initiation, Civilization, Duality and Mutation—beginning at gates 13, 2, 7 and 1 respectively. Their broad themes are purpose through mind, form, bonding and transformation; these themes contextualize a gate but do not change its mechanical definition.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Eight, The Global Incarnation Cross Index, printed pp. 288–293",
+      "use": "educational",
+      "depth": [
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "mandala",
+        "quarter",
+        "incarnation_cross",
+        "gate"
+      ]
+    },
+    {
+      "id": "HD-KNOW-QUARTER-GATE-MAP-001",
+      "concept": "Gate-to-quarter mapping",
+      "claim": "The supplied reference groups gate-specific sections under the four quarter headings, allowing each gate to be associated with its quarter. Use this sourced mapping as contextual metadata alongside the chart; it is not a chart calculation and must not be inferred from gate number alone.",
+      "source_ids": [
+        "SRC_HD_DEFINITIVE_BOOK_2011"
+      ],
+      "locator": "Section Eight, quarter gate sections, printed pp. 294–309",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "gate",
+        "quarter",
+        "mandala",
+        "holistic_analysis"
+      ]
+    },
+    {
+      "id": "HD-KNOW-RP-FOUNDATION-001",
+      "concept": "Rave Psychology foundation",
+      "claim": "Rave Psychology examines deeper Personality conditioning, motivation and Color transference. It is a separate interpretive layer and does not replace Strategy and Authority as the decision-making framework.",
+      "source_ids": [
+        "SRC_RP_YEAR1_SEM1",
+        "SRC_RP_YEAR1_SEM2"
+      ],
+      "locator": "Year 1 Semester 1, Lessons 2–3; Year 1 Semester 2, Introduction and Lesson Six",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "personality_color",
+        "transference",
+        "view",
+        "motivation",
+        "strategy",
+        "authority"
+      ]
+    },
+    {
+      "id": "HD-KNOW-RP-VIEW-001",
+      "concept": "Rave Psychology View and Personality Nodes",
+      "claim": "Rave Psychology's seeing/View layer is linked to the Personality Node substructure. Chart-specific discussion must use the verified Personality North and South Node activation data and its Color rather than infer a View from an isolated gate theme.",
+      "source_ids": [
+        "SRC_RP_YEAR1_SEM1"
+      ],
+      "locator": "Lesson Three, The Nodes / Being and Seeing, printed pp. 45–56",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "personality_nodes",
+        "personality_color",
+        "view",
+        "rave_psychology"
+      ]
+    },
+    {
+      "id": "HD-KNOW-RP-MOTIVATION-001",
+      "concept": "Rave Psychology Motivation and Transference",
+      "claim": "Rave Psychology distinguishes correct Personality motivation from transference or conditioned mental movement. Chart-specific Motivation interpretation must be grounded in the verified Personality Sun substructure and Color, not inferred from a separate gate's quarter or theme.",
+      "source_ids": [
+        "SRC_RP_YEAR1_SEM2"
+      ],
+      "locator": "Lesson Six, Personality Color Transference Readings and Correct Motivation, printed pp. 98 and 118–123",
+      "use": "educational",
+      "depth": [
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "related_concepts": [
+        "personality_sun",
+        "personality_color",
+        "motivation",
+        "transference",
+        "rave_psychology"
+      ]
     }
   ]
 }
