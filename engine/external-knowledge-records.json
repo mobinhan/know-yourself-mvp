@@ -16,7 +16,20 @@
       "topics": [
         "lineage",
         "source_quality"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-PRACTICAL-001",
@@ -35,7 +48,20 @@
         "teaching",
         "practical_application",
         "video"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-METHODOLOGY-001",
@@ -53,7 +79,20 @@
         "provenance",
         "quality_control",
         "interpretation"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-CRITICAL-001",
@@ -70,7 +109,20 @@
       "topics": [
         "epistemic_status",
         "critical_context"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "critical_contested",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-IHDS-STANDARDS-001",
@@ -89,7 +141,20 @@
         "source_quality",
         "educational_standards",
         "certification"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-IHDS-PRACTICAL-001",
@@ -111,7 +176,20 @@
         "transit",
         "profiles",
         "current_context"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-IHDS-SOCIAL-001",
@@ -128,7 +206,20 @@
         "social_media",
         "source_quality",
         "provenance"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "foundational",
+        "review_status": "legacy_review_required",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": null,
+        "next_review_due": null,
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-QUARTERS-001",
@@ -147,7 +238,20 @@
         "mandala",
         "holistic_analysis",
         "gate_context"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-QUARTER-GATE-MAP-001",
@@ -167,7 +271,20 @@
         "mandala",
         "gate_context",
         "reference_mapping"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-RP-FOUNDATION-001",
@@ -186,7 +303,20 @@
         "personality_color",
         "transference",
         "holistic_analysis"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-RP-VIEW-001",
@@ -206,7 +336,20 @@
         "personality_nodes",
         "color",
         "holistic_analysis"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     },
     {
       "id": "EXT-KNOW-RP-MOTIVATION-001",
@@ -227,7 +370,20 @@
         "personality_sun",
         "color",
         "holistic_analysis"
-      ]
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     }
   ]
 }
