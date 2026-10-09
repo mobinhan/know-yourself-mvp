@@ -97,3 +97,15 @@ Current acceptance boundary: deterministic mechanics remain authoritative; the q
 - Added `engine/test_three-framework.mjs` for Gate 7 / Gate 31 absence, Gate 57.4 activation, fail-closed evidence handling, and layer separation.
 
 **Boundary:** this is an implemented contract and direct-model input envelope. The repository still has a provider-neutral/mock reasoning provider; an actual external ChatGPT/OpenAI call and live-model acceptance test are not yet connected. The 3framework can be tested here conversationally, but production provider integration is a separate step.
+
+
+## Live 3framework provider — implementation checkpoint (2026-10-09)
+
+- Added `api/interpretation_provider.py`, a server-side OpenAI Responses API adapter. Default model: `gpt-5-mini`; `OPENAI_MODEL` can override it.
+- Chart-question and transit-reading endpoints now call the provider when configured and return explicit status when it is not configured.
+- The Ask UI now renders the server-generated answer instead of substituting local template interpretations.
+- The provider sends calculated chart mechanics, selected source-linked knowledge, and validated relationships; it does not send birth date, time, birthplace or coordinates to the model.
+- Requests use `store: false`. Returned evidence, knowledge and relationship IDs are filtered against the supplied context.
+- Added mocked provider tests for missing credentials, Responses API request shape, PII exclusion and source/relationship ID filtering.
+
+**Remaining deployment prerequisite:** `OPENAI_API_KEY` must be set as an encrypted server environment variable. The deployment account's environment-management access is currently unavailable from this session, and no API key is available here. The provider path is implemented; a real provider call and live UI acceptance test remain blocked until the key is configured.
