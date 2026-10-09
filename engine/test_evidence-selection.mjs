@@ -32,7 +32,7 @@ assert.ok(!selected.some(x=>x.id==="E-PROFILE") || selected.some(x=>x.id==="E-PR
 
 const packets = selected.map(x=>buildEvidenceKnowledgePacket(x));
 const input = buildReasoningInput({questionContext:q,question:q.question,evidenceBundle:evidence,knowledgePackets:packets});
-assert.equal(input.contract_version,"1.1.0");
+assert.equal(input.contract_version,"1.2.0");
 assert.equal(input.evidence.length,selected.length);
 assert.ok(input.knowledge.length>0);
 assert.equal(input.interpretation_allowed,true);
