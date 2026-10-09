@@ -85,9 +85,10 @@ class GateLineSynthesisContractTests(unittest.TestCase):
             relationship["id"],
             {item["id"] for item in model_input["validated_relationships"]},
         )
-        self.assertIn("deterministic post-synthesis checks", model_input["layer_separation"]["layer_3"])
-        self.assertIn("No second AI model is used", model_input["layer_separation"]["layer_3"])
-        self.assertTrue(result["quality_review"]["passed"])
+        self.assertIn("ChatGPT synthesizes directly", model_input["layer_separation"]["layer_3"])
+        self.assertIn("No separate critic", model_input["layer_separation"]["layer_3"])
+        self.assertNotIn("critic", model_input)
+        self.assertNotIn("quality_review", result)
         self.assertIn("Never derive a gate-line synthesis by adding generic line keywords", instructions)
         self.assertIn("Do not calculate or infer chart mechanics", instructions)
         self.assertNotIn("birth_data", model_input)
@@ -136,7 +137,7 @@ class GateLineSynthesisContractTests(unittest.TestCase):
         self.assertEqual(result["factual_basis"], [])
 
 
-    def test_provider_blocks_conflicting_chart_mechanics(self):
+    def test_provider_does_not_route_chatgpt_output_through_a_separate_critic(self):
         foundation = {
             "core": {"gate_set": [57], "channels": [], "centres": ["spleen"]},
             "activations": {"personality": [{"gate": 57, "line": 4}], "design": []},
@@ -168,12 +169,9 @@ class GateLineSynthesisContractTests(unittest.TestCase):
         ):
             result = generate_interpretation("Is Gate 7 activated?", foundation)
 
-        self.assertEqual(result["interpretation_status"], "needs_review")
-        self.assertFalse(result["quality_review"]["passed"])
-        self.assertIn("canonical_gate_status_conflict:gate_7", result["quality_review"]["issues"])
-        self.assertEqual(result["cards"], [])
-        self.assertEqual(result["factual_basis"], [])
-        self.assertIn("couldn't verify", result["answer"])
+        self.assertEqual(result["interpretation_status"], "ready")
+        self.assertEqual(result["answer"], "Gate 7 is activated in your chart.")
+        self.assertNotIn("quality_review", result)
 
     def test_malformed_optional_fields_are_normalized_without_crashing(self):
         foundation = {
