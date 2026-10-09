@@ -93,3 +93,11 @@ Autosave trigger examples:
 - A project decision, completed milestone, blocker, or next action materially changes.
 
 Important limitation: this file records the required protocol; it does not itself execute tools automatically. In each session, follow the protocol when GitHub tools are available, and never claim a remote save until the commit and fetched remote content confirm it.
+
+
+## Persistent cross-session continuity retrieval — implementation in review (2026-10-10)
+- Inspected the live Supabase project and existing `user-data-api`; persistent profile/preferences, conversations/turns, governed user memories, and saved insights already exist, so this increment reuses them rather than adding duplicate tables.
+- Added `supabase/continuity-context.mjs`, a pure context assembler, and `supabase/test_continuity_context.mjs` covering preference gates, consent/confirmation/expiry, personal-context setting, bounded turns, and separation from chart truth.
+- Added authenticated `GET /functions/v1/user-data-api/continuity`: returns up to 3 active conversations with up to 6 latest turns each, plus up to 50 eligible memories and 5 saved insights when personalization is enabled. The endpoint is user-scoped and uses the existing caller JWT.
+- Added the continuity contract test to GitHub Actions and assertions to the existing user-data API security contract.
+- No schema changes or production Edge Function deployment were made. This is a proposed repository change; CI, PR review, and authenticated end-to-end verification remain required. The current endpoint uses recency-bounded retrieval, not semantic relevance ranking. The live LLM and frontend integration remain separate outstanding work.
