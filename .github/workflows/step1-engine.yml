@@ -123,6 +123,8 @@ jobs:
         run: node engine/test_reasoning-adapter.mjs
       - name: Run answer composer test
         run: node engine/test_answer-composer.mjs
+      - name: Run user adaptation policy test
+        run: node engine/test_user-adaptation.mjs
       - name: Run conversation context test
         run: node engine/test_conversation-context.mjs
       - name: Run Step 5 stress tests
