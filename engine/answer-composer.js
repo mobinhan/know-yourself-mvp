@@ -1,4 +1,5 @@
 import { retrieveHolisticContext } from "./holistic-retrieval.js";
+import { buildAdaptiveResponsePolicy } from "./user-adaptation.js";
 
 const MAX_ANSWER_CHARS = 12000;
 
@@ -57,6 +58,7 @@ export function buildReasoningPromptInput(reasoningInput) {
     };
   }
 
+  const adaptive_response_policy = buildAdaptiveResponsePolicy(reasoningInput.user_adaptation ?? {});
   const targetToConcept = {
     activations: "gate",
     gates: "gate",
@@ -189,8 +191,10 @@ export function buildReasoningPromptInput(reasoningInput) {
     holistic_context,
     rave_psychology_context,
     incarnation_cross_context,
+    adaptive_response_policy,
     instructions: [
       "Answer the user's question naturally and directly.",
+      "Apply adaptive_response_policy only to presentation and relevance. Never let user preferences, inferred preferences, or personal context alter chart mechanics, evidence requirements, source quality, or certainty. Use only the policy-filtered user_context supplied to you.",
       "Use supplied evidence as the only source of chart mechanics.",
       "Use all relevant supplied evidence; do not omit a relevant mechanical result merely because it is not a headline field.",
       "Use incarnation_cross_context as the first-class Cross structure. When complete, connect all four Sun/Earth gate-line activations, their separately sourced quarter contexts, profile if supplied, and the Personality Sun quarter as the primary Cross anchor. Do not invent a Cross name if deterministic evidence does not supply one. If the context is incomplete, state the missing elements rather than presenting a complete Cross reading.",
