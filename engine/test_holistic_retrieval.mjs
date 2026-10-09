@@ -58,7 +58,7 @@ assert.ok(gateContext.records.some(record => record.id === "HD-KNOW-LINE-001"));
 assert.ok(gateContext.records.some(record => record.id === "HD-KNOW-CHANNEL-001"));
 assert.ok(gateContext.records.some(record => record.id === "HD-KNOW-PLANETARY-001"));
 assert.ok(gateContext.relationships.some(edge => edge.type === "interpreted_with"));
-assert.ok(gateContext.unresolved_context.some(item => item.concept_id === "quarter"));
+assert.ok(gateContext.external_records.some(item => item.id === "EXT-KNOW-QUARTERS-001"));
 assert.ok(gateContext.unresolved_context.some(item => item.concept_id === "rave_psychology"));
 assert.ok(gateContext.unresolved_context.every(item => item.reason.includes("No validated knowledge records")));
 
