@@ -90,7 +90,7 @@ class GateLineSynthesisContractTests(unittest.TestCase):
         self.assertIn("Do not calculate or infer chart mechanics", instructions)
         self.assertNotIn("birth_data", model_input)
         self.assertNotIn("birth_date", model_input)
-        self.assertIn("canonical chart mechanics and source-linked knowledge", instructions)
+        self.assertIn("Treat supplied core and activation records as the only authority", instructions)
         self.assertEqual(result["interpretation_status"], "ready")
         self.assertIn(source["id"], result["knowledge_basis"])
         self.assertIn(relationship["id"], result["relationship_basis"])
