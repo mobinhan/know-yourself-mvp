@@ -85,7 +85,7 @@ class GateLineSynthesisContractTests(unittest.TestCase):
             relationship["id"],
             {item["id"] for item in model_input["validated_relationships"]},
         )
-        self.assertIn("There is no separate critic", instructions)
+        self.assertIn("There is no separate critic", model_input["layer_separation"]["layer_3"])
         self.assertIn("Never derive a gate-line synthesis by adding generic line keywords", instructions)
         self.assertIn("Do not calculate or infer chart mechanics", instructions)
         self.assertEqual(result["interpretation_status"], "ready")
