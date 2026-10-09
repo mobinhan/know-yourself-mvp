@@ -2,55 +2,53 @@
 
 ## Scope and constraints
 
-- Audited the current `feature/live-api-v1` provider and reasoning contracts without opening or modifying Lovable.
-- No Vercel action was taken. No PR was merged.
-- Current task is repository-only. The live OpenAI connection and live app output remain unverified.
+- Repository-only review of `feature/live-api-v1`; Lovable was not accessed or changed.
+- Vercel was not used. PR #1 was not merged.
+- No real OpenAI request was sent; the live key/configuration and deployed output remain unverified.
 
-## Findings
+## Architecture decision
 
-### 1. The critic exists, but it is not a mandatory part of 3framework
+Know Yourself retains its three layers:
 
-- `engine/answer-critic.js` implements `criticAnswer` and `finalizeAnswer`, including checks for unknown evidence/knowledge/relationship IDs, missing evidence for selected chart claims, and several unsupported cross-concept claims.
-- `engine/reasoning-adapter.js` calls `finalizeAnswer`; `engine/test_answer-critic.mjs` and `engine/test_reasoning-adapter.mjs` exercise that route.
-- However, `engine/THREE_FRAMEWORK.md` explicitly defines 3framework as direct ChatGPT synthesis from canonical evidence plus adaptive context, with **no mandatory separate critic**. `engine/test_three-framework.mjs` asserts that there is no critic in the Layer 3 envelope.
-- The Python API provider in `api/interpretation_provider.py` is a separate route. It sends evidence and instructions to OpenAI and normalizes the returned JSON, but does not invoke the JavaScript critic. Its own `layer_separation` text explicitly says there is no separate critic in this path.
-- **Decision:** preserve the documented 3framework architecture. Do not wire in the separate critic as an architectural change without an explicit decision. Keep semantic quality checks in offline tests/fixtures for now.
+1. **Layer 1 — Canonical chart + evidence:** deterministic chart mechanics and controlled, source-linked knowledge.
+2. **Layer 2 — Adaptive user context:** relevance and continuity only; it cannot override chart facts.
+3. **Layer 3 — ChatGPT synthesis:** the sole language-model synthesis step.
 
-### 2. Deterministic chart facts remain upstream of synthesis
+We did **not** add a second AI model or redefine 3framework. Instead, a deterministic post-synthesis quality gate now checks high-confidence contradictions in the Python API route. This is a guardrail after Layer 3, not a fourth reasoning layer.
 
-- The API route builds a canonical foundation and passes its core and activation data into `generate_interpretation`.
-- The provider instruction says supplied core/activation records are authoritative and prohibits recalculating or inferring chart mechanics.
-- Birth data is not included as a direct field in the model-safe context. The new contract test asserts that `birth_data` and `birth_date` are not present in the model input.
-- This protects the request boundary but is not a proof that every generated sentence is semantically correct.
+## Step 2 implementation
 
-### 3. Existing response safeguards and gap
+Added `api/interpretation_critic.py` and connected it to `api/interpretation_provider.py`.
 
-- The provider already requires a non-empty string `answer`, filters factual-basis labels, filters knowledge and relationship IDs against retrieved evidence, limits card counts/text lengths, and restricts card gates/channels/centres to the canonical foundation.
-- Prior to this change, several malformed optional fields could be iterated as the wrong type, surfaced in inconsistent shapes, or raise errors (for example, `relationship_basis: null`, `limitations: "text"`, or a non-integer `gate` value).
-- The provider now normalizes optional evidence arrays to lists of allowed strings, drops malformed basis fields, sanitizes card source/channel/centre lists, rejects non-canonical gate values, falls back to the answer when `one_line` is invalid, and clears non-string `interpretation` values.
-- A missing/empty answer still fails closed with a sanitized `InterpretationProviderError`.
-- Unknown evidence IDs are removed, but this is **referential validation**, not a semantic guarantee that the prose is supported by the cited evidence.
+The gate currently checks:
 
-## Offline tests added/extended
+- Explicit claims that a gate is activated/defined/active against canonical gate and activation data.
+- Explicit defined/active channel claims against canonical channels.
+- Explicit defined-centre claims against the supplied centre list.
+- Specific gate-line archetype claims against an exact supplied source and matching validated relationship.
+- Current-transit assertions when no temporal context was supplied.
 
-In `tests/test_gate_line_synthesis_contract.py`:
+When a high-confidence contradiction or missing exact gate-line support is detected, the provider fails closed: it replaces the answer with a safe message, clears cards and evidence-basis claims, adds a limitation, returns `interpretation_status: "needs_review"`, and includes a `quality_review` result. Clean answers retain `interpretation_status: "ready"`.
 
-- Existing contract test now also checks that direct birth-data fields are not passed into model input and that the mechanics guardrail is present.
-- Added malformed-optional-fields regression test.
-- Added missing-required-answer failure test.
-- Added provider-not-configured/no-network test.
-- Existing unknown-evidence-ID normalization test remains in place.
+This is deterministic pattern-based validation, not a proof that all natural-language statements are true. It can miss paraphrases and nuanced unsupported interpretations; false positives are also possible. It is an initial safety boundary to expand through Step 3's broader semantic-quality fixtures.
 
-The focused GitHub Actions run #39 initially failed because a newly added assertion expected an instruction phrase that does not exist in the actual prompt. The assertion was corrected to match the real mechanics guardrail. The corrected commit must be revalidated by CI before these changes are called passing.
+## Tests and CI
 
-## Live integration status
+- Added `tests/test_interpretation_critic.py` covering invented natal gate activation, false-negative gate status, invented defined channel, valid channel, unsupported gate-line archetype, transit claim without temporal evidence, and transit claim with temporal context.
+- Extended `tests/test_gate_line_synthesis_contract.py` to verify the live provider fails closed on a conflicting chart claim and passes a source-grounded response.
+- Updated `.github/workflows/step1-engine.yml` to run the provider contract and critic tests in CI.
+- Updated `engine/test_v1_frontend_contract.mjs` to validate the Python route handler instead of requiring the deleted `vercel.json`.
+- Focused Gate-line regression CI passed: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37913796218
+- Full Step 1 Engine Validation passed on commit `ef96b1872ac24c56be86569446136f1c2feb52bd`: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37913789162
 
-- `OPENAI_API_KEY` was not inspected or exposed. The offline test verifies that, when it is absent, the provider reports `provider_not_configured` and does not make a network call.
-- No real OpenAI request was sent. No real model output was evaluated.
-- Lovable was not accessed or changed.
+## Remaining limitations
+
+- The validator only catches explicit patterns it knows about. It is not a semantic AI critic and cannot establish general source faithfulness.
+- Referential ID filtering remains distinct from prose validation.
+- Natal/transit checks currently focus on explicit high-confidence wording and require broader fixture coverage.
+- No live OpenAI response has been assessed. Lovable was not accessed or changed.
+- The GitHub API can verify pushed repository state, not unpushed desktop-only edits.
 
 ## Next action
 
-1. Verify the latest feature branch head and rerun/inspect focused CI after the corrected test commit.
-2. If focused tests pass, run the broader repository contract suite through GitHub Actions as available.
-3. Keep the live-provider semantic-quality gap documented; propose any future critic architecture change separately rather than silently changing 3framework.
+Continue Step 3: broaden offline semantic-quality fixtures across representative Human Design concepts and query types, not only Gate 57. Cover chart mechanics, source fidelity, natal-versus-transit distinctions, uncertainty calibration, and unsupported cross-concept claims. Keep the deterministic chart engine authoritative and do not add a second LLM unless the user explicitly changes the 3framework decision.
