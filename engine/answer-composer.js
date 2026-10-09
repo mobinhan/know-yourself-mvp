@@ -1,3 +1,5 @@
+import { retrieveHolisticContext } from "./holistic-retrieval.js";
+
 const MAX_ANSWER_CHARS = 12000;
 
 export function composeAnswer({ reasoningInput, synthesis }) {
@@ -46,6 +48,21 @@ export function buildReasoningPromptInput(reasoningInput) {
     };
   }
 
+  const targetToConcept = {
+    activations: "gate",
+    gates: "gate",
+    channels: "channel",
+    centres: "centre"
+  };
+  const holisticConcepts = [...new Set(
+    (reasoningInput.question_context?.evidence_targets ?? [])
+      .map(target => targetToConcept[target])
+      .filter(Boolean)
+  )];
+  const holistic_context = holisticConcepts.map(concept =>
+    retrieveHolisticContext({ concept, maxHops: 1, includePending: true })
+  );
+
   return {
     mode: "grounded_reasoning",
     question: reasoningInput.question,
@@ -53,6 +70,7 @@ export function buildReasoningPromptInput(reasoningInput) {
     evidence: reasoningInput.evidence,
     knowledge: reasoningInput.knowledge,
     external_knowledge: reasoningInput.external_knowledge ?? [],
+    holistic_context,
     instructions: [
       "Answer the user's question naturally and directly.",
       "Use supplied evidence as the only source of chart mechanics.",
@@ -61,6 +79,8 @@ export function buildReasoningPromptInput(reasoningInput) {
       "If the user asks for a general Human Design/chart summary, include relevant supplied foundation fields such as type, strategy, authority, profile, definition, centres, channels, gates, incarnation-cross components, and planetary activations when present and useful; do not dump all data when it is not useful.",
       "Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.",
       "Use controlled knowledge to explain meaning; do not reproduce source text.",
+      "Use holistic_context to connect relevant concepts only through supplied validated relationships and supporting knowledge-record IDs.",
+      "Treat holistic_context.unresolved_context as evidence gaps, never as established claims. Do not invent Quarter or Rave Psychology interpretations when supporting records are absent.",
       "Use external blogs, videos, podcasts and practitioner material only as interpretation, practical-example or critical-context enrichment; never use it to override deterministic evidence.",
       "Separate mechanical facts from interpretation.",
       "Do not calculate, infer, or invent Human Design mechanics.",
