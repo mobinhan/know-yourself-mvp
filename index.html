@@ -77,6 +77,7 @@ window.fetch=async function(input,opts={}){
 </script>
 <script>
 const savedChart=(()=>{try{const x=JSON.parse(localStorage.getItem('ky_chart_v1')||'null');return x&&x.core&&typeof x.core==='object'?x:null}catch{return null}})();
+if(savedChart?.chart_id==='demo-golden-chart'&&!savedChart.birth_data){savedChart.birth_data={date:'1982-04-15',time:'07:38:00',location:'Baarn, Netherlands',timezone:'Europe/Amsterdam',latitude:52.211,longitude:5.287};}
 const library=(()=>{try{return JSON.parse(localStorage.getItem('ky_library_v1')||'{\"insights\":[],\"snapshots\":[],\"conversations\":[],\"charts\":[]}')}catch{return {insights:[],snapshots:[],conversations:[],charts:[]}}})();
 const state={view:'chart',chart:savedChart,connectionResult:null,transit:null,todayReading:null,chat:[],chartTab:'foundation',explore:{kind:'gate',selected:null,detail:null,query:'',catalog:null},headline:0};
 function persistLibrary(){try{localStorage.setItem('ky_library_v1',JSON.stringify(library))}catch{}}
