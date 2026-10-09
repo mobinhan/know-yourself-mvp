@@ -153,15 +153,15 @@
       "id": "EXT-KNOW-QUARTER-GATE-MAP-001",
       "source_id": "EXT_HUMAN_DESIGN_SO",
       "title": "Quarter-to-gate grouping reference",
-      "claim": "A secondary educational reference lists sixteen gates for each of the four quarters. This grouping is stored as a provisional lookup and should be treated as a sourced reference mapping, not as primary-source authority, until checked against a permitted primary teaching source.",
+      "claim": "A secondary educational reference lists the sixteen gates assigned to each quarter. This lookup has been cross-checked against the gate-specific quarter sections in the supplied Definitive Book of Human Design; the primary reference remains authoritative, and the secondary source is retained as an independent cross-check.",
       "claim_type": "teaching",
-      "status": "provisional",
+      "status": "accepted",
       "allowed_use": [
         "explain",
         "contextualize",
         "compare"
       ],
-      "locator": "The Four Quarters, gate lists for Initiation, Civilization, Duality and Mutation (https://humandesign.so/foundations/the-four-quarters)",
+      "locator": "The Four Quarters, gate lists; cross-checked against The Definitive Book of Human Design, Section Eight, printed pp. 294–309 (https://humandesign.so/foundations/the-four-quarters)",
       "topics": [
         "quarters",
         "mandala",
