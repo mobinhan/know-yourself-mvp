@@ -45,6 +45,17 @@ class InterpretationCriticTests(unittest.TestCase):
         result = self.review("Your channel 34-57 is defined.")
         self.assertTrue(result["passed"], result["issues"])
 
+    def test_detects_centre_definition_conflicts(self):
+        cases = [
+            ("Your spleen centre is not defined.", "canonical_centre_status_conflict:spleen"),
+            ("Your head centre is defined.", "canonical_centre_status_conflict:head"),
+        ]
+        for answer, expected_issue in cases:
+            with self.subTest(answer=answer):
+                result = self.review(answer)
+                self.assertFalse(result["passed"])
+                self.assertIn(expected_issue, result["issues"])
+
     def test_blocks_gate_line_archetype_without_exact_source(self):
         result = self.review("Gate 34.2 is the Director archetype.")
         self.assertFalse(result["passed"])
@@ -62,7 +73,7 @@ class InterpretationCriticTests(unittest.TestCase):
         self.assertTrue(result["passed"], result["issues"])
 
     def test_gate_line_status_is_checked_against_exact_activation(self):
-        self.assertFalse(self.review("Your Gate 57.4 is active. ")["passed"])
+        self.assertTrue(self.review("Your Gate 57.4 is active.")["passed"])
         result = self.review("Your Gate 57.3 is active.")
         self.assertFalse(result["passed"])
         self.assertIn("canonical_gate_line_status_conflict:gate_57_line_3", result["issues"])
