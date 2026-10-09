@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import { getKnowledgeRelationships, retrieveHolisticContext } from "./holistic-retrieval.js";
 
 const graph = getKnowledgeRelationships();
 assert.ok(graph.nodes.some(node => node.id === "quarter"));
 assert.ok(graph.nodes.some(node => node.id === "rave_psychology"));
 
-const knownIds = new Set((await import("./knowledge-records.json", { with: { type: "json" } })).default.records.map(record => record.id));
+const knownIds = new Set(JSON.parse(fs.readFileSync(new URL("./knowledge-records.json", import.meta.url), "utf8")).records.map(record => record.id));
 const nodeIds = new Set(graph.nodes.map(node => node.id));
 for (const edge of graph.edges) {
   assert.ok(nodeIds.has(edge.from), `Unknown relationship source node: ${edge.id}`);
