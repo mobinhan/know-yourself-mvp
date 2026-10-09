@@ -16,7 +16,8 @@
     "The AI may use external material only when the question calls for interpretation, practical examples, alternative perspectives or critical context.",
     "A source can be useful even when its claim is not accepted as authoritative; usefulness and truth authority are separate dimensions.",
     "Copyrighted material must be represented by metadata, concise paraphrase and provenance unless rights explicitly permit fuller use.",
-    "Video and podcast ingestion should prefer creator-provided transcripts or authorized captions and store segment locators rather than reproducing full transcripts."
+    "Video and podcast ingestion should prefer creator-provided transcripts or authorized captions and store segment locators rather than reproducing full transcripts.",
+    "Records sharing conflict_group remain separate; the packet exposes distinct claims as conflict_sets requiring review, and the AI must disclose disagreement rather than silently merge or choose a winner."
   ],
   "claim_types": [
     "mechanical",
