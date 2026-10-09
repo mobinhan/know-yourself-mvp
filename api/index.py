@@ -146,10 +146,10 @@ def build_foundation(birth: dict, chart_id: str | None = None) -> dict:
     required = ("date", "time", "timezone")
     if any(not isinstance(birth.get(k), str) or not birth[k].strip() for k in required):
         raise ValueError("birth.date, birth.time and birth.timezone are required")
-    timezone = birth["timezone"].strip()
-    ZoneInfo(timezone)  # validates the IANA timezone before any calculation
+    timezone_name = birth["timezone"].strip()
+    ZoneInfo(timezone_name)  # validates the IANA timezone before any calculation
     local_datetime = f'{birth["date"].strip()}T{birth["time"].strip()}'
-    calculation = calculate_chart(local_datetime, timezone)
+    calculation = calculate_chart(local_datetime, timezone_name)
     activations = calculation["activations"]
     structure = derive_structure(activations)
     chart_id = chart_id or str(uuid.uuid4())
@@ -159,7 +159,7 @@ def build_foundation(birth: dict, chart_id: str | None = None) -> dict:
         "date": birth["date"],
         "time": birth["time"],
         "location": str(birth.get("location") or "").strip(),
-        "timezone": timezone,
+        "timezone": timezone_name,
         "latitude": birth.get("latitude"),
         "longitude": birth.get("longitude"),
     }
