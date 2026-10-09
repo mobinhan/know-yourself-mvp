@@ -4,7 +4,10 @@
     {
       "id": "SRC_HD_DEFINITIVE_BOOK_2011",
       "title": "The Definitive Book of Human Design",
-      "authors": ["Lynda Bunnell", "Ra Uru Hu"],
+      "authors": [
+        "Lynda Bunnell",
+        "Ra Uru Hu"
+      ],
       "publisher": "HDC Publishing",
       "publication_year": 2011,
       "source_type": "primary_reference_book",
@@ -15,7 +18,9 @@
     {
       "id": "SRC_RAVE_ABC",
       "title": "Rave ABC",
-      "authors": ["Ra Uru Hu"],
+      "authors": [
+        "Ra Uru Hu"
+      ],
       "publisher": "Human Design",
       "publication_year": null,
       "source_type": "teaching_reference",
@@ -37,13 +42,41 @@
     {
       "id": "SRC_LIFE_FORCE_CHANNELS_2008",
       "title": "The Life Force: The Channels",
-      "authors": ["Ra Uru Hu"],
+      "authors": [
+        "Ra Uru Hu"
+      ],
       "publisher": "Jovian Archive Corporation / IHDS",
       "publication_year": 2008,
       "source_type": "teaching_reference",
       "rights_status": "copyrighted",
       "use_policy": "Internal reference and provenance mapping only. Use concise paraphrase/synthesis; do not reproduce source text. Commercial publication or licensing requires separate rights review.",
       "locator_scheme": "Supplied PDF page/section locators."
+    },
+    {
+      "id": "SRC_RP_YEAR1_SEM1",
+      "title": "Rave Psychology Year 1, Semester 1 — The Mechanics of Conditioning",
+      "authors": [
+        "Ra Uru Hu"
+      ],
+      "publisher": "Jovian Archive Corporation / International Human Design School",
+      "publication_year": 2006,
+      "source_type": "course_reference",
+      "rights_status": "copyrighted",
+      "use_policy": "Internal reference and provenance mapping only. Use concise paraphrase/synthesis; do not reproduce source text. Commercial publication or licensing requires separate rights review.",
+      "locator_scheme": "Printed page and lesson references from the supplied PDF."
+    },
+    {
+      "id": "SRC_RP_YEAR1_SEM2",
+      "title": "Rave Psychology Year 1, Semester 2 — Mapping the Not-Self Mind",
+      "authors": [
+        "Ra Uru Hu"
+      ],
+      "publisher": "Jovian Archive Corporation / International Human Design School",
+      "publication_year": 2006,
+      "source_type": "course_reference",
+      "rights_status": "copyrighted",
+      "use_policy": "Internal reference and provenance mapping only. Use concise paraphrase/synthesis; do not reproduce source text. Commercial publication or licensing requires separate rights review.",
+      "locator_scheme": "Printed page and lesson references from the supplied PDF."
     }
   ]
 }
