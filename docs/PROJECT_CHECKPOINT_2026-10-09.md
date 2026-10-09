@@ -101,3 +101,19 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - The existing **Hard constraints and approvals** section already says not to use Lovable unless the user gives firm explicit approval and to explain the reason, alternatives, and approximate credit cost before requesting approval.
 - This rule is now promoted to the top of `RESUME.md` and recorded in `docs/CONTINUITY_PROTOCOL.md` so it is encountered on every resume.
 - No Lovable actions or amendments were made as part of this documentation update. All future Lovable actions remain blocked unless explicitly authorized by the user.
+
+
+## Offline interpretation contract audit — 2026-10-09
+
+- Audit report: [`docs/INTERPRETATION_CONTRACT_AUDIT_2026-10-09.md`](INTERPRETATION_CONTRACT_AUDIT_2026-10-09.md).
+- Hardened `api/interpretation_provider.py` against malformed optional model-output fields. Invalid evidence basis arrays are dropped; malformed card source/channel/centre arrays are dropped; non-canonical gate values are rejected; invalid one-line/interpretation fields receive safe fallbacks. Missing answer still fails closed with a sanitized provider error.
+- Added/extended offline tests in `tests/test_gate_line_synthesis_contract.py`: malformed optional fields, missing required answer, no-network behavior when provider is not configured, and direct birth-data field exclusion.
+- Corrected code/test commit: `4bd3ff4cc1d7c8694a2df40000a8da616a8731e5`. Focused Gate-line regression run #41 passed all 10 tests: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37912038319
+- Audit report commit: `eca43f42372c02b1eb3ebbb27754f5d1b5def27f`. Documentation-only changes after run #41 were not separately tested.
+- Critic finding: `engine/answer-critic.js` and `engine/reasoning-adapter.js` contain a critic path, but `engine/THREE_FRAMEWORK.md` explicitly says a separate critic is not mandatory in 3framework and `engine/test_three-framework.mjs` asserts the direct ChatGPT envelope has no critic. The Python API provider also does not invoke that JavaScript critic. Preserve this intentional architecture; semantic claim validation remains a documented gap rather than silently wiring in a separate critic.
+- Deterministic chart mechanics remain authoritative and are supplied to synthesis; tests assert direct birth-data fields are not sent to the model. This does not prove every generated sentence is semantically grounded.
+- Live OpenAI integration/model quality remains unverified. No real provider request was sent; provider-not-configured behavior was tested without network access.
+- No Lovable access or changes; no Vercel actions; no PR merge.
+- PR #1 remains open/draft/unmerged. Latest observed metadata marked it non-mergeable; do not merge. Inspect divergence/conflicts separately before considering review.
+- **Local working tree not inspected; unpushed desktop edits cannot be ruled out.**
+- Next action: continue offline semantic-quality fixtures and inspect PR divergence safely. Any live-app validation remains blocked until the user explicitly authorizes Lovable access.
