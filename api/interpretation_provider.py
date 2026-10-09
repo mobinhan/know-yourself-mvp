@@ -76,14 +76,39 @@ def _select_knowledge(question: str, foundation: dict) -> tuple[list[dict], list
             and (gate_number, line_number) in active_gate_lines
         )
         overlap = len(terms.intersection(set(re.findall(r"[a-z0-9-]+", searchable))))
+        record_id = str(record.get("id", "")).lower()
+        record_gate_line_match = re.search(r"\b(?:gate[-_ ]?)?(\d{1,2})[.-](\d)\b", record_id)
+        if record_gate_line_match is None:
+            record_gate_line_match = re.search(
+                r"\bgate\s*(\d{1,2})\s*[./-]\s*(\d)\b", searchable
+            )
+        record_gate_line = (
+            (int(record_gate_line_match.group(1)), int(record_gate_line_match.group(2)))
+            if record_gate_line_match else None
+        )
         is_gate_line_specific = (
             "gate-line synthesis" in searchable
             or "gate_line_synthesis" in searchable
-            or re.search(r"\b57[.-]4\b", str(record.get("id", "")).lower()) is not None
+            or record_gate_line is not None
         )
-        # Never admit a specific Gate 57.4 archetype through generic keyword
-        # overlap when the queried activation is absent from the canonical chart.
-        if is_gate_line_specific and gate_number == 57 and line_number == 4 and not exact_gate_line:
+        # A source-specific gate-line record must never leak into a different
+        # explicit gate-line question through generic keyword overlap.
+        if (
+            is_gate_line_specific
+            and gate_number is not None
+            and line_number is not None
+            and record_gate_line != (gate_number, line_number)
+        ):
+            continue
+        # For a matching source-specific record, require that exact activation
+        # in the canonical chart before including it.
+        if (
+            is_gate_line_specific
+            and gate_number is not None
+            and line_number is not None
+            and record_gate_line == (gate_number, line_number)
+            and not exact_gate_line
+        ):
             continue
         if exact_gate_line or overlap >= 2:
             # Reserve the limited external-evidence budget for an exact, active
