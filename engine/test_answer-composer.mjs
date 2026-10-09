@@ -37,7 +37,7 @@ if (!gateContext.records.some(x => x.id === "HD-KNOW-LINE-001")) {
 if (!gateContext.gate_quarter_context.some(x => x.gate === 34 && x.quarter === "Mutation" && x.chart_defined && x.mapping_status === "validated")) {
   throw new Error("gate prompt omitted the sourced quarter mapping");
 }
-if (!gateContext.external_records.some(x => x.id === "EXT-KNOW-QUARTER-GATE-MAP-001" && x.status === "provisional")) {
+if (!gateContext.external_records.some(x => x.id === "EXT-KNOW-QUARTER-GATE-MAP-001" && x.status === "accepted")) {
   throw new Error("gate prompt omitted quarter-map provenance/status");
 }
 if (!gatePrompt.instructions.some(x => x.includes("unresolved_context"))) {
