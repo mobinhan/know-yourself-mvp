@@ -41,6 +41,10 @@ export function criticAnswer({ answer, factual_basis = [], knowledge_basis = [],
     issues.push("missing_relationship_basis:REL-PERSONALITY-SUN-RP-MOTIVATION");
   }
   const hasNodeViewClaim = /personality (north |south )?nodes?/.test(text) && /\b(view|perspective)\b/.test(text);
+  const hasColor36TransferenceClaim = /color 3/.test(text) && /color 6/.test(text) && /transference/.test(text);
+  if (hasColor36TransferenceClaim && !relationBasis.has("REL-PERSONALITY-SUN-NODES-COLOR-TRANSFERENCE-3-6")) {
+    issues.push("missing_relationship_basis:REL-PERSONALITY-SUN-NODES-COLOR-TRANSFERENCE-3-6");
+  }
   if (hasNodeViewClaim && !relationBasis.has("REL-PERSONALITY-NODES-RP-VIEW")) {
     issues.push("missing_relationship_basis:REL-PERSONALITY-NODES-RP-VIEW");
   }
