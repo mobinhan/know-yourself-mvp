@@ -222,7 +222,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         "title, summary, reflection, evidence_class, source_ids, gate, channels, centres), factual_basis (array of "
         "evidence labels), knowledge_basis (array of supplied knowledge record IDs), relationship_basis (array of "
         "supplied validated relationship IDs), interpretation (string), limitations (array of strings). "
-        "Use concise but substantive prose. Never invent evidence IDs, source IDs, relationship IDs, or facts. A deterministic post-synthesis quality gate will check explicit chart mechanics and source-specific gate-line claims."
+        "Use concise but substantive prose. Never invent evidence IDs, source IDs, relationship IDs, or facts. There is no separate post-synthesis critic in 3framework; synthesize directly from the supplied canonical evidence and context."
     )
     body = {
         "model": model,
