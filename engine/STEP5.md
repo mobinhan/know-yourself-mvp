@@ -69,3 +69,9 @@ Current acceptance boundary: deterministic mechanics remain authoritative; the q
 - Chart truth, source knowledge and system instructions are excluded from user-context memory so they cannot override canonical evidence.
 - The policy is integrated into prompt assembly and explicitly limited to presentation and relevance, never mechanics, evidence standards or certainty.
 - This is a policy contract only. It does **not** implement durable cross-session memory, automatic preference learning, account-level inspection/correction/reset/deletion or a live model provider. Those require backend integration and further acceptance testing.
+
+## Governed memory and conversation integration — contract groundwork
+- `user-memory-governance.js` validates memory candidates, separates explicit from inferred records, requires consent, applies a confidence threshold to inferences, requires a source turn, and keeps inferred candidates in `proposed` status until user confirmation.
+- Only active, consented, non-expired records in approved personal-memory categories can enter the prompt. Chart truth, source knowledge and system instructions are excluded.
+- Prompt assembly now keeps three distinct inputs separate: adaptive response policy, governed active user memory, and bounded conversation continuity. Conversation history is only for references/follow-ups; prior assistant responses are never chart evidence.
+- These modules are policy and contract groundwork, not persistent learning. Cross-session storage, memory inspection/edit/reset/delete controls, consent UX, audit trails and authenticated multi-user isolation must be implemented in the backend before claiming user memory is operational.
