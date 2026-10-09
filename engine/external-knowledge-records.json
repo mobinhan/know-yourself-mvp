@@ -384,6 +384,44 @@
         "supersedes": [],
         "conflict_group": null
       }
+    },
+    {
+      "id": "EXT-KNOW-DAILY-VIEW-GATE-42-5-001",
+      "source_id": "EXT_IHDS_OFFICIAL",
+      "title": "Daily View example: Gate 42, Line 5 transit interpretation",
+      "claim": "An IHDS Daily View newsletter entry dated 14 April 2018 illustrates a layered gate-line interpretation by connecting Gate 42 Line 5 with the Gate of Growth theme, the Quarter of Initiation, a Godhead reference, line-level exaltation/detriment, Gate 42's relationship to Gate 53 in the Channel of Maturation, circuit context, and a date-specific solar transit. Treat the article as an interpretive teaching example; its transit framing and any date-specific wording must not be generalized as timeless natal-chart facts.",
+      "claim_type": "interpretive_teaching_example",
+      "status": "accepted",
+      "allowed_use": [
+        "explain",
+        "illustrate",
+        "compare",
+        "retrieve_as_transit_example"
+      ],
+      "locator": "The Daily View, Gate 42.5 — Experience as its own reward today; published 14 April 2018; https://myemail.constantcontact.com/The-Daily-View--Gate-42-5---Experience-as-its-own-reward-today.html?soid=1101642878733&aid=qqMMPdWufPA",
+      "topics": [
+        "gate_42",
+        "line_5",
+        "quarter_of_initiation",
+        "channel_42_53",
+        "godhead",
+        "gate_line_interpretation",
+        "transit_context",
+        "holistic_retrieval"
+      ],
+      "record_metadata": {
+        "record_version": "1.0.0",
+        "lifecycle_status": "active",
+        "epistemic_class": "interpretive",
+        "review_status": "reviewed",
+        "metadata_registered_at": "2026-10-09",
+        "last_reviewed_at": "2026-10-09",
+        "next_review_due": "2027-01-09",
+        "rights_use_status": "internal_paraphrase_only",
+        "source_change_action": "revalidate_claim_status_and_dependent_relationships",
+        "supersedes": [],
+        "conflict_group": null
+      }
     }
   ]
 }
