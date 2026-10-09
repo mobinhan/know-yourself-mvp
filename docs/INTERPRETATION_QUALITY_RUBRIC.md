@@ -40,9 +40,9 @@ Implemented in `tests/test_interpretation_critic.py` and `tests/test_gate_line_s
 - Provider-level fail-closed behaviour for chart-mechanics contradictions.
 - Evidence-ID filtering, malformed optional fields, missing answer, and provider-not-configured/no-network behaviour.
 
-Focused CI run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914827088
+Focused CI run (27 tests): https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387
 
-## Known limitations / next expansion
+## Latest Step 3 implementation update\n\nThe critic now checks explicit profile, type, and authority claims when canonical values are present; exact gate-line activation status; and transit gate claims against the supplied `transit_gates` list (a generic date field alone is insufficient). Added a cross-concept mismatch fixture proving that a valid source/relationship for Gate 34.2 cannot support a Gate 57.4 archetype claim. The focused suite ran 27 tests and passed. Full engine validation on the same code commit is being checked separately.\n\n## Known limitations / next expansion
 
 1. Pattern matching cannot reliably understand every paraphrase, negation, hypothetical, or long-range cross-concept claim.
 2. Current source-specific synthesis enforcement focuses on gate-line archetypes. General knowledge claims still rely on retrieval selection, allowed-ID filtering, and prompt instructions; ID validity is not proof of semantic support.
