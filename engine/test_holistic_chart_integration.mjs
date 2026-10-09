@@ -34,7 +34,7 @@ const evidenceBundle = buildEvidence({
   calculation: chart.calculation,
   sources: ["SRC_HD_DEFINITIVE_BOOK_2011"]
 });
-const question = "Explain Gate 34 in my chart, including its Quarter and how Rave Psychology relates to my Personality Sun and Nodes.";
+const question = "Explain Gate 34 and my Incarnation Cross, including its Quarter and how Rave Psychology relates to my Personality Sun and Nodes.";
 const questionContext = understandQuestion(question);
 const reasoningInput = buildReasoningInput({
   questionContext,
