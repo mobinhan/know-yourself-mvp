@@ -80,7 +80,7 @@ const supportedDraft = composeAnswer({
     factual_basis: ["E-GATES", "E-ACTIVATIONS"],
     knowledge_basis: [],
     relationship_basis: ["REL-GATE-QUARTER", "REL-PERSONALITY-SUN-RP-MOTIVATION", "REL-PERSONALITY-NODES-RP-VIEW"],
-    interpretation: "This combines a provisional wheel mapping with source-backed substructure relationships.",
+    interpretation: "This combines the source-validated wheel mapping with source-backed substructure relationships.",
     limitations: ["Quarter mapping is cross-checked against the supplied primary reference; Rave Psychology is interpreted only through verified Personality substructure."]
   }
 });
