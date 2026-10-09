@@ -70,8 +70,8 @@ def _select_knowledge(question: str, foundation: dict) -> tuple[list[dict], list
             gate_number is not None and line_number is not None
             and gate_number == 57 and line_number == 4
             and (
-                re.search(r"\\b57[.-]4\\b", str(record.get("id", "")).lower()) is not None
-                or re.search(r"\\bgate\\s*57\\s*[./-]\\s*4\\b", searchable) is not None
+                re.search(r"\b57[.-]4\b", str(record.get("id", "")).lower()) is not None
+                or re.search(r"\bgate\s*57\s*[./-]\s*4\b", searchable) is not None
             )
             and (gate_number, line_number) in active_gate_lines
         )
