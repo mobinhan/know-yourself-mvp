@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import sys
+import time
 import uuid
 from datetime import datetime, timezone
 from functools import lru_cache
@@ -34,6 +35,9 @@ CHANNELS = CHANNEL_CATALOG["channels"]
 TIMEZONE_FINDER = TimezoneFinder(in_memory=True)
 ALLOWED_METHODS = {"GET", "POST", "OPTIONS"}
 MAX_BODY_BYTES = 64_000
+AI_RATE_WINDOW_SECONDS = 60
+AI_RATE_MAX_REQUESTS = 10
+_AI_REQUESTS_BY_IP: dict[str, list[float]] = {}
 
 
 def _unique(items):
@@ -349,6 +353,8 @@ class handler(BaseHTTPRequestHandler):
                     if at.tzinfo is None:
                         at = at.replace(tzinfo=timezone.utc)
                     transit = build_transit_result(foundation, at)
+                    if not self._allow_ai_request():
+                        return self._send(429, {"error": "ai_rate_limit_exceeded", "retry_after_seconds": AI_RATE_WINDOW_SECONDS})
                     try:
                         reading = generate_interpretation(
                             "Explain the current transit overlay in relation to this natal design. Focus on verified overlaps, newly activated gates, temporary channels and what to observe; do not imply the natal chart has changed.",
@@ -389,6 +395,8 @@ class handler(BaseHTTPRequestHandler):
                         if at.tzinfo is None:
                             at = at.replace(tzinfo=timezone.utc)
                         temporal_context = build_transit_result(foundation, at)["result"]
+                    if not self._allow_ai_request():
+                        return self._send(429, {"error": "ai_rate_limit_exceeded", "retry_after_seconds": AI_RATE_WINDOW_SECONDS})
                     try:
                         interpretation = generate_interpretation(question, foundation, temporal_context=temporal_context)
                     except InterpretationProviderError:
@@ -435,6 +443,24 @@ class handler(BaseHTTPRequestHandler):
             return self._send(503, {"error": "birthplace_provider_unavailable"})
         except Exception:
             return self._send(500, {"error": "calculation_failed", "message": "The request could not be completed safely."})
+
+    def _allow_ai_request(self) -> bool:
+        # Lightweight per-warm-instance protection for the public MVP endpoint.
+        # Keep this alongside platform-level rate limits when available.
+        forwarded = self.headers.get("x-real-ip") or self.headers.get("x-forwarded-for", "")
+        client_ip = (forwarded.split(",")[0].strip() or "unknown")[:80]
+        now = time.monotonic()
+        recent = [stamp for stamp in _AI_REQUESTS_BY_IP.get(client_ip, []) if now - stamp < AI_RATE_WINDOW_SECONDS]
+        if len(recent) >= AI_RATE_MAX_REQUESTS:
+            _AI_REQUESTS_BY_IP[client_ip] = recent
+            return False
+        recent.append(now)
+        _AI_REQUESTS_BY_IP[client_ip] = recent
+        # Bound memory growth in long-lived local/dev processes.
+        if len(_AI_REQUESTS_BY_IP) > 2000:
+            for key in list(_AI_REQUESTS_BY_IP)[:500]:
+                _AI_REQUESTS_BY_IP.pop(key, None)
+        return True
 
     def _read_json(self):
         length = int(self.headers.get("Content-Length", "0"))
