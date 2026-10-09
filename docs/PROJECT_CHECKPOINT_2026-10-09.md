@@ -220,3 +220,16 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - Existing safeguards remain binding: no Vercel, active 3framework/no critic, no PR #1 merge without explicit approval, preserve desktop-only work.
 
 - Further read-only audit found that `index.html` references `/web/app.js` and registers `/web/sw.js`, but both paths return 404 on the active branch. Inline JavaScript is also present, so this is a migration blocker to investigate, not proof by itself that the entire UI is broken. No root `package.json`, `Dockerfile`, `render.yaml`, `netlify.toml`, or `api/requirements.txt` was found at the checked paths. This is documented in `docs/LOVABLE_MIGRATION_PLAN.md`; do not create a new Lovable project until the missing-asset/runtime question is resolved.
+
+
+## Save MCP — handoff checkpoint 2026-10-10 (ICT)
+
+- User selected Option A: preserve the current implementation and plan a deliberate, reversible Lovable migration. Do not create a Lovable project or spend credits yet; no Lovable project has been created and no credits were used in this work.
+- Read-only inventory: `index.html` is ~128 KB with inline CSS/JS; it references `/web/app.js` and registers `/web/sw.js`, but both files return 404 when fetched directly from `feature/live-api-v1`. This needs tree-level investigation; do not infer the whole UI is broken solely from these missing references.
+- `api/index.py` exposes birthplace search/timezone, chart creation, today/transit, contextual question, gate and channel endpoints; `api/interpretation_provider.py` handles direct 3framework ChatGPT synthesis; `engine/THREE_FRAMEWORK.md` remains the architecture contract. Root `requirements.txt` includes `pyswisseph` and `timezonefinder`.
+- Migration plan: [`docs/LOVABLE_MIGRATION_PLAN.md`](LOVABLE_MIGRATION_PLAN.md), latest content blob `77d67960787dd15f2d865bc6e0704e2bcbd1a4be`.
+- Resume entry updated to make the no-credit compatibility audit the immediate task: commit `82a5e2c842994570095c042e9841537ada783fd0`.
+- This checkpoint update is documentation only; no app code changed and no tests were run.
+- Current branch inventory shows `feature/live-api-v1` and `main`. PR #1 remains an unmerged draft and must not be merged without explicit approval. Vercel is excluded from the workflow; any lingering Vercel status is historical/external and is not an approved deployment target.
+- Next action: continue read-only GitHub tree/file inventory to resolve frontend asset references and determine the API hosting/routing assumptions. Then recommend the smallest safe migration pilot with alternatives and estimated Lovable credit cost (or state unknown), and request specific approval before any Lovable action.
+- Desktop working tree is still inaccessible from this session; preserve any local-only changes.
