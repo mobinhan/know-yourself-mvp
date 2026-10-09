@@ -68,3 +68,28 @@ When asked to “Resume KY”:
 - Report only the current blocker and next action; avoid making the user repeat established decisions.
 - Proceed autonomously on reversible, low-risk work. Pause for major architectural, commercial, licensing, data-loss, or irreversible decisions.
 - Never claim that a change was committed, pushed, merged, deployed, or tested unless the tool result verifies it.
+
+## Correction, repetition, and autosave protocol
+Treat a user correction, a confirmed assistant mistake, or a repeated failure/repetition as a signal to update the working method—not merely to apologize and continue.
+
+When the user points out that an answer or action is wrong:
+1. Stop repeating the disputed claim or action.
+2. Acknowledge the specific error plainly; do not defend an unverified assumption.
+3. Re-check the relevant source of truth (live repository, code, test result, chart-engine output, or cited evidence).
+4. Correct the result and, where feasible, add a focused regression check or change the procedure that allowed the mistake.
+5. If the correction changes durable project facts, an agreed decision, a workflow rule, a known failure mode, or a future recovery step, update this checkpoint and commit/push the update to GitHub, then fetch it back to verify the remote state.
+6. Report exactly what was corrected, what was saved, and what remains unverified.
+
+When the same issue, question, or work is repeated:
+- First check whether it was already completed, decided, or attempted; do not restart from scratch without a reason.
+- Record the cause and prevention rule when a repeated failure reveals a process gap.
+- Autosave meaningful lessons and state changes; do not create noisy commits for inconsequential wording or transient discussion.
+
+Autosave trigger examples:
+- The user says the assistant is wrong or identifies a factual/technical mistake.
+- The assistant discovers its own earlier claim was wrong.
+- A workflow, build, test, navigation, or recovery attempt fails repeatedly.
+- The user has to repeat a decision, preference, instruction, or correction because it was not retained.
+- A project decision, completed milestone, blocker, or next action materially changes.
+
+Important limitation: this file records the required protocol; it does not itself execute tools automatically. In each session, follow the protocol when GitHub tools are available, and never claim a remote save until the commit and fetched remote content confirm it.
