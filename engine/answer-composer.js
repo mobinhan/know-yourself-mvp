@@ -59,9 +59,55 @@ export function buildReasoningPromptInput(reasoningInput) {
       .map(target => targetToConcept[target])
       .filter(Boolean)
   )];
+  const gateEvidence = (reasoningInput.evidence ?? []).find(record => record.id === "E-GATES");
+  const activationEvidence = (reasoningInput.evidence ?? []).find(record => record.id === "E-ACTIVATIONS");
+  const chartGateSet = Array.isArray(gateEvidence?.result) ? gateEvidence.result : [];
+  const explicitGateMatch = reasoningInput.question.match(/\\b(?:gate|gates)\\s*(\\d{1,2})\\b/i);
+  const explicitGate = explicitGateMatch ? Number(explicitGateMatch[1]) : null;
+  const relevantGates = explicitGate != null ? [explicitGate] : chartGateSet;
   const holistic_context = holisticConcepts.map(concept =>
-    retrieveHolisticContext({ concept, maxHops: 1, includePending: true })
+    retrieveHolisticContext({
+      concept,
+      maxHops: 1,
+      includePending: true,
+      gateNumbers: concept === "gate" ? relevantGates : [],
+      chartGateSet
+    })
   );
+
+  const activations = activationEvidence?.result ?? {};
+  const personalityActivations = Array.isArray(activations.personality) ? activations.personality : [];
+  const getActivation = body => {
+    const activation = personalityActivations.find(item => String(item.body ?? "").toLowerCase() === body);
+    if (!activation) return null;
+    return {
+      body: activation.body,
+      gate: activation.gate,
+      line: activation.line,
+      colour: activation.colour,
+      tone: activation.tone,
+      base: activation.base,
+      evidence_id: activationEvidence.id
+    };
+  };
+  const personalitySubstructure = {
+    personality_sun: getActivation("sun"),
+    personality_north_node: getActivation("north_node"),
+    personality_south_node: getActivation("south_node")
+  };
+  const hasPersonalitySubstructure = Boolean(
+    personalitySubstructure.personality_sun?.colour != null ||
+    personalitySubstructure.personality_north_node?.colour != null ||
+    personalitySubstructure.personality_south_node?.colour != null
+  );
+  const rave_psychology_context = hasPersonalitySubstructure
+    ? {
+        framework: retrieveHolisticContext({ concept: "rave_psychology", maxHops: 1, includePending: true }),
+        chart_substructure: personalitySubstructure,
+        relevance_note: "Use Personality Sun Color as the sourced input for Motivation and Personality Node Color as the sourced input for View. Do not infer either from the queried gate alone.",
+        source_evidence_id: activationEvidence.id
+      }
+    : null;
 
   return {
     mode: "grounded_reasoning",
@@ -71,6 +117,7 @@ export function buildReasoningPromptInput(reasoningInput) {
     knowledge: reasoningInput.knowledge,
     external_knowledge: reasoningInput.external_knowledge ?? [],
     holistic_context,
+    rave_psychology_context,
     instructions: [
       "Answer the user's question naturally and directly.",
       "Use supplied evidence as the only source of chart mechanics.",
@@ -81,6 +128,9 @@ export function buildReasoningPromptInput(reasoningInput) {
       "Use controlled knowledge to explain meaning; do not reproduce source text.",
       "Use holistic_context to connect relevant concepts only through supplied validated relationships and supporting knowledge-record IDs.",
       "Treat holistic_context.unresolved_context as evidence gaps, never as established claims. Do not invent Quarter or Rave Psychology interpretations when supporting records are absent.",
+      "Quarter mapping context is provisional where labelled provisional; disclose that status when it materially affects the answer.",
+      "Use Rave Psychology only through supplied, traceable Personality Sun / Personality Node substructure. Motivation is linked to Personality Sun Color and View to Personality Node Color; do not infer these values from a gate theme or from missing data.",
+      "A gate's Quarter is wheel-level context, while Rave Psychology is a separate substructure lens; do not imply that the gate alone determines a person's Motivation or View.",
       "Use external blogs, videos, podcasts and practitioner material only as interpretation, practical-example or critical-context enrichment; never use it to override deterministic evidence.",
       "Separate mechanical facts from interpretation.",
       "Do not calculate, infer, or invent Human Design mechanics.",
