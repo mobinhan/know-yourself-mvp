@@ -92,7 +92,8 @@ def review_interpretation(
 
     defined_channels = _defined_channels(foundation)
     for match in _CHANNEL_CLAIM.finditer(answer):
-        channel = "-".join(sorted((int(match.group(1)), int(match.group(2)))))
+        a, b = sorted((int(match.group(1)), int(match.group(2))))
+        channel = f"{a}-{b}"
         says_not = bool(match.group(3))
         if channel and (says_not == (channel in defined_channels)):
             issues.append(f"canonical_channel_status_conflict:{channel}")
