@@ -136,6 +136,7 @@ export function buildReasoningPromptInput(reasoningInput) {
       "Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.",
       "Use controlled knowledge to explain meaning; do not reproduce source text.",
       "Use holistic_context to connect relevant concepts only through supplied validated relationships and supporting knowledge-record IDs.",
+      "For every material cross-concept claim, include the relevant supplied validated graph relationship ID in relationship_basis. Never cite an absent, pending or unrelated relationship.",
       "Treat holistic_context.unresolved_context as evidence gaps, never as established claims. Do not invent Quarter or Rave Psychology interpretations when supporting records are absent.",
       "Quarter mapping context is provisional where labelled provisional; disclose that status when it materially affects the answer.",
       "Use Rave Psychology only through supplied, traceable Personality Sun / Personality Node substructure. Motivation is linked to Personality Sun Color and View to Personality Node Color; do not infer these values from a gate theme or from missing data.",
