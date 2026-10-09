@@ -94,3 +94,10 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - External Vercel project deletion was attempted via the connected Vercel integration but blocked by HTTP 403 scope authorization (`mobinhan-7634`). No claim is made that the external Vercel project or GitHub App integration has been deleted.
 - No PR merged; PR #1 remains open/draft. API source code was preserved to avoid deleting application logic without validating the Lovable/Supabase runtime dependency.
 - Next: verify remote branch HEAD and file contents; run focused regression CI; then continue interpretation-quality/live integration validation using Lovable and Supabase, not Vercel.
+
+
+## Lovable credit approval reminder — reaffirmed 2026-10-09
+
+- The existing **Hard constraints and approvals** section already says not to use Lovable unless the user gives firm explicit approval and to explain the reason, alternatives, and approximate credit cost before requesting approval.
+- This rule is now promoted to the top of `RESUME.md` and recorded in `docs/CONTINUITY_PROTOCOL.md` so it is encountered on every resume.
+- No Lovable actions or amendments were made as part of this documentation update. All future Lovable actions remain blocked unless explicitly authorized by the user.
