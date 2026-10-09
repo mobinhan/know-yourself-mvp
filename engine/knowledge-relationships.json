@@ -255,6 +255,29 @@
         "EXT-KNOW-RP-VIEW-001",
         "EXT-KNOW-RP-MOTIVATION-001"
       ]
+    },
+    {
+      "id": "REL-PERSONALITY-SUN-NODES-COLOR-TRANSFERENCE-3-6",
+      "from": "personality_sun",
+      "to": "personality_nodes",
+      "type": "interpreted_with",
+      "status": "validated",
+      "knowledge_ids": [
+        "HD-KNOW-RP-FOUNDATION-001",
+        "HD-KNOW-RP-MOTIVATION-COLOR-003",
+        "HD-KNOW-RP-NODES-COLOR-006",
+        "HD-KNOW-RP-TRANSFERENCE-3-6-001"
+      ],
+      "external_knowledge_ids": [
+        "EXT-KNOW-RP-FOUNDATION-001",
+        "EXT-KNOW-RP-VIEW-001",
+        "EXT-KNOW-RP-MOTIVATION-001"
+      ],
+      "applies_when": {
+        "personality_sun_colour": 3,
+        "personality_node_colour": 6
+      },
+      "note": "Conditional relationship: include only when the verified Personality Sun and Personality Node Color fields match."
     }
   ]
 }
