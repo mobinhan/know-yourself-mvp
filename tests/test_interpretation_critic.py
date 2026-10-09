@@ -66,9 +66,10 @@ class InterpretationCriticTests(unittest.TestCase):
         self.assertFalse(result["passed"])
         self.assertIn("transit_claim_without_temporal_evidence", result["issues"])
 
-    def test_allows_transit_claim_when_temporal_context_is_supplied(self):
+    def test_transit_claim_needs_actual_transit_gate_evidence(self):
         result = self.review(
-            "Today's transit activates Gate 20.", temporal_context={"date": "2026-10-09"}
+            "Today's transit activates Gate 34.",
+            temporal_context={"transit_gates": [34, 57]},
         )
         self.assertTrue(result["passed"], result["issues"])
 
