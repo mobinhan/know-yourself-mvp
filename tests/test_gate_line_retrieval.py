@@ -138,5 +138,25 @@ class GateLineRetrievalTests(unittest.TestCase):
 
 
 
+    def test_gate_line_source_does_not_leak_into_different_line_question(self):
+        with patch(
+            "api.interpretation_provider._read_json",
+            side_effect=[
+                {"records": []},
+                {"records": [GATE_574]},
+                {"edges": []},
+            ],
+        ):
+            _, external, relationships = _select_knowledge(
+                "Explain Gate 57.3", foundation(active=True)
+            )
+        self.assertNotIn(GATE_574["id"], {record["id"] for record in external})
+        self.assertNotIn(
+            "REL-GATE-57-LINE-4-DIRECTOR",
+            {edge["id"] for edge in relationships},
+        )
+
+
+
 if __name__ == "__main__":
     unittest.main()
