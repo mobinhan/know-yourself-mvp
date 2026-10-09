@@ -7,6 +7,7 @@ export function buildGroundedAnswer({ reasoningInput, draft }) {
       answer: "I don't have enough verified evidence to answer that reliably yet.",
       factual_basis: [],
       knowledge_basis: [],
+      relationship_basis: [],
       interpretation: "The required evidence is not currently available in the deterministic evidence layer.",
       limitations: reasoningInput?.missing_evidence_targets ?? []
     }, reasoningInput?.evidence ?? [], reasoningInput?.knowledge ?? [], []);
@@ -44,6 +45,7 @@ export function createMockReasoningDraft(reasoningInput) {
       answer: "I don't have enough verified evidence to answer that reliably yet.",
       factual_basis: [],
       knowledge_basis: [],
+      relationship_basis: [],
       interpretation: "The requested evidence is not currently available."
     };
   }
