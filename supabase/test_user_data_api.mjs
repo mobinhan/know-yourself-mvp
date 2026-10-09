@@ -16,6 +16,8 @@ assert.match(source, /inferred_memory_confidence_invalid/, "inferred memory conf
 assert.match(source, /memory_source_turn_required/, "memory provenance must include a source turn");
 assert.match(source, /\.eq\("user_id", user\.id\)/, "data access must be scoped to the verified user");
 assert.match(source, /supabase\.rpc\("ky_append_user_turn"/, "user questions must be appended through the sequence-safe RPC");
+assert.match(source, /resource === "saved-insights"/, "saved insights must be readable/deletable by their owner");
+assert.match(source, /resource === "transit-snapshots"/, "transit snapshots must be readable/deletable by their owner");
 assert.match(source, /creation_requires_deterministic_engine/, "clients must not fabricate canonical chart artifacts");
 assert.match(writeBoundaries, /revoke insert, update on public\.ky_charts from authenticated/i, "clients must not forge canonical chart mechanics");
 assert.match(writeBoundaries, /client_may_only_append_user_turns/, "clients must not forge assistant turns");
