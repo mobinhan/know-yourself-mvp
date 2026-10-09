@@ -99,6 +99,67 @@ export function buildReasoningPromptInput(reasoningInput) {
       evidence_id: activationEvidence.id
     };
   };
+  const crossEvidence = (reasoningInput.evidence ?? []).find(record => record.id === "E-CROSS");
+  const crossDefinition = crossEvidence?.result && typeof crossEvidence.result === "object" ? crossEvidence.result : null;
+  const crossSlots = [
+    ["personality_sun", "sun", "personality"],
+    ["personality_earth", "earth", "personality"],
+    ["design_sun", "sun", "design"],
+    ["design_earth", "earth", "design"]
+  ];
+  const crossActivations = crossDefinition
+    ? crossSlots.map(([slot, body, imprint]) => {
+        const supplied = crossDefinition[slot];
+        const sourceActivation = (Array.isArray(activations[imprint]) ? activations[imprint] : [])
+          .find(item => String(item.body ?? "").toLowerCase() === body);
+        if (!supplied || !sourceActivation || supplied.gate !== sourceActivation.gate || supplied.line !== sourceActivation.line) return null;
+        const quarterContext = retrieveHolisticContext({
+          concept: "gate",
+          maxHops: 1,
+          includePending: true,
+          gateNumbers: [supplied.gate],
+          chartGateSet
+        });
+        const quarter = (quarterContext.gate_quarter_context ?? []).find(item => item.gate === supplied.gate) ?? null;
+        return {
+          slot,
+          imprint,
+          body,
+          gate: supplied.gate,
+          line: supplied.line,
+          evidence_id: crossEvidence.id,
+          activation_evidence_id: activationEvidence?.id ?? null,
+          quarter: quarter ? {
+            id: quarter.quarter_id ?? null,
+            name: quarter.quarter ?? null,
+            theme: quarter.theme ?? null,
+            mapping_status: quarter.mapping_status ?? "unknown",
+            source_ids: quarter.source_ids ?? []
+          } : null,
+          quarter_context_evidence: quarter ? "validated_graph_lookup" : "not_available"
+        };
+      })
+    : [];
+  const incarnation_cross_context = crossActivations.length === 4 && crossActivations.every(Boolean)
+    ? {
+        status: "complete",
+        cross_name: crossDefinition.name ?? crossDefinition.cross_name ?? null,
+        cross_name_status: (crossDefinition.name ?? crossDefinition.cross_name) ? "supplied_by_deterministic_evidence" : "not_supplied_do_not_invent",
+        profile: (reasoningInput.evidence ?? []).find(record => record.id === "E-PROFILE")?.result ?? null,
+        primary_quarter: crossActivations.find(item => item.slot === "personality_sun")?.quarter ?? null,
+        primary_quarter_anchor: "personality_sun",
+        activations: crossActivations,
+        evidence_ids: [crossEvidence.id, activationEvidence?.id].filter(Boolean),
+        note: "Four Sun/Earth activations are verified against canonical activation evidence. Each quarter is a separate gate-level context; the Personality Sun quarter is the primary Cross anchor. No Cross name is inferred when absent."
+      }
+    : {
+        status: "incomplete",
+        missing_slots: crossSlots.filter(([slot]) => !crossActivations.some(item => item?.slot === slot)).map(([slot]) => slot),
+        cross_name: null,
+        evidence_ids: [crossEvidence?.id, activationEvidence?.id].filter(Boolean),
+        note: "Do not claim a complete Incarnation Cross interpretation until all four Sun/Earth activations are present and agree with canonical activation evidence."
+      };
+
   const personalitySubstructure = {
     personality_sun: getActivation("sun"),
     personality_north_node: getActivation("north_node"),
@@ -127,11 +188,12 @@ export function buildReasoningPromptInput(reasoningInput) {
     external_knowledge: reasoningInput.external_knowledge ?? [],
     holistic_context,
     rave_psychology_context,
+    incarnation_cross_context,
     instructions: [
       "Answer the user's question naturally and directly.",
       "Use supplied evidence as the only source of chart mechanics.",
       "Use all relevant supplied evidence; do not omit a relevant mechanical result merely because it is not a headline field.",
-      "incarnation-cross components",
+      "Use incarnation_cross_context as the first-class Cross structure. When complete, connect all four Sun/Earth gate-line activations, their separately sourced quarter contexts, profile if supplied, and the Personality Sun quarter as the primary Cross anchor. Do not invent a Cross name if deterministic evidence does not supply one. If the context is incomplete, state the missing elements rather than presenting a complete Cross reading.",
       "If the user asks for a general Human Design/chart summary, include relevant supplied foundation fields such as type, strategy, authority, profile, definition, centres, channels, gates, incarnation-cross components, and planetary activations when present and useful; do not dump all data when it is not useful.",
       "Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.",
       "Use controlled knowledge to explain meaning; do not reproduce source text.",
