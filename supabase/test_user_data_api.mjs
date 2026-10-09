@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 
 const source = fs.readFileSync(new URL("./functions/user-data-api/index.ts", import.meta.url), "utf8");
-const migration = fs.readFileSync(new URL("../migrations/20261009054427_know_yourself_persistence_foundation_v1.sql", import.meta.url), "utf8");
-const hardening = fs.readFileSync(new URL("../migrations/20261009054455_know_yourself_persistence_integrity_and_policy_hardening.sql", import.meta.url), "utf8");
-const writeBoundaries = fs.readFileSync(new URL("../migrations/20261009054934_know_yourself_client_write_boundaries_and_user_turns.sql", import.meta.url), "utf8");
+const migration = fs.readFileSync(new URL("./migrations/20261009054427_know_yourself_persistence_foundation_v1.sql", import.meta.url), "utf8");
+const hardening = fs.readFileSync(new URL("./migrations/20261009054455_know_yourself_persistence_integrity_and_policy_hardening.sql", import.meta.url), "utf8");
+const writeBoundaries = fs.readFileSync(new URL("./migrations/20261009054934_know_yourself_client_write_boundaries_and_user_turns.sql", import.meta.url), "utf8");
 
 assert.match(source, /npm:@supabase\/supabase-js@2\.57\.0/, "Supabase client dependency must be pinned");
 assert.match(source, /Authorization: authHeader/, "forward user JWT to enforce RLS");
