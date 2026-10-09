@@ -86,3 +86,14 @@ Current acceptance boundary: deterministic mechanics remain authoritative; the q
 - Only active, consented, non-expired records in approved personal-memory categories can enter the prompt. Chart truth, source knowledge and system instructions are excluded.
 - Prompt assembly now keeps three distinct inputs separate: adaptive response policy, governed active user memory, and bounded conversation continuity. Conversation history is only for references/follow-ups; prior assistant responses are never chart evidence.
 - These modules are policy and contract groundwork, not persistent learning. Cross-session storage, memory inspection/edit/reset/delete controls, consent UX, audit trails and authenticated multi-user isolation must be implemented in the backend before claiming user memory is operational.
+
+
+## 3framework direct-answer path — implementation checkpoint (2026-10-09)
+
+- Added `engine/THREE_FRAMEWORK.md` to define the three layers: Canonical Chart + Evidence; Adaptive User Context; ChatGPT directly on top.
+- Added `engine/three-framework.js` to build a separated three-layer input envelope without invoking the separate 5framework critic.
+- Added canonical gate verification based on `E-ACTIVATIONS` and `E-GATES`; catalogue membership alone cannot establish personal activation. Incomplete evidence returns `unknown`.
+- Strengthened the reasoning prompt and contract with the evidence-first rule, natal/transit distinction, and the rule that Layer 2 cannot override Layer 1.
+- Added `engine/test_three-framework.mjs` for Gate 7 / Gate 31 absence, Gate 57.4 activation, fail-closed evidence handling, and layer separation.
+
+**Boundary:** this is an implemented contract and direct-model input envelope. The repository still has a provider-neutral/mock reasoning provider; an actual external ChatGPT/OpenAI call and live-model acceptance test are not yet connected. The 3framework can be tested here conversationally, but production provider integration is a separate step.
