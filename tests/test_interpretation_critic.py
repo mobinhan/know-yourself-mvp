@@ -1,4 +1,4 @@
-"""Regression tests for deterministic post-synthesis quality checks."""
+"""Isolated tests for the legacy critic utility; not tests of the active 3framework path."""
 import unittest
 
 from api.interpretation_critic import review_interpretation
