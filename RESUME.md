@@ -140,3 +140,9 @@ Important limitation: this file records the required protocol; it does not itsel
 - User reports recognizing Gate 57 in daily life across all four exploratory prompts: (1) intuitive awareness before being able to explain it, (2) sensing danger or that something feels wrong, (3) sensing what to do next, and (4) reading people or situational dynamics.
 - Treat this as user-reported lived experience and useful personalization context, not independent proof that Human Design mechanics are objectively predictive or that every intuition is accurate.
 - Next validation step: invite one concrete recent example, then examine what was sensed, what evidence was available at the time, what happened afterward, and how the user interpreted it. Preserve uncertainty and avoid retrospective confirmation bias; do not turn the report into a permanent canonical chart fact.
+
+## 3framework guardrail: keep validation natural (2026-10-10)
+- User correctly identified that over-structuring the Gate 57 conversation risks recreating the rejected 5framework.
+- Keep the approved three layers only: Canonical Chart + Immutable Evidence; Adaptive User Context; ChatGPT live reasoning directly on top of Layers 1 and 2.
+- Do not turn ordinary conversation into a user-facing test harness or require the user to answer repeated evaluation questions. Quality checks and uncertainty handling remain within live reasoning and unobtrusive development practice, not a new framework layer.
+- Respond naturally to what the user shares. The user's report that all four Gate 57 themes resonate is useful self-reported context, not proof of chart mechanics or a requirement for further questioning. Let the user steer the depth.
