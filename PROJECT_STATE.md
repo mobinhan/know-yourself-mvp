@@ -151,3 +151,15 @@ Do not treat a source-level registration as proof that every page or claim from 
 
 This is a confirmed production requirement. Full record-level lineage, dependency tracking, lifecycle controls and quarterly automation remain to be implemented and verified before they can be claimed as operational.
 
+## Confirmed production requirement — holistic Human Design interpretation
+
+**Confirmed:** 2026-10-09
+
+The finished Know Yourself AI must synthesise relevant interconnected Human Design concepts rather than explain each gate, channel, centre or knowledge record in isolation. For a gate question, it should consider relevant context such as the line, channel/circuit, centre, quarter and quarter theme, mandala context, Rave Psychology, and the user's verified chart configuration—when supported by approved sources and genuinely relevant.
+
+Maintain a versioned, evidence-backed concept relationship model / knowledge graph so retrieval can follow validated links across concepts. Clearly distinguish canonical mechanics from teaching interpretations, psychological frameworks, practitioner perspectives and lived experiences. Explain how the lenses complement one another and flag disagreement where relevant; do not indiscriminately list every related concept.
+
+Material claims and meaningful cross-concept connections must trace to individual knowledge-record IDs and canonical chart/evidence IDs. The answer critic must assess whether the synthesis as a whole is supported, and reject invented or weakly supported links. Personalisation may change explanation depth and examples, but never chart facts, source authority or uncertainty boundaries.
+
+Validate with cross-concept tests, including gate + quarter + Rave Psychology examples, chart-specific relevance, contradiction handling, provenance and unsupported-connection rejection. The existing concept families and evidence classes do not by themselves prove that a complete knowledge graph or holistic synthesis capability is already implemented. This is a confirmed production requirement; implementation and verification remain outstanding.
+
