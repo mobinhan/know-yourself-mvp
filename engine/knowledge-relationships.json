@@ -87,6 +87,34 @@
         "centers"
       ],
       "status": "active"
+    },
+    {
+      "id": "personality_color",
+      "label": "Personality Color",
+      "aliases": [
+        "personality color",
+        "personality color substructure"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "personality_nodes",
+      "label": "Personality Nodes",
+      "aliases": [
+        "personality nodes",
+        "personality north node",
+        "personality south node"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "personality_sun",
+      "label": "Personality Sun",
+      "aliases": [
+        "personality sun",
+        "personality sun activation"
+      ],
+      "status": "active"
     }
   ],
   "edges": [
@@ -167,6 +195,43 @@
       "knowledge_ids": [
         "HD-KNOW-CHANNEL-001",
         "HD-KNOW-CENTRES-001"
+      ]
+    },
+    {
+      "id": "REL-PERSONALITY-NODES-RP-VIEW",
+      "from": "personality_nodes",
+      "to": "rave_psychology",
+      "type": "interpreted_through",
+      "status": "validated",
+      "knowledge_ids": [],
+      "external_knowledge_ids": [
+        "EXT-KNOW-RP-FOUNDATION-001",
+        "EXT-KNOW-RP-VIEW-001"
+      ]
+    },
+    {
+      "id": "REL-PERSONALITY-SUN-RP-MOTIVATION",
+      "from": "personality_sun",
+      "to": "rave_psychology",
+      "type": "interpreted_through",
+      "status": "validated",
+      "knowledge_ids": [],
+      "external_knowledge_ids": [
+        "EXT-KNOW-RP-FOUNDATION-001",
+        "EXT-KNOW-RP-MOTIVATION-001"
+      ]
+    },
+    {
+      "id": "REL-PERSONALITY-COLOR-RP",
+      "from": "personality_color",
+      "to": "rave_psychology",
+      "type": "interpreted_through",
+      "status": "validated",
+      "knowledge_ids": [],
+      "external_knowledge_ids": [
+        "EXT-KNOW-RP-FOUNDATION-001",
+        "EXT-KNOW-RP-VIEW-001",
+        "EXT-KNOW-RP-MOTIVATION-001"
       ]
     }
   ]
