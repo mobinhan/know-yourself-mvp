@@ -448,7 +448,7 @@
         "record_version": "1.0.0",
         "lifecycle_status": "active",
         "epistemic_class": "interpretive",
-        "review_status": "source_checked",
+        "review_status": "reviewed",
         "metadata_registered_at": "2026-10-09",
         "last_reviewed_at": "2026-10-09",
         "next_review_due": null,
