@@ -13,6 +13,27 @@ if(prompt.mode!=="grounded_reasoning" || !prompt.instructions.includes("Do not c
 if(!prompt.instructions.includes("Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.")) throw new Error("availability boundary failed");
 if(!prompt.instructions.includes("incarnation-cross components")) throw new Error("chart completeness guidance failed");
 
+const gatePrompt = buildReasoningPromptInput({
+  ...input,
+  question: "How does this gate connect to the wider chart?",
+  question_context: { intent: "interpretive", domains: ["general"], evidence_targets: ["gates"] },
+  evidence: [{ id: "E-GATES", claim: "Verified gate evidence" }],
+  knowledge: [{ id: "HD-KNOW-GATE-001", concept: "Gates", claim: "Gate knowledge", source_ids: ["SRC_HD_DEFINITIVE_BOOK_2011"], locator: "section" }]
+});
+if (!Array.isArray(gatePrompt.holistic_context) || !gatePrompt.holistic_context.some(x => x.concept === "gate")) {
+  throw new Error("holistic context was not included for gate questions");
+}
+const gateContext = gatePrompt.holistic_context.find(x => x.concept === "gate");
+if (!gateContext.records.some(x => x.id === "HD-KNOW-LINE-001")) {
+  throw new Error("gate prompt omitted validated line context");
+}
+if (!gateContext.unresolved_context.some(x => x.concept_id === "quarter")) {
+  throw new Error("gate prompt did not preserve quarter evidence gap");
+}
+if (!gatePrompt.instructions.some(x => x.includes("unresolved_context"))) {
+  throw new Error("holistic evidence-gap instruction missing");
+}
+
 const answer=composeAnswer({
   reasoningInput:input,
   synthesis:{
