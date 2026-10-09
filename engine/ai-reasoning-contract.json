@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "purpose": "Controlled contract for AI question understanding and evidence-grounded reasoning.",
   "rules": [
     "Deterministic chart mechanics remain authoritative.",
@@ -14,7 +14,11 @@
     "Material cross-concept claims must cite supplied validated relationship IDs in relationship_basis; the critic must reject missing, unknown or unsupported links.",
     "A gate's quarter context is wheel-level context; Rave Psychology interpretation must use supplied Personality Sun/Node substructure and must not be inferred from a gate alone.",
     "Every controlled and external knowledge record must carry individual lifecycle, review, epistemic-class and rights-use metadata; source changes must be traceable to dependent records.",
-    "Legacy records marked legacy_review_required remain visible for controlled migration, but should not be presented as newly reviewed; when material claims depend only on them, qualify the claim and surface a review limitation."
+    "Legacy records marked legacy_review_required remain visible for controlled migration, but should not be presented as newly reviewed; when material claims depend only on them, qualify the claim and surface a review limitation.",
+    "3framework mode composes canonical chart/evidence and adaptive user context as separate inputs for direct ChatGPT synthesis, without requiring a separate AI interpretation model or critic.",
+    "Before any chart-specific claim, verify against the relevant canonical evidence records. E-ACTIVATIONS and E-GATES establish natal gate activations; catalogues do not establish personal activation.",
+    "Adaptive User Context shapes relevance and presentation only; it must not override canonical mechanics, evidence standards, source quality or certainty.",
+    "Prior assistant answers and conversation history are context only and never chart evidence."
   ],
   "question": {
     "required": [
