@@ -85,7 +85,9 @@ class GateLineSynthesisContractTests(unittest.TestCase):
             relationship["id"],
             {item["id"] for item in model_input["validated_relationships"]},
         )
-        self.assertIn("There is no separate critic", model_input["layer_separation"]["layer_3"])
+        self.assertIn("deterministic post-synthesis checks", model_input["layer_separation"]["layer_3"])
+        self.assertIn("No second AI model is used", model_input["layer_separation"]["layer_3"])
+        self.assertTrue(result["quality_review"]["passed"])
         self.assertIn("Never derive a gate-line synthesis by adding generic line keywords", instructions)
         self.assertIn("Do not calculate or infer chart mechanics", instructions)
         self.assertNotIn("birth_data", model_input)
@@ -133,6 +135,45 @@ class GateLineSynthesisContractTests(unittest.TestCase):
         self.assertEqual(result["relationship_basis"], [])
         self.assertEqual(result["factual_basis"], [])
 
+
+    def test_provider_blocks_conflicting_chart_mechanics(self):
+        foundation = {
+            "core": {"gate_set": [57], "channels": [], "centres": ["spleen"]},
+            "activations": {"personality": [{"gate": 57, "line": 4}], "design": []},
+            "phs": {},
+        }
+        provider_payload = {
+            "output_text": json.dumps({
+                "answer": "Gate 7 is activated in your chart.",
+                "one_line": "Gate 7 is active.",
+                "cards": [{"title": "Unsupported chart claim", "summary": "Gate 7 is active."}],
+                "factual_basis": ["activations.personality"],
+                "knowledge_basis": [],
+                "relationship_basis": [],
+                "limitations": [],
+            })
+        }
+
+        def read_json(name):
+            if name in ("knowledge-records.json", "external-knowledge-records.json", "knowledge-relationships.json"):
+                key = {"knowledge-records.json": "records", "external-knowledge-records.json": "records", "knowledge-relationships.json": "edges"}[name]
+                return {key: []}
+            raise AssertionError(f"Unexpected knowledge file: {name}")
+
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}), patch(
+            "api.interpretation_provider._read_json", side_effect=read_json
+        ), patch(
+            "api.interpretation_provider.urlopen",
+            return_value=FakeResponse(provider_payload),
+        ):
+            result = generate_interpretation("Is Gate 7 activated?", foundation)
+
+        self.assertEqual(result["interpretation_status"], "needs_review")
+        self.assertFalse(result["quality_review"]["passed"])
+        self.assertIn("canonical_gate_status_conflict:gate_7", result["quality_review"]["issues"])
+        self.assertEqual(result["cards"], [])
+        self.assertEqual(result["factual_basis"], [])
+        self.assertIn("couldn't verify", result["answer"])
 
     def test_malformed_optional_fields_are_normalized_without_crashing(self):
         foundation = {
