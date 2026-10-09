@@ -44,7 +44,7 @@ When the user says **“save mcp”**, execute the full procedure in [docs/CONTI
 
 ## Current next action
 
-Verify the latest feature-branch state and CI, then continue safely with live-integration verification and offline interpretation-quality validation. Do not merge PR #1 without explicit approval.
+Read `docs/INTERPRETATION_CONTRACT_AUDIT_2026-10-09.md` and the latest checkpoint. Offline interpretation-provider normalization hardening is complete; focused Gate-line CI run #41 passed all 10 tests. Continue with offline semantic-quality fixtures and safe PR divergence review. Live-app validation requires the user's explicit Lovable approval; do not access or amend Lovable without it. Do not use Vercel or merge PR #1 without explicit approval.
 
 **Important limitation:** GitHub cannot prove whether unpushed edits remain on the user's desktop. If the desktop workspace has not been inspected, say so and preserve it.
 
