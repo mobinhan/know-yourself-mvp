@@ -67,3 +67,12 @@ Read the latest Step 3 section in `docs/PROJECT_CHECKPOINT_2026-10-09.md` and `d
 - **Vercel:** removed from the project workflow. Do not configure or use it unless explicitly reinstated by the user.
 - Verify Lovable/GitHub synchronization before assuming the live interface includes the latest branch changes. Check CI and live behaviour as separate things. The external Vercel project/integration could not be changed through the current Vercel connection (403 scope authorization); repository config has been removed, but external account cleanup requires the user's dashboard action.
 - Full process: [docs/CONTINUITY_PROTOCOL.md](docs/CONTINUITY_PROTOCOL.md), section “Know Yourself development and deployment workflow”.
+
+
+## Latest save — 2026-10-09 22:57 ICT
+
+- Latest checkpoint update: [4f9790ecef34799e17200bd2db0ce59550ac899f](https://github.com/mobinhan/know-yourself-mvp/commit/4f9790ecef34799e17200bd2db0ce59550ac899f).
+- Read and preserved the existing 3framework decision, no-Lovable-without-explicit-approval rule, no-Vercel rule, and no-merge-without-approval rule.
+- Mobile resume point: read `docs/PROJECT_CHECKPOINT_2026-10-09.md` from the latest `feature/live-api-v1` head, verify branch heads and CI, then continue Step 3 offline evaluation fixture expansion. No live model-quality pass is claimed.
+- GitHub search surfaced main HEAD `9b503db604b680fccbc7b962a59ce9fa19776a39`; do not mistake it for the feature branch head or replace the feature branch with main.
+- Local desktop working tree has not been inspected, so unpushed local edits cannot be ruled out. Do not reset, overwrite, force-push, or merge during recovery.
