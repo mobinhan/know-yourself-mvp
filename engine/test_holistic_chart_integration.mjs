@@ -52,7 +52,7 @@ assert.ok(gateContext.gate_quarter_context.some(item =>
 ), "Gate 34 must resolve to its sourced quarter in this chart");
 assert.equal(gateContext.gate_quarter_context.find(item => item.gate === 34).mapping_status, "validated");
 assert.ok(gateContext.external_records.some(item => item.id === "EXT-KNOW-QUARTERS-001"));
-assert.ok(gateContext.external_records.some(item => item.id === "EXT-KNOW-QUARTER-GATE-MAP-001" && item.status === "provisional"));
+assert.ok(gateContext.external_records.some(item => item.id === "EXT-KNOW-QUARTER-GATE-MAP-001" && item.status === "accepted"));
 
 const rp = prompt.rave_psychology_context;
 assert.ok(rp, "Rave Psychology context should be supplied from actual chart substructure");
