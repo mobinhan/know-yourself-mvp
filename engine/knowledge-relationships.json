@@ -76,6 +76,17 @@
         "psychological framework"
       ],
       "status": "pending_evidence"
+    },
+    {
+      "id": "centre",
+      "label": "Centre",
+      "aliases": [
+        "centre",
+        "centres",
+        "center",
+        "centers"
+      ],
+      "status": "active"
     }
   ],
   "edges": [
@@ -146,6 +157,17 @@
       "type": "interpreted_through",
       "status": "pending_evidence",
       "knowledge_ids": []
+    },
+    {
+      "id": "REL-CHANNEL-CENTRE",
+      "from": "channel",
+      "to": "centre",
+      "type": "connects_to",
+      "status": "validated",
+      "knowledge_ids": [
+        "HD-KNOW-CHANNEL-001",
+        "HD-KNOW-CENTRES-001"
+      ]
     }
   ]
 }
