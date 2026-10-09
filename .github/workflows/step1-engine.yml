@@ -7,6 +7,9 @@ on:
     paths:
       - "engine/**"
       - "supabase/**"
+      - "api/**"
+      - "requirements.txt"
+      - "vercel.json"
       - ".github/workflows/step1-engine.yml"
   workflow_dispatch:
 
@@ -28,13 +31,14 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install Python dependencies
-        run: python -m pip install -r engine/requirements.txt pytest
+        run: python -m pip install -r requirements.txt -r engine/requirements.txt pytest
       - name: Run ephemeris tests
         run: |
           set -o pipefail
           python -m pytest -q \
             engine/test_golden.py \
             engine/test_channel_catalog.py \
+            engine/test_v1_api.py \
             engine/test_multi_chart.py \
             engine/test_boundaries.py \
             engine/test_timezone.py \
