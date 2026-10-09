@@ -101,6 +101,8 @@ jobs:
         run: node engine/validate_knowledge.mjs
       - name: Run controlled knowledge layer test
         run: node engine/test_knowledge.mjs
+      - name: Run record-level knowledge governance test
+        run: node engine/test_knowledge_governance.mjs
       - name: Validate external practical knowledge layer
         run: node engine/validate_external_knowledge.mjs
       - name: Run external source registry test
