@@ -61,3 +61,8 @@
 ## Current blocker / next action
 
 The read-only inventory has confirmed the main HTML, API entrypoint, interpretation provider and architecture contract. A complete asset/runtime audit is still needed, especially for `/web/app.js`, `/web/sw.js`, API deployment configuration and any platform-specific routing. Continue that audit without Lovable credits. No Lovable project has been created and no credit-consuming action has been taken.
+
+
+## Audit finding — unresolved frontend asset references
+
+The current `index.html` references `/web/app.js` and registers `/web/sw.js`, but direct checks on `feature/live-api-v1` returned 404 for both `web/app.js` and `web/sw.js`. The HTML contains substantial inline JavaScript as well, so this finding alone does not prove the UI is wholly broken; however, the missing referenced assets must be reconciled before a migration or live-state claim. No standard `package.json`, `Dockerfile`, `render.yaml`, `netlify.toml`, or `api/requirements.txt` was found at the tested root paths. The root `requirements.txt` contains `pyswisseph` and `timezonefinder`. Continue inventorying the tracked tree and API hosting assumptions before choosing the migration mechanics.
