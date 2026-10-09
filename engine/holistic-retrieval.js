@@ -11,7 +11,7 @@ const nodesById = new Map(graph.nodes.map(node => [node.id, node]));
 const externalSourcesById = new Map(externalRegistry.sources.map(source => [source.id, source]));
 const knowledgeSourcesById = new Map(knowledgeSources.sources.map(source => [source.id, source]));
 const externalRecordsById = new Map(externalKnowledge.records.map(record => [record.id, record]));
-const normalize = value => String(value ?? "").trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\\s+/g, " ");
+const normalize = value => String(value ?? "").trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ");
 
 function resolveNode(value) {
   const query = normalize(value);
