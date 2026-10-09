@@ -4,6 +4,7 @@ import fs from "node:fs";
 const source = fs.readFileSync(new URL("./functions/user-data-api/index.ts", import.meta.url), "utf8");
 const migration = fs.readFileSync(new URL("../migrations/20261009054427_know_yourself_persistence_foundation_v1.sql", import.meta.url), "utf8");
 const hardening = fs.readFileSync(new URL("../migrations/20261009054455_know_yourself_persistence_integrity_and_policy_hardening.sql", import.meta.url), "utf8");
+const writeBoundaries = fs.readFileSync(new URL("../migrations/20261009054934_know_yourself_client_write_boundaries_and_user_turns.sql", import.meta.url), "utf8");
 
 assert.match(source, /npm:@supabase\/supabase-js@2\.57\.0/, "Supabase client dependency must be pinned");
 assert.match(source, /Authorization: authHeader/, "forward user JWT to enforce RLS");
@@ -14,6 +15,12 @@ assert.match(source, /memory_consent_required/, "memory writes require explicit 
 assert.match(source, /inferred_memory_confidence_invalid/, "inferred memory confidence must be validated");
 assert.match(source, /memory_source_turn_required/, "memory provenance must include a source turn");
 assert.match(source, /\.eq\("user_id", user\.id\)/, "data access must be scoped to the verified user");
+assert.match(source, /supabase\.rpc\("ky_append_user_turn"/, "user questions must be appended through the sequence-safe RPC");
+assert.match(source, /creation_requires_deterministic_engine/, "clients must not fabricate canonical chart artifacts");
+assert.match(writeBoundaries, /revoke insert, update on public\.ky_charts from authenticated/i, "clients must not forge canonical chart mechanics");
+assert.match(writeBoundaries, /client_may_only_append_user_turns/, "clients must not forge assistant turns");
+assert.match(writeBoundaries, /security invoker/i, "the user-turn RPC must not bypass RLS");
+assert.match(writeBoundaries, /ky_user_memories[\s\S]*source_turn_id set not null/i, "memories must have a source turn");
 assert.doesNotMatch(source, /SUPABASE_SERVICE_ROLE_KEY|SUPABASE_SECRET_KEYS/, "user API must not use a service key");
 assert.match(migration, /enable row level security/i, "RLS must be enabled in schema migration");
 assert.match(migration, /create policy ky_charts_owner_all[\s\S]*auth\.uid\(\)/i, "chart rows must have owner-bound RLS");
