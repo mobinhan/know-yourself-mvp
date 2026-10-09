@@ -53,7 +53,9 @@ Read the latest Step 3 section in `docs/PROJECT_CHECKPOINT_2026-10-09.md` and `d
 - Historical focused regression suite: 27 tests passed before the direct-synthesis correction — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387. New CI must verify the corrected path.
 - Full Step 1 Engine Validation passed on code/test commit `10a96297d96d07e6762d7d2356857dcd7a1fcb6b` — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912452
 - Latest work is pushed to `feature/live-api-v1`; verify branch HEAD before continuing.
-- Next: run focused and full CI for the direct-synthesis correction; then broaden source-grounded fixtures without introducing a critic layer.
+- Focused Gate-line regression passed on the corrected path: run #87 — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37915509731
+- Full Step 1 Engine Validation passed on corrected provider code/prompt commit `1a2da5da06c96ec44b9f2d3064350d37c637193d`: run #384 — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37915475617
+- Next: broaden source-grounded fixtures for direct ChatGPT synthesis without introducing a critic layer.
 - These are offline/mocked checks, not proof of live model quality. No live OpenAI request has been sent.
 - Do not access or amend Lovable without explicit approval. Do not use Vercel or merge PR #1 without explicit approval. Preserve desktop-only work; this environment cannot inspect the desktop working tree.
 ## Confirmed platform workflow
