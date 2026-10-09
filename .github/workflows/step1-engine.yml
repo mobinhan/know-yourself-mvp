@@ -47,6 +47,8 @@ jobs:
             engine/test_temporal_ephemeris.py \
             engine/test_temporal_edge_mechanics.py \
             engine/test_temporal_golden.py 2>&1 | tee python-validation.txt
+      - name: Run interpretation provider quality-gate tests
+        run: python -m pytest -q tests/test_gate_line_synthesis_contract.py tests/test_interpretation_critic.py
       - name: Publish Python validation result
         if: always()
         run: |
