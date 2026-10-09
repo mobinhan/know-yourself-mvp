@@ -29,6 +29,7 @@ The answering experience should be conversational and intelligent, comparable in
 ## Holistic cross-concept interpretation
 - A versioned relationship graph connects validated concepts and their supporting knowledge-record IDs.
 - Retrieval follows only validated relationships and returns unsupported or unpopulated context as explicit gaps rather than treating it as established knowledge.
+- The grounded reasoning prompt now receives holistic context for gate, activation, channel and centre questions; its instructions prohibit treating unresolved graph context as established fact.
 - The graph includes extension points for Quarter / Mandala context and Rave Psychology; these remain pending until specific, permitted, provenance-traceable knowledge records validate them.
 - Holistic synthesis must connect relevant chart mechanics and interpretive frameworks, while distinguishing source-backed relationships from interpretation and never inventing mechanics.
 - `test_holistic_retrieval.mjs` verifies the initial graph retrieval and fail-safe treatment of missing Quarter / Rave Psychology evidence.
