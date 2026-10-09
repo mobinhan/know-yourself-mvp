@@ -107,7 +107,7 @@ class GateLineRetrievalTests(unittest.TestCase):
         director_only = {
             "id": "EXT-GENERIC-DIRECTOR",
             "source_id": "EXT_GENERIC",
-            "title": "Director relationship theme",
+            "title": "Gate 57 Director relationship theme",
             "claim": "General intuitive clarity and relationships.",
             "summary": "Gate context for relationships.",
         }
