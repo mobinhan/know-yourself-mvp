@@ -25,7 +25,7 @@ When the user says **“save mcp”**, execute the full procedure in [docs/CONTI
 - Desktop checkpoint: [7e49fbdef140a1a79333235d891a40726ff9dc39](https://github.com/mobinhan/know-yourself-mvp/commit/7e49fbdef140a1a79333235d891a40726ff9dc39), committed at 15:53:15 ICT on 2026-10-09.
 - Gate-line regression workflow run #18 passed for that checkpoint: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37907754627.
 - The later recovery protocol and checkpoint updates must be verified from the current branch head before resuming.
-- Vercel previously reported a build-rate-limit blocker; recheck before any deployment claim.
+- Vercel has been removed from the repository workflow and its `vercel.json` configuration deleted. Do not use Vercel as a deployment target unless the user later explicitly reinstates it.
 - Live interpretation was not verified at the last checkpoint.
 
 ## Current next action
@@ -40,6 +40,6 @@ Verify the latest feature-branch state and CI, then continue safely with live-in
 - **GitHub:** source control, reviewed checkpoints, and cross-device recovery.
 - **GitHub Actions:** automated regression/contract tests.
 - **Supabase:** backend and data services.
-- **Vercel:** optional separate deployment only; not required for the routine Lovable workflow by default. Do not spend time on Vercel build limits unless a specific Vercel deployment is intentionally needed.
-- Verify Lovable/GitHub synchronization before assuming the live interface includes the latest branch changes. Check CI and live behaviour as separate things.
+- **Vercel:** removed from the project workflow. Do not configure or use it unless explicitly reinstated by the user.
+- Verify Lovable/GitHub synchronization before assuming the live interface includes the latest branch changes. Check CI and live behaviour as separate things. The external Vercel project/integration could not be changed through the current Vercel connection (403 scope authorization); repository config has been removed, but external account cleanup requires the user's dashboard action.
 - Full process: [docs/CONTINUITY_PROTOCOL.md](docs/CONTINUITY_PROTOCOL.md), section “Know Yourself development and deployment workflow”.
