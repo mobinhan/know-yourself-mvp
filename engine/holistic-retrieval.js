@@ -44,6 +44,14 @@ function getQuarterForGate(gateNumber) {
   };
 }
 
+function relationshipApplies(edge, { personalitySunColour = null, personalityNodeColours = [] } = {}) {
+  if (!edge.applies_when) return true;
+  const condition = edge.applies_when;
+  if (condition.personality_sun_colour != null && Number(personalitySunColour) !== Number(condition.personality_sun_colour)) return false;
+  if (condition.personality_node_colour != null && !(personalityNodeColours ?? []).some(value => Number(value) === Number(condition.personality_node_colour))) return false;
+  return true;
+}
+
 export function getKnowledgeRelationships() {
   return graph;
 }
@@ -52,7 +60,7 @@ export function getQuarterGateMap() {
   return quarterGateMap;
 }
 
-export function retrieveHolisticContext({ concept, maxHops = 1, includePending = true, gateNumber = null, gateNumbers = [], chartGateSet = [] } = {}) {
+export function retrieveHolisticContext({ concept, maxHops = 1, includePending = true, gateNumber = null, gateNumbers = [], chartGateSet = [], personalitySunColour = null, personalityNodeColours = [] } = {}) {
   const start = resolveNode(concept);
   if (!start) {
     return { concept: concept ?? null, records: [], external_records: [], relationships: [], unresolved_context: [], gate_quarter_context: [], missing_concept: true };
@@ -68,7 +76,8 @@ export function retrieveHolisticContext({ concept, maxHops = 1, includePending =
     for (const nodeId of frontier) {
       const edges = graph.edges.filter(edge =>
         edge.status === "validated" &&
-        (edge.from === nodeId || edge.to === nodeId)
+        (edge.from === nodeId || edge.to === nodeId) &&
+        relationshipApplies(edge, { personalitySunColour, personalityNodeColours })
       );
       for (const edge of edges) {
         if (!selectedEdges.some(existing => existing.id === edge.id)) selectedEdges.push(edge);
@@ -150,7 +159,8 @@ export function retrieveHolisticContext({ concept, maxHops = 1, includePending =
       type: edge.type,
       status: edge.status,
       knowledge_ids: edge.knowledge_ids ?? [],
-      external_knowledge_ids: edge.external_knowledge_ids ?? []
+      external_knowledge_ids: edge.external_knowledge_ids ?? [],
+      applies_when: edge.applies_when ?? null
     })),
     gate_quarter_context,
     unresolved_context: unresolved,
