@@ -6,6 +6,9 @@
 
 > **MANDATORY PLATFORM RULE: We do not use Vercel for Know Yourself. Do not open, configure, troubleshoot, or deploy through Vercel. Use Lovable for the live app interface, GitHub for source control and recovery, GitHub Actions for tests, and Supabase for backend/data. Only reconsider Vercel if the user explicitly asks to reinstate it. Read this rule before taking any action.**
 
+
+> **HARDWIRED MOBILE/DESKTOP PARITY:** The user explicitly said mobile sessions have been operating below the current desktop level. Do not regress scope or maturity on mobile. Before continuing any session/device, read the latest checkpoint, continuity protocol, architecture contract, and relevant rubric; retrieve current GitHub state via MCP; then continue the exact next engineering task with the same autonomous, test-backed standard. Do not make the user repeat prior decisions. Preserve 3framework, no-critic active path, no-Lovable-without-specific-approval, no-Vercel, and no-merge-without-approval rules. Do not claim unpushed desktop changes are saved when the desktop workspace is inaccessible.
+
 **Purpose:** Single entry point for continuing work across ChatGPT desktop/mobile conversations.
 
 ## Mandatory rule
