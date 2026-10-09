@@ -24,6 +24,7 @@ for (const record of records.records) {
   assert.ok(contract.claim_types.includes(record.claim_type));
   assert.ok(contract.claim_status.includes(record.status));
   assert.ok(record.locator);
+  if (record.conflict_group != null) assert.ok(typeof record.conflict_group === "string" && record.conflict_group.length > 0);
   assert.ok(record.allowed_use.every(x => contract.allowed_use.includes(x)));
 }
 assert.ok(records.records.some(x => x.claim_type === "critical"));
