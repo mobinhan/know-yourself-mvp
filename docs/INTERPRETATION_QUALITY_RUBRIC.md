@@ -1,60 +1,59 @@
-# Interpretation Quality Rubric — Offline Regression Fixtures
+# Interpretation Quality Rubric — Offline Evaluation Fixtures
 
 **Status:** Step 3 in progress  
-**Purpose:** Evaluate the reliability of 3framework synthesis without requiring Lovable access or live OpenAI calls.
+**Purpose:** Evaluate direct 3framework synthesis without Lovable access or live OpenAI calls. This rubric is for offline evaluation, not an active post-synthesis critic.
 
-## Evaluation boundaries
+## Binding architecture boundary
 
-- Layer 1 remains the authority for chart mechanics and source-linked knowledge.
+- Layer 1 is authoritative for chart mechanics and source-linked knowledge.
 - Layer 2 may personalize relevance and continuity but must not invent traits or override Layer 1.
 - Layer 3 is direct ChatGPT synthesis. The active 3framework provider must not invoke a separate critic or additional reasoning layer.
-- The standalone `api/interpretation_critic.py` helper and its unit tests are retained only as isolated comparison/legacy material; they are not part of the active 3framework response path and must not be used to describe 3framework behaviour.
-- Offline mocked-provider tests establish contract behaviour only. They do not prove real-world model quality.
+- The standalone `api/interpretation_critic.py` helper and its unit tests are isolated comparison/legacy material only. They are not part of the active 3framework response path.
+- Ordinary schema validation, JSON normalization, and filtering returned evidence IDs to records actually supplied remain allowed contract handling.
+- Offline mocked-provider tests establish request/response contract behaviour only. They do not prove live model quality or independently verify the semantic truth of every generated claim.
 
 ## Fixture matrix
 
-| Quality dimension | Fixture strategy | Expected result |
+| Quality dimension | Evaluation method | Expected evaluation outcome |
 |---|---|---|
-| Natal gate integrity | Assert active and inactive gates against canonical activation/gate sets | Contradictions are flagged; correct claims pass |
-| Gate-line integrity | Check exact gate + line activation, not just whether the gate appears somewhere in the chart | A different line is not treated as active |
-| Channel integrity | Check both defined and invented channels; normalize endpoint order | Canonical channels pass; unsupported defined-channel claims are flagged |
-| Centre integrity | Check defined and undefined centres; normalize labels such as `solar_plexus` and “solar plexus” | Contradictions are flagged |
-| Type, authority, profile | Compare explicit claims with canonical `core` values when present | Conflicting claims are flagged; matching claims pass |
-| Source fidelity | Gate-line archetypes require exact gate/line source match and a validated relationship | Missing, mismatched, or unlinked source evidence is blocked |
-| Natal vs transit | Transit claims require actual `transit_gates` data and a claimed gate present in that set | No temporal evidence or a mismatched gate is flagged |
-| Evidence IDs | Only retrieved knowledge/relationship IDs can be returned | Invented IDs are removed by provider normalization |
-| Malformed output | Wrong types, null arrays, invalid gate values, or missing answer | Output is normalized or fails closed |
-| Uncertainty and interpretation | Human-reviewed fixtures assess whether meaning is presented as interpretation, uncertainty is calibrated, and predictions are not stated as guarantees | Record qualitative judgement; do not pretend regex checks prove it |
-| Cross-concept synthesis | Fixtures combine gates, lines, channels, centres, and transit context; deliberately mismatched relationships are included | Concepts must not leak across unrelated source edges |
+| Natal gate integrity | Compare generated claims with canonical activation evidence | Record whether claims are correct; the provider does not automatically rewrite or block the answer after synthesis |
+| Gate-line integrity | Compare claims with exact gate + line activation and matching source evidence | Record mismatches; a gate catalogue alone cannot prove a specific activation |
+| Channel integrity | Compare defined-channel claims with canonical channel evidence | Record unsupported claims; no post-synthesis critic blocks them |
+| Centre integrity | Compare defined/undefined centre claims with canonical centre evidence | Record contradictions; provider output is not rewritten after synthesis |
+| Type, authority, profile | Compare explicit claims with canonical values when available | Record matches, contradictions, or cases where evidence is missing |
+| Source fidelity | Compare interpretive claims with supplied source records and validated relationships | Record whether the source actually supports the claim; a valid ID alone is not semantic proof |
+| Natal vs transit | Check whether transit claims are supported by supplied temporal context | Record unsupported or conflated natal/transit claims |
+| Evidence IDs | Check returned knowledge/relationship IDs against retrieved records | Invalid IDs are removed by provider normalization; this does not prove semantic support |
+| Malformed output | Test wrong types, null arrays, invalid gate values, and missing answer | Output is normalized or a missing required answer fails closed |
+| Uncertainty and interpretation | Human-review depth, calibrated uncertainty, non-diagnostic framing, and guaranteed predictions | Record qualitative judgement rather than pretending pattern matching proves it |
+| Cross-concept synthesis | Combine gates, lines, channels, centres, and transit context with deliberately mismatched evidence | Record source leakage, unsupported connections, and whether distinctions remain clear |
 
-## Current automated coverage
+## Current automated contract coverage
 
 Implemented in `tests/test_gate_line_synthesis_contract.py`:
 
-- Active/inactive natal gate claims.
-- Exact active gate-line status.
-- Correct and invented channel claims.
-- Defined/undefined centre contradictions.
-- Profile, type, and authority conflicts and matching claims.
-- Gate-line archetype without exact support, and with exact source plus validated relationship.
-- Transit claims without temporal data, with incomplete temporal data, and with gates missing from the supplied transit set.
-- Direct ChatGPT synthesis without a post-synthesis critic; provider output is not rewritten by a separate interpretation layer.
-- Evidence-ID filtering, malformed optional fields, missing answer, and provider-not-configured/no-network behaviour.
+- Confirms the provider sends canonical chart evidence, selected source-linked knowledge, and validated relationships to ChatGPT.
+- Confirms the prompt identifies direct 3framework synthesis and does not define a separate critic layer.
+- Confirms output evidence IDs are restricted to records actually supplied.
+- Covers malformed optional fields, missing required answer, and provider-not-configured/no-network behaviour.
+- Confirms provider output is not rewritten by a post-synthesis critic.
 
-Focused CI run (27 tests): https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387
+The standalone `tests/test_interpretation_critic.py` tests only the isolated legacy critic utility; they are not evidence that the active 3framework provider invokes that utility.
+
+Historical CI runs that tested the previous critic-wired implementation do not validate the corrected direct-synthesis path. Check the latest branch and CI before claiming the current path passes.
 
 ## Active 3framework provider contract
 
-The active API provider sends canonical evidence and adaptive context to ChatGPT, then performs response-schema normalization and filters evidence identifiers against supplied records. It does not run a separate post-synthesis critic. The prior critic-related CI run predates this correction and must not be treated as verification of the current path.
+The active API provider sends canonical evidence and adaptive context to ChatGPT, then performs response-schema normalization and filters evidence identifiers against supplied records. It does not run a separate post-synthesis critic. No live OpenAI request has been made as part of this offline work.
 
 ## Known limitations / next expansion
 
-1. Pattern matching cannot reliably understand every paraphrase, negation, hypothetical, or long-range cross-concept claim.
-2. Current source-specific synthesis enforcement focuses on gate-line archetypes. General knowledge claims still rely on retrieval selection, allowed-ID filtering, and prompt instructions; ID validity is not proof of semantic support.
-3. The transit guard checks explicit gate assertions against `transit_gates`; it does not yet validate every transit channel, centre, or interpretive statement.
+1. The active provider does not independently verify the semantic truth of every generated chart claim after synthesis. Correctness depends on the canonical evidence supplied to ChatGPT, the instructions, and subsequent human/offline evaluation.
+2. Filtering evidence IDs proves only that an ID was supplied; it does not prove that the cited source semantically supports every sentence.
+3. Transit, channel, centre, profile/type/authority, gate-line source fidelity, and cross-concept claims need curated fixture-based evaluation; no separate critic currently blocks an incorrect answer after synthesis.
 4. Qualitative dimensions—depth, relevance, balanced framing, uncertainty, source fidelity in paraphrase, and personalization without overreach—need curated human-scored examples.
-5. The next useful increment is a concept-diverse golden fixture set: multiple gates/lines, at least one channel and centre interaction, one type/authority/profile query, one transit overlay query, and deliberately conflicting evidence. Each fixture should record expected chart facts, allowed source IDs, forbidden claims, and qualitative scoring notes.
+5. Next: build a concept-diverse golden fixture set with multiple independently sourced gates/lines, channel-centre interactions, type/authority/profile questions, transit questions, and deliberately conflicting evidence. Each fixture should record expected chart facts, allowed source IDs, forbidden claims, and qualitative scoring notes.
 
 ## Release interpretation
 
-A passing offline suite means the specific regression cases pass. It does **not** mean all Human Design knowledge is complete, the live provider is configured, or live ChatGPT responses have been semantically validated.
+Passing offline tests means only that the specific contract cases passed. It does **not** mean all Human Design knowledge is complete, the live provider is configured, or live ChatGPT responses have been semantically validated.
