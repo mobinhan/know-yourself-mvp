@@ -1,1 +1,92 @@
-{"version":"1.0.0","purpose":"Structured Human Design concept graph for grounded personalized reasoning.","concept_families":{"foundation":["type","strategy","authority","signature","not_self_theme","profile","definition","centres"],"structure":["gate","line","channel","circuit","circuit_group","format_energy","integration"],"purpose":["incarnation_cross","sun_earth","geometry"],"planetary":["planetary_activation","planetary_role","node_geometry"],"process":["response","conditioning","experimentation","holistic_analysis"],"temporal":["transit","life_cycle","return"],"connection":["shared_gate","electromagnetic_channel","companionship","compromise","dominance"]},"depth_levels":[{"id":"L1","name":"first_time"},{"id":"L2","name":"practical"},{"id":"L3","name":"technical"},{"id":"L4","name":"integrated"}]}
+{
+  "version": "1.1.0",
+  "purpose": "Structured Human Design concept graph for grounded personalized reasoning.",
+  "concept_families": {
+    "foundation": [
+      "type",
+      "strategy",
+      "authority",
+      "signature",
+      "not_self_theme",
+      "profile",
+      "definition",
+      "centres"
+    ],
+    "structure": [
+      "gate",
+      "line",
+      "channel",
+      "circuit",
+      "circuit_group",
+      "format_energy",
+      "integration"
+    ],
+    "purpose": [
+      "incarnation_cross",
+      "sun_earth",
+      "geometry"
+    ],
+    "planetary": [
+      "planetary_activation",
+      "planetary_role",
+      "node_geometry"
+    ],
+    "mandala": [
+      "mandala",
+      "quarter",
+      "quarter_theme",
+      "gate_quarter_mapping"
+    ],
+    "psychology": [
+      "rave_psychology",
+      "psychological_framework"
+    ],
+    "process": [
+      "response",
+      "conditioning",
+      "experimentation",
+      "holistic_analysis"
+    ],
+    "temporal": [
+      "transit",
+      "life_cycle",
+      "return"
+    ],
+    "connection": [
+      "shared_gate",
+      "electromagnetic_channel",
+      "companionship",
+      "compromise",
+      "dominance"
+    ]
+  },
+  "relationship_types": [
+    "part_of",
+    "located_in",
+    "connects_to",
+    "harmonic_of",
+    "interpreted_with",
+    "contextualized_by",
+    "interpreted_through",
+    "requires_context",
+    "source_disagrees_with"
+  ],
+  "depth_levels": [
+    {
+      "id": "L1",
+      "name": "first_time"
+    },
+    {
+      "id": "L2",
+      "name": "practical"
+    },
+    {
+      "id": "L3",
+      "name": "technical"
+    },
+    {
+      "id": "L4",
+      "name": "integrated"
+    }
+  ]
+}
