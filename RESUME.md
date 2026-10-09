@@ -1,5 +1,7 @@
 # Know Yourself — Resume Here
 
+> **MANDATORY PLATFORM RULE: We do not use Vercel for Know Yourself. Do not open, configure, troubleshoot, or deploy through Vercel. Use Lovable for the live app interface, GitHub for source control and recovery, GitHub Actions for tests, and Supabase for backend/data. Only reconsider Vercel if the user explicitly asks to reinstate it. Read this rule before taking any action.**
+
 **Purpose:** Single entry point for continuing work across ChatGPT desktop/mobile conversations.
 
 ## Mandatory rule
