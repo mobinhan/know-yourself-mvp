@@ -26,6 +26,13 @@ User question
 ## Design principle
 The answering experience should be conversational and intelligent, comparable in interaction quality to general AI assistants, while remaining grounded in the deterministic and provenance-controlled layers underneath.
 
+## Holistic cross-concept interpretation
+- A versioned relationship graph connects validated concepts and their supporting knowledge-record IDs.
+- Retrieval follows only validated relationships and returns unsupported or unpopulated context as explicit gaps rather than treating it as established knowledge.
+- The graph includes extension points for Quarter / Mandala context and Rave Psychology; these remain pending until specific, permitted, provenance-traceable knowledge records validate them.
+- Holistic synthesis must connect relevant chart mechanics and interpretive frameworks, while distinguishing source-backed relationships from interpretation and never inventing mechanics.
+- `test_holistic_retrieval.mjs` verifies the initial graph retrieval and fail-safe treatment of missing Quarter / Rave Psychology evidence.
+
 ## Current limitation
 The current reasoning adapter deliberately provides a provider-neutral boundary and a deterministic mock for testing. It does not call an external LLM. Conversation state and production model integration remain separate concerns.
 
