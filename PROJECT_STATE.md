@@ -163,3 +163,17 @@ Material claims and meaningful cross-concept connections must trace to individua
 
 Validate with cross-concept tests, including gate + quarter + Rave Psychology examples, chart-specific relevance, contradiction handling, provenance and unsupported-connection rejection. The existing concept families and evidence classes do not by themselves prove that a complete knowledge graph or holistic synthesis capability is already implemented. This is a confirmed production requirement; implementation and verification remain outstanding.
 
+## Holistic interpretation implementation checkpoint
+
+**Updated:** 2026-10-09
+
+Initial Step 5 implementation added:
+- engine/knowledge-relationships.json: versioned concept nodes and evidence-linked relationships.
+- engine/holistic-retrieval.js: traverses validated relationships and returns supporting knowledge-record IDs; pending relationships are surfaced as evidence gaps rather than treated as established facts.
+- engine/test_holistic_retrieval.mjs: tests connected gate context, traceable records, unresolved Quarter / Rave Psychology context and unknown concepts.
+- engine/knowledge-ontology.json: expanded concept families and relationship types for Mandala / Quarter and Rave Psychology.
+- engine/STEP5.md: documents holistic retrieval boundaries and current limitations.
+- GitHub Actions now includes the holistic retrieval test.
+
+Important limitation: this is the first retrieval scaffold, not completion of holistic Human Design reasoning. Quarter and Rave Psychology nodes intentionally remain pending evidence until specific, permitted, provenance-traceable records are added. Gate-to-quarter mappings must be supplied by validated canonical/knowledge data, not guessed by the AI. End-to-end synthesis still needs to consume the graph output, and CI must pass before this checkpoint is considered verified.
+
