@@ -130,3 +130,16 @@ On mobile, continue from this checkpoint and the open PR. First verify the branc
 - Fixed the V1 frontend/API contract test so it no longer requires the user-deleted `vercel.json`; CI now tests the Python route handler instead.
 - No OpenAI live request was sent. No Lovable access or changes. No Vercel action. PR #1 remains open and unmerged.
 - Next action: Step 3 — expand semantic-quality fixtures across representative gates/lines, channels, centres, chart mechanics, source faithfulness, natal-versus-transit distinctions, and cross-concept claims. Gate 57 is one fixture, not the whole coverage strategy.
+
+
+## Step 3 — expanded offline interpretation-quality fixtures (2026-10-09)
+
+- Added `docs/INTERPRETATION_QUALITY_RUBRIC.md`, defining a multi-concept fixture strategy and separating deterministic checks from qualitative human review.
+- Expanded `api/interpretation_critic.py` beyond Gate 57: explicit profile/type/authority claims are checked against canonical values when supplied; gate-line activation checks the exact line; transit claims require a `transit_gates` list and named gates must appear in that list.
+- Expanded `tests/test_interpretation_critic.py` across gate activation, gate-line status, defined channels, defined/undefined centres, profile/type/authority, exact gate-line source + validated relationship, mismatched cross-concept source evidence, and transit/natal distinction.
+- Expanded focused workflow triggers and coverage so changes to `api/interpretation_critic.py` and `tests/test_interpretation_critic.py` run the regression suite. The Step 1 Engine Validation workflow now also triggers on `tests/**`.
+- Focused regression passed: 27 tests, 0 failures — https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912387
+- Full Step 1 Engine Validation passed on code/test commit `10a96297d96d07e6762d7d2356857dcd7a1fcb6b`: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37914912452
+- Quality checks remain intentionally conservative and pattern-based. They do not prove general prose/source faithfulness or live model quality. Human-scored fixtures for depth, uncertainty, personalization, and broad paraphrase fidelity remain future work.
+- No Lovable access or changes, no Vercel use, no live OpenAI request, and no PR merge.
+- Next: extend the fixture corpus with several independently sourced gate/line records and representative channel/centre/transit questions; review any potential false positives/negatives before changing fail-closed behaviour.
