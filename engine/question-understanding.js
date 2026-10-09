@@ -19,6 +19,9 @@ export function understandQuestion(question) {
       ? "factual"
       : "interpretive";
   const requires_timing = intent === "timing" || /\b(when|today|now|currently|recently|lately|next|future|past)\b/.test(normalized);
+  const crossRequested = /\b(incarnation cross|my cross|cross of incarnation|cross)\b/.test(normalized);
+  const evidenceTargets = requires_timing ? ["temporal_state","lifecycle_event","activations"] : ["type","strategy","authority","profile","definition","channels","centres","gates","activations"];
+  if (crossRequested && !evidenceTargets.includes("cross")) evidenceTargets.push("cross");
   return {
     contract_version: CONTRACT,
     question: question.trim(),
