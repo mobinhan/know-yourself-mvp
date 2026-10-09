@@ -105,6 +105,8 @@ jobs:
         run: node engine/validate_external_knowledge.mjs
       - name: Run external source registry test
         run: node engine/test_external_sources.mjs
+      - name: Run external knowledge conflict test
+        run: node engine/test_external_knowledge.mjs
       - name: Validate AI reasoning contract
         run: node engine/validate_ai_reasoning.mjs
       - name: Run AI reasoning contract test
