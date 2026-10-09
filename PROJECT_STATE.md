@@ -175,7 +175,7 @@ Initial Step 5 implementation added:
 - engine/STEP5.md: documents holistic retrieval boundaries and current limitations.
 - GitHub Actions now includes the holistic retrieval test.
 
-Important limitation: this is the first retrieval scaffold, not completion of holistic Human Design reasoning. Quarter and Rave Psychology nodes intentionally remain pending evidence until specific, permitted, provenance-traceable records are added. Gate-to-quarter mappings must be supplied by validated canonical/knowledge data, not guessed by the AI. End-to-end synthesis still needs to consume the graph output, and CI must pass before this checkpoint is considered verified.
+Important limitation: this is the first retrieval scaffold, not completion of holistic Human Design reasoning. Quarter and Rave Psychology nodes intentionally remain pending evidence until specific, permitted, provenance-traceable records are added. Gate-to-quarter mappings must be supplied by validated canonical/knowledge data, not guessed by the AI. The grounded reasoning prompt now consumes graph context for gate, activation, channel and centre questions, with explicit instructions to treat unresolved context as evidence gaps. The live external LLM is still not connected, so this verifies prompt construction and retrieval contracts rather than real-model synthesis. CI validation for the latest code commit is running.
 
 ### Holistic retrieval test result
 
