@@ -53,7 +53,7 @@ export function buildConflictSets(recordsToCheck = []) {
     .map(([conflict_group, group]) => {
       const distinctClaims = new Map();
       for (const record of group) {
-        const normalized = String(record.claim ?? "").trim().toLowerCase().replace(/\\s+/g, " ");
+        const normalized = String(record.claim ?? "").trim().toLowerCase().replace(/\s+/g, " ");
         if (!distinctClaims.has(normalized)) distinctClaims.set(normalized, []);
         distinctClaims.get(normalized).push(record);
       }
