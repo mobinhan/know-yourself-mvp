@@ -269,6 +269,14 @@ These remain contract/policy foundations. No durable cross-session storage, prod
 ### Verification and remaining boundary
 - Security advisor after initial schema hardening reported only the pre-existing unrelated `public.Terugkeer` table as having RLS enabled without policies and publicly discoverable; it was not modified because it predates this project work and ownership/purpose is unknown.
 - Security checks confirmed RLS is enabled for all `ky_*` tables, client grants are revoked on server-only knowledge/audit tables, and composite foreign keys preserve user IDs on chart/turn unlinking.
-- `supabase/test_user_data_api.mjs` and CI Deno type-checking are being added to the repository workflow; wait for the latest run before marking CI verification green.
+- `supabase/test_user_data_api.mjs` and CI Deno type-checking are enabled in the repository workflow. GitHub Actions run 37890541709 passed both Python engine validation and JavaScript/Supabase contract validation, including Deno type-checking: https://github.com/mobinhan/know-yourself-mvp/actions/runs/37890541709
 - No real authenticated end-to-end request has yet been exercised with a test account/token. Do not claim this is fully production-accepted until those tests pass.
 - Live LLM provider, critic-backed answer endpoint, deterministic chart calculation endpoint, user-facing frontend, and quarterly source-refresh execution remain outstanding.
+
+### Persistence verification details
+- Direct SQL privilege checks confirmed: authenticated users cannot insert chart artifacts; they can update only chart label/primary flag, not `canonical_chart`; they cannot insert saved AI insights or transit snapshots; they can append user turns but cannot update turns; and the `ky_append_user_turn` function is executable by authenticated users and runs as SECURITY INVOKER.
+- Supabase function listing confirms `user-data-api` is ACTIVE at version 4 with JWT verification enabled.
+- The database reports five applied migrations matching the tracked SQL files.
+- Security advisor has no new RLS-without-policy findings among `ky_*` tables. The remaining RLS/GraphQL warnings refer to the pre-existing `public.Terugkeer` table, which was deliberately left unchanged because its purpose is unknown. GraphQL visibility warnings for user-owned tables reflect schema discoverability; RLS and grants still enforce row ownership.
+- Performance advisor currently reports unused indexes because the new tables are empty and have not yet received application traffic; it no longer reports the prior missing foreign-key index findings.
+- Authenticated end-to-end request testing still needs a dedicated test account/session. CI verifies source contracts and type-checking, not full logged-in request flows.
