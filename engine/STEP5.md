@@ -22,6 +22,8 @@ User question
 - evidence-selection.js
 - reasoning-adapter.js
 - answer-critic.js
+- answer-composer.js (first-class Cross context and adaptive-policy integration)
+- user-adaptation.js (consent-aware preference/context filtering contract; no persistence)
 
 ## Design principle
 The answering experience should be conversational and intelligent, comparable in interaction quality to general AI assistants, while remaining grounded in the deterministic and provenance-controlled layers underneath.
@@ -53,3 +55,17 @@ Step 5 progresses only when each boundary is tested independently and the full d
 
 Current acceptance boundary: deterministic mechanics remain authoritative; the quarter mapping is source-validated; the external LLM remains unconnected. Do not describe the full production holistic interpretation capability as complete until record-level lifecycle governance and real-model acceptance tests are finished.
 
+
+## First-class Incarnation Cross context — implementation in progress
+- The prompt now builds a dedicated `incarnation_cross_context` from `E-CROSS` and checks each of the four Sun/Earth gate-line pairs against the canonical activation evidence.
+- Each activation receives its own gate-quarter lookup; the Personality Sun quarter is explicitly identified as the primary Cross anchor.
+- The context includes the profile when deterministic profile evidence is supplied. It does not invent a Cross name if no name is supplied by canonical evidence.
+- Missing or mismatched activation slots make the context incomplete and expose the missing slots instead of fabricating a complete reading.
+- Chart-specific integration tests assert the four fixture activations (Personality Sun 42.5, Personality Earth 32.5, Design Sun 60.1, Design Earth 56.1), individual quarter mappings, primary-quarter anchor and no invented Cross name.
+
+## User adaptation and memory boundary — contract groundwork
+- `user-adaptation.js` defines a consent-aware policy for explanation depth, tone, language and explicit personal context.
+- Explicit confirmed preferences outrank inferred preferences. Inferred preferences require personalization consent and confidence >= 0.8; personal context requires separate consent and must be explicit.
+- Chart truth, source knowledge and system instructions are excluded from user-context memory so they cannot override canonical evidence.
+- The policy is integrated into prompt assembly and explicitly limited to presentation and relevance, never mechanics, evidence standards or certainty.
+- This is a policy contract only. It does **not** implement durable cross-session memory, automatic preference learning, account-level inspection/correction/reset/deletion or a live model provider. Those require backend integration and further acceptance testing.
