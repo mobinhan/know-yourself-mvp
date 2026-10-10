@@ -461,3 +461,11 @@ This completes the Step 1 canonical artifact implementation without adding a fou
 - Fetched the workflow file back from `feature/persistent-continuity-retrieval` and confirmed the new trigger is present.
 - **CI result remains unverified**: the connected GitHub workflow-run lookup still returned no PR-triggered runs for the commit, and combined status only reported an unrelated external Vercel rate-limit failure. That external status is not evidence of the engine workflow result; do not use Vercel to resolve it. No claim of green CI.
 - Next: obtain an actual GitHub Actions run/check result for the updated workflow. No merge or deployment.
+
+## Step 1 CI verified — 2026-10-10
+- GitHub Actions run **38013934831** (“Know Yourself — Engine Validation — pull_request”) completed with conclusion `success`.
+- Both jobs passed: **Python engine validation** (including the `pytest` engine suite with `engine/test_canonical_chart.py`) and **JavaScript contract validation** (including canonical chart artifact, downstream data contracts, 3framework, knowledge/retrieval and reasoning contract checks).
+- The Python test step and all listed JavaScript validation steps report `success`. This verifies the CI suite for the commit that added the pull-request trigger. The separate external deploy status marked Vercel failed due to a build-rate limit; it is not the engine validation result and is not being used or acted upon.
+- Workflow run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38013934831
+- Workflow trigger commit: `67b04caa477157148749d37d09199b235b19f788`.
+- Step 1 CI verification is now **passed for that run**. This does not by itself mean the production API/frontend integration is complete or deployed; that is Step 2.
