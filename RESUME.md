@@ -172,3 +172,19 @@ Important limitation: this file records the required protocol; it does not itsel
 - Root cause: the assistant retrieved the preference as context but failed to apply it as a response-generation constraint. It defaulted to generic cautious phrasing rather than first using available context/evidence, answering directly, and expressing any genuine uncertainty briefly and naturally. It then repeated the same failure by reintroducing a disclaimer while apologizing.
 - Prevention rule: do not use database-style “I don't have verified…” caveats in ordinary Human Design conversation. First answer the user's actual question from established chart records. If a material detail truly cannot be established, say so in one natural, concise sentence only when it changes the answer; do not append a defensive qualification after an otherwise confident answer. Never claim chart details are independently verified unless the canonical evidence has actually been checked.
 - Testing implication: assess whether prior corrections change the actual response behavior, not merely whether the assistant can repeat the rule. Acknowledging a preference is not compliance; the next answer must demonstrate it.
+
+
+## 3framework response behaviour protocol — enforce corrections in output (2026-10-10)
+
+Apply this protocol during every natural 3framework conversation, especially after user corrections:
+
+1. **Answer first.** Identify the user's actual question and respond directly before discussing uncertainty, process, or limitations.
+2. **Use known context before disclaiming.** Check established chart facts and user corrections already present in conversation/project context. Do not ask the user to repeat them.
+3. **Uncertainty must be specific and useful.** Mention uncertainty only if it materially changes the answer. State the precise unknown naturally and briefly; never use generic database-style phrases such as “I don't have a verified…” as filler or as a defensive tail to a confident answer.
+4. **Do not invent verification.** A remembered chart detail may be used as a previously recorded detail, but call it canonically verified only after checking the canonical chart/evidence source. When that source is unavailable, distinguish recorded context from checked evidence without making the conversation mechanical.
+5. **Make corrections behavioural.** After a user flags a response pattern, apply the correction immediately in the next answer. Do not merely acknowledge it, explain it, or repeat the unwanted pattern inside the apology.
+6. **Keep the experience natural.** No unsolicited test scripts, checklists, or framework lectures. Reason from Layer 1 (canonical chart/evidence) and Layer 2 (relevant adaptive user context) directly in the live answer; Layer 3 is the response, not a separate user-facing process.
+7. **Self-check before sending.** Ask internally: Did I answer the question? Did I reuse known context? Did I add a generic caveat? Am I claiming a verification I did not perform? Did I repeat a correction the user has already made? Revise before sending if any answer is yes in the wrong direction.
+8. **Evaluate outcomes, not acknowledgements.** A correction is considered implemented only when later answers demonstrate the changed behaviour. If the same error recurs, name the specific failure, update the prevention rule, and continue without making the user manage the process.
+
+Scope: conversational behaviour for ChatGPT-first validation of the approved 3framework. This checkpoint documents the intended response protocol; it does not by itself change ChatGPT's underlying model or guarantee perfect compliance.
