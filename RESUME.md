@@ -159,3 +159,8 @@ Important limitation: this file records the required protocol; it does not itsel
 - Before responding to a correction or short follow-up, use the immediate conversational context to identify the user's underlying intent. Do not over-literalize one phrase or pivot to an adjacent technical topic.
 - If the intended meaning is clear from context, acknowledge it and act on it. Ask a clarifying question only if genuinely ambiguous. Do not make the user repeat established project decisions.
 - After a misunderstanding, name the specific reasoning error, adjust the approach, and continue the original task. Record recurring project-level lessons in this checkpoint.
+
+## Short command for ChatGPT framework testing (2026-10-10)
+- User's short phrase to resume the current validation activity: **“Test 3framework.”**
+- Interpret this as: continue testing the approved three-layer framework through natural ChatGPT conversation; use the available chart/evidence and relevant personal context; assess quality unobtrusively; do not create a scripted questionnaire, re-explain the framework, or imply external integration is active.
+- This is a conversational shortcut, not a technical switch that changes ChatGPT settings or activates the external app.
