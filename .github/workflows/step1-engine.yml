@@ -34,6 +34,7 @@ jobs:
           set -o pipefail
           python -m pytest -q \
             engine/test_golden.py \
+            engine/test_canonical_chart.py \
             engine/test_channel_catalog.py \
             engine/test_multi_chart.py \
             engine/test_boundaries.py \
