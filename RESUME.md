@@ -164,3 +164,11 @@ Important limitation: this file records the required protocol; it does not itsel
 - User's short phrase to resume the current validation activity: **“Test 3framework.”**
 - Interpret this as: continue testing the approved three-layer framework through natural ChatGPT conversation; use the available chart/evidence and relevant personal context; assess quality unobtrusively; do not create a scripted questionnaire, re-explain the framework, or imply external integration is active.
 - This is a conversational shortcut, not a technical switch that changes ChatGPT settings or activates the external app.
+
+
+## 3framework test finding — repeated mechanical uncertainty disclaimer (2026-10-10)
+
+- User identified that the assistant again used wording such as “I don't have a verified Gate 57 activation on this side of your chart,” despite an existing instruction to avoid mechanical/defensive disclaimers and integrate uncertainty naturally.
+- Root cause: the assistant retrieved the preference as context but failed to apply it as a response-generation constraint. It defaulted to generic cautious phrasing rather than first using available context/evidence, answering directly, and expressing any genuine uncertainty briefly and naturally. It then repeated the same failure by reintroducing a disclaimer while apologizing.
+- Prevention rule: do not use database-style “I don't have verified…” caveats in ordinary Human Design conversation. First answer the user's actual question from established chart records. If a material detail truly cannot be established, say so in one natural, concise sentence only when it changes the answer; do not append a defensive qualification after an otherwise confident answer. Never claim chart details are independently verified unless the canonical evidence has actually been checked.
+- Testing implication: assess whether prior corrections change the actual response behavior, not merely whether the assistant can repeat the rule. Acknowledging a preference is not compliance; the next answer must demonstrate it.
