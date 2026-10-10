@@ -118,7 +118,7 @@ def test_interpretation_provider_uses_responses_api_and_filters_evidence(monkeyp
     assert "1982-04-15" not in captured["body"]["input"]
     assert result["interpretation_status"] == "ready"
     assert result["knowledge_basis"] == []  # stale/unregistered external ID must be rejected
-    assert result["relationship_basis"] == ["REL-GATE-57-LINE-4-DIRECTOR"]
+    assert result["relationship_basis"] == []  # no validated relationship is linked to selected current evidence
     assert result["factual_basis"] == ["activations.personality"]
 
 
