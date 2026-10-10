@@ -453,3 +453,11 @@ Reproduced the current deterministic Swiss Ephemeris calculation and the exact s
 The **standalone Canonical Chart + evidence implementation is now in the working branch**. The complete pytest suite and GitHub Actions result remain unverified because repository checkout/network access was unavailable in the local runner and the connected workflow-run lookup did not return engine workflow runs. The code is wired into CI for a proper run.
 
 This completes the Step 1 canonical artifact implementation without adding a fourth reasoning layer or requiring an AI key/context. Production API hosting and frontend route integration are separate integration work: do not claim a live deployed endpoint exists. No merge or deployment was performed.
+
+## Step 1 CI trigger correction — 2026-10-10
+- Inspected the committed `.github/workflows/step1-engine.yml`. It already runs the canonical-chart acceptance test as part of the Python engine suite, but it was configured for `push` and manual dispatch only, so the available connector's PR-filtered workflow-run lookup could not verify it from a pull request.
+- Added a `pull_request` trigger with the same engine/Supabase/workflow path filters. This is a CI-only change; no runtime, deployment, or application behavior changed.
+- Commit: `67b04caa477157148749d37d09199b235b19f788`.
+- Fetched the workflow file back from `feature/persistent-continuity-retrieval` and confirmed the new trigger is present.
+- **CI result remains unverified**: the connected GitHub workflow-run lookup still returned no PR-triggered runs for the commit, and combined status only reported an unrelated external Vercel rate-limit failure. That external status is not evidence of the engine workflow result; do not use Vercel to resolve it. No claim of green CI.
+- Next: obtain an actual GitHub Actions run/check result for the updated workflow. No merge or deployment.
