@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parent
 CONTRACT_VERSION = "1.0.0"
 ENGINE_NAME = "ky-hd-engine"
 ENGINE_VERSION = "1.0.0"
-CHANNELS = json.loads((ROOT / "channel-catalog.json").read_text(encoding="utf-8"))["channels"]
+CHANNEL_CATALOG = json.loads((ROOT / "channel-catalog.json").read_text(encoding="utf-8"))
+CHANNELS = CHANNEL_CATALOG["channels"]
 
 
 def derive_structure(activations: dict) -> dict:
@@ -129,10 +130,32 @@ def calculate_canonical_chart(local_datetime: str, iana_timezone: str) -> dict:
             "timezone": raw["timezone"],
             "design_offset_degrees": raw["ephemeris"]["design_offset_degrees"],
             "node": raw["ephemeris"]["node"],
+            "structure_rule_version": "ky-structure-v1",
+            "channel_catalog_version": CHANNEL_CATALOG["version"],
+            "channel_catalog_source_ids": CHANNEL_CATALOG["source_ids"],
         },
         "birth_datetime_utc": raw["birth_datetime_utc"],
         "activations": raw["activations"],
         "structure": structure,
+        "evidence": {
+            "activation_records": [
+                {
+                    "evidence_id": f"activation:{side}:{activation['body']}",
+                    "source_field": f"activations.{side}[body={activation['body']}]",
+                    "gate": activation["gate"],
+                    "line": activation["line"],
+                    "rule": "swiss-ephemeris-mandala-v1",
+                }
+                for side in ("personality", "design")
+                for activation in raw["activations"][side]
+            ],
+            "structure_record": {
+                "evidence_id": "structure:ky-structure-v1",
+                "derived_from": "activations",
+                "channel_catalog_version": CHANNEL_CATALOG["version"],
+                "rule": "channel-connectivity-and-human-design-authority-v1",
+            },
+        },
     }
     canonical = json.dumps(artifact, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     artifact["canonical_sha256"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
