@@ -7,12 +7,13 @@ source-grounded, and disabled until OPENAI_API_KEY is configured.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 import uuid
 from datetime import datetime, timezone
 from functools import lru_cache
-from http.server import BaseHTTPRequestHandler
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.error import URLError
 from urllib.parse import parse_qs, quote, urlparse
@@ -496,3 +497,15 @@ class handler(BaseHTTPRequestHandler):
         if not isinstance(value, dict):
             raise ValueError("request body must be a JSON object")
         return value
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", "8000"))
+    server = ThreadingHTTPServer(("0.0.0.0", port), handler)
+    print(f"Know Yourself Python API listening on port {port}", flush=True)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
