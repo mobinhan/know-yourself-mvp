@@ -1,5 +1,18 @@
 // Pure assembly for the user's cross-session continuity context.
 // This module does not calculate chart mechanics or write persistent data.
+
+/**
+ * @param {{
+ *   preferences?: Record<string, any> | null,
+ *   memories?: Array<Record<string, any>>,
+ *   conversations?: Array<Record<string, any>>,
+ *   turnsByConversation?: Record<string, Array<Record<string, any>>>,
+ *   savedInsights?: Array<Record<string, any>>,
+ *   now?: string,
+ *   maxTurnsPerConversation?: number,
+ *   maxSavedInsights?: number
+ * }} options
+ */
 export function buildContinuityContext({
   preferences = null,
   memories = [],
