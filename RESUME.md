@@ -146,3 +146,10 @@ Important limitation: this file records the required protocol; it does not itsel
 - Keep the approved three layers only: Canonical Chart + Immutable Evidence; Adaptive User Context; ChatGPT live reasoning directly on top of Layers 1 and 2.
 - Do not turn ordinary conversation into a user-facing test harness or require the user to answer repeated evaluation questions. Quality checks and uncertainty handling remain within live reasoning and unobtrusive development practice, not a new framework layer.
 - Respond naturally to what the user shares. The user's report that all four Gate 57 themes resonate is useful self-reported context, not proof of chart mechanics or a requirement for further questioning. Let the user steer the depth.
+
+## Real-life validation mode (2026-10-10)
+- User confirmed the next stage: continue testing the approved 3framework inside ChatGPT with the user as the first real-life end user.
+- Use natural conversation, not a scripted questionnaire. Apply chart evidence and personal context only when relevant; keep responses warm, useful, and direct.
+- Do not force Human Design into unrelated questions or repeatedly ask for test examples. Learn from spontaneous feedback and corrections.
+- Assess accuracy, relevance, warmth, continuity, and uncertainty handling in the background. Subjective resonance alone does not prove chart mechanics.
+- External integration and deployment remain deferred until the user is satisfied. Keep the 3framework and autonomous execution rule unchanged.
