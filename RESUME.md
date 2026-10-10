@@ -503,3 +503,10 @@ This completes the Step 1 canonical artifact implementation without adding a fou
 - **Not yet end-to-end integration:** the page globally intercepts `/v1/*` requests with demo fixtures, and no approved live Python calculation runtime has been verified. The legacy Python API is on a divergent branch and is not confirmed deployed; the active Supabase Edge Function is Deno and persistence-focused. Do not remove demo interception or point the UI at a speculative endpoint until a real trusted runtime is approved and tested.
 - CI for the new frontend contract test is pending/unavailable in the current connector view; do not claim this newest test has passed until a run is retrieved. No merge, deployment, new service, Lovable project/credit spend, or Vercel work.
 - Next: continue the API boundary work that does not require infrastructure approval, then verify the new contract test in CI. Live API wiring remains gated on identifying an already-approved runtime or obtaining explicit permission to establish one.
+
+## Step 2 frontend/API contract regression — CI passed — 2026-10-10
+- GitHub Actions run **38014247909** (“Know Yourself — Engine Validation — pull_request”, run 420) completed successfully. Both Python engine validation and JavaScript contract validation passed.
+- Specifically verified in the run: “Validate canonical chart artifact” passed, the new “Validate frontend/API request contract” step passed, and the full JavaScript contract job concluded `success`.
+- This confirms the frontend request-shape compatibility change is covered by passing CI. It is not end-to-end proof against a live backend because the frontend still uses a global demo-fixture fetch interceptor and no approved live chart-calculation runtime has been verified.
+- Run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38014247909
+- Resume checkpoint updated and must be fetched back after this append; no merge or deployment.
