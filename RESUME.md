@@ -374,3 +374,17 @@ Saved and fetched back:
 The older branch's API-level golden test expects Generator, Sacral authority, profile 5/1 and the six confirmed channels for the 15 April 1982 07:38 Europe/Amsterdam fixture. This test has not been run in the current audit; treat it as an acceptance target, not as a verified result. Current branch golden-chart and temporal tests exist, but CI status is still inconclusive because the available workflow-run connector returned no runs for the checkpoint commit.
 
 Next safe work: establish a supported existing runtime and API contract, then add tests proving standalone canonical calculation without AI/context and exact frontend compatibility. No deployment, merge, service creation, Lovable project or credit spend.
+
+
+## Step 1 continued — proposed standalone API contract — 2026-10-10
+
+Created and fetched back for verification:
+- `docs/CANONICAL_CHART_API_CONTRACT_V1_PROPOSED.md`
+- Commit: `8f7295b5662f3fee85504f13d8e8c4a5a85c1d32`
+- URL: https://github.com/mobinhan/know-yourself-mvp/blob/feature/persistent-continuity-retrieval/docs/CANONICAL_CHART_API_CONTRACT_V1_PROPOSED.md
+
+This is explicitly a proposed contract, not a live endpoint. It defines standalone calculation independent of AI/context/3framework, versioned provenance, canonical immutability, transit separation, error codes, consent/ownership boundaries, and the Golden Chart #2 acceptance suite.
+
+Runtime search remains unresolved: repo searches found no Dockerfile or obvious existing Python-service runtime configuration on the searched/current indexed branch. The old Python API source remains on `feature/live-api-v1`; current Supabase Edge Function is Deno and hosts persistence only. The GitHub Actions connector available to this session does not expose general all-event workflow runs; its commit-runs wrapper is PR-trigger-only and returned no runs for the checkpoint SHA. CI is therefore not declared green.
+
+Next safe step: inspect the contract against the current frontend response expectations and the old API's actual behavior; then determine whether a currently authorized runtime exists. Do not wire frontend Ask to a speculative route. No merge, deployment, new service, Lovable project, or credits.
