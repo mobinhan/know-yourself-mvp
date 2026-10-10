@@ -16,3 +16,21 @@ def test_aware_input_is_respected():
 def test_calculation_reports_utc_conversion():
     result = calculate_chart("1982-04-15T07:38:00", "Europe/Amsterdam")
     assert result["birth_datetime_utc"] == "1982-04-15T05:38:00Z"
+
+
+def test_rejects_nonexistent_daylight_saving_wall_time():
+    import pytest
+    with pytest.raises(ValueError, match="Nonexistent local time"):
+        local_to_utc("2026-03-29T02:30:00", "Europe/Amsterdam")
+
+
+def test_rejects_ambiguous_daylight_saving_wall_time():
+    import pytest
+    with pytest.raises(ValueError, match="Ambiguous local time"):
+        local_to_utc("2026-10-25T02:30:00", "Europe/Amsterdam")
+
+
+def test_ambiguous_wall_time_can_be_resolved_with_explicit_offset():
+    assert local_to_utc("2026-10-25T02:30:00+02:00", "Europe/Amsterdam") == datetime(
+        2026, 10, 25, 0, 30, tzinfo=timezone.utc
+    )

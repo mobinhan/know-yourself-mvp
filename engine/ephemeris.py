@@ -40,10 +40,36 @@ class Activation:
     base: int
 
 def local_to_utc(local_datetime: str, iana_timezone: str) -> datetime:
+    """Convert a local ISO datetime to UTC without silently guessing at DST.
+
+    Aware inputs are already unambiguous and are converted directly. Naive
+    local times are validated by round-tripping both folds through UTC:
+    nonexistent wall times are rejected, as are ambiguous wall times where
+    the caller must provide an explicit UTC offset.
+    """
     dt = datetime.fromisoformat(local_datetime)
     if dt.tzinfo is not None:
         return dt.astimezone(timezone.utc)
-    return dt.replace(tzinfo=ZoneInfo(iana_timezone)).astimezone(timezone.utc)
+
+    tz = ZoneInfo(iana_timezone)  # raises ZoneInfoNotFoundError for bad zones
+    candidates = []
+    for fold in (0, 1):
+        local = dt.replace(tzinfo=tz, fold=fold)
+        utc = local.astimezone(timezone.utc)
+        round_trip = utc.astimezone(tz).replace(tzinfo=None)
+        if round_trip == dt and utc not in candidates:
+            candidates.append(utc)
+
+    if not candidates:
+        raise ValueError(
+            f"Nonexistent local time {local_datetime!r} in timezone {iana_timezone!r}"
+        )
+    if len(candidates) > 1:
+        raise ValueError(
+            f"Ambiguous local time {local_datetime!r} in timezone {iana_timezone!r}; "
+            "provide an explicit UTC offset"
+        )
+    return candidates[0]
 
 def julian_day(dt_utc: datetime) -> float:
     u = dt_utc.astimezone(timezone.utc)

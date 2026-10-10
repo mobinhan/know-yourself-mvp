@@ -42,3 +42,9 @@ All calls require `Authorization: Bearer <Supabase access token>`.
 - `supabase/test_user_data_api.mjs` checks source-level security contracts.
 - CI runs that contract test and Deno type-checks the Edge Function.
 - Supabase migrations and deployed function version must be inspected separately; CI does not claim authenticated end-to-end requests have been exercised without a real test account/token.
+
+## Live reasoning integration status
+
+- `functions/_shared/openai-reasoning-provider.ts` is a server-side provider adapter prototype. Its contract test uses a mocked fetch and does not call the OpenAI API or incur model usage.
+- The adapter is not yet exposed as an endpoint and is not connected to the frontend. It must only be called by a trusted server path after chart ownership, canonical evidence provenance, and user-context consent have been resolved server-side.
+- No `OPENAI_API_KEY` is stored in the repository. A live deployment requires configuring the key as a server-side secret, selecting/confirming the model, implementing trusted input assembly, and performing authenticated end-to-end verification. Do not claim live reasoning until those gates pass.
