@@ -127,19 +127,9 @@ def _select_knowledge(question: str, foundation: dict) -> tuple[list[dict], list
             or bool(set(edge.get("external_knowledge_ids", [])) & allowed_external_ids)
         )
     ]
-    if (
-        gate_number == 57
-        and line_number == 4
-        and (gate_number, line_number) in active_gate_lines
-        and "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001" in allowed_external_ids
-    ):
-        relationships = [
-            edge for edge in graph
-            if edge.get("id") == "REL-GATE-57-LINE-4-DIRECTOR"
-            and edge.get("status") == "validated"
-            and "EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"
-            in set(edge.get("external_knowledge_ids", []))
-        ] + relationships
+    # Relationship eligibility is data-driven: only validated edges connected to
+    # currently selected knowledge records are included. Avoid gate-specific
+    # hardcoded record IDs so stale source records cannot bypass current registry state.
     # Deduplicate by ID while preserving the most specific relationship first.
     deduped = []
     seen = set()
