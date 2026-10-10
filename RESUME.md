@@ -153,3 +153,9 @@ Important limitation: this file records the required protocol; it does not itsel
 - Do not force Human Design into unrelated questions or repeatedly ask for test examples. Learn from spontaneous feedback and corrections.
 - Assess accuracy, relevance, warmth, continuity, and uncertainty handling in the background. Subjective resonance alone does not prove chart mechanics.
 - External integration and deployment remain deferred until the user is satisfied. Keep the 3framework and autonomous execution rule unchanged.
+
+## Misconception prevention rule (2026-10-10)
+- When the user says they are testing the 3framework, interpret this as evaluating its performance through live ChatGPT interaction, not as asking to configure automatic activation or explain project settings.
+- Before responding to a correction or short follow-up, use the immediate conversational context to identify the user's underlying intent. Do not over-literalize one phrase or pivot to an adjacent technical topic.
+- If the intended meaning is clear from context, acknowledge it and act on it. Ask a clarifying question only if genuinely ambiguous. Do not make the user repeat established project decisions.
+- After a misunderstanding, name the specific reasoning error, adjust the approach, and continue the original task. Record recurring project-level lessons in this checkpoint.
