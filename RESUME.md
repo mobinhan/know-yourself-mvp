@@ -435,3 +435,21 @@ The repository's Step 1 engine workflow includes the ephemeris, channel-catalog,
 
 ### Completion rule
 Do not call Step 1 complete based on documentation, mocked frontend responses, or a subset of local timezone checks. Completion requires full current-branch engine CI evidence, Golden Chart structural parity, a real approved runtime/API integration compatible with the frontend, standalone calculation without AI/context, and evidence that 3framework consumes the same canonical result unchanged. No merge or deployment without explicit permission.
+
+
+## Step 1 — Canonical Chart + Immutable Evidence implementation delivered — 2026-10-10
+
+### Implemented on `feature/persistent-continuity-retrieval`
+- `engine/canonical_chart.py` now provides `calculate_canonical_chart(local_datetime, iana_timezone)`, a standalone versioned canonical artifact. It imports the deterministic Swiss Ephemeris engine and the channel catalogue only; it does not import the AI provider, user context, or 3framework.
+- The artifact contains 26 personality/design activation records, derived channel/centre/definition/type/strategy/authority/profile/incarnation-cross mechanics, engine/ephemeris/catalog/rule provenance, 26 stable activation evidence references, a structural derivation evidence record, and a SHA-256 digest of the canonical payload.
+- `engine/test_canonical_chart.py` tests standalone shape, deterministic equality, evidence/provenance, no interpretation/context dependency, and Golden Chart #2 expected structure.
+- `.github/workflows/step1-engine.yml` now includes this acceptance test in the existing engine validation suite.
+- Commits: standalone artifact `869ba12b4c4aaf716004bafd16b4b3cc0a1cb154`; acceptance tests `47f02bc044e03a74e750d67d96cbfa854ed4f2ef`; CI wiring `5e9cc65ed795252b8e5a8674001a8b5df9058b27`; evidence provenance `c4cdbd52f5fb318614b4c12173ce1476626b1692`; evidence assertions `36c29c90baf62ae526ae7659d3335f8f7eff3ab1`.
+
+### Golden Chart #2 structural check
+Reproduced the current deterministic Swiss Ephemeris calculation and the exact structure-derivation algorithm independently in the available Python runtime. The resulting structure matched the golden acceptance target: Generator; Sacral authority; profile 5/1; split definition with components [Ajna/Throat] and [Root/Sacral/Spleen]; centres Ajna, Root, Sacral, Spleen, Throat; channels 3-60, 11-56, 28-38, 32-54, 34-57, 42-53; and the expected incarnation-cross gates/lines. This is a focused independent check of the calculations/derivation, not a report that the entire repository pytest suite has passed.
+
+### Step 1 boundary and verification status
+The **standalone Canonical Chart + evidence implementation is now in the working branch**. The complete pytest suite and GitHub Actions result remain unverified because repository checkout/network access was unavailable in the local runner and the connected workflow-run lookup did not return engine workflow runs. The code is wired into CI for a proper run.
+
+This completes the Step 1 canonical artifact implementation without adding a fourth reasoning layer or requiring an AI key/context. Production API hosting and frontend route integration are separate integration work: do not claim a live deployed endpoint exists. No merge or deployment was performed.
