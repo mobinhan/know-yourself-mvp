@@ -306,3 +306,28 @@ This is an architecture decision/checkpoint saved in RESUME.md. It does **not** 
 - Workflow lookup for the newest resume checkpoint returned no associated PR-triggered workflow runs; this is inconclusive, not a pass. Do not claim current CI is green until all relevant runs are checked with a tool that exposes them.
 - Current state: deployed persistence exists; deployed continuity route, `/v1/*` API, live OpenAI answer path and approved Python runtime are unverified/not present in inspected deployment. No merge, deployment, Lovable project, credit spend, or Vercel work.
 - Next: identify an already-approved Python runtime or validate a Swiss Ephemeris-compatible backend boundary without creating a new hosting dependency; meanwhile obtain full current CI status. Preserve Swiss Ephemeris and the approved 3framework; do not activate a separate critic layer.
+
+
+## Canonical chart independence decision — 2026-10-10
+
+The user confirmed that the Canonical Chart should eventually be independently usable without the 3framework. Treat this as a fixed architecture requirement:
+- Layer 1 must be independently callable for deterministic calculation, validation, retrieval, and serialization without AI credentials, Layer 2 context, or the 3framework orchestrator.
+- The 3framework consumes the same canonical chart artifact/evidence; it must not own or alter chart mechanics.
+- The same validated inputs and engine/settings version must yield the same canonical output whether called standalone or through the 3framework.
+- Keep natal mechanics distinct from temporary transit overlays.
+- Do not add a fourth/fifth framework layer or a separate critic model.
+
+Created and fetched back for verification:
+- `docs/CANONICAL_CHART_INDEPENDENCE_TEST_MATRIX_2026-10-10.md`
+- Commit: `ae1d111fcd3101ab178c546f6dd7adf8178466f2`
+- URL: https://github.com/mobinhan/know-yourself-mvp/blob/feature/persistent-continuity-retrieval/docs/CANONICAL_CHART_INDEPENDENCE_TEST_MATRIX_2026-10-10.md
+- The matrix covers standalone operation, determinism, the confirmed Golden Chart #2 six-channel fixture, natal/transit separation, evidence provenance, consented Layer 2 context, auth/ownership, provider errors, frontend route compatibility, security, versioning, and CI regression.
+
+Runtime/CI status remains:
+- The legacy Python `/v1/*` API and Swiss Ephemeris implementation exist on divergent branch `feature/live-api-v1`; that is source code, not proof of a deployed API.
+- The active Supabase Edge Function `user-data-api` is authenticated persistence only; deployed `/v1/*` chart/question routes and continuity endpoint are not verified there.
+- No existing approved Python runtime/service config has yet been identified from inspected repo search results. Do not select a host or create a service without need/permission.
+- Current CI status remains inconclusive: the available commit-runs connector filters to PR-triggered runs and returned no usable run for the latest changes. Do not claim CI is green.
+- No merge, deployment, new service, Lovable project, or Lovable credit spend occurred.
+
+Next: continue read-only inspection for any existing approved runtime and obtain the fullest available workflow status evidence; then propose a narrow adapter/integration path only after the runtime and contracts are verified.
