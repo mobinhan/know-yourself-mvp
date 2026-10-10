@@ -418,3 +418,20 @@ These mismatches must be resolved before switching frontend integration; no spec
 3. Decide/verify an already approved runtime or get explicit authorization before creating one.
 4. Implement and test the real route contract and frontend compatibility, with no demo/mock route mistaken for production.
 5. Verify independent calculation without AI/context/3framework, then verify 3framework consumes the exact same canonical artifact.
+
+
+## Step 1 continuation — DST checks and hard blockers — 2026-10-10
+
+The DST algorithm added to `engine/ephemeris.py` was independently exercised in this session against seven cases: Golden Chart #2 UTC conversion, Amsterdam winter/summer conversion, Singapore conversion, rejection of the 2026 spring-forward nonexistent time, rejection of the 2026 fall-back ambiguous time, and explicit-offset resolution of that repeated time. All seven checks passed. This is a focused check of the conversion logic, not a claim that the complete engine pytest suite or GitHub Actions is green.
+
+The repository's Step 1 engine workflow includes the ephemeris, channel-catalog, multi-chart, boundary, timezone, design, substructure, and temporal suites. The available GitHub Actions connector returned no workflow runs for the inspected commits and only exposed a failing external Vercel build-rate-limit status; it did not expose a result for the engine workflow. CI status remains unverified. Do not use Vercel to resolve this.
+
+### Why Step 1 cannot honestly be marked complete yet
+1. The canonical Python engine is present; no duplicate implementation is needed.
+2. The legacy API branch is incompatible with the current frontend on chart-foundation retrieval, transit method/body, and contextual-question request shape.
+3. The currently deployed Supabase Edge Function is Deno and persistence-focused; no existing approved Python runtime was found/verified. Creating a new runtime or service would be a material infrastructure decision and is not authorized.
+4. The old API's Golden Chart #2 structural acceptance test has not been run against the current branch. Its expected Generator/Sacral/5/1/six-channel/cross result is an acceptance target, not yet a verified pass.
+5. The golden activation fixture still documents a north/south-node line discrepancy that requires provenance reconciliation; it must not be silently waived.
+
+### Completion rule
+Do not call Step 1 complete based on documentation, mocked frontend responses, or a subset of local timezone checks. Completion requires full current-branch engine CI evidence, Golden Chart structural parity, a real approved runtime/API integration compatible with the frontend, standalone calculation without AI/context, and evidence that 3framework consumes the same canonical result unchanged. No merge or deployment without explicit permission.
