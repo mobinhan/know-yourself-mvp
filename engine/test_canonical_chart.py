@@ -16,6 +16,9 @@ def test_canonical_chart_is_standalone_and_versioned():
     assert len(chart["activations"]["personality"]) == 13
     assert len(chart["activations"]["design"]) == 13
     assert chart["canonical_sha256"]
+    assert len(chart["evidence"]["activation_records"]) == 26
+    assert chart["evidence"]["structure_record"]["derived_from"] == "activations"
+    assert chart["provenance"]["channel_catalog_version"]
 
 
 def test_canonical_chart_is_deterministic():
