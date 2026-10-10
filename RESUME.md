@@ -469,3 +469,15 @@ This completes the Step 1 canonical artifact implementation without adding a fou
 - Workflow run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38013934831
 - Workflow trigger commit: `67b04caa477157148749d37d09199b235b19f788`.
 - Step 1 CI verification is now **passed for that run**. This does not by itself mean the production API/frontend integration is complete or deployed; that is Step 2.
+
+## Step 2 API/frontend integration — first contract-alignment change — 2026-10-10
+- User clarified that **Step 2 means continuing API/frontend integration**, and asked to be kept informed separately when Step 1 CI is verified. Do not confuse this with the older numbered Human Design mechanics steps.
+- Inspected current `index.html` and legacy `api/index.py` on `feature/live-api-v1`. Confirmed three mismatches and updated the current working branch frontend to match the legacy stateless API contract:
+  1. Chart creation now consumes the canonical `foundation` returned by `POST /v1/charts` rather than making the legacy API's unsupported follow-up `GET /foundation` call.
+  2. Transit loading now uses `POST /v1/charts/{id}/today` and sends birth inputs plus the selected timestamp, as the legacy API requires.
+  3. Contextual questions now send birth inputs; when the API returns a real provider answer, the UI prefers that answer, and it reports provider-not-configured/provider-error states honestly rather than presenting a canned response as live AI.
+- Updated the in-page demo fixture to preserve its existing demo flow with the revised response/request shapes. **Demo interception is still a mock and is not evidence of live API connectivity.**
+- Frontend change commit: `1086c3ca8fa3ec8a92b070f899c4f3bfb7c286f4`. Fetched `index.html` back from the branch and confirmed all intended edits are present.
+- **Still outstanding:** browser/runtime syntax and end-to-end validation; a trusted, approved runtime for the Python Swiss Ephemeris API; API/frontend live connectivity; auth/ownership and security review; OpenAI provider configuration. Current Supabase Edge Function is Deno persistence-only, and the legacy Python API is on a divergent branch, not verified as deployed. Do not claim production integration is complete.
+- Step 1 status remains separate: canonical engine implementation is committed; CI run result is still unverified. The available workflow-run connector has not returned an actual run, and the only visible combined status is an unrelated external build-rate-limit failure. Do not claim Step 1 CI green; continue checking for a real GitHub Actions result.
+- No merge, deployment, new runtime/service, or Vercel/Lovable work performed.
