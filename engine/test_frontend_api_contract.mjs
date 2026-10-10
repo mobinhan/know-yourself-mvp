@@ -32,3 +32,19 @@ assert.ok(
 );
 
 console.log("Frontend/API request contract checks passed.");
+
+
+// Live mode must not silently fall back to canned demo responses. Demo fixtures
+// are enabled only by an explicit configuration flag.
+assert.ok(
+  html.includes("if(window.KY_CONFIG.demoFixtures!==true)"),
+  "demo fixture interception must be opt-in"
+);
+assert.ok(
+  html.includes("window.KY_CONFIG.apiBaseUrl"),
+  "frontend must support an explicitly configured API origin"
+);
+assert.ok(
+  html.includes("if(!apiBase)return KY_ORIGINAL_FETCH(input,opts)"),
+  "without API configuration, use normal fetch instead of fabricated results"
+);
