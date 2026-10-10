@@ -33,7 +33,34 @@ em{font-family:Georgia,serif;font-weight:400;color:var(--navy)}
 /* V21 Library + persistence layer */
 .save-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.insight-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:14px}.library-section{margin:34px 0}.library-primary{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:24px;margin-bottom:10px}.library-primary h2{margin:6px 0 8px}.library-primary p{max-width:700px;color:var(--muted);line-height:1.65;margin:0}.library-stack{display:grid;gap:12px}.library-item{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:20px;background:rgba(255,255,255,.78);border:1px solid var(--line);border-radius:18px;box-shadow:0 6px 22px rgba(30,35,50,.04)}.library-item h3{margin:6px 0 8px}.library-item p{color:var(--ink-soft);line-height:1.6;margin:0}.library-item small{color:var(--muted)}.library-item .insight-observe{margin-bottom:0}.danger{color:#7a4d4d!important}.empty-state{padding:25px;border:1px dashed var(--line);border-radius:18px;background:rgba(255,255,255,.42);color:var(--muted)}.empty-state strong{display:block;color:var(--ink);margin-bottom:5px}.empty-state p{margin:0;line-height:1.6}.library-future{margin-top:36px}@media(max-width:700px){.library-primary{display:block}.library-primary .primary{margin-top:16px;width:100%}.library-item{display:block}.library-item .danger{margin-top:12px}.library-section{margin:28px 0}}
 
-/* CONNECTION MVP V1 */ .connection-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.connection-stat{padding:16px;border:1px solid var(--line);border-radius:16px;background:#fffefa}.connection-stat strong{display:block;font-size:22px;color:var(--navy);margin-top:4px}@media(max-width:700px){.connection-grid{grid-template-columns:1fr}}</style>
+/* CONNECTION MVP V1 */ .connection-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.connection-stat{padding:16px;border:1px solid var(--line);border-radius:16px;background:#fffefa}.connection-stat strong{display:block;font-size:22px;color:var(--navy);margin-top:4px}@media(max-width:700px){.connection-grid{grid-template-columns:1fr}}
+/* Mechanics test panel — frontend-only addition */
+.mechanics-panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px;margin:20px 0;box-shadow:var(--shadow)}
+.mechanics-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.mechanics-head h2{margin:5px 0 8px;font-size:clamp(22px,3vw,30px);color:var(--navy)}
+.mechanics-head p{margin:0;color:var(--muted);max-width:680px;line-height:1.65}
+.mechanics-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.mechanics-status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+.mechanics-status{padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:#fffefa;min-width:0}
+.mechanics-status small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+.mechanics-status strong{display:block;font-size:13px;font-weight:700;line-height:1.45}
+.mechanics-status[data-state="pass"] strong{color:#246b4a}
+.mechanics-status[data-state="fail"] strong{color:#a33c36}
+.mechanics-status[data-state="pending"] strong{color:var(--muted)}
+.mechanics-result{margin-top:18px}
+.mechanics-result:empty{display:none}
+.mechanics-result .result-summary{padding:15px;border-radius:14px;background:#f2f0e9;margin-bottom:12px}
+.mechanics-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mechanics-check{padding:12px;border:1px solid var(--line);border-radius:12px;font-size:13px;overflow-wrap:anywhere}
+.mechanics-check.pass{border-color:#b8d7c4;background:#f3faf5}
+.mechanics-check.fail{border-color:#e6c1bd;background:#fff6f5}
+.mechanics-check b{display:block;margin-bottom:4px}
+.mechanics-result details{margin-top:12px}
+.mechanics-result pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:380px;overflow:auto;padding:14px;border-radius:12px;background:#f0eee8;font-size:11px;line-height:1.5}
+.mechanics-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px}
+@media(max-width:760px){.mechanics-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mechanics-checks{grid-template-columns:1fr}.mechanics-panel{padding:18px}}
+
+</style>
 <title>Know Yourself</title>
 </head>
 <body>
@@ -134,10 +161,115 @@ function bindEditChart(){
   f.onsubmit=async e=>{e.preventDefault();const d=new FormData(f);submit.disabled=true;submit.textContent='Calculating…';try{const r=await fetch('/v1/charts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:'demo-user',birth:{date:d.get('date'),time:to24(d.get('hour'),d.get('minute'),d.get('ampm')),location:d.get('location'),timezone:d.get('timezone'),latitude:Number(d.get('latitude')),longitude:Number(d.get('longitude'))}})});if(!r.ok)throw new Error(await r.text());const raw=await r.json();const fr=await fetch('/v1/charts/'+raw.id+'/foundation');if(!fr.ok)throw new Error(await fr.text());state.chart=await fr.json();state.transit=null;state.todayReading=null;state.chat=[];try{localStorage.setItem('ky_chart_v1',JSON.stringify(state.chart))}catch{};go('chart')}catch(err){alert('Chart recalculation failed: '+err.message)}finally{submit.disabled=false;submit.textContent='Save & recalculate →'}};
 }
 function renderChart(){
-  if(!state.chart)return `<section class="screen welcome-screen"><div class="hero hero-warm hero-mvp"><div class="eyebrow">Know Yourself · MVP</div><div class="headline-stage"><h1 class="headline-main" id="headlineMain">${headlines[state.headline]}</h1></div><p>Human Design, made personal. Start with your chart, notice what is consistent in you, then explore what becomes meaningful.</p><div class="hero-actions"><button class="primary" onclick="document.getElementById('birthForm').scrollIntoView({behavior:'smooth',block:'center'})">Meet My Chart <span>→</span></button><button class="secondary" onclick="tryDemo()">See the experience first</button><button class="secondary" onclick="go('explore')">Explore first</button></div></div><div class="welcome-card"><div class="welcome-mark">✦</div><h2>Your chart is the beginning of the conversation.</h2><p>Give me your birth details and I’ll build your personal BodyGraph. We’ll keep the mechanics precise — and the experience human.</p><form id="birthForm" class="form"><div class="form-row"><div><label>Birth date</label><input name="date" type="date" required></div><div><label>Birth time</label><div class="time-fields"><select name="hour" aria-label="Birth hour" required>${Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}</select><span>:</span><select name="minute" aria-label="Birth minute" required>${Array.from({length:60},(_,i)=>`<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`).join('')}</select><select name="ampm" aria-label="AM or PM" required><option value="AM">AM</option><option value="PM">PM</option></select></div></div></div><div><label>Birthplace</label><input id="birthLocation" name="location" placeholder="Start typing your city or town…" autocomplete="off" required><div id="placeResults" class="place-results" aria-live="polite"></div></div><input type="hidden" id="birthTimezone" name="timezone"><input type="hidden" id="birthLatitude" name="latitude"><input type="hidden" id="birthLongitude" name="longitude"><div id="birthResolved" class="resolved-place" hidden></div><button class="primary" id="birthSubmit" disabled>Meet My Chart <span>→</span></button></form><p class="quiet">Your birth data calculates the mechanics. The meaning comes afterwards — through evidence, context and conversation.</p></div><div class="mvp-note"><span>Built for the first conversation.</span><b>My Chart · Today · Explore · Ask · Library</b><p>We are deliberately keeping the MVP simple. The depth can grow behind it.</p></div></section>`;
+  if(!state.chart)return `<section class="screen welcome-screen"><div class="hero hero-warm hero-mvp"><div class="eyebrow">Know Yourself · MVP</div><div class="headline-stage"><h1 class="headline-main" id="headlineMain">${headlines[state.headline]}</h1></div><p>Human Design, made personal. Start with your chart, notice what is consistent in you, then explore what becomes meaningful.</p><div class="hero-actions"><button class="primary" onclick="document.getElementById('birthForm').scrollIntoView({behavior:'smooth',block:'center'})">Meet My Chart <span>→</span></button><button class="secondary" onclick="tryDemo()">See the experience first</button><button class="secondary" onclick="go('explore')">Explore first</button><button class="secondary" onclick="document.getElementById('mechanicsPanel').scrollIntoView({behavior:'smooth',block:'start'})">Test Golden Chart</button></div></div><div class="welcome-card"><div class="welcome-mark">✦</div><h2>Your chart is the beginning of the conversation.</h2><p>Give me your birth details and I’ll build your personal BodyGraph. We’ll keep the mechanics precise — and the experience human.</p><form id="birthForm" class="form"><div class="form-row"><div><label>Birth date</label><input name="date" type="date" required></div><div><label>Birth time</label><div class="time-fields"><select name="hour" aria-label="Birth hour" required>${Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}</select><span>:</span><select name="minute" aria-label="Birth minute" required>${Array.from({length:60},(_,i)=>`<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`).join('')}</select><select name="ampm" aria-label="AM or PM" required><option value="AM">AM</option><option value="PM">PM</option></select></div></div></div><div><label>Birthplace</label><input id="birthLocation" name="location" placeholder="Start typing your city or town…" autocomplete="off" required><div id="placeResults" class="place-results" aria-live="polite"></div></div><input type="hidden" id="birthTimezone" name="timezone"><input type="hidden" id="birthLatitude" name="latitude"><input type="hidden" id="birthLongitude" name="longitude"><div id="birthResolved" class="resolved-place" hidden></div><button class="primary" id="birthSubmit" disabled>Meet My Chart <span>→</span></button></form><p class="quiet">Your birth data calculates the mechanics. The meaning comes afterwards — through evidence, context and conversation.</p></div>
+<div class="mechanics-panel" id="mechanicsPanel" aria-labelledby="mechanicsTitle">
+  <div class="mechanics-head">
+    <div><div class="eyebrow">Mechanics Lab · Live integration test</div><h2 id="mechanicsTitle">Trust the mechanics first.</h2><p>Run the established Golden Chart against the real canonical API. Expected values are used only for comparison; every displayed result comes from the API response.</p></div>
+    <div><span class="label">Reference chart</span><p><strong>15 Apr 1982 · 07:38</strong><br>Baarn, Netherlands</p></div>
+  </div>
+  <div class="mechanics-actions"><button class="primary" id="runGoldenChartButton" onclick="runGoldenChartTest()">Run Golden Chart test <span>→</span></button><button class="secondary" onclick="checkKYApi()">Check API connection</button></div>
+  <div class="mechanics-status-grid" aria-live="polite">
+    <div class="mechanics-status" id="kyStatusFrontend" data-state="pass"><small>Frontend</small><strong>Loaded</strong></div>
+    <div class="mechanics-status" id="kyStatusApi" data-state="pending"><small>API connectivity</small><strong>Not tested</strong></div>
+    <div class="mechanics-status" id="kyStatusCalc" data-state="pending"><small>Canonical calculation</small><strong>Not tested</strong></div>
+    <div class="mechanics-status" id="kyStatusEvidence" data-state="pending"><small>Evidence & provenance</small><strong>Not tested</strong></div>
+    <div class="mechanics-status" id="kyStatusGolden" data-state="pending"><small>Golden Chart</small><strong>Not tested</strong></div>
+    <div class="mechanics-status" id="kyStatusAI" data-state="pending"><small>AI provider</small><strong>Not tested by this chart test</strong></div>
+    <div class="mechanics-status" id="kyStatusPersistence" data-state="pass"><small>Chart persistence</small><strong>Browser-local storage</strong></div>
+  </div>
+  <div class="mechanics-result" id="goldenChartResult" aria-live="polite"></div>
+  <p class="mechanics-note">This test requires a reachable Python API configured through <code>window.KY_CONFIG.apiBaseUrl</code> or served from the same origin. The interface never substitutes demo data for a failed live calculation. AI-provider availability is separate from deterministic chart calculation.</p>
+</div>
+<div class="mvp-note"><span>Built for the first conversation.</span><b>My Chart · Today · Explore · Ask · Library</b><p>We are deliberately keeping the MVP simple. The depth can grow behind it.</p></div></section>`;
   const c=state.chart.core||{}; const type=(c.type||'').replaceAll('_',' ');
   let body=state.chartTab==='characteristics'?chartCharacteristics(c):state.chartTab==='current'?chartCurrent(c):chartFoundation(c);
   return `<section class="screen"><div class="hero hero-warm"><div class="eyebrow">My Chart</div><div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><h1>Welcome to <em>your</em> design.</h1><button class="secondary" onclick="go('editChart')">Edit birth details</button></div><p>${personalIntro(c)}</p></div>${journeyStrip('chart')}${body}<div class="ask-invite"><div><div class="personal-kicker">Your chart is not a test.</div><h3>Ask me something that matters to you.</h3><p>“Why do I keep doing this?” “How do I make decisions?” “What is going on in my relationships?” Start with your real question.</p></div><button class="primary" onclick="go('ask')">Ask Know Yourself</button></div></section>`
+}
+
+
+function setKYStatus(id, state, message){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.dataset.state=state;
+  const strong=el.querySelector('strong');
+  if(strong)strong.textContent=message;
+}
+function canonicalTestEndpoint(){
+  return '/v1/charts/calculate';
+}
+async function checkKYApi(){
+  setKYStatus('kyStatusApi','pending','Checking…');
+  setKYStatus('kyStatusCalc','pending','Not tested');
+  setKYStatus('kyStatusEvidence','pending','Not tested');
+  setKYStatus('kyStatusGolden','pending','Not tested');
+  const btn=document.getElementById('runGoldenChartButton');
+  try{
+    // Use the actual calculation route so this checks the Python API, not a guessed health endpoint.
+    const r=await fetch(canonicalTestEndpoint(),{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({birth_datetime_local:'1982-04-15T07:38:00',timezone:'Europe/Amsterdam'})
+    });
+    setKYStatus('kyStatusApi','pass','API responded · HTTP '+r.status);
+    if(!r.ok){
+      const detail=await r.text();
+      setKYStatus('kyStatusCalc','fail','Request rejected · HTTP '+r.status);
+      const target=document.getElementById('goldenChartResult');
+      if(target)target.innerHTML='<div class="result-summary"><strong>API responded but calculation request failed.</strong><p>'+esc(detail.slice(0,1200))+'</p></div>';
+      return false;
+    }
+    const data=await r.json();
+    const chart=data?.chart;
+    if(!chart||!chart.structure){
+      setKYStatus('kyStatusCalc','fail','Canonical artifact missing');
+      setKYStatus('kyStatusEvidence','fail','Evidence not returned');
+      const target=document.getElementById('goldenChartResult');
+      if(target)target.innerHTML='<div class="result-summary"><strong>API responded, but the response did not contain the expected canonical chart artifact.</strong><p>Expected response fields: chart.structure, chart.evidence, chart.provenance and chart.canonical_sha256.</p><details><summary>Inspect actual response</summary><pre>'+esc(JSON.stringify(data,null,2))+'</pre></details></div>';
+      return false;
+    }
+    setKYStatus('kyStatusCalc','pass','Canonical artifact returned');
+    const evidenceOk=!!(chart.evidence?.activation_records?.length && chart.evidence?.structure_record?.evidence_id && chart.provenance && chart.canonical_sha256);
+    setKYStatus('kyStatusEvidence',evidenceOk?'pass':'fail',evidenceOk?'Evidence, provenance & digest returned':'One or more evidence fields missing');
+    return {data,chart,evidenceOk};
+  }catch(err){
+    setKYStatus('kyStatusApi','fail','No API response');
+    setKYStatus('kyStatusCalc','fail','Calculation not completed');
+    setKYStatus('kyStatusEvidence','pending','Not available');
+    setKYStatus('kyStatusGolden','pending','Not tested');
+    const target=document.getElementById('goldenChartResult');
+    if(target)target.innerHTML='<div class="result-summary"><strong>The live API could not be reached.</strong><p>'+esc(String(err?.message||err))+'</p><p>Configure a reachable API origin in <code>window.KY_CONFIG.apiBaseUrl</code>. No fixture result has been substituted.</p></div>';
+    return false;
+  }finally{if(btn)btn.disabled=false}
+}
+async function runGoldenChartTest(){
+  const btn=document.getElementById('runGoldenChartButton');
+  const target=document.getElementById('goldenChartResult');
+  if(btn){btn.disabled=true;btn.textContent='Calculating…'}
+  if(target)target.innerHTML='<div class="result-summary">Calling the canonical chart API and comparing the actual response with the Golden Chart expectations…</div>';
+  setKYStatus('kyStatusGolden','pending','Running comparison…');
+  const result=await checkKYApi();
+  if(!result||result===false){
+    setKYStatus('kyStatusGolden','fail','Could not compare · API unavailable or invalid response');
+    if(btn){btn.disabled=false;btn.innerHTML='Run Golden Chart test <span>→</span>'}
+    return;
+  }
+  const chart=result.chart;
+  const structure=chart.structure||{};
+  const actualChannels=(structure.channels||[]).map(c=>String(c.channel||'').replace(/[^0-9]/g,'')).filter(Boolean).sort();
+  const expectedChannels=['3-60','11-56','28-38','32-54','34-57','42-53'].map(c=>c.replace(/[^0-9]/g,'')).sort();
+  const checks=[
+    {label:'Type',expected:'Generator',actual:String(structure.type||'').replaceAll('_',' '),pass:String(structure.type||'').replaceAll('_',' ').toLowerCase()==='generator'},
+    {label:'Authority',expected:'Sacral',actual:String(structure.authority||''),pass:String(structure.authority||'').toLowerCase()==='sacral'},
+    {label:'Profile',expected:'5/1',actual:String(structure.profile||''),pass:String(structure.profile||'')==='5/1'},
+    {label:'Defined channels',expected:'3–60, 11–56, 28–38, 32–54, 34–57, 42–53',actual:(structure.channels||[]).map(c=>c.channel).join(', ')||'No channels returned',pass:expectedChannels.every(c=>actualChannels.includes(c))&&actualChannels.length===expectedChannels.length}
+  ];
+  const passed=checks.filter(c=>c.pass).length;
+  const allPassed=passed===checks.length&&result.evidenceOk;
+  setKYStatus('kyStatusGolden',allPassed?'pass':'fail',passed+'/'+checks.length+' mechanics checks passed'+(result.evidenceOk?'':' · evidence incomplete'));
+  if(target){
+    target.innerHTML='<div class="result-summary"><strong>'+passed+' of '+checks.length+' Golden Chart expectations passed.</strong><p>Calculation source: actual API response · '+esc(chart.provenance?.engine_name||'engine not identified')+' · contract '+esc(chart.contract_version||'not reported')+'</p><p>Canonical digest: <code>'+esc(chart.canonical_sha256||'missing')+'</code></p></div><div class="mechanics-checks">'+checks.map(c=>'<div class="mechanics-check '+(c.pass?'pass':'fail')+'"><b>'+(c.pass?'✓':'✕')+' '+esc(c.label)+'</b><span>Expected: '+esc(c.expected)+'</span><br><span>Actual: '+esc(c.actual||'Not returned')+'</span></div>').join('')+'<div class="mechanics-check '+(result.evidenceOk?'pass':'fail')+'"><b>'+(result.evidenceOk?'✓':'✕')+' Evidence and provenance</b><span>Activation records: '+esc(String(chart.evidence?.activation_records?.length||0))+'</span><br><span>Structure evidence: '+esc(chart.evidence?.structure_record?.evidence_id||'Missing')+'</span></div></div><details><summary>Inspect complete canonical artifact</summary><pre>'+esc(JSON.stringify(chart,null,2))+'</pre></details>';
+  }
+  if(btn){btn.disabled=false;btn.innerHTML='Run Golden Chart test <span>→</span>'}
 }
 
 function chartLocalNow(){
