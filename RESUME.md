@@ -388,3 +388,33 @@ This is explicitly a proposed contract, not a live endpoint. It defines standalo
 Runtime search remains unresolved: repo searches found no Dockerfile or obvious existing Python-service runtime configuration on the searched/current indexed branch. The old Python API source remains on `feature/live-api-v1`; current Supabase Edge Function is Deno and hosts persistence only. The GitHub Actions connector available to this session does not expose general all-event workflow runs; its commit-runs wrapper is PR-trigger-only and returned no runs for the checkpoint SHA. CI is therefore not declared green.
 
 Next safe step: inspect the contract against the current frontend response expectations and the old API's actual behavior; then determine whether a currently authorized runtime exists. Do not wire frontend Ask to a speculative route. No merge, deployment, new service, Lovable project, or credits.
+
+
+## Step 1 continued — DST correctness and frontend contract reconciliation — 2026-10-10
+
+### Code change committed and fetched back
+- `engine/ephemeris.py`: naive local birth times now validate both DST folds by UTC round-trip. Nonexistent wall times and ambiguous repeated wall times are rejected instead of silently guessing; callers can provide an explicit UTC offset.
+- `engine/test_timezone.py`: added regression tests for Amsterdam's 2026 spring-forward nonexistent time, autumn repeated time, and explicit-offset resolution.
+- Engine change commit: `c571f9461d9a93a906189e26b2ef88a3205cd23c`
+- Test change commit: `aef95dca6179ea7f8ce5129555658fe16245c88b`
+- Both files were fetched back from the working branch and the new guards/tests were confirmed present.
+
+### Frontend/API mismatch audit
+Updated `docs/CANONICAL_CHART_API_CONTRACT_V1_PROPOSED.md` in commit `3224934b2eb5159b8c9bab1cd9228354876d48c4`. Audit confirms the frontend's current API expectations do not match the old API branch:
+- Frontend POSTs chart creation then GETs `/{id}/foundation`; old API returns the foundation in the POST body and responds 410 to the follow-up route.
+- Frontend GETs `/{id}/today`; old API requires POST with birth data.
+- Frontend asks `/{id}/questions/context` without the birth payload the old API currently requires.
+- Demo/mock route interception is not evidence of a live API.
+These mismatches must be resolved before switching frontend integration; no speculative route wiring was performed.
+
+### Current blockers and safety
+- No approved Python runtime is verified; current Supabase Edge Function is Deno/persistence-only.
+- GitHub combined commit status currently exposes only a failing external deploy check due to a build-rate limit; this does not establish whether the Step 1 Engine Validation workflow passed. Do not call CI green.
+- No merge, deployment, new service, Lovable project, or credit spend.
+
+### Step 1 exit criteria still open
+1. Execute the engine regression suite on this exact branch and verify results.
+2. Resolve and test Golden Chart #2 structural output (type, authority, profile, six channels, cross), including the documented node-line fixture discrepancy.
+3. Decide/verify an already approved runtime or get explicit authorization before creating one.
+4. Implement and test the real route contract and frontend compatibility, with no demo/mock route mistaken for production.
+5. Verify independent calculation without AI/context/3framework, then verify 3framework consumes the exact same canonical artifact.
