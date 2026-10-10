@@ -18,6 +18,12 @@ def test_golden_chart_structure_matches_deterministic_contract():
         "longitude": 5.287,
     })
     core = foundation["core"]
+    canonical = foundation["canonical_chart"]
+    assert canonical["contract_version"] == "1.0.0"
+    assert canonical["provenance"]["ephemeris_provider"] == "Swiss Ephemeris"
+    assert len(canonical["evidence"]["activation_records"]) == 26
+    assert len(canonical["canonical_sha256"]) == 64
+    assert canonical["structure"]["authority"] == "sacral"
     assert core["type"] == "generator"
     assert core["authority"] == "sacral"
     assert core["profile"] == "5/1"
