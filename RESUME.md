@@ -360,3 +360,17 @@ Step 1 fix sequence:
 6. Keep changes unmerged and undeployed until tests, security review, and explicit user approval.
 
 The user explicitly asked to proceed with fixing Step 1 while preserving the standalone Canonical Chart requirement. This sequence is the current execution plan, not a claim that Step 1 is already complete.
+
+
+## Step 1 progress — canonical engine parity — 2026-10-10
+
+Verified that `engine/ephemeris.py` has the identical blob SHA `a37c387c66ca4aff7fca5e173c38931b63fc8404` on `feature/live-api-v1` and `feature/persistent-continuity-retrieval`. Therefore the deterministic Swiss Ephemeris engine already exists on the working branch; do not port or duplicate it. The missing piece is a verified API/runtime integration, not the core engine file.
+
+Saved and fetched back:
+- `docs/STEP1_CANONICAL_ENGINE_PARITY_2026-10-10.md`
+- Commit: `a1f19092fadc1a1f4eb95d3832ecab82070672cc`
+- URL: https://github.com/mobinhan/know-yourself-mvp/blob/feature/persistent-continuity-retrieval/docs/STEP1_CANONICAL_ENGINE_PARITY_2026-10-10.md
+
+The older branch's API-level golden test expects Generator, Sacral authority, profile 5/1 and the six confirmed channels for the 15 April 1982 07:38 Europe/Amsterdam fixture. This test has not been run in the current audit; treat it as an acceptance target, not as a verified result. Current branch golden-chart and temporal tests exist, but CI status is still inconclusive because the available workflow-run connector returned no runs for the checkpoint commit.
+
+Next safe work: establish a supported existing runtime and API contract, then add tests proving standalone canonical calculation without AI/context and exact frontend compatibility. No deployment, merge, service creation, Lovable project or credit spend.
