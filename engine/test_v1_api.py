@@ -117,7 +117,7 @@ def test_interpretation_provider_uses_responses_api_and_filters_evidence(monkeyp
     assert captured["body"]["text"]["format"]["type"] == "json_object"
     assert "1982-04-15" not in captured["body"]["input"]
     assert result["interpretation_status"] == "ready"
-    assert result["knowledge_basis"] == ["EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001"]
+    assert result["knowledge_basis"] == []  # stale/unregistered external ID must be rejected
     assert result["relationship_basis"] == ["REL-GATE-57-LINE-4-DIRECTOR"]
     assert result["factual_basis"] == ["activations.personality"]
 
