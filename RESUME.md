@@ -295,3 +295,14 @@ This is an architecture decision/checkpoint saved in RESUME.md. It does **not** 
 - Added and verified `docs/STEP1_API_RECONCILIATION_REVIEW_2026-10-10.md` (commit `be10a434222cd74189d7198c43b809e51468e96b`) and `docs/STEP1_API_BRANCH_AUDIT_2026-10-10.md` (commit `393cb4d056fee15fd3314f6a4c1b02a673ca13ed`; later branch commits may have advanced).
 - Next: establish whether an already-approved trusted runtime can run the Python Swiss Ephemeris engine; verify latest CI on current branch; build the endpoint contract test matrix for golden chart parity, transit/natal separation, canonical evidence IDs, consented context, auth/ownership, missing-key behavior, and frontend compatibility. Do not create a new hosting dependency before this feasibility check.
 - No merge, deployment, Lovable project, credit spend, or Vercel work performed.
+
+
+## Read-only runtime feasibility check — 2026-10-10 (latest)
+- Connected Supabase project inspected read-only: `mobinhan's Project`, ref `djtpqqjenmcsrdcguttk`, region `ap-south-1`, `ACTIVE_HEALTHY`.
+- Live project lists one active Edge Function: `user-data-api`, version 5, `verify_jwt: true`. Its deployed source supports authenticated persistence routes for profiles, preferences, charts, conversations/turns, saved insights, transit snapshots and memories. It does not implement the frontend `/v1/*` routes or call the OpenAI provider.
+- The repository's current `user-data-api` source includes continuity work, but the deployed version 5 source fetched from Supabase does not expose the `continuity` resource. Therefore the newer continuity endpoint is not verified as deployed. No deployment or production change was made.
+- The old `feature/live-api-v1` API uses a Python HTTP handler and `pyswisseph`/ `timezonefinder`; the inspected Supabase Edge Function runtime is Deno. No already-configured trusted Python runtime was found in the inspected repository/project configuration. Do not assume the Python handler can run inside Deno.
+- Added and verified `docs/RUNTIME_FEASIBILITY_CHECK_2026-10-10.md` (commit `8a169e59cae0e823473f4243b833597f1757a4b8`). It records the live-versus-repository gap and safe next choices.
+- Workflow lookup for the newest resume checkpoint returned no associated PR-triggered workflow runs; this is inconclusive, not a pass. Do not claim current CI is green until all relevant runs are checked with a tool that exposes them.
+- Current state: deployed persistence exists; deployed continuity route, `/v1/*` API, live OpenAI answer path and approved Python runtime are unverified/not present in inspected deployment. No merge, deployment, Lovable project, credit spend, or Vercel work.
+- Next: identify an already-approved Python runtime or validate a Swiss Ephemeris-compatible backend boundary without creating a new hosting dependency; meanwhile obtain full current CI status. Preserve Swiss Ephemeris and the approved 3framework; do not activate a separate critic layer.
