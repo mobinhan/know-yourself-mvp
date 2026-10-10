@@ -209,3 +209,76 @@ def test_api_cors_origin_allowlist_is_configurable(monkeypatch):
         "https://ky-preview.example",
         "http://localhost:5173",
     }
+
+
+def test_frontend_transit_http_contract_returns_temporary_overlay(monkeypatch):
+    import threading
+    from http.server import HTTPServer
+    from urllib.request import Request, urlopen
+
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    server = HTTPServer(("127.0.0.1", 0), API.handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        body = json.dumps({
+            "birth": {
+                "date": "1982-04-15", "time": "07:38:00",
+                "location": "Baarn, Netherlands", "timezone": "Europe/Amsterdam",
+                "latitude": 52.211, "longitude": 5.287,
+            },
+            "at": "2026-10-10T00:00:00Z",
+        }).encode()
+        request = Request(
+            f"http://127.0.0.1:{server.server_port}/v1/charts/test-chart/today",
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urlopen(request, timeout=15) as response:
+            assert response.status == 200
+            payload = json.loads(response.read().decode())
+        assert payload["transit"]["result"]["transit_activations"]
+        assert payload["reading"]["interpretation_status"] == "provider_not_configured"
+        assert "Natal mechanics remain unchanged." in payload["reading"]["boundaries"]
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+
+
+def test_frontend_question_http_contract_is_explicit_when_ai_is_unconfigured(monkeypatch):
+    import threading
+    from http.server import HTTPServer
+    from urllib.request import Request, urlopen
+
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    server = HTTPServer(("127.0.0.1", 0), API.handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        body = json.dumps({
+            "question": "Help me understand my authority",
+            "birth": {
+                "date": "1982-04-15", "time": "07:38:00",
+                "location": "Baarn, Netherlands", "timezone": "Europe/Amsterdam",
+                "latitude": 52.211, "longitude": 5.287,
+            },
+            "at": None,
+        }).encode()
+        request = Request(
+            f"http://127.0.0.1:{server.server_port}/v1/charts/test-chart/questions/context",
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urlopen(request, timeout=15) as response:
+            assert response.status == 200
+            payload = json.loads(response.read().decode())
+        assert payload["chart"]["authority"] == "sacral"
+        assert payload["interpretation_status"] == "provider_not_configured"
+        assert payload["evidence_status"] == "mechanics_recalculated_from_birth_data"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
