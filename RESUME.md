@@ -188,3 +188,37 @@ Apply this protocol during every natural 3framework conversation, especially aft
 8. **Evaluate outcomes, not acknowledgements.** A correction is considered implemented only when later answers demonstrate the changed behaviour. If the same error recurs, name the specific failure, update the prevention rule, and continue without making the user manage the process.
 
 Scope: conversational behaviour for ChatGPT-first validation of the approved 3framework. This checkpoint documents the intended response protocol; it does not by itself change ChatGPT's underlying model or guarantee perfect compliance.
+
+
+## 3framework oversight component and supporting appendices (2026-10-10)
+
+### Architecture decision
+
+Name the cross-cutting oversight component **3Framework Orchestrator (3FO)**.
+
+- The 3FO oversees coordination across the three existing layers: (1) Canonical Chart + Immutable Evidence, (2) Adaptive User Context, and (3) ChatGPT live reasoning.
+- **The 3FO is not a fourth layer.** It is a cross-cutting coordination and governance component that makes sure the three layers exchange the right inputs, preserve their authority boundaries, and produce a coherent response.
+- Keep specialised capabilities modular and documented as supporting appendices/components, rather than promoting them into new framework layers.
+- The orchestrator must not replace ChatGPT's live reasoning with a separate critic or reasoning layer. It supplies context, enforces boundaries, and supports validation; Layer 3 still performs the live reasoning.
+
+### Supporting appendices/components
+
+- **Appendix A — Canonical Evidence & Provenance:** chart facts, calculation source/version, evidence references, and distinction between canonical facts and interpretation.
+- **Appendix B — Adaptive Context & Persistent Continuity:** relevant user context, preferences, history, saved insights, retrieval and cross-session continuity.
+- **Appendix C — Correction Governance:** record corrections, classify whether they affect user preference, personal context, or canonical mechanics, and ensure corrections are applied without allowing unsupported changes to Layer 1.
+- **Appendix D — Response Quality & Regression Tests:** test directness, naturalness, contextual relevance, uncertainty handling, and whether previously corrected failure patterns recur.
+- **Appendix E — Privacy, Permissions & Data Lifecycle:** access boundaries, consent, retention, and separation of user-specific context from canonical evidence.
+
+### Orchestration contract
+
+For each answer, the 3FO should:
+1. Obtain the relevant canonical evidence from Layer 1.
+2. Retrieve only relevant and permitted context from Layer 2.
+3. Provide both to Layer 3 for natural, question-specific reasoning.
+4. Preserve provenance and uncertainty without inserting generic mechanical disclaimers.
+5. Capture eligible user corrections/insights under the governance and privacy rules.
+6. Evaluate failures through regression tests and route durable fixes to the appropriate component.
+
+### Implementation status
+
+This is an architecture decision/checkpoint saved in RESUME.md. It does **not** claim that the 3FO is already implemented in runtime code. Next engineering step is to map these responsibilities to existing modules and PR #3/#4, identify duplication and gaps, then implement the smallest cohesive orchestration contract without adding a fourth/fifth framework layer. Do not merge open pull requests without user approval.
