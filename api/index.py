@@ -307,20 +307,36 @@ def _photon_search(query: str) -> list[dict]:
 
 
 class handler(BaseHTTPRequestHandler):
+    @staticmethod
+    def _allowed_origins() -> set[str]:
+        configured = os.environ.get(
+            "KY_ALLOWED_ORIGINS",
+            "http://localhost:5173,http://127.0.0.1:5173",
+        )
+        return {origin.strip() for origin in configured.split(",") if origin.strip()}
+
     def _send(self, status: int, payload):
         body = _json_bytes(payload)
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Vary", "Origin")
+        origin = self.headers.get("Origin")
+        if origin and origin in self._allowed_origins():
+            self.send_header("Access-Control-Allow-Origin", origin)
         self.end_headers()
         self.wfile.write(body)
 
     def do_OPTIONS(self):
-        self._send(204, {})
+        self.send_response(204)
+        self.send_header("Vary", "Origin")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey, x-client-info")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        origin = self.headers.get("Origin")
+        if origin and origin in self._allowed_origins():
+            self.send_header("Access-Control-Allow-Origin", origin)
+        self.end_headers()
 
     def do_GET(self):
         self._dispatch("GET")
