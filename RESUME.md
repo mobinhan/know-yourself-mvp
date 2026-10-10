@@ -533,3 +533,12 @@ This completes the Step 1 canonical artifact implementation without adding a fou
 - Latest GitHub Actions run **38015186469** (run 451) passed both jobs. Python engine/API validation: **39 passed**. JavaScript contract validation: **success**, including canonical artifact and frontend/API request-contract tests. Run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38015186469
 - Latest test commit: `497120d93c044d246906d4af4c584f05a9036561`. The CI run verified this commit.
 - This closes the source-level API/frontend compatibility and local HTTP regression scope. It does **not** connect to a deployed production endpoint: the Python API remains source-only until an approved runtime is available and configured.
+
+
+## Golden Chart live-test interface — 2026-10-10
+- Added a frontend-only Mechanics Lab to the existing My Chart welcome screen: a live API connection check and Golden Chart comparison for 15 April 1982, 07:38, Baarn, Netherlands.
+- It calls the canonical calculation route and compares actual API output with established expectations (Generator, Sacral authority, 5/1, six confirmed channels). It displays provenance, evidence status, digest and the returned canonical artifact. It does not silently substitute fixtures when live API calls fail.
+- Corrected the birth form to consume the foundation returned by POST /v1/charts, rather than making the obsolete follow-up GET /v1/charts/{id}/foundation request. This matches the stateless guest-chart API contract and avoids the previously documented 410 response.
+- Commits: 3f3a271dddca9e091cbcdbde9a7a5c4f5aa5e913 (Mechanics Lab UI) and 2a79d41cb9c1116fdfc722d2a7635a4db30e0737 (foundation response compatibility).
+- GitHub Actions run 38016572315 (run 454) completed successfully for the compatibility fix. Both inline JavaScript blocks were fetched back and parsed successfully with JavaScript syntax validation.
+- Important limit: this is committed source, not a live-hosted app. The actual Golden Chart comparison can only report a result after a reachable Python API is configured. No production runtime or deployment was created; no Lovable project/credits were used.
