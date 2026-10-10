@@ -129,3 +129,75 @@ def test_ai_routes_apply_per_ip_request_limit():
     assert all(instance._allow_ai_request() for _ in range(API.AI_RATE_MAX_REQUESTS))
     assert instance._allow_ai_request() is False
     API._AI_REQUESTS_BY_IP.clear()
+
+
+def test_canonical_chart_http_endpoint_returns_versioned_artifact():
+    import threading
+    from http.server import HTTPServer
+    from urllib.request import Request, urlopen
+
+    server = HTTPServer(("127.0.0.1", 0), API.handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        body = json.dumps({
+            "contract_version": "1",
+            "birth_datetime_local": "1982-04-15T07:38:00",
+            "timezone": "Europe/Amsterdam",
+        }).encode()
+        request = Request(
+            f"http://127.0.0.1:{server.server_port}/v1/charts/calculate",
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urlopen(request, timeout=15) as response:
+            assert response.status == 200
+            payload = json.loads(response.read().decode())
+        assert payload["contract_version"] == "1"
+        assert payload["chart"]["provenance"]["ephemeris_provider"] == "Swiss Ephemeris"
+        assert payload["chart"]["structure"]["authority"] == "sacral"
+        assert len(payload["chart"]["evidence"]["activation_records"]) == 26
+        assert len(payload["chart"]["canonical_sha256"]) == 64
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+
+
+def test_frontend_chart_creation_http_contract_returns_inline_foundation():
+    import threading
+    from http.server import HTTPServer
+    from urllib.request import Request, urlopen
+
+    server = HTTPServer(("127.0.0.1", 0), API.handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        body = json.dumps({
+            "user_id": "guest-test",
+            "birth": {
+                "date": "1982-04-15",
+                "time": "07:38:00",
+                "location": "Baarn, Netherlands",
+                "timezone": "Europe/Amsterdam",
+                "latitude": 52.211,
+                "longitude": 5.287,
+            },
+        }).encode()
+        request = Request(
+            f"http://127.0.0.1:{server.server_port}/v1/charts",
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urlopen(request, timeout=15) as response:
+            assert response.status == 201
+            payload = json.loads(response.read().decode())
+        assert payload["id"] == payload["foundation"]["chart_id"]
+        assert payload["foundation"]["canonical_chart"]["structure"]["authority"] == "sacral"
+        assert payload["foundation"]["core"]["profile"] == "5/1"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
