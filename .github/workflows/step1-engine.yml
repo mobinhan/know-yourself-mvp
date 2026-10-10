@@ -3,6 +3,11 @@ name: Step 1 Engine Validation
 run-name: "Know Yourself — Engine Validation — ${{ github.event_name }}"
 
 on:
+  pull_request:
+    paths:
+      - "engine/**"
+      - "supabase/**"
+      - ".github/workflows/step1-engine.yml"
   push:
     paths:
       - "engine/**"
