@@ -296,7 +296,7 @@ Deno.serve(async (req: Request) => {
       }
 
       const { buildContinuityContext } = await import("../../continuity-context.mjs");
-      const context = buildContinuityContext({ preferences, memories, conversations: conversations ?? [], turnsByConversation, savedInsights });
+      const context = buildContinuityContext({ preferences, memories: memories as Array<Record<string, any>>, conversations: (conversations ?? []) as Array<Record<string, any>>, turnsByConversation: turnsByConversation as Record<string, Array<Record<string, any>>>, savedInsights: savedInsights as Array<Record<string, any>> });
       return respond(200, { data: context });
     }
 
