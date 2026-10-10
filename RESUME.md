@@ -222,3 +222,13 @@ For each answer, the 3FO should:
 ### Implementation status
 
 This is an architecture decision/checkpoint saved in RESUME.md. It does **not** claim that the 3FO is already implemented in runtime code. Next engineering step is to map these responsibilities to existing modules and PR #3/#4, identify duplication and gaps, then implement the smallest cohesive orchestration contract without adding a fourth/fifth framework layer. Do not merge open pull requests without user approval.
+
+
+## 3Framework Orchestrator prototype added (2026-10-10)
+- Added `supabase/threeframework-orchestrator.mjs`: a pure 3FO input-packet builder that keeps Layer 1 canonical evidence separate from Layer 2 user context and defines Layer 3 as the live reasoning destination. It fails closed when required inputs are missing and explicitly states that the orchestrator is not a fourth layer.
+- Added `supabase/test_threeframework_orchestrator.mjs`: contract tests for required inputs, layer separation, conflict isolation (user context cannot overwrite chart facts), and the three-layer boundary.
+- Added `docs/THREE_FRAMEWORK_ORCHESTRATOR.md` with the purpose, responsibilities, appendices, and integration gates.
+- Added the orchestrator contract test to `.github/workflows/step1-engine.yml`.
+- Files and workflow edit were fetched back from GitHub and verified on `feature/persistent-continuity-retrieval`. Commit containing the workflow registration: `4aa6ab47359fc12076ceb849aec3223f3cc91568`.
+- **Status limitation:** this is a tested-by-contract prototype pending CI execution; it is not yet connected to the live frontend/backend answer-generation path. Do not claim runtime activation until CI and end-to-end integration tests pass. No merge or deployment was performed.
+- User's immediate aim is to resume natural 3framework testing in ChatGPT next time; do not turn that into a questionnaire or claim the prototype changes ChatGPT itself. Keep app integration separate from ChatGPT-first validation unless the user changes that decision.
