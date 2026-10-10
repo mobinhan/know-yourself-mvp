@@ -1,6 +1,6 @@
-# Canonical Chart API Contract — v1 (Proposed, Pre-Implementation)
+# Canonical Chart API Contract — v1
 
-Status: proposed contract for implementation and tests; not a live API.
+Status: implemented in the Python API source and covered by regression tests; runtime deployment is not configured or verified.
 Date: 2026-10-10
 
 ## Purpose
