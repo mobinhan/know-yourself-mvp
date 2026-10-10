@@ -201,3 +201,11 @@ def test_frontend_chart_creation_http_contract_returns_inline_foundation():
         server.shutdown()
         server.server_close()
         thread.join(timeout=2)
+
+
+def test_api_cors_origin_allowlist_is_configurable(monkeypatch):
+    monkeypatch.setenv("KY_ALLOWED_ORIGINS", "https://ky-preview.example,http://localhost:5173")
+    assert API.handler._allowed_origins() == {
+        "https://ky-preview.example",
+        "http://localhost:5173",
+    }
