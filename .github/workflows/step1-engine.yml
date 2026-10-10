@@ -114,6 +114,8 @@ jobs:
         run: node engine/validate_contract.mjs
       - name: Validate canonical chart artifact
         run: node engine/test_canonical_chart.mjs
+      - name: Validate frontend/API request contract
+        run: node engine/test_frontend_api_contract.mjs
       - name: Validate canonical downstream data contracts
         run: node engine/validate_data_contracts.mjs
       - name: Run canonical downstream contract integration test
