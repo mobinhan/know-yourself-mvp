@@ -261,3 +261,10 @@ This is an architecture decision/checkpoint saved in RESUME.md. It does **not** 
 - Lovable prompt exists at `docs/LOVABLE_3FRAMEWORK_TEST_LAB_PROMPT.md` (blob SHA `4c9b64340aa42e8b469e41f0eb363da2cdc279c2`). It has **not** been submitted to Lovable. No Lovable project was created and no credits were spent.
 - Safe next action: continue read-only repository audit to locate the intended `/v1/*` service/router, deployment/runtime configuration, and available test fixture path. Then define the Testing Lab adapter as Live, Fixture-Demo, or Disconnected based only on verified runtime evidence. Do not invent endpoints or label template output as live reasoning.
 - Constraints still active: no Lovable project/credit spend without explicit permission; no merge, deployment, production data connection, or Vercel work.
+
+## Lovable integration principle — GitHub remains the source of truth (2026-10-10)
+- Confirmed direction: Lovable should eventually read/use the existing Know Yourself implementation directly from GitHub, rather than become a separate source of truth or prompt-only rebuild.
+- Intended workflow: inspect/connect Lovable to the existing repository and an explicitly selected safe branch; preserve the current app and main branch; make changes reviewable as Git diffs/commits; keep GitHub as the canonical source of code and framework contracts.
+- Before connecting, finish identifying the real `/v1/*` runtime/API and live reasoning path so the Testing Lab adapter is based on verified contracts, not invented endpoints.
+- Lovable is deferred until the read-only audit clarifies the safest import/connect path. No Lovable project creation, credit spending, deployment, or repository overwrite is authorized by this decision alone. Obtain explicit approval before any credit-consuming or deployment action.
+- Do not assume that connecting GitHub automatically gives Lovable access to a working live backend; verify repository access, branch behavior, adapter requirements, and deployment settings separately.
