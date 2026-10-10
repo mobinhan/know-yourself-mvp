@@ -80,3 +80,59 @@ Provide a warm, uncluttered interface where the owner can converse naturally, in
 - Corrections cannot directly overwrite canonical chart facts.
 - Regression failures are reproducible and exportable.
 - No production connection, data persistence, or deployment occurs without the required configuration and approval.
+
+## Step 2 — Canonical reasoning request/response contract (required before wiring)
+
+Treat this as the intended contract to validate against the existing backend; it is not proof that a matching live endpoint currently exists. Do not invent a route or mark Live until implementation and runtime configuration are verified.
+
+### Request envelope
+```json
+{
+  "schema_version": "ky-3framework-request-v1",
+  "request_id": "opaque-request-id",
+  "question": "the user's natural-language question",
+  "chart_ref": { "chart_id": "owned-chart-id" },
+  "temporal_ref": { "at": "optional ISO-8601 timestamp or null" },
+  "layers": {
+    "layer_1_canonical_evidence": {
+      "chart_facts": [], "evidence_refs": [], "source_version": null,
+      "engine_name": null, "engine_version": null, "chart_fingerprint": null
+    },
+    "layer_2_adaptive_user_context": {
+      "preferences": null, "memories": [], "recent_conversations": [],
+      "saved_insights": [], "consent": { "personal_context_enabled": false }
+    },
+    "layer_3_live_reasoning": { "mode": "grounded_reasoning" }
+  }
+}
+```
+
+Security and data-truth rules:
+- The browser must not be trusted to author canonical chart facts, evidence references, consent state, or server provenance. A trusted backend must resolve the chart for the authenticated owner and assemble/validate Layer 1. Reject mismatched ownership and unsupported schema versions.
+- Layer 2 must be retrieved server-side for the authenticated user; include personal context only when the stored consent settings permit it. Never let context override canonical facts.
+- The client may submit the question, chart reference, and optional requested time; the server resolves the authoritative inputs. Do not send API keys or provider secrets to the browser.
+- Missing/conflicting chart evidence must be represented explicitly; do not fabricate a successful reasoning result.
+
+### Response envelope
+```json
+{
+  "schema_version": "ky-3framework-response-v1",
+  "request_id": "same-opaque-request-id",
+  "status": "live | fixture_demo | disconnected | blocked",
+  "answer": "natural-language answer or null",
+  "factual_basis": [], "knowledge_basis": [], "relationship_basis": [],
+  "interpretation": "concise evidence-grounded rationale, not hidden chain-of-thought",
+  "limitations": [],
+  "provenance": {
+    "chart_fingerprint": null, "engine_version": null, "source_version": null,
+    "reasoning_provider": null, "model_id": null,
+    "contract_version": "ky-3framework-response-v1"
+  }
+}
+```
+
+- Every factual basis ID must be present in the trusted supplied evidence; knowledge and relationship IDs must likewise be drawn only from supplied, validated records.
+- Use explicit non-live statuses when provider, backend, evidence, authentication, or consent requirements are unavailable. A mock provider is a fixture, never Live.
+- Do not expose hidden chain-of-thought. Return only a concise rationale and auditable basis references.
+- Persist assistant turns/saved insights only through the trusted server path after validation; clients cannot write assistant answers or canonical artifacts.
+- Test schema validation, chart ownership, context-consent enforcement, canonical-fact non-overwrite, missing evidence, provider errors, and truthful status labels.
