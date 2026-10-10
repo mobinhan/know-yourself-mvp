@@ -331,3 +331,32 @@ Runtime/CI status remains:
 - No merge, deployment, new service, Lovable project, or Lovable credit spend occurred.
 
 Next: continue read-only inspection for any existing approved runtime and obtain the fullest available workflow status evidence; then propose a narrow adapter/integration path only after the runtime and contracts are verified.
+
+
+## Step 1 correction pass — branch inventory and canonical engine
+
+The earlier repository inventory in this file is stale. A live GitHub branch search on 2026-10-10 verified these branches:
+- `main`
+- `fix/my-chart-inline-handler`
+- `feature/live-api-v1`
+- `feature/persistent-continuity-retrieval`
+- `feature/correction-safeguards`
+- `temp-unused-branch`
+
+The important correction is that a prior statement that the `/v1/*` API source was absent from the repository was too broad. The implementation exists on `feature/live-api-v1`, including:
+- `api/index.py` — Python HTTP API for birthplace/timezone, chart/foundation, today/transits, question context, and gate/channel/centre knowledge routes.
+- `api/interpretation_provider.py` — server-side OpenAI Responses API adapter with evidence selection and safe provider-error handling.
+- `engine/ephemeris.py` and `engine/temporal_ephemeris.py` — deterministic Swiss Ephemeris chart and transit mechanics.
+- `engine/test_v1_api.py` — includes the confirmed Golden Chart #2 channel set and chart contract assertions.
+
+This corrects repository-source inventory only; it does NOT establish that the old API is deployed, secured for production, connected to authenticated Layer 2 context, or running in an approved runtime. The legacy golden test expects Generator, Sacral authority, profile 5/1, and channels 3–60, 11–56, 28–38, 32–54, 34–57, and 42–53 for the specified fixture. Treat the full expected fixture as an acceptance test, not as production proof.
+
+Step 1 fix sequence:
+1. Keep the canonical engine independently callable and deterministic.
+2. Use the old API branch as reference only; do not wholesale merge its 161-ahead/42-behind history.
+3. Establish a versioned, frontend-compatible contract and trusted runtime before changing frontend Ask or exposing an endpoint.
+4. Verify CI from actual workflow runs; current connector evidence is still insufficient to claim green.
+5. After runtime/contract selection, port only the necessary API boundary and integrate authenticated, consented Layer 2 context. Do not add a separate critic layer.
+6. Keep changes unmerged and undeployed until tests, security review, and explicit user approval.
+
+The user explicitly asked to proceed with fixing Step 1 while preserving the standalone Canonical Chart requirement. This sequence is the current execution plan, not a claim that Step 1 is already complete.
