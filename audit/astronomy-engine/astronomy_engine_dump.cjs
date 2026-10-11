@@ -16,7 +16,7 @@ function trueNode(time) {
   const F = 93.272095 + 483202.0175233*T;
   const om = 125.0445479 - 1934.1362891*T;
   return norm(om - 1.4979*Math.sin(2*(D-F)*rad) - 0.15*Math.sin(M*rad)
-    + 0.1226*Math.sin(2*D*rad) + 0.1176*Math.sin(2*F*rad)
+    - 0.1226*Math.sin(2*D*rad) + 0.1176*Math.sin(2*F*rad)
     - 0.0801*Math.sin(2*(Mp-F)*rad));
 }
 const bodyMap = {
