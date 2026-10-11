@@ -122,3 +122,14 @@ Autosave trigger examples:
 - A project decision, completed milestone, blocker, or next action materially changes.
 
 Important limitation: this file records the required protocol; it does not itself execute tools automatically. In each session, follow the protocol when GitHub tools are available, and never claim a remote save until the commit and fetched remote content confirm it.
+
+## Current verified checkpoint (2026-10-12 — boundary/node audit extension in progress)
+
+- Draft PR #6: https://github.com/mobinhan/know-yourself-mvp/pull/6
+- Branch: `audit/astronomy-boundary-node-checks`, based on the isolated audit branch and targeting that branch—not `main`.
+- Commit: `1fb2be34b15ed41e16686a6fbc92fcb78ce8da7f`.
+- Added a deterministic self-test covering all 384 gate/line segment boundaries (each boundary tested just before, exactly at, and just after, including wrap-around). Exact boundaries are specified to belong to the next segment.
+- Extended node diagnostics to compare the current Astronomy Engine node approximation separately against Swiss Ephemeris TRUE_NODE and MEAN_NODE. These comparisons are diagnostic only; they do not justify an engine switch.
+- GitHub Actions run #38164488115 was observed in progress at the dependency-install step. The new boundary checks and node statistics are **not yet verified as passing**. Fetch the final run result and artifact before claiming completion.
+- No production code or calculation-engine decision was changed. PR #6 remains draft and must not be merged automatically.
+- After CI completes, inspect the uploaded `comparison-results.json`, document boundary-test outcome and node-convention findings here, and verify this file after any update.
