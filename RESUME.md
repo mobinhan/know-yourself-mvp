@@ -123,13 +123,16 @@ Autosave trigger examples:
 
 Important limitation: this file records the required protocol; it does not itself execute tools automatically. In each session, follow the protocol when GitHub tools are available, and never claim a remote save until the commit and fetched remote content confirm it.
 
-## Current verified checkpoint (2026-10-12 — boundary/node audit extension in progress)
+## Current verified checkpoint (2026-10-12 — boundary/node audit results)
 
 - Draft PR #6: https://github.com/mobinhan/know-yourself-mvp/pull/6
 - Branch: `audit/astronomy-boundary-node-checks`, based on the isolated audit branch and targeting that branch—not `main`.
-- Commit: `1fb2be34b15ed41e16686a6fbc92fcb78ce8da7f`.
-- Added a deterministic self-test covering all 384 gate/line segment boundaries (each boundary tested just before, exactly at, and just after, including wrap-around). Exact boundaries are specified to belong to the next segment.
-- Extended node diagnostics to compare the current Astronomy Engine node approximation separately against Swiss Ephemeris TRUE_NODE and MEAN_NODE. These comparisons are diagnostic only; they do not justify an engine switch.
-- GitHub Actions run #38164488115 was observed in progress at the dependency-install step. The new boundary checks and node statistics are **not yet verified as passing**. Fetch the final run result and artifact before claiming completion.
+- Latest audit commit: `55b98dbf75a0b01cf1c568033db4957a8c1d783e`.
+- GitHub Actions run #38164547902 completed successfully: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38164547902.
+- Boundary regression: all 384 gate/line boundaries tested just before, exactly at, and just after (1,152 cases total), including wrap-around; **0 failures**. Exact boundaries belong to the next segment.
+- Core planetary/derived positions: 132 samples; **0 gate/line mismatches**; maximum longitude difference approximately 0.0056503°; mean approximately 0.0008343°.
+- Lunar node investigation found a sign error in the custom true-node approximation's `sin(2D)` term. Corrected the sign and reran CI. The node comparison is now closer to Swiss Ephemeris TRUE_NODE: 24 samples; 6 gate/line mismatches; maximum longitude difference approximately 0.143958°; mean approximately 0.047615°.
+- The approximation is materially closer to TRUE_NODE than MEAN_NODE, supporting that TRUE_NODE is the relevant convention for this comparison. However, the remaining 6/24 gate/line mismatches mean the node implementation is **not validated for production**. This sample-date comparison is diagnostic, not a production equivalence proof. The 12 timestamps still do not replace dedicated boundary-near node dates or comparison against the app's intended canonical convention.
 - No production code or calculation-engine decision was changed. PR #6 remains draft and must not be merged automatically.
-- After CI completes, inspect the uploaded `comparison-results.json`, document boundary-test outcome and node-convention findings here, and verify this file after any update.
+- CI artifact: `ephemeris-cross-engine-audit`, artifact ID `11710954671`; its summary reports the results above.
+- Next: determine whether the Human Design calculation contract requires true or mean lunar node, then validate the chosen convention at gate/line transitions and against trusted reference chart outputs. Keep Swiss Ephemeris available; do not switch engines based on this audit alone.
