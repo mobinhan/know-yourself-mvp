@@ -3,6 +3,14 @@ name: Step 1 Engine Validation
 run-name: "Know Yourself — Engine Validation — ${{ github.event_name }}"
 
 on:
+  pull_request:
+    paths:
+      - "engine/**"
+      - "api/**"
+      - "index.html"
+      - "requirements.txt"
+      - "supabase/**"
+      - ".github/workflows/step1-engine.yml"
   push:
     paths:
       - "engine/**"
@@ -28,12 +36,14 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install Python dependencies
-        run: python -m pip install -r engine/requirements.txt pytest
+        run: python -m pip install -r requirements.txt -r engine/requirements.txt pytest
       - name: Run ephemeris tests
         run: |
           set -o pipefail
           python -m pytest -q \
             engine/test_golden.py \
+            engine/test_canonical_chart.py \
+            engine/test_v1_api.py \
             engine/test_channel_catalog.py \
             engine/test_multi_chart.py \
             engine/test_boundaries.py \
@@ -78,6 +88,12 @@ jobs:
           deno-version: v2.x
       - name: Run Supabase user data API security contract
         run: node supabase/test_user_data_api.mjs
+      - name: Test server-side OpenAI reasoning provider adapter
+        run: deno test supabase/functions/_shared/openai-reasoning-provider_test.ts
+      - name: Run persistent continuity context contract
+        run: node supabase/test_continuity_context.mjs
+      - name: Run 3Framework Orchestrator contract
+        run: node supabase/test_threeframework_orchestrator.mjs
       - name: Type-check Supabase user data API
         run: deno check supabase/functions/user-data-api/index.ts
       - name: Run deterministic structural test
@@ -102,6 +118,8 @@ jobs:
         run: node engine/validate_contract.mjs
       - name: Validate canonical chart artifact
         run: node engine/test_canonical_chart.mjs
+      - name: Validate frontend/API request contract
+        run: node engine/test_frontend_api_contract.mjs
       - name: Validate canonical downstream data contracts
         run: node engine/validate_data_contracts.mjs
       - name: Run canonical downstream contract integration test
