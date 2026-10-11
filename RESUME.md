@@ -1,6 +1,6 @@
 # Know Yourself — Resume State
 
-Last updated: 2026-10-10
+Last updated: 2026-10-11
 
 ## Purpose
 This file is the canonical continuity checkpoint for the Know Yourself (KY) project. When the user says **“Resume KY”** or **“save mcp”**, recover this file first, inspect the live GitHub state, and continue from the latest verified checkpoint. Do not rely on conversation summaries alone when repository verification is available.
@@ -59,6 +59,35 @@ Keep mechanics, source teaching, and reflective synthesis distinguishable. If ev
 4. Inspect PR #1's focused Gate 57.4 regression tests separately. Keep it draft until tests pass and review is complete.
 5. Resume the 3framework work from the last verified repository state. Do not reintroduce a five-layer architecture.
 6. Update this file whenever a major milestone, architecture decision, verified test result, or blocker changes. Include commit/PR references and clearly distinguish verified facts from assumptions.
+
+## Current verified checkpoint (2026-10-11 — ephemeris cross-engine audit)
+
+### Audit status
+- Draft PR #5: https://github.com/mobinhan/know-yourself-mvp/pull/5
+- Title: “Audit Astronomy Engine against Swiss Ephemeris”.
+- Audit branch: `audit/astronomy-engine-cross-check`.
+- Latest verified audit branch commit: `70a6c959761c822730badcac35f78e39983a7c8f`.
+- Main was not changed by the audit work; PR #5 remains open, draft, and unmerged. Do not merge it as part of the audit step.
+- GitHub Actions run #38153382385 completed successfully: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38153382385.
+- Audit workflow uses the official standalone Astronomy Engine JavaScript source and pinned `pyswisseph==2.10.3.2`; it is isolated from production code.
+
+### Results verified from workflow logs
+- Representative timestamp sample: 12 timestamps, 156 position samples.
+- Core planetary and derived positions: 132 samples; zero gate/line mismatches in this sample.
+- Maximum core longitude difference: approximately 0.0056503°; mean approximately 0.0008343°.
+- Lunar-node comparison using the current Astronomy Engine approximation versus Swiss Ephemeris TRUE_NODE: 24 samples; 10 gate/line mismatches; maximum longitude difference approximately 0.30955°; mean approximately 0.16353°.
+- Interpretation: tested planetary samples agree closely, but this is not a full equivalence proof. The node comparison is not yet like-for-like and must be resolved separately. Representative timestamps do not replace gate/line boundary testing.
+
+### Next action — resume here
+1. Continue the isolated audit on PR #5; do not ask the user to run local scripts.
+2. Implement and run targeted boundary-focused tests for gate/line transitions, with clear treatment of exact-boundary rounding.
+3. Investigate a like-for-like lunar-node comparison (Astronomy Engine approximation versus Swiss TRUE_NODE) before interpreting node mismatches as a production defect.
+4. Keep the audit branch/PR separate from `main`; do not change the app’s calculation engine or make a production decision from the sample-date test alone.
+5. Fetch the workflow result/logs and record verified outcomes here after each material milestone.
+
+### Lovable status
+- Existing Lovable project “Human Design Navigator” is not published. Workspace reported out of credits when a message/edit was attempted. Do not retry credit-consuming Lovable actions unless credits are available and the user explicitly approves.
+- Do not create a new Lovable project. Do not use Vercel as a development/deployment dependency.
 
 ## Continuity protocol
 When asked to “Resume KY”:
