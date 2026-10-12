@@ -1,0 +1,58 @@
+# Daily Chat Credits — Product and Enforcement Contract
+
+**Status:** candidate design on a draft branch; not live, not deployed, and not connected to billing.
+
+## Product decision to test
+
+- Free: unlimited deterministic natal chart facts and basic chart navigation; 3 Basic Guide AI credits per UTC day.
+- Premium: advanced website capabilities plus 30 AI chat credits per UTC day.
+- Premium website entitlement and chat-credit balance are separate controls. A Premium user who has exhausted chat credits retains Premium website access; advanced AI responses wait until reset or a separately approved credit purchase.
+- These values are initial experiment defaults, not final commercial pricing.
+- Basic chart facts never consume AI credits.
+- A credit is consumed only for an accepted AI generation attempt after authentication, capability authorization, input validation and rate checks. Provider failures should be refunded/compensated by an idempotent server-side ledger operation; never rely on the client to restore credits.
+- Daily reset is 00:00 UTC for v1 and must be displayed clearly in the UI.
+
+## Capability boundary
+
+Do not turn the existing Premium open-question route into a free route. Provide a distinct server-owned Basic Guide operation with a constrained, approved Basic knowledge tier and prompt contract. The route itself chooses `guide.basic_question`; client-supplied `plan`, `tier`, or `capability` values are ignored.
+
+Initial explicit allowlist:
+- `chart.basic_facts`: Free, unlimited, deterministic.
+- `guide.basic_overview`: Free, no credit if deterministic; AI-generated Basic answer consumes 1 Free chat credit.
+- `guide.basic_question`: Free only through a dedicated Basic endpoint, restricted to approved foundational L1 knowledge and the Basic answer contract; consumes 1 Free chat credit.
+- `transits.basic_overlay`: Free, deterministic mechanics only; no credit.
+- `guide.open_question`, advanced sources, detailed PHS, detailed life cycles, advanced transit synthesis, pattern recognition and chart comparison: Premium capability. Advanced AI generation consumes 1 Premium chat credit.
+
+An unknown or unclassified operation fails closed to Premium. The server must not use a client-provided label to downgrade a Premium request. Follow-up questions that request deeper/personalized synthesis must route to Premium even if the conversation began with a Basic answer.
+
+## Credit accounting requirements
+
+1. The server derives the authenticated user from a verified Supabase JWT; never accept a user ID or credit limit from the client.
+2. The server resolves the current entitlement and selects the daily limit (Free 3, active Premium 30) from server policy.
+3. The ledger records a unique request/idempotency key and UTC usage date. Concurrent requests must not overspend the daily allowance; the check-and-consume operation must be atomic in PostgreSQL.
+4. A repeated idempotency key must not charge twice or invoke the model twice. Return/replay the already stored result when available; do not regenerate on retry.
+5. Check the credit balance before any restricted evidence retrieval or model invocation. Premium authorization is still required independently of credits.
+6. If the AI provider fails after a reservation, perform a server-side idempotent refund/void. Client disconnects must not create a free generation loophole.
+7. Return remaining credits and reset timestamp from the server. UI values are display-only and never authoritative.
+8. Add per-user abuse controls in addition to daily credits; a daily allowance is not a replacement for rate limiting.
+9. Log policy version, capability, request ID, usage date, outcome and model cost metadata without logging sensitive prompt content unnecessarily.
+10. Billing/webhook events update `ky_entitlements`; credit code must not trust local storage or client subscription flags.
+
+## Required acceptance tests
+
+- Free gets 3 Basic AI credits/day; fourth request is blocked before model invocation.
+- Premium gets 30 AI credits/day; 31st request is blocked before model invocation.
+- Deterministic chart facts and basic transit mechanics remain usable without credits.
+- Free cannot use Basic credits for detailed Chiron/Saturn Return interpretation, PHS interpretation, advanced transit synthesis or other Premium capabilities.
+- Client spoofing of `plan=premium`, `tier=basic`, or capability labels cannot change server classification.
+- Concurrent requests at the last available credit result in at most one successful consumption.
+- Duplicate idempotency keys do not charge twice or generate twice.
+- Provider failure refunds/voids a reservation exactly once.
+- Entitlement lookup failure fails closed for Premium; it must not silently grant Premium credits.
+- Expired/canceled Premium reverts to Free limits and capabilities according to the entitlement policy.
+- Credit count and reset time are server-generated.
+- Authenticated end-to-end tests exercise the selected live API route before release.
+
+## Release gates
+
+This design is not production-ready until the dedicated Basic endpoint, server-owned capability classification, atomic ledger, refund/idempotency path, authenticated E2E tests, entitlement provisioning, and UI states are implemented and verified. No migration application, merge, deployment, billing integration or paid-credit purchase is authorized by this document.
