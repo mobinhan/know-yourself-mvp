@@ -92,3 +92,11 @@ This inspection was read-only. No migration, function deployment, billing change
 ## Immediate integration decision
 
 Before wiring the UI, identify and validate the actual AI-generation endpoint used by the running Lovable interface. The persistence Edge Function is not itself the AI backend. Do not add a second competing chat backend or connect the UI to the candidate Python route until its deployment target and environment are established. Preserve the existing user-data API and guest chart flow.
+
+
+### Frontend contract inspection (read-only, 2026-10-12)
+
+- The current GitHub `main` `index.html` calls same-origin `/v1/charts` and `/v1/charts/{id}/questions/context`, but also contains a `window.fetch` demo interceptor that returns fixed fixture data for demo chart paths.
+- The root of `main` does not contain the candidate Python `api/` route tree. The new Basic route exists only on the draft feature branch.
+- This means the main-branch HTML is not evidence that the new Basic route is serving the current app; the Lovable interface's actual source/route remains to be matched against the canonical GitHub build.
+- Do not patch the existing Supabase persistence Edge Function to generate AI answers merely because it is the currently deployed function; it has a different responsibility and there is no verified model-generation contract there.
