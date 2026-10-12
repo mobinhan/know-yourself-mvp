@@ -542,3 +542,9 @@ This completes the Step 1 canonical artifact implementation without adding a fou
 - Commits: 3f3a271dddca9e091cbcdbde9a7a5c4f5aa5e913 (Mechanics Lab UI) and 2a79d41cb9c1116fdfc722d2a7635a4db30e0737 (foundation response compatibility).
 - GitHub Actions run 38016572315 (run 454) completed successfully for the compatibility fix. Both inline JavaScript blocks were fetched back and parsed successfully with JavaScript syntax validation.
 - Important limit: this is committed source, not a live-hosted app. The actual Golden Chart comparison can only report a result after a reachable Python API is configured. No production runtime or deployment was created; no Lovable project/credits were used.
+
+
+## Current resume pointer — 2026-10-12
+- Resume the app-side Step 4/5 work from [docs/RESUME_STEP4_5_SUPABASE_LOVABLE_CREDITS.md](docs/RESUME_STEP4_5_SUPABASE_LOVABLE_CREDITS.md).
+- Specific current blocker: Lovable workspace credits are exhausted; implementation message could not be sent. Existing Supabase project and authenticated `user-data-api` are accessible. Do not ask user to create a new workspace/backend.
+- Continue only after Lovable credits are restored; keep the current Lovable project, use existing Supabase tables/API, preserve guest mode and consent, do not publish, and do not use Vercel.
