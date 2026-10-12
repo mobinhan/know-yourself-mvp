@@ -100,3 +100,36 @@ Before wiring the UI, identify and validate the actual AI-generation endpoint us
 - The root of `main` does not contain the candidate Python `api/` route tree. The new Basic route exists only on the draft feature branch.
 - This means the main-branch HTML is not evidence that the new Basic route is serving the current app; the Lovable interface's actual source/route remains to be matched against the canonical GitHub build.
 - Do not patch the existing Supabase persistence Edge Function to generate AI answers merely because it is the currently deployed function; it has a different responsibility and there is no verified model-generation contract there.
+
+
+### Lovable project route identified (read-only, 2026-10-12)
+
+The connected Lovable workspace was inspected read-only. The existing Human Design project is **My Design Decoder**, project ID `483abb3e-5e1f-49ef-8e5c-1d1f8df3e207`, latest inspected commit `3f9841966f0b8af00c80b5b26ca8ff37106834f4`, status ready, unpublished. No Lovable message was sent and no credits were spent.
+
+The project has its own TanStack Start server routes and does **not** use the candidate Python `/v1/charts/{id}/questions/basic` route:
+- `src/routes/api/chart.ts`: deterministic chart calculation via `buildArtifact`.
+- `src/routes/api/ask.ts`: AI generation through `https://ai.gateway.lovable.dev/v1/responses`, model `openai/gpt-6-astra`, using the `LOVABLE_API_KEY` server environment variable.
+- `src/routes/index.tsx` `AskPanel`: calls same-origin `/api/ask` and streams the response.
+
+This resolves the prior route-identification question: the currently inspected Lovable project uses `POST /api/ask`, not the draft Python API route and not the deployed Supabase persistence Edge Function.
+
+### Security and product gaps in the actual Ask route
+
+Read-only source inspection shows `/api/ask` currently:
+- does not verify a signed-in user/session;
+- does not enforce Free/Premium capability policy or daily chat credits;
+- accepts client-supplied chart input and preference fields (chart values are recalculated server-side, but the caller is not authenticated);
+- calls the AI gateway directly after input validation and deterministic context construction.
+
+Therefore the candidate credit ledger would not protect the actual AI generation route even if its SQL were applied. The right integration point is this existing `/api/ask` handler, after selecting and validating the intended auth/guest policy and before invoking the AI provider. Do not wire the UI to a second Python route.
+
+### Safe next implementation sequence
+
+1. Keep the deterministic `/api/chart` flow intact.
+2. Design and test server-owned classification and entitlement/credit enforcement inside the actual `/api/ask` route (or a shared server module used by it).
+3. Decide explicit guest policy. Current route permits unauthenticated requests; user-based quotas require either sign-in or a separate abuse-resistant guest identity/rate policy.
+4. Use the existing connected Supabase project only after reviewing the migration plan and granting explicit approval to apply it; current live project lacks the required entitlement and ledger schema.
+5. Add route tests proving denied Premium requests never invoke the AI provider, client plan/tier spoofing cannot downgrade a request, concurrent credits cannot overspend, and provider failures release reservations.
+6. Add authenticated E2E and a visible server-returned remaining-credit/reset indicator before release.
+
+No Lovable code was changed, no Lovable credits were spent, and no database writes/migrations or deployments occurred during this inspection.
