@@ -56,3 +56,22 @@ An unknown or unclassified operation fails closed to Premium. The server must no
 ## Release gates
 
 This design is not production-ready until the dedicated Basic endpoint, server-owned capability classification, atomic ledger, refund/idempotency path, authenticated E2E tests, entitlement provisioning, and UI states are implemented and verified. No migration application, merge, deployment, billing integration or paid-credit purchase is authorized by this document.
+
+
+## Candidate API implementation checkpoint (2026-10-12)
+
+- Added `POST /v1/charts/{id}/questions/basic` as a separate Basic Guide route.
+- Server-side classifier only accepts narrow chart lookups/definitions; life-cycle, detailed/personal synthesis, PHS, comparison and other flagged advanced asks route to Premium.
+- Route reserves a credit through the server-only Supabase RPC before AI generation, calls the provider with `knowledge_tier="basic"`, then finalizes the reservation; provider/rate failures attempt to void it.
+- The existing `POST /v1/charts/{id}/questions/context` remains Premium by default and ignores client-supplied tier/capability claims.
+- Added regression tests for a basic lookup, advanced Chiron Return rejection, client-supplied Premium claim rejection, and reservation/finalization ordering.
+- GitHub Actions route-guard test run 38235763513 passed on code commit `0e08c368799cb38732c3b6388088edc5e6b56e0a`.
+
+### Known limitations — not a release
+
+- Candidate SQL functions have not been run against PostgreSQL/Supabase; SQL behaviour, grants, advisory-lock concurrency and migration ordering remain unverified.
+- The credit endpoint requires an authenticated Supabase user; guest users can still use deterministic chart mechanics but do not receive account-based AI credits.
+- This route does not yet persist/replay completed AI responses for an idempotency-key retry; duplicate requests fail closed rather than generating or charging again.
+- If finalization fails after a provider response, the endpoint withholds the answer, but recovery of a stuck reservation needs database-level integration tests and an operational reconciliation path.
+- The classifier is intentionally conservative and rule-based. It is not a general semantic classifier; unrecognized questions should use the Premium open-question route.
+- No live authenticated E2E, actual user-facing credit counter/reset UI, billing provisioning, migration, merge or deployment has been completed.
