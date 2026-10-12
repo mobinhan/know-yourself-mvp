@@ -1,0 +1,41 @@
+name: Premium API route guard tests
+
+on:
+  pull_request:
+    paths:
+      - "api/index.py"
+      - "api/entitlements.py"
+      - "api/interpretation_provider.py"
+      - "tests/test_entitlements.py"
+      - "tests/test_premium_route_guard.py"
+      - "engine/knowledge-records.json"
+      - "engine/external-knowledge-records.json"
+      - ".github/workflows/premium-api-guard.yml"
+  push:
+    branches:
+      - "security/premium-api-route-guard"
+    paths:
+      - "api/index.py"
+      - "api/entitlements.py"
+      - "api/interpretation_provider.py"
+      - "tests/test_entitlements.py"
+      - "tests/test_premium_route_guard.py"
+      - "engine/knowledge-records.json"
+      - "engine/external-knowledge-records.json"
+      - ".github/workflows/premium-api-guard.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  premium-api-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install API dependencies
+        run: pip install -r requirements.txt
+      - name: Run entitlement and route guard tests
+        run: python -m unittest tests.test_entitlements tests.test_premium_route_guard

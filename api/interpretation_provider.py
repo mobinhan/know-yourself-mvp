@@ -28,10 +28,21 @@ def _read_json(name: str) -> dict:
         return json.load(handle)
 
 
-def _select_knowledge(question: str, foundation: dict) -> tuple[list[dict], list[dict], list[dict]]:
+def _select_knowledge(question: str, foundation: dict, knowledge_tier: str = "basic") -> tuple[list[dict], list[dict], list[dict]]:
     records = _read_json("knowledge-records.json").get("records", [])
     external = _read_json("external-knowledge-records.json").get("records", [])
     graph = _read_json("knowledge-relationships.json").get("edges", [])
+    if knowledge_tier != "premium":
+        # Free Guide receives only reviewed foundational L1 paraphrases.
+        # Do not send the advanced curated/external knowledge corpus to the model.
+        records = [
+            record for record in records
+            if "L1" in record.get("depth", [])
+            and record.get("record_metadata", {}).get("epistemic_class") == "foundational"
+            and record.get("record_metadata", {}).get("lifecycle_status") == "active"
+        ]
+        external = []
+        graph = []
     q = question.lower()
     terms = set(re.findall(r"[a-z0-9-]+", q))
     gate_match = re.search(r"\bgate\s*(\d{1,2})(?:\s*[./-]\s*(\d))?\b", q)
@@ -163,7 +174,7 @@ def _response_text(payload: dict) -> str:
     return "\n".join(chunks).strip()
 
 
-def generate_interpretation(question: str, foundation: dict, temporal_context: dict | None = None) -> dict:
+def generate_interpretation(question: str, foundation: dict, temporal_context: dict | None = None, knowledge_tier: str = "basic") -> dict:
     """Generate a grounded 3framework answer, or a truthful non-configured status."""
     api_key = os.environ.get("OPENAI_API_KEY", "").strip()
     if not api_key:
@@ -177,7 +188,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         }
 
     model = os.environ.get("OPENAI_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL
-    knowledge, external, relationships = _select_knowledge(question, foundation)
+    knowledge, external, relationships = _select_knowledge(question, foundation, knowledge_tier=knowledge_tier)
     activations = foundation.get("activations", {})
     def model_safe_activations(items):
         # Exclude ephemeris timestamps and longitudes: neither is needed for interpretation,

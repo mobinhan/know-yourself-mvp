@@ -47,7 +47,7 @@ class GateLineRetrievalTests(unittest.TestCase):
             ],
         ):
             _, external, relationships = _select_knowledge(
-                "Explain Gate 57.4", foundation(active=True)
+                "Explain Gate 57.4", foundation(active=True), knowledge_tier="premium"
             )
         self.assertIn(GATE_574["id"], {record["id"] for record in external})
         self.assertIn(
@@ -69,7 +69,7 @@ class GateLineRetrievalTests(unittest.TestCase):
             ],
         ):
             _, external, relationships = _select_knowledge(
-                "Explain Gate 57.4", foundation(active=False)
+                "Explain Gate 57.4", foundation(active=False), knowledge_tier="premium"
             )
         self.assertNotIn(GATE_574["id"], {record["id"] for record in external})
         self.assertNotIn(
@@ -93,7 +93,7 @@ class GateLineRetrievalTests(unittest.TestCase):
             ],
         ):
             _, external, relationships = _select_knowledge(
-                "Explain Gate 57.4", foundation(active=True)
+                "Explain Gate 57.4", foundation(active=True), knowledge_tier="premium"
             )
         self.assertEqual(external, [])
         self.assertNotIn(
@@ -130,7 +130,7 @@ class GateLineRetrievalTests(unittest.TestCase):
             ],
         ):
             _, external, _ = _select_knowledge(
-                "Explain Gate 57.4", foundation(active=True)
+                "Explain Gate 57.4", foundation(active=True), knowledge_tier="premium"
             )
         selected_ids = {record["id"] for record in external}
         self.assertIn(GATE_574["id"], selected_ids)
@@ -148,7 +148,7 @@ class GateLineRetrievalTests(unittest.TestCase):
             ],
         ):
             _, external, relationships = _select_knowledge(
-                "Explain Gate 57.3", foundation(active=True)
+                "Explain Gate 57.3", foundation(active=True), knowledge_tier="premium"
             )
         self.assertNotIn(GATE_574["id"], {record["id"] for record in external})
         self.assertNotIn(

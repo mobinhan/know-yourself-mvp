@@ -28,6 +28,7 @@ sys.path.insert(0, str(ROOT / "api"))
 from ephemeris import calculate_chart  # noqa: E402
 from temporal_ephemeris import transit_activations  # noqa: E402
 from interpretation_provider import generate_interpretation, InterpretationProviderError  # noqa: E402
+from entitlements import resolve_request_capability  # noqa: E402
 
 CHANNEL_CATALOG = json.loads((ENGINE_DIR / "channel-catalog.json").read_text())
 GATE_CATALOG = json.loads((ENGINE_DIR / "gate-catalog.json").read_text())
@@ -347,6 +348,13 @@ class handler(BaseHTTPRequestHandler):
                     return self._send(410, {"error": "guest_chart_is_stateless", "message": "Use the foundation returned by POST /v1/charts. Guest chart artifacts are not stored on the server."})
                 if len(segments) == 4 and segments[3] == "today" and method == "POST":
                     body = self._read_json()
+                    capability = str(body.get("capability") or "guide.basic")
+                    decision = resolve_request_capability(self.headers, capability)
+                    if not decision["allowed"]:
+                        status = decision["status"]
+                        public_error = "authentication_required" if status == 401 else "premium_required" if status == 403 else "entitlement_unavailable" if status == 503 else "unknown_capability"
+                        return self._send(status, {"error": public_error})
+                    knowledge_tier = decision.get("knowledge_tier", "basic")
                     foundation = build_foundation(body.get("birth") or {}, chart_id=chart_id)
                     at_raw = body.get("at")
                     at = datetime.fromisoformat(str(at_raw).replace("Z", "+00:00")) if at_raw else datetime.now(timezone.utc)
@@ -360,6 +368,7 @@ class handler(BaseHTTPRequestHandler):
                             "Explain the current transit overlay in relation to this natal design. Focus on verified overlaps, newly activated gates, temporary channels and what to observe; do not imply the natal chart has changed.",
                             foundation,
                             temporal_context=transit["result"],
+                            knowledge_tier=knowledge_tier,
                         )
                     except InterpretationProviderError:
                         return self._send(503, {"error": "interpretation_provider_unavailable", "interpretation_status": "provider_error"})
@@ -383,10 +392,17 @@ class handler(BaseHTTPRequestHandler):
                     })
                 if len(segments) == 5 and segments[3] == "questions" and segments[4] == "context" and method == "POST":
                     body = self._read_json()
-                    foundation = build_foundation(body.get("birth") or {}, chart_id=chart_id)
                     question = str(body.get("question") or "").strip()
                     if not question or len(question) > 4000:
                         return self._send(400, {"error": "question_must_be_1_to_4000_characters"})
+                    capability = str(body.get("capability") or "guide.basic")
+                    decision = resolve_request_capability(self.headers, capability)
+                    if not decision["allowed"]:
+                        status = decision["status"]
+                        public_error = "authentication_required" if status == 401 else "premium_required" if status == 403 else "entitlement_unavailable" if status == 503 else "unknown_capability"
+                        return self._send(status, {"error": public_error})
+                    knowledge_tier = decision.get("knowledge_tier", "basic")
+                    foundation = build_foundation(body.get("birth") or {}, chart_id=chart_id)
                     at_raw = body.get("at")
                     temporal_context = None
                     needs_temporal = bool(at_raw) or any(token in question.lower() for token in ("today", "now", "transit", "current moment", "right now"))
@@ -398,7 +414,7 @@ class handler(BaseHTTPRequestHandler):
                     if not self._allow_ai_request():
                         return self._send(429, {"error": "ai_rate_limit_exceeded", "retry_after_seconds": AI_RATE_WINDOW_SECONDS})
                     try:
-                        interpretation = generate_interpretation(question, foundation, temporal_context=temporal_context)
+                        interpretation = generate_interpretation(question, foundation, temporal_context=temporal_context, knowledge_tier=knowledge_tier)
                     except InterpretationProviderError:
                         return self._send(503, {"error": "interpretation_provider_unavailable", "interpretation_status": "provider_error"})
                     return self._send(200, {
