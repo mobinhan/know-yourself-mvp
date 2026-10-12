@@ -50,7 +50,7 @@ export function decideCapability(input: {
   now?: string;
 }): CapabilityDecision {
   const { capability, authenticatedUserId, entitlement } = input;
-  if (!(capability in CAPABILITIES)) {
+  if (!Object.hasOwn(CAPABILITIES, capability)) {
     return { allowed: false, capability: capability as Capability, reason: "unknown_capability" };
   }
   const requiredPlan = CAPABILITIES[capability as Capability];
