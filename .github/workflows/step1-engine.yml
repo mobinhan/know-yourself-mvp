@@ -89,6 +89,8 @@ jobs:
         run: node engine/test_mechanics.mjs
       - name: Run transit overlay mechanics test
         run: node engine/test_transit_overlay.mjs
+      - name: Run Golden Chart temporary channel overlay test
+        run: node engine/test_golden_transit_overlay.mjs
       - name: Run time and life-cycle mechanics test
         run: node engine/test_time_mechanics.mjs
       - name: Run connection mechanics test
