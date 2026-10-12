@@ -213,3 +213,30 @@ Important limitation: this file records the required protocol; it does not itsel
 - These are documentation/acceptance criteria, not runtime tests. PHS mapping correctness and deployed Premium enforcement remain unverified. Do not claim PHS is secured until the actual serving route applies trusted server-side entitlement checks and authenticated end-to-end tests pass.
 - Next: inspect the canonical PHS calculation/mapping implementation and its source evidence; validate the chain that yields Determination/Cognition/Environment/orientation without inferring a label from Gate 62.2 alone. Keep this isolated from production calculations until the mapping contract is supported by approved sources.
 
+
+
+## Current checkpoint (2026-10-12 — 3framework regression audit)
+
+- Draft PR #10: https://github.com/mobinhan/know-yourself-mvp/pull/10
+- Branch: `audit/3framework-release-matrix`; documentation-only change; not merged.
+- New matrix: `docs/3framework-release-matrix.md`. It separates source inspection, unit/contract tests, candidate API tests, authenticated E2E, and browser/deployment verification. Unverified items are marked BLOCKED or NOT RUN rather than passed.
+- Audit confirmed many deterministic, evidence, knowledge, adaptation, conversation-context, adversarial, and temporal test files exist. Their presence is not proof of a current passing run or complete live 3framework integration.
+- Premium: PR #7 remains helper/policy groundwork without protected-route wiring, live migration, or provisioning. PR #8 is candidate API work based on `feature/live-api-v1`, not main/confirmed production. Do not merge or deploy it as though the production route were settled.
+- Historical CI nuance: run #38225061277 failed 1 of 27 Python tests on older candidate SHA `73b0f5703007516d333e07356f91f8752a6dc416`; JS contract job passed. The failure expected external record `EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001` while the test used the default `knowledge_tier="basic"`, which intentionally excludes external/Premium records. A later change made the regression fixture explicitly request Premium. Do not call this a current-head failure without checking the exact tested SHA; the separate route-guard workflow reported success on SHA `5ae2e6679eb6a9e1b6218352733b5beb7ef2b517`, which is not the PR #8 head SHA recorded at audit time.
+- PR #9 remains open/draft/unmerged; answer-quality improvements are not in main and not live-validated.
+- Main production readiness remains **BLOCKED**: no verified authenticated end-to-end proof of server Premium enforcement, PHS mapping provenance, consent/persistence ownership, full three-layer orchestration, or delivered UI behavior. Lunar-node convention audit remains unresolved for production certification.
+- No Lovable credits, Vercel, merge, or deployment used.
+- Next: check CI at exact current PR heads; resolve the main production/API route decision before Premium implementation; run and record current-main tests; then proceed with authenticated E2E and chart/timing reference validation.
+
+
+## Current checkpoint (2026-10-12 — Basic allowlist / Premium-by-default candidate)
+
+- Draft PR #11: https://github.com/mobinhan/know-yourself-mvp/pull/11
+- Candidate branch: `security/basic-allowlist-default-premium`; exact head `b35ae2519f08b89462e98b6db1bc8d7ea56b4005`; stacked on candidate API PR #8 branch, not main.
+- Added `docs/basic-allowlist-premium-default.md`: explicit Basic allowlist; unclassified/new capabilities Premium by default; open-ended AI interpretation Premium; detailed PHS and life-cycle interpretation Premium.
+- Candidate API ignores client-supplied capability/tier/plan for open-ended questions and uses the server-selected `guide.open_question` capability. AI-assisted `/today` is Premium; deterministic basic facts/overlay should remain separately accessible.
+- Added regression coverage for attempted client downgrade and Premium-by-default policy.
+- Exact-head CI observed PASS on commit `b35ae2519f08b89462e98b6db1bc8d7ea56b4005`: Premium API guard, Python engine validation, JavaScript contract validation. This is candidate CI only.
+- Release remains BLOCKED: no merge, no live Supabase migration/provisioning, no authenticated end-to-end verification, and no proof the actual app UI retains the intended Basic experience. Check PR #11 for follow-up test results before considering merge.
+- Release matrix updated on `audit/3framework-release-matrix`, commit `c569149b2b12eadbb787c3025bc99024ac2db1d8`.
+- Do not merge/deploy automatically. Do not create/spend Lovable credits or use Vercel as a dependency without explicit approval.
