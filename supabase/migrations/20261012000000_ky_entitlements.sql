@@ -1,0 +1,34 @@
+-- KY server-managed entitlement state.
+-- Billing/webhook or an administrator with service-role access is the only writer.
+-- Client-provided plan/tier flags are never authoritative.
+create table if not exists public.ky_entitlements (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  plan text not null default 'free' check (plan in ('free', 'premium')),
+  status text not null default 'active' check (status in ('active', 'trialing', 'grace', 'expired', 'canceled', 'unknown')),
+  expires_at timestamptz,
+  grace_until timestamptz,
+  source text not null default 'manual' check (source in ('manual', 'stripe', 'app_store', 'play_store', 'promotion')),
+  external_customer_id text,
+  external_subscription_id text,
+  policy_version integer not null default 1 check (policy_version > 0),
+  updated_at timestamptz not null default now(),
+  created_at timestamptz not null default now(),
+  constraint ky_entitlements_grace_requires_deadline
+    check (status <> 'grace' or grace_until is not null)
+);
+
+alter table public.ky_entitlements enable row level security;
+
+-- Users may inspect their own current plan, but cannot grant, change, or revoke it.
+drop policy if exists "Users can read their own entitlement" on public.ky_entitlements;
+create policy "Users can read their own entitlement"
+  on public.ky_entitlements for select to authenticated
+  using (auth.uid() = user_id);
+
+revoke all on public.ky_entitlements from anon, authenticated;
+grant select on public.ky_entitlements to authenticated;
+
+-- The service_role can manage records through trusted server-side billing/admin
+-- workflows. No client insert/update/delete policy is defined.
+comment on table public.ky_entitlements is
+  'Server-managed entitlement source of truth. Client roles are read-only; never trust client-supplied plan claims.';
