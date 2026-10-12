@@ -348,8 +348,11 @@ class handler(BaseHTTPRequestHandler):
                     return self._send(410, {"error": "guest_chart_is_stateless", "message": "Use the foundation returned by POST /v1/charts. Guest chart artifacts are not stored on the server."})
                 if len(segments) == 4 and segments[3] == "today" and method == "POST":
                     body = self._read_json()
-                    capability = str(body.get("capability") or "guide.basic")
-                    decision = resolve_request_capability(self.headers, capability)
+                    # Open-ended AI interpretation is Premium by default. Ignore client-supplied
+                    # capability/tier labels so a Free client cannot relabel a deep
+                    # question as guide.basic. Basic chart facts remain available via
+                    # deterministic foundation/catalogue endpoints.
+                    capability = "transits.advanced_analysis"
                     if not decision["allowed"]:
                         status = decision["status"]
                         public_error = "authentication_required" if status == 401 else "premium_required" if status == 403 else "entitlement_unavailable" if status == 503 else "unknown_capability"
@@ -395,7 +398,11 @@ class handler(BaseHTTPRequestHandler):
                     question = str(body.get("question") or "").strip()
                     if not question or len(question) > 4000:
                         return self._send(400, {"error": "question_must_be_1_to_4000_characters"})
-                    capability = str(body.get("capability") or "guide.basic")
+                    # Open-ended AI interpretation is Premium by default. Ignore client-supplied
+                    # capability/tier labels so a Free client cannot relabel a deep
+                    # question as guide.basic. Basic chart facts remain available via
+                    # deterministic foundation/catalogue endpoints.
+                    capability = "guide.open_question"
                     decision = resolve_request_capability(self.headers, capability)
                     if not decision["allowed"]:
                         status = decision["status"]
