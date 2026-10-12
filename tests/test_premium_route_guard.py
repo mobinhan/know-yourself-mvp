@@ -70,6 +70,60 @@ class PremiumRouteGuardTests(unittest.TestCase):
         transit.assert_not_called()
         model.assert_not_called()
 
+    def test_basic_route_rejects_open_ended_life_cycle_before_credit_or_model(self):
+        fake = FakeHandler(
+            "/v1/charts/chart-1/questions/basic",
+            {"birth": {"date": "1982-04-15", "time": "07:38", "timezone": "Europe/Amsterdam"},
+             "question": "Tell me about my Chiron Return", "plan": "free", "tier": "basic"},
+        )
+        with patch("api.index.reserve_chat_credit") as reserve, patch("api.index.build_foundation") as build, patch("api.index.generate_interpretation") as model:
+            handler._dispatch(fake, "POST")
+        self.assertEqual(fake.response[0], 403)
+        self.assertEqual(fake.response[1]["error"], "premium_required")
+        reserve.assert_not_called()
+        build.assert_not_called()
+        model.assert_not_called()
+
+    def test_basic_route_reserves_credit_before_model_and_finalizes_success(self):
+        fake = FakeHandler(
+            "/v1/charts/chart-1/questions/basic",
+            {"birth": {"date": "1982-04-15", "time": "07:38", "timezone": "Europe/Amsterdam"},
+             "question": "What is my Personality Sun gate and line?"},
+        )
+        fake.headers = {"Authorization": "Bearer test-token", "Idempotency-Key": "11111111-1111-4111-8111-111111111111"}
+        foundation = {"core": {}, "activations": {"personality": [], "design": []}, "phs": {}}
+        with patch("api.index.reserve_chat_credit", return_value={
+            "allowed": True, "reason": "credit_reserved", "credits_used": 1, "daily_limit": 3,
+            "reset_at": "2026-10-13T00:00:00Z", "replayed": False
+        }) as reserve, patch("api.index.build_foundation", return_value=foundation), patch(
+            "api.index.generate_interpretation", return_value={
+                "interpretation_status": "ready", "answer": "Your Personality Sun is Gate 42.5."
+            }
+        ) as model, patch("api.index.finalize_chat_credit", return_value={"updated": True, "outcome": "consumed"}) as finalize:
+            handler._dispatch(fake, "POST")
+        self.assertEqual(fake.response[0], 200)
+        self.assertEqual(fake.response[1]["credit_usage"]["daily_limit"], 3)
+        reserve.assert_called_once()
+        self.assertEqual(reserve.call_args.args[2], "guide.basic_question")
+        model.assert_called_once()
+        self.assertEqual(model.call_args.kwargs["knowledge_tier"], "basic")
+        finalize.assert_called_once_with(fake.headers, "11111111-1111-4111-8111-111111111111", "consumed")
+
+    def test_basic_route_ignores_client_premium_claim_for_advanced_question(self):
+        fake = FakeHandler(
+            "/v1/charts/chart-1/questions/basic",
+            {"birth": {"date": "1982-04-15", "time": "07:38", "timezone": "Europe/Amsterdam"},
+             "question": "Go deeper and connect my Incarnation Cross to my life cycles",
+             "plan": "premium", "capability": "guide.basic_question"},
+        )
+        with patch("api.index.reserve_chat_credit") as reserve, patch("api.index.build_foundation") as build, patch("api.index.generate_interpretation") as model:
+            handler._dispatch(fake, "POST")
+        self.assertEqual(fake.response[0], 403)
+        self.assertEqual(fake.response[1]["error"], "premium_required")
+        reserve.assert_not_called()
+        build.assert_not_called()
+        model.assert_not_called()
+
     def test_free_knowledge_tier_excludes_external_and_advanced_records(self):
         foundation = {"activations": {"personality": [], "design": []}}
         knowledge, external, relationships = _select_knowledge(
