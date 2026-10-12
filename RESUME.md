@@ -147,3 +147,24 @@ Important limitation: this file records the required protocol; it does not itsel
 - This means the node convention changes Personality node line/substructure for Golden Chart #2, although this specific comparison does not change the chart's stored channel set.
 - Audit report committed and fetched back from isolated PR #6 branch: https://github.com/mobinhan/know-yourself-mvp/blob/audit/astronomy-boundary-node-checks/audit/golden-chart-node-convention.md (commit 3965bd4588beb6a70c7f934f40755447eb862c48). PR #6 remains open and draft; no production engine, Golden Chart fixture, or main-branch calculation code was changed.
 - Next acceptance step: obtain a trusted Human Design reference chart for the exact same birth details and inspect its node activations (ideally the underlying activation data, not just the BodyGraph). If the reference doesn't expose enough detail to determine its node convention, keep the convention unresolved. Do not merge PR #6 or switch production engines based on this evidence alone.
+
+
+## Current verified checkpoint (2026-10-12 — Premium entitlement security)
+
+### Security review
+- Inspected the existing unpublished Lovable project **My Design Decoder**, project ID `483abb3e-5e1f-49ef-8e5c-1d1f8df3e207`, commit `3f9841966f0b8af00c80b5b26ca8ff37106834f4`.
+- In that snapshot, `POST /api/ask` has no visible authentication or entitlement check, accepts client-supplied preferences, and sends deterministic chart/transit facts plus the question to the Lovable AI gateway. No Premium knowledge retrieval or persistent user-context integration is present in the inspected route.
+- `POST /api/chart` has no visible authentication check; keep basic deterministic chart calculation distinct from any Premium-only analysis.
+- `GET /api/health` reports persistence unavailable and the project snapshot does not show subscription entitlement integration.
+- Project remains unpublished. No live end-to-end entitlement test has been performed.
+
+### Saved security contract
+- Expanded `docs/3framework-testing.md` on branch `docs/3framework-testing` with the Premium entitlement/security contract and 15 acceptance tests, commit `d8834543ddb5321e4708f772bcb11a715c3a244f`.
+- Documented server-side identity and entitlement resolution, explicit capability permissions, fail-closed behavior, pre-retrieval/pre-model enforcement, personal-data ownership/consent checks, non-leakage, prompt-injection resistance, and route-level test requirements.
+- Verified by fetching the file back from GitHub; the Premium section and P15 regression test are present.
+- Link: https://github.com/mobinhan/know-yourself-mvp/blob/docs/3framework-testing/docs/3framework-testing.md
+
+### Implementation blocker
+- Attempted to send an implementation request to the existing Lovable project only; Lovable rejected it because the workspace is out of credits. No code edit, credit-consuming build, database provisioning, payment integration, or deployment occurred.
+- Do not retry Lovable build actions until workspace credits are available and authorized. No new project was created.
+- Next safe implementation step once the existing project can be edited: add a reusable server-only capability guard and tests; Premium must fail closed until trusted authentication and entitlement resolution exist. Do not claim Premium is protected until route-level tests pass against the actual implementation.
