@@ -83,7 +83,9 @@ These are requirements, not passes. Keep every case **BLOCKED** until run throug
 | 2026-10-12 | Draft PR #7 | **BLOCKED** | 14 policy unit tests previously passed; route integration, live migration and provisioning absent per PR description. |
 | 2026-10-12 | Draft PR #8 | **BLOCKED** | Candidate route tests described in PR; not production/main; newest observed engine workflow has a Python failure. |
 | 2026-10-12 | Draft PR #9 | **BLOCKED** | Answer-quality improvement is unmerged; prior passing run is not proof for current PR head or deployed app. |
-| 2026-10-12 | This audit | **IN PROGRESS** | Matrix created from source/CI inspection; no full test suite was run by this audit. |
+| 2026-10-12 | Candidate PR #8, commit `33a6ce6bea8a0ac18890fcbbd3382f1790fda81e` | **PASS — candidate CI only** | Python engine validation, JavaScript contract validation, Premium API route guard, and gate-line regression all completed successfully. Not production E2E. |
+| 2026-10-12 | Candidate PR #9, head `8b8c2c1b48836ad7d945d78c3eaa1a340d20c0e4` | **BLOCKED for exact-head certification** | Successful engine runs observed at older commits `c7a7523699f7d440627c03e6809ce5cbc0be5120` and `95e85984f14198ff045d7fad500489307bea6e27`, not the current PR head. |
+| 2026-10-12 | This audit | **IN PROGRESS** | Source/CI inspection and matrix update completed; live app, current-main full suite, and authenticated E2E were not run. |
 
 ## Next execution order
 
