@@ -173,13 +173,14 @@ Important limitation: this file records the required protocol; it does not itsel
 ## Current verified checkpoint (2026-10-12 — Premium entitlement guard foundation)
 
 - User explicitly authorized proceeding with Premium safeguards.
-- Created draft PR #7: https://github.com/mobinhan/know-yourself-mvp/pull/7
-- Branch: `security/premium-entitlement-guard`
-- Latest branch commit: `995c3fead3b82a3f6fe62e676f79a31d94c267d3`
-- Added `supabase/functions/_shared/entitlements.ts`: reusable capability policy for `guide.basic`, `explore.advanced_sources`, `transits.advanced_analysis`, `lifecycles.full`, `insights.history`, `insights.pattern_recognition`, and `connection.comparison`. Premium checks fail closed when identity/entitlement is missing or mismatched, subscription is inactive/expired, or capability is unknown.
-- Added `supabase/functions/_shared/entitlements.test.ts` with 10 policy test cases.
-- Added `docs/premium-entitlement-implementation.md` documenting what is and is not implemented.
-- **Not yet protected end to end:** helper is not wired into an AI/knowledge route; trusted subscription source is not integrated; tests were authored but not executed; no live deployment or authenticated integration tests were performed. The mandatory 3framework Premium gate remains **BLOCKED**, not PASS.
-- Repository discovery found the current `main` branch is still the V22 website artifact and has a Supabase `user-data-api` function for authenticated user data. The inspected Lovable `/api/ask` code belongs to a separate unpublished project snapshot, not this default-branch app. Do not modify Lovable without explicit approval.
-- Next step: identify the production AI route and trusted subscription source; then wire authentication → server-side entitlement lookup → capability guard → consent/ownership checks → restricted retrieval → model call, and prove denied requests skip both retrieval and model invocation.
-- No files were changed on `main`; no PR was merged; no deployment or subscription-provider configuration was changed.
+- Draft PR #7: https://github.com/mobinhan/know-yourself-mvp/pull/7
+- Branch: `security/premium-entitlement-guard`; latest known changes are on this branch. Fetch branch head/PR status before continuing.
+- Added `supabase/functions/_shared/entitlements.ts`: explicit capability policy for basic Guide, advanced Explore sources, advanced transit analysis, full Life Cycles, insight history, pattern recognition, and Connection comparison. Premium decisions fail closed for missing/mismatched identity/entitlement, inactive/expired access, malformed time, and unknown capability keys (including inherited object-property names).
+- Added `supabase/functions/_shared/load-entitlement.ts`: server-side lookup from the `ky_entitlements` table, scoped to authenticated user; missing row maps to Free; lookup errors fail closed.
+- Added focused Deno tests for capability policy and trusted entitlement lookup. Added `.github/workflows/premium-entitlements.yml` to run them. **Test execution is not yet verified; do not claim PASS until the workflow result is inspected.**
+- Added migration `supabase/migrations/20261012000000_ky_entitlements.sql`. Authenticated users can read their own entitlement but cannot insert/update/delete it. The migration has not been applied to live Supabase; no billing webhook or trusted admin provisioning path has been integrated.
+- Added `docs/premium-entitlement-implementation.md` with implementation status and blockers.
+- **Critical remaining gap:** no protected AI/knowledge route in the default branch currently invokes the capability policy before retrieval/model invocation. The V22 app on `main` is a static website artifact; a separate `feature/live-api-v1` branch contains a Python API but is not on `main`. The previously inspected Lovable `/api/ask` belongs to a separate unpublished project. Do not edit Lovable without explicit approval.
+- Therefore the mandatory 3framework Premium acceptance gate remains **BLOCKED**, not PASS. Do not merge or deploy this foundation as if it completed enforcement.
+- Next: verify the CI workflow; identify/agree the actual production AI API route; integrate authentication and the trusted entitlement lookup before source retrieval/model calls; apply the migration only through an approved deployment path; add route tests proving denied requests skip retrieval and model invocation; add Free/Premium, expiry, spoofing, and user-isolation integration tests.
+- No changes were made on `main` except this continuity checkpoint. No PR was merged, no migration was applied, and no deployment or subscription-provider configuration was changed.
