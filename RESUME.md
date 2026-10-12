@@ -195,3 +195,12 @@ Important limitation: this file records the required protocol; it does not itsel
 - Do not edit Lovable without explicit user approval.
 - The mandatory 3framework Premium acceptance gate remains **BLOCKED**, not PASS, until candidate route tests pass, production route alignment is resolved, entitlement migration/provisioning is safely applied, and authenticated end-to-end bypass tests pass.
 - Resume by checking PR #7 and #8 heads, route-guard CI, and the current deployed API identity; then continue with integration without merging/deploying prematurely.
+
+
+## 3framework answer-quality correction (2026-10-12)
+
+- User test failure: Golden Chart #2 questions about Personality Sun Gate 42.5 and Line 5 received overly short, generic/definition-like responses that did not naturally connect relevant chart context and user context.
+- Created branch `fix/3framework-personal-warm-reasoning` from `main`; main remains unchanged.
+- Updated `engine/answer-composer.js` prompt instructions to require warm human tone, depth matched to intent, contextual integration of verified chart facts, cautious personal synthesis, direct follow-up handling, and natural (not rigidly templated) presentation of the three layers.
+- Updated `engine/test_answer-composer.mjs` with regression assertions for these answer-quality rules, including an interpretive Golden Chart #2-style question (Personality Sun 42.5, Design Sun 60.1, profile 5/1).
+- Changes are implementation guidance and regression coverage, not proof that the deployed app uses this branch or that generated answer quality is already validated end-to-end. Run GitHub Actions and review the resulting PR before merge. Do not use Lovable credits or Vercel for this change.

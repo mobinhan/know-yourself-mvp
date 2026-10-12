@@ -32,6 +32,30 @@ const badContextPrompt = buildReasoningPromptInput({ ...input, conversation_cont
 if (badContextPrompt.conversation_context !== null) throw new Error("unsupported conversation context must be excluded");
 
 if(prompt.mode!=="grounded_reasoning" || !prompt.instructions.includes("Do not calculate, infer, or invent Human Design mechanics.")) throw new Error("prompt boundary failed");
+const requiredStyleRules = [
+  "warm, human, curious and personally engaged",
+  "Match depth to intent",
+  "connect the verified activation to relevant verified chart context",
+  "Personalise from explicit, relevant user context",
+  "answer that exact question first",
+  "Do not expose the internal three-layer process as a rigid template"
+];
+for (const rule of requiredStyleRules) {
+  if (!prompt.instructions.some(item => item.includes(rule))) throw new Error(`personal reasoning style rule missing: ${rule}`);
+}
+const stylePrompt = buildReasoningPromptInput({
+  ...input,
+  question: "What does Line 5 mean for me, given my 5/1 profile and Personality Sun?",
+  question_context: { intent: "interpretive", domains: ["self_personal_development"], evidence_targets: ["activations", "profile", "cross"] },
+  evidence: [
+    { id: "E-ACTIVATIONS", claim: "Verified Golden Chart #2 activations", result: { personality: [{ body: "sun", gate: 42, line: 5 }], design: [{ body: "sun", gate: 60, line: 1 }] } },
+    { id: "E-PROFILE", claim: "Verified profile", result: "5/1" }
+  ],
+  knowledge: [
+    { id: "HD-KNOW-GATE-001", concept: "Gates", claim: "A gate has a theme and six line expressions; read in whole-chart context.", source_ids: ["SRC_HD_DEFINITIVE_BOOK_2011"], locator: "Section Six and Section Ten" }
+  ]
+});
+if (!stylePrompt.instructions.some(item => item.includes("connect the verified activation to relevant verified chart context"))) throw new Error("personal-chart integration rule absent for interpretive question");
 if(!prompt.instructions.includes("Never claim that a chart fact or calculation is unavailable when that fact is present in the supplied evidence.")) throw new Error("availability boundary failed");
 if(!prompt.instructions.some(item => item.includes("first-class Cross structure"))) throw new Error("first-class Cross guidance failed");
 
