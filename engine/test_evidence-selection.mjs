@@ -40,6 +40,36 @@ assert.equal(input.ready_for_reasoning,true);
 assert.deepEqual(input.missing_evidence_targets,[]);
 assert.ok(input.evidence.every(x=>x.result!==undefined));
 
+// Explicit overlay questions must request the separately auditable overlay evidence.
+const temporalState = {
+  mode:"temporal_state",
+  natal:{gates:[3,34],channels:["3-60"],centres:["sacral","root"]},
+  transit:{gates:[20,57],channels:["20-57"],centres:["throat","spleen"]},
+  temporary:{gates:[20,57],channels:["20-57"],centres:["throat","spleen"]},
+  combined:{gates:[3,20,34,57,60],channels:["3-60","20-34","20-57"],centres:["sacral","root","throat","spleen"]},
+  invariants:{natal_preserved:true,combined_contains_natal:true,temporary_excludes_natal:true}
+};
+const overlayEvidence = buildEvidence({
+  activations:{personality:[],design:[]},
+  structure,
+  temporalState,
+  sources:["SRC_TEST"]
+});
+const overlayQuestion = understandQuestion("Which temporary channels are activated by the transit overlay?");
+assert.ok(overlayQuestion.evidence_targets.includes("transit_overlay"));
+const overlaySelected = selectEvidence(overlayEvidence, overlayQuestion.evidence_targets);
+assert.ok(overlaySelected.some(x=>x.id==="E-TRANSIT-OVERLAY"));
+assert.deepEqual(overlaySelected.find(x=>x.id==="E-TRANSIT-OVERLAY").result.temporary.channels,["20-57"]);
+const overlayInput = buildReasoningInput({
+  questionContext:overlayQuestion,
+  question:overlayQuestion.question,
+  evidenceBundle:overlayEvidence,
+  knowledgePackets:[]
+});
+assert.equal(overlayInput.ready_for_reasoning,true);
+assert.deepEqual(overlayInput.missing_evidence_targets,[]);
+assert.ok(overlayInput.evidence.some(x=>x.id==="E-TRANSIT-OVERLAY"));
+
 const timing = understandQuestion("When is this transit affecting me?");
 const timingInput = buildReasoningInput({
   questionContext: timing,
