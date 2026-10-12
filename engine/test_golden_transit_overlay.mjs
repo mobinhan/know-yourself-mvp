@@ -17,7 +17,7 @@ const overlay = deriveTransitOverlay({natalActivations:natal, transitActivations
 assert.deepEqual(overlay.natal.channels, ["11-56","28-38","3-60","32-54","34-57","42-53"].sort((a,b)=>a.localeCompare(b)));
 assert.deepEqual(overlay.temporary.channels, ["13-33","20-34","20-57","25-51","30-41"].sort((a,b)=>a.localeCompare(b)));
 assert.deepEqual(overlay.transit.channels, ["20-57","25-51","30-41"]);
-assert.deepEqual(overlay.temporary.centres, ["g","heart","root","sacral","solar_plexus","spleen","throat"]);
+assert.deepEqual(overlay.temporary.centres, ["g","heart","solar_plexus"]);
 
 // The overlay may define additional centres/channels, but must not mutate natal input
 // or recalculate natal definition, type, strategy, or authority.
