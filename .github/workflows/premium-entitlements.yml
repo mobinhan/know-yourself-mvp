@@ -7,6 +7,8 @@ on:
       - "supabase/functions/_shared/entitlements.test.ts"
       - "supabase/functions/_shared/load-entitlement.ts"
       - "supabase/functions/_shared/load-entitlement.test.ts"
+      - "supabase/functions/_shared/load-entitlement.ts"
+      - "supabase/functions/_shared/load-entitlement.test.ts"
       - ".github/workflows/premium-entitlements.yml"
   push:
     branches:
@@ -14,6 +16,8 @@ on:
     paths:
       - "supabase/functions/_shared/entitlements.ts"
       - "supabase/functions/_shared/entitlements.test.ts"
+      - "supabase/functions/_shared/load-entitlement.ts"
+      - "supabase/functions/_shared/load-entitlement.test.ts"
       - ".github/workflows/premium-entitlements.yml"
 
 permissions:
@@ -28,4 +32,4 @@ jobs:
         with:
           deno-version: v2.x
       - name: Run entitlement policy tests
-        run: deno test --deny-net supabase/functions/_shared/entitlements.test.ts
+        run: deno test --deny-net supabase/functions/_shared/entitlements.test.ts supabase/functions/_shared/load-entitlement.test.ts
