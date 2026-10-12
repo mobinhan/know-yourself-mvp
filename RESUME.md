@@ -185,7 +185,7 @@ Important limitation: this file records the required protocol; it does not itsel
 - Added guards to candidate `/v1/charts/{id}/questions/context` and `/today` before chart/transit computation and before the AI interpretation provider when a Premium capability is requested.
 - Free requests default to `guide.basic`; the model context is limited to active foundational L1 records, with external curated records and validated relationships excluded. Premium capability is not inferred from a client plan claim; the client can request a capability but the server independently authorizes it.
 - Added route tests designed to assert denied Premium requests do not invoke chart computation, transit computation, or the model provider; added a Free knowledge-tier boundary test.
-- Route guard CI run #38224912498 passed once. A rerun after tightening the advanced-retrieval fixtures is run #38225069136 and was still in dependency installation at last check. The existing gate-line regression workflow, which had failed due to old tests not requesting the Premium tier explicitly, now passes in run #38225069134. Fetch the final route-guard rerun before claiming the current head's route tests pass.
+- Route guard CI run #38225069136 passed. The gate-line regression workflow, which initially failed because old tests did not explicitly request the Premium tier, now also passes in run #38225069134 after updating those tests. These are candidate-branch CI tests, not live end-to-end entitlement tests.
 - PR #8 targets `feature/live-api-v1`, not `main`. That candidate API is not yet the default-branch production application.
 
 ### Mandatory blockers
