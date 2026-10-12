@@ -1,0 +1,29 @@
+name: Premium entitlement policy tests
+
+on:
+  pull_request:
+    paths:
+      - "supabase/functions/_shared/entitlements.ts"
+      - "supabase/functions/_shared/entitlements.test.ts"
+      - ".github/workflows/premium-entitlements.yml"
+  push:
+    branches:
+      - "security/premium-entitlement-guard"
+    paths:
+      - "supabase/functions/_shared/entitlements.ts"
+      - "supabase/functions/_shared/entitlements.test.ts"
+      - ".github/workflows/premium-entitlements.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  entitlement-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Run entitlement policy tests
+        run: deno test --deny-net supabase/functions/_shared/entitlements.test.ts
