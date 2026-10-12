@@ -5,12 +5,16 @@
 ## Implemented on this branch
 
 - `supabase/functions/_shared/entitlements.ts`: explicit capability map; server-supplied identity/entitlement inputs; user-ID match; active/trial/grace status checks; expiry checks; fail-closed behavior for missing or unverifiable entitlement; generic denial status mapping.
-- `supabase/functions/_shared/entitlements.test.ts`: 10 policy cases covering basic guide, missing authentication, missing entitlement, user mismatch, valid Premium, Free denial, expiry, grace window, unknown capability, and malformed time.
+- `supabase/functions/_shared/entitlements.test.ts`: policy cases covering basic guide, missing authentication, missing entitlement, user mismatch, valid Premium, Free denial, expiry, grace window, unknown/inherited capability keys, and malformed time.
+- `supabase/functions/_shared/load-entitlement.ts`: loads entitlement only from the server-managed `ky_entitlements` table using the authenticated user's Supabase client; missing row defaults to Free; database errors fail closed.
+- `supabase/functions/_shared/load-entitlement.test.ts`: tests Free fallback, lookup failure, Premium mapping, and unexpected identity/status.
+- `supabase/migrations/20261012000000_ky_entitlements.sql`: creates a user-readable, client-read-only entitlement table. Authenticated users cannot insert, update, or delete their own plan. Trusted service-role/admin/billing workflows are the intended writers.
+- `.github/workflows/premium-entitlements.yml`: adds a Deno test workflow for the policy and lookup tests.
 
 ## Security limitations — do not mark the gate PASS
 
 1. The policy helper is not yet called by a protected AI/knowledge route. A helper that is not wired into a route does not enforce a paywall.
-2. A trusted entitlement repository/provider has not been identified or integrated. Client-supplied plan/tier flags must never be used as the source of truth.
+2. A trusted entitlement table contract now exists in a migration, but the migration has not been applied to the live Supabase project and no billing/subscription webhook or admin provisioning workflow is integrated. Client-supplied plan/tier flags must never be used as the source of truth.
 3. Route-level tests have not yet demonstrated that denied requests skip protected retrieval and skip the model call.
 4. Authenticated Free/Premium integration tests, data-isolation tests, and live deployment checks have not been run.
 5. The Lovable app snapshot inspected earlier has an `/api/ask` route, but that project is not the repository's default-branch application. No Lovable edits were made as part of this branch.
