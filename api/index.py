@@ -353,9 +353,10 @@ class handler(BaseHTTPRequestHandler):
                     # question as guide.basic. Basic chart facts remain available via
                     # deterministic foundation/catalogue endpoints.
                     capability = "transits.advanced_analysis"
+                    decision = resolve_request_capability(self.headers, capability)
                     if not decision["allowed"]:
                         status = decision["status"]
-                        public_error = "authentication_required" if status == 401 else "premium_required" if status == 403 else "entitlement_unavailable" if status == 503 else "unknown_capability"
+                        public_error = "authentication_required" if status == 401 else "premium_required" if status == 403 else "entitlement_unavailable" if status == 503 else "premium_required"
                         return self._send(status, {"error": public_error})
                     knowledge_tier = decision.get("knowledge_tier", "basic")
                     foundation = build_foundation(body.get("birth") or {}, chart_id=chart_id)
