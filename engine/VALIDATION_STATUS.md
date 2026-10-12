@@ -57,3 +57,12 @@ The Golden activation regression test is now included in the Python engine valid
 - Regression suite: `engine/test_golden_activation_regression.py`
 
 This confirms agreement with the checked-in regression fixture for the tested cases. It does not independently certify the fixture against an external authority, nor implement Colour/Tone/Base calculations.
+
+## Transit-overlay evidence routing checkpoint — 2026-10-12
+
+- Golden Chart #2 overlay mechanics passed GitHub Actions run [#464](https://github.com/mobinhan/know-yourself-mvp/actions/runs/38196195552), commit `75ab9bab44ba5964b4829cf2eaf16f46fa493c12`.
+- Added an explicit `E-TRANSIT-OVERLAY` evidence record derived from deterministic temporal state. It keeps natal, transit-only, temporary and combined state separately visible to reasoning.
+- Added `transit_overlay` evidence-target mapping and question routing for explicit temporary-channel / transit-overlay questions.
+- Added a regression test that requires the overlay evidence and checks temporary channel data is present in the selected evidence. Initial run #469 exposed a test-fixture omission (the timing contract also requires lifecycle evidence); the fixture was corrected rather than weakening the contract.
+- Validation of this checkpoint is pending the result of run [#470](https://github.com/mobinhan/know-yourself-mvp/actions/runs/38196512808). Do not mark this change CI-verified until that run completes successfully.
+- Integration boundary: the canonical repository contains the deterministic engine and the authenticated `user-data-api`, but no live Ask/LLM endpoint. `engine/STEP5.md` documents the provider-neutral/mock boundary. This work validates evidence preparation and selection, not the live Lovable Ask response.
