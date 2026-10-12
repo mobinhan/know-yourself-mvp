@@ -13,7 +13,10 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 CAPABILITIES = {
-    "guide.basic": "free",
+    "chart.basic_facts": "free",
+    "guide.basic_overview": "free",
+    "transits.basic_overlay": "free",
+    "guide.open_question": "premium",
     "explore.advanced_sources": "premium",
     "transits.advanced_analysis": "premium",
     "lifecycles.full": "premium",
@@ -28,7 +31,8 @@ def decide_capability(capability: str, user_id: str | None, entitlement: dict | 
                       now: datetime | None = None) -> dict:
     """Pure policy decision. Authentication and entitlement must be server-verified."""
     if capability not in CAPABILITIES:
-        return {"allowed": False, "status": 400, "reason": "unknown_capability"}
+        # Unclassified/new capabilities are Premium by default, never implicitly Basic.
+        return {"allowed": False, "status": 403, "reason": "premium_required"}
     if CAPABILITIES[capability] == "free":
         return {"allowed": True, "status": 200, "reason": "public_basic"}
     if not user_id:

@@ -19,10 +19,15 @@ PREMIUM = {
 
 class EntitlementPolicyTests(unittest.TestCase):
     def test_basic_guide_is_public(self):
-        self.assertTrue(decide_capability("guide.basic", None, None, NOW)["allowed"])
+        self.assertTrue(decide_capability("guide.basic_overview", None, None, NOW)["allowed"])
 
     def test_unknown_capability_denied(self):
-        self.assertEqual(decide_capability("toString", "user-a", PREMIUM, NOW)["status"], 400)
+        self.assertEqual(decide_capability("toString", "user-a", PREMIUM, NOW)["status"], 403)
+
+    def test_open_question_is_premium_by_default(self):
+        result = decide_capability("guide.open_question", "user-a", {**PREMIUM, "plan": "free"}, NOW)
+        self.assertFalse(result["allowed"])
+        self.assertEqual(result["status"], 403)
 
     def test_premium_requires_authentication(self):
         self.assertEqual(decide_capability("explore.advanced_sources", None, None, NOW)["status"], 401)
