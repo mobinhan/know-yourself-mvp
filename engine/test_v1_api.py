@@ -102,7 +102,7 @@ def test_interpretation_provider_uses_responses_api_and_filters_evidence(monkeyp
         return FakeResponse()
 
     monkeypatch.setattr(provider, "urlopen", fake_urlopen)
-    result = provider.generate_interpretation("Explain my Gate 57.4", foundation)
+    result = provider.generate_interpretation("Explain my Gate 57.4", foundation, knowledge_tier="premium")
 
     assert captured["url"] == "https://api.openai.com/v1/responses"
     assert captured["body"]["model"] == "gpt-5-mini"
