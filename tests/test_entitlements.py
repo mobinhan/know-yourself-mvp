@@ -1,7 +1,10 @@
 from datetime import datetime, timezone
+import json
 import unittest
+from unittest.mock import patch
+from urllib.error import URLError
 
-from api.entitlements import decide_capability
+from api.entitlements import decide_capability, resolve_request_capability
 
 
 NOW = datetime(2026, 10, 12, tzinfo=timezone.utc)
@@ -52,6 +55,77 @@ class EntitlementPolicyTests(unittest.TestCase):
     def test_malformed_expiry_fails_closed(self):
         malformed = {**PREMIUM, "expires_at": "not-a-date"}
         self.assertEqual(decide_capability("explore.advanced_sources", "user-a", malformed, NOW)["status"], 503)
+
+    def test_server_resolved_free_user_denied_even_when_client_requests_premium(self):
+        class Response:
+            def __init__(self, payload):
+                self.payload = json.dumps(payload).encode("utf-8")
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+            def read(self):
+                return self.payload
+
+        calls = []
+        def opener(request, timeout=5):
+            calls.append(request.full_url)
+            if "/auth/v1/user" in request.full_url:
+                return Response({"id": "user-free"})
+            return Response([{
+                "user_id": "user-free", "plan": "free", "status": "active",
+                "expires_at": None, "grace_until": None,
+            }])
+
+        with patch.dict("os.environ", {
+            "SUPABASE_URL": "https://example.supabase.co",
+            "SUPABASE_ANON_KEY": "test-public-key",
+        }):
+            decision = resolve_request_capability(
+                {"Authorization": "Bearer verified-user-token"},
+                "explore.advanced_sources",
+                opener=opener,
+            )
+        self.assertFalse(decision["allowed"])
+        self.assertEqual(decision["status"], 403)
+        self.assertEqual(decision["reason"], "premium_required")
+        self.assertEqual(len(calls), 2)
+
+    def test_entitlement_service_failure_fails_closed(self):
+        class Response:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+            def read(self):
+                return b'{"id":"user-a"}'
+
+        def opener(request, timeout=5):
+            if "/auth/v1/user" in request.full_url:
+                return Response()
+            raise URLError("simulated entitlement database outage")
+
+        with patch.dict("os.environ", {
+            "SUPABASE_URL": "https://example.supabase.co",
+            "SUPABASE_ANON_KEY": "test-public-key",
+        }):
+            decision = resolve_request_capability(
+                {"Authorization": "Bearer verified-user-token"},
+                "lifecycles.full",
+                opener=opener,
+            )
+        self.assertFalse(decision["allowed"])
+        self.assertEqual(decision["status"], 503)
+        self.assertEqual(decision["reason"], "entitlement_unavailable")
+
+    def test_missing_server_configuration_fails_closed(self):
+        with patch.dict("os.environ", {"SUPABASE_URL": "", "SUPABASE_ANON_KEY": ""}):
+            decision = resolve_request_capability(
+                {"Authorization": "Bearer verified-user-token"},
+                "connection.comparison",
+            )
+        self.assertFalse(decision["allowed"])
+        self.assertEqual(decision["status"], 503)
 
 
 if __name__ == "__main__":
