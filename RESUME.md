@@ -170,17 +170,28 @@ Important limitation: this file records the required protocol; it does not itsel
 - Next safe implementation step once the existing project can be edited: add a reusable server-only capability guard and tests; Premium must fail closed until trusted authentication and entitlement resolution exist. Do not claim Premium is protected until route-level tests pass against the actual implementation.
 
 
-## Current verified checkpoint (2026-10-12 — Premium entitlement guard foundation)
+## Current verified checkpoint (2026-10-12 — Premium entitlement enforcement)
 
-- User explicitly authorized proceeding with Premium safeguards.
+### Framework policy foundation
 - Draft PR #7: https://github.com/mobinhan/know-yourself-mvp/pull/7
-- Branch: `security/premium-entitlement-guard`; latest verified PR head: `c07a5c0ccd613c879e076c52cef12b7c12f3af0b`; PR remains draft and unmerged.
-- Added `supabase/functions/_shared/entitlements.ts`: explicit capability policy for basic Guide, advanced Explore sources, advanced transit analysis, full Life Cycles, insight history, pattern recognition, and Connection comparison. Premium decisions fail closed for missing/mismatched identity/entitlement, inactive/expired access, malformed time, and unknown capability keys (including inherited object-property names).
-- Added `supabase/functions/_shared/load-entitlement.ts`: server-side lookup from the `ky_entitlements` table, scoped to authenticated user; missing row maps to Free; lookup errors fail closed.
-- Added focused Deno tests for capability policy and trusted entitlement lookup. GitHub Actions run #38224634198 passed **14 tests, 0 failed** (policy/lookup unit tests only; not route-level enforcement). Workflow logs were inspected.
-- Added migration `supabase/migrations/20261012000000_ky_entitlements.sql`. Authenticated users can read their own entitlement but cannot insert/update/delete it. The migration has not been applied to live Supabase; no billing webhook or trusted admin provisioning path has been integrated.
-- Added `docs/premium-entitlement-implementation.md` with implementation status and blockers.
-- **Critical remaining gap:** no protected AI/knowledge route in the default branch currently invokes the capability policy before retrieval/model invocation. The V22 app on `main` is a static website artifact; a separate `feature/live-api-v1` branch contains a Python API but is not on `main`. The previously inspected Lovable `/api/ask` belongs to a separate unpublished project. Do not edit Lovable without explicit approval.
-- Therefore the mandatory 3framework Premium acceptance gate remains **BLOCKED**, not PASS. Do not merge or deploy this foundation as if it completed enforcement.
-- Next: verify the CI workflow; identify/agree the actual production AI API route; integrate authentication and the trusted entitlement lookup before source retrieval/model calls; apply the migration only through an approved deployment path; add route tests proving denied requests skip retrieval and model invocation; add Free/Premium, expiry, spoofing, and user-isolation integration tests.
-- No changes were made on `main` except this continuity checkpoint. No PR was merged, no migration was applied, and no deployment or subscription-provider configuration was changed.
+- Branch: `security/premium-entitlement-guard`; latest known commit `c07a5c0ccd613c879e076c52cef12b7c12f3af0b`.
+- Capability policy and trusted entitlement lookup are implemented; server-managed table migration is authored but not applied to live Supabase.
+- GitHub Actions run #38224634198 passed **14 tests, 0 failures**. This verifies unit-level capability and lookup policy only, not live route enforcement.
+
+### Candidate API route enforcement
+- Draft PR #8: https://github.com/mobinhan/know-yourself-mvp/pull/8
+- Branch: `security/premium-api-route-guard`, based on candidate API branch `feature/live-api-v1`; latest branch commit at checkpoint `cc12e5a730f77280fa67d3fd272443d3f9c17393`.
+- Added `api/entitlements.py`: verifies Supabase bearer JWT, reads the server-managed entitlement row using the authenticated JWT, defaults a missing row to Free, and fails closed on entitlement lookup errors.
+- Added guards to candidate `/v1/charts/{id}/questions/context` and `/today` before chart/transit computation and before the AI interpretation provider when a Premium capability is requested.
+- Free requests default to `guide.basic`; the model context is limited to active foundational L1 records, with external curated records and validated relationships excluded. Premium capability is not inferred from a client plan claim; the client can request a capability but the server independently authorizes it.
+- Added route tests designed to assert denied Premium requests do not invoke chart computation, transit computation, or the model provider; added a Free knowledge-tier boundary test.
+- CI run #38224912498 was **in progress** at the last check (dependency installation); fetch its final result before claiming route tests pass.
+- PR #8 targets `feature/live-api-v1`, not `main`. That candidate API is not yet the default-branch production application.
+
+### Mandatory blockers
+- Both PRs remain draft/unmerged. No deployment was performed.
+- The entitlement migration has not been applied to live Supabase; no billing/webhook or trusted admin provisioning integration exists.
+- The default `main` branch remains a V22 static website artifact and has no corresponding AI API route. The actual production app/API route must be selected before these guards can protect the live user experience.
+- Do not edit Lovable without explicit user approval.
+- The mandatory 3framework Premium acceptance gate remains **BLOCKED**, not PASS, until candidate route tests pass, production route alignment is resolved, entitlement migration/provisioning is safely applied, and authenticated end-to-end bypass tests pass.
+- Resume by checking PR #7 and #8 heads, route-guard CI, and the current deployed API identity; then continue with integration without merging/deploying prematurely.
