@@ -69,10 +69,13 @@ Deno.test("grace status requires an unexpired grace deadline", () => {
   assertEquals(d.allowed, true);
 });
 
-Deno.test("unknown capability is denied", () => {
+Deno.test("unknown capability and inherited object keys are denied", () => {
   const d = decideCapability({ capability: "admin.dump_database", authenticatedUserId: "user-a", entitlement: premium, now });
   assertEquals(d.allowed, false);
   assertEquals(capabilityDenialStatus(d), 400);
+  const inherited = decideCapability({ capability: "toString", authenticatedUserId: "user-a", entitlement: premium, now });
+  assertEquals(inherited.allowed, false);
+  assertEquals(capabilityDenialStatus(inherited), 400);
 });
 
 Deno.test("malformed time fails closed", () => {
