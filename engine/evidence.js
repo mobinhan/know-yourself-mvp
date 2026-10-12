@@ -94,13 +94,29 @@ export function buildEvidence({ activations, structure, calculation = null, sour
     sources
   );
 
-  if (temporalState) add(
-    "E-TEMPORAL-STATE",
-    "Temporal chart state is the deterministic combination of supplied natal and transit states.",
-    ["temporal_state"],
-    temporalState,
-    sources
-  );
+  if (temporalState) {
+    add(
+      "E-TEMPORAL-STATE",
+      "Temporal chart state is the deterministic combination of supplied natal and transit states.",
+      ["temporal_state"],
+      temporalState,
+      sources
+    );
+    add(
+      "E-TRANSIT-OVERLAY",
+      "Transit overlay mechanics distinguish natal definition from transit-only and combined temporary definition.",
+      ["temporal_state.natal", "temporal_state.transit", "temporal_state.temporary", "temporal_state.combined"],
+      {
+        mode: temporalState.mode ?? "temporal_state",
+        natal: temporalState.natal ?? null,
+        transit: temporalState.transit ?? null,
+        temporary: temporalState.temporary ?? null,
+        combined: temporalState.combined ?? null,
+        invariants: temporalState.invariants ?? null
+      },
+      sources
+    );
+  }
 
   if (Array.isArray(lifecycleEvents)) add(
     "E-LIFECYCLE-EVENTS",
