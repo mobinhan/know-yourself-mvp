@@ -253,3 +253,83 @@ A question should not automatically be treated as a fact about the user. For exa
 ## Readiness gate
 
 The framework is ready for **structured testing now**, but not yet certified as fully integrated. Start with deterministic Layer 1 tests and isolated Layer 2/orchestrator fixtures; then run authenticated persistence round-trip and full cross-layer tests. Do not describe question saving as functional until O6/O7 pass with verified read-back.
+
+
+## Premium entitlement and knowledge-boundary security test
+
+**Status: required design and acceptance contract; implementation not yet verified.** This section exists because an open chat can unintentionally expose Premium value if the model receives unrestricted source material or if entitlement is enforced only in the UI.
+
+### Security principle
+
+The AI model is not the paywall. Enforce subscription entitlement in trusted server-side code **before** selecting or retrieving restricted knowledge, loading protected personal history, computing Premium-only results, or calling the model. Never send the full Premium knowledge set to a Free request and rely on instructions to conceal it.
+
+The 3Framework remains unchanged:
+- **Layer 1 — Canonical Chart + Immutable Evidence:** deterministic chart facts remain authoritative. Subscription may gate advanced derived analyses or tools, but must not corrupt or falsify base chart facts.
+- **Layer 2 — Adaptive User Context:** user-specific saved history, patterns and records are scoped to the authenticated user and the relevant consent. Premium-only history/features require server-verified entitlement as well as user-level access checks.
+- **Layer 3 — ChatGPT live reasoning:** receives only the permitted evidence, knowledge and context assembled by the trusted server. The model may explain public/basic concepts, but must not be relied upon to enforce access.
+- **3Framework Orchestrator (3FO):** validates identity, entitlement, feature scope and consent before retrieval; records which evidence/source tiers were supplied; fails closed when entitlement cannot be verified.
+
+### Entitlement contract
+
+Use server-verified account identity and subscription state. Do not accept `tier`, `isPremium`, `plan`, price, role or entitlement claims from request JSON, URL parameters, local storage or client UI state. The server must resolve entitlement from a trusted provider/database record, including subscription status and applicable grace/expiry rules.
+
+Represent capabilities as explicit feature permissions rather than scattered plan-name checks. Example capability keys (final commercial limits remain configurable):
+- `guide.basic`
+- `explore.advanced_sources`
+- `transits.advanced_analysis`
+- `lifecycles.full`
+- `insights.history`
+- `insights.pattern_recognition`
+- `connection.comparison`
+
+Free users can still ask open-ended questions and receive useful explanations from permitted knowledge. A question's wording alone must not be the sole paywall trigger. If the requested depth requires a locked capability, return a graceful upgrade response without retrieving or exposing the restricted payload. Do not leak whether a particular protected source, memory, or record exists.
+
+### Required request sequence
+
+1. Authenticate the user on the server.
+2. Resolve the user's current entitlement from trusted state; reject invalid, expired, canceled (outside configured grace), or unverifiable status for Premium capabilities.
+3. Resolve the requested capability/feature.
+4. Apply user ownership, consent, expiry and deletion rules to personal context.
+5. Retrieve only knowledge and records permitted for that user and capability.
+6. Build the model context with source provenance and clear boundaries between mechanics, source teaching and synthesis.
+7. Call the model with only that bounded context.
+8. Record an auditable decision (user/account identifier, capability, allow/deny, policy version and source IDs; never log secrets or unnecessary sensitive content).
+
+The sequence must fail closed: unavailable entitlement service means no Premium retrieval. Basic non-Premium chart calculations may remain available if independently safe and explicitly permitted.
+
+### Acceptance tests (must run against server routes, not just UI)
+
+- **P1 — Basic Free access:** unauthenticated or Free user can use only explicitly public/basic endpoints; response is useful and does not contain protected source text.
+- **P2 — No client-side tier spoofing:** request bodies claiming Premium, modified local storage, altered query parameters, or forged headers cannot grant a capability.
+- **P3 — Direct endpoint denial:** a Free user calling a Premium API/route directly is denied server-side.
+- **P4 — Retrieval-before-model guard:** on denial, restricted retrieval is not invoked and the AI provider is not called with Premium material.
+- **P5 — Premium allow:** a valid Premium user can retrieve the allowed source tier and use the advanced analysis.
+- **P6 — Expiry/cancellation:** expired or canceled entitlement loses Premium access according to the configured grace policy without waiting for a UI refresh.
+- **P7 — Fail closed:** missing/unavailable subscription data never defaults to Premium.
+- **P8 — Personal data isolation:** user A cannot read user B's saved insights, memories, conversation history, chart records or snapshots, regardless of tier.
+- **P9 — Consent and expiry:** consent-revoked, unconfirmed, expired or deleted personal context is excluded even for Premium users.
+- **P10 — Cross-tier non-leakage:** Free requests do not receive Premium history, advanced-source excerpts, pattern results or hidden prompt/context fields.
+- **P11 — Prompt injection:** asking the model to ignore the paywall, reveal system prompts, list hidden sources, or reproduce all training material does not bypass server authorization.
+- **P12 — Graceful boundary:** when a question needs a locked capability, response explains that the deeper analysis is Premium and offers a useful basic answer where possible.
+- **P13 — Provenance:** Premium responses identify permitted source provenance internally/appropriately; model-generated synthesis is not misrepresented as source quotation.
+- **P14 — No side-channel leakage:** denial messages, status codes, timing and logs do not disclose protected content or whether specific private records exist.
+- **P15 — Regression:** natal chart facts, transit separation, consent behavior, and deterministic chart regression tests continue to pass.
+
+### Current inspected implementation gap (Lovable project snapshot)
+
+Inspected project: `My Design Decoder`, commit `3f9841966f0b8af00c80b5b26ca8ff37106834f4`, unpublished.
+- `POST /api/ask` accepts question, chart and preferences without a visible authentication or entitlement check. Preferences are client-supplied; the server prompt says ADAPTIVE is consented, but the route does not verify consent against trusted user state.
+- The route builds natal/transit facts and sends them to the Lovable AI gateway. It currently does not retrieve advanced-source records, persistent memories, saved insights or subscription data.
+- `POST /api/chart` calculates charts without a visible authentication check. That may be acceptable for a basic public calculator, but it must not become a route to Premium-only calculations or source payloads.
+- `GET /api/health` reports persistence unavailable; the project snapshot does not show a connected database or subscription entitlement service.
+- The app is unpublished. No live subscription enforcement, authenticated end-to-end test, or deployment has been verified.
+
+### Implementation order
+
+1. Add server-side identity and entitlement resolution using the chosen auth/subscription source; do not trust client tier claims.
+2. Create a single reusable capability policy and enforce it before any Premium source retrieval or model invocation.
+3. Keep basic chart computation separate from gated advanced analyses.
+4. Add ownership/consent/expiry filtering for Adaptive User Context before context assembly.
+5. Add unit tests for policy decisions and route-level tests that spy on retrieval/model calls to prove they are not invoked on denial.
+6. Add Free/Premium integration acceptance tests with test accounts and verify direct API calls, expiry and user isolation.
+7. Only then consider the boundary validated. Do not merge, publish or claim Premium protection until the server-side tests pass.
