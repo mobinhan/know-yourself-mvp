@@ -60,7 +60,7 @@ def test_interpretation_provider_fails_closed_without_api_key(monkeypatch):
         "date": "1982-04-15", "time": "07:38:00", "location": "Baarn",
         "timezone": "Europe/Amsterdam", "latitude": 52.211, "longitude": 5.287,
     })
-    result = provider.generate_interpretation("Explain my Gate 57.4", foundation, knowledge_tier="premium")
+    result = provider.generate_interpretation("Explain my Gate 57.4", foundation)
     assert result["interpretation_status"] == "provider_not_configured"
     assert result["answer"] is None
 
