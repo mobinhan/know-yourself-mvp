@@ -124,6 +124,25 @@ class PremiumRouteGuardTests(unittest.TestCase):
         build.assert_not_called()
         model.assert_not_called()
 
+    def test_basic_classifier_accepts_narrow_chart_lookup(self):
+        from api.index import classify_basic_question
+        self.assertTrue(classify_basic_question("What is my Personality Sun gate and line?"))
+        self.assertTrue(classify_basic_question("Show my defined channels"))
+
+    def test_basic_classifier_rejects_open_ended_or_sensitive_depth_questions(self):
+        from api.index import classify_basic_question
+        rejected = [
+            "Tell me about my Chiron Return",
+            "What does my Incarnation Cross mean for me personally?",
+            "Go deeper and connect this to my overall design",
+            "Interpret my PHS determination",
+            "Compare my chart with my partner",
+            "What is my future transit saying about me?",
+        ]
+        for question in rejected:
+            with self.subTest(question=question):
+                self.assertFalse(classify_basic_question(question))
+
     def test_free_knowledge_tier_excludes_external_and_advanced_records(self):
         foundation = {"activations": {"personality": [], "design": []}}
         knowledge, external, relationships = _select_knowledge(
