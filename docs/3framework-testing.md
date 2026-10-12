@@ -257,7 +257,7 @@ The framework is ready for **structured testing now**, but not yet certified as 
 
 ## Premium entitlement and knowledge-boundary security test
 
-**Status: required design and acceptance contract; implementation not yet verified.** This section exists because an open chat can unintentionally expose Premium value if the model receives unrestricted source material or if entitlement is enforced only in the UI.
+**MANDATORY 3FRAMEWORK ACCEPTANCE GATE — not optional.** A release cannot be marked 3framework-tested, Premium-ready, or production-ready until server-side entitlement enforcement is implemented and the applicable boundary tests pass. Current status: required design and acceptance contract exists; implementation is not yet verified. An open chat can expose Premium value if the model receives unrestricted source material or if entitlement is enforced only in the UI.
 
 ### Security principle
 
@@ -333,3 +333,13 @@ Inspected project: `My Design Decoder`, commit `3f9841966f0b8af00c80b5b26ca8ff37
 5. Add unit tests for policy decisions and route-level tests that spy on retrieval/model calls to prove they are not invoked on denial.
 6. Add Free/Premium integration acceptance tests with test accounts and verify direct API calls, expiry and user isolation.
 7. Only then consider the boundary validated. Do not merge, publish or claim Premium protection until the server-side tests pass.
+
+
+### Mandatory release gate
+
+This is a **blocking gate for 3framework testing**, not merely documentation or a future recommendation:
+- Mark the entitlement gate **FAIL / BLOCKED** until trusted server-side identity and entitlement resolution are present and verified.
+- Do not certify the whole 3framework integration or Premium readiness while P1–P15 are untested or failing.
+- UI-only hiding, client-side plan flags, prompt instructions, and a successful chat response do not count as enforcement.
+- Record each test result as PASS / FAIL / BLOCKED with test evidence. A BLOCKED test is not a PASS.
+- Any new endpoint or data source that can expose Premium-only analysis, knowledge, saved context, or history must inherit the same policy and add boundary tests before it is considered complete.
