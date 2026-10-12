@@ -154,3 +154,48 @@ This document defines the intended framework and its acceptance tests; it does *
 3. Connect the permitted context to the open reasoning request without making the reasoning layer a fixed questionnaire.
 4. Run F7, F9, F10, F11, and F12 end to end.
 5. Update each status only from executed evidence and save the resulting checkpoint in `RESUME.md`.
+
+
+## Cross-cutting mechanism — 3Framework Orchestrator (3FO)
+
+The 3Framework Orchestrator is **not a fourth layer**. It is the coordination mechanism intertwined with Layers 1, 2, and 3. It manages the permitted flow between canonical evidence, adaptive context, and open reasoning.
+
+Responsibilities:
+- Resolve the user's current question and determine which canonical facts, source evidence, and permitted context are relevant.
+- Retrieve only context allowed by consent and access rules.
+- Pass chart facts and provenance separately from user memories and interpretive material.
+- Keep the reasoning layer open-ended; do not require a fixed questionnaire.
+- Prevent Layer 2 or Layer 3 from silently mutating Layer 1.
+- Carry uncertainty and conflicts through to the final answer instead of hiding them.
+- When the user asks to save a question, memory, or insight, invoke an explicit persistence path if available; verify the write and later retrieval before claiming success.
+- Record enough trace information in tests to establish which evidence and context informed a response, without unnecessarily logging sensitive content.
+
+### Orchestrator acceptance tests
+
+| ID | Test | Expected result | Evidence needed |
+|---|---|---|---|
+| O1 | Routing | A free-form question reaches the open reasoning path with relevant chart/context inputs | Request/response trace |
+| O2 | Separation | Canonical evidence and user context remain separately typed/provenanced | Context payload inspection |
+| O3 | Consent enforcement | Orchestrator excludes context not authorized for this request | Negative test and retrieval trace |
+| O4 | No canonical mutation | User memory or reasoning output cannot alter chart artifact/digest | Before/after artifact comparison |
+| O5 | Conflict propagation | Conflicting evidence is surfaced, not silently resolved by the model | Conflict fixture |
+| O6 | Question save | A question explicitly selected for saving is stored with source, timestamp, consent/access scope, and topic metadata | Authenticated write plus database read-back |
+| O7 | Question retrieval | A later relevant question can retrieve the saved question as context for the same authorized user | New-session retrieval trace |
+| O8 | Save control | Ordinary questions are not silently promoted to durable memory unless the product's clearly communicated save policy and consent permit it | UI/behavior test |
+| O9 | End-to-end coordination | One response uses verified chart evidence and permitted context while remaining open-ended | Full trace and test report |
+
+## Can Adaptive User Context save questions?
+
+**Architecturally, yes.** Questions can be a first-class context record, for example `type: unresolved_question` or `type: conversation_question`, with the original wording, timestamp, topic tags, source conversation/turn reference, and consent/access status. The system should distinguish:
+- **Question history:** what the user asked, retained under the product's conversation-history policy.
+- **Open question / unresolved thread:** a question the user wants to return to.
+- **Saved insight:** a conclusion or reflection the user explicitly wants to keep.
+- **Durable preference/correction:** information useful across future conversations.
+
+A question should not automatically be treated as a fact about the user. For example, asking about a relationship issue does not prove that the user is experiencing that issue. The user should be able to say “save this question” or explicitly mark it for follow-up. If automatic conversation history is later enabled, its retention and consent rules must be clear and configurable.
+
+**Current implementation status: not yet verified as working end to end.** The previously inspected ask-context code did not connect persistent conversation history, saved insights, memories, or knowledge retrieval, and its health endpoint reported persistence unavailable. Therefore, the architecture supports saving questions, but we cannot yet promise that the current app stores and retrieves them. O6 and O7 must pass against an authenticated persistence service before this can be called operational.
+
+## Readiness gate
+
+The framework is ready for **structured testing now**, but not yet certified as fully integrated. Start with deterministic Layer 1 tests and isolated Layer 2/orchestrator fixtures; then run authenticated persistence round-trip and full cross-layer tests. Do not describe question saving as functional until O6/O7 pass with verified read-back.
