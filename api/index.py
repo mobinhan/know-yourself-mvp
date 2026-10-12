@@ -29,6 +29,7 @@ from ephemeris import calculate_chart  # noqa: E402
 from temporal_ephemeris import transit_activations  # noqa: E402
 from interpretation_provider import generate_interpretation, InterpretationProviderError  # noqa: E402
 from entitlements import resolve_request_capability  # noqa: E402
+from chat_credits import reserve_chat_credit, finalize_chat_credit, ChatCreditError  # noqa: E402
 
 CHANNEL_CATALOG = json.loads((ENGINE_DIR / "channel-catalog.json").read_text())
 GATE_CATALOG = json.loads((ENGINE_DIR / "gate-catalog.json").read_text())
@@ -43,6 +44,35 @@ _AI_REQUESTS_BY_IP: dict[str, list[float]] = {}
 
 def _unique(items):
     return list(dict.fromkeys(items))
+
+
+def classify_basic_question(question: str) -> bool:
+    """Allow only simple chart lookups or foundational definitions on the credit-limited Basic route.
+
+    Anything requiring personal synthesis, timing, comparison, deep/source analysis, or a life-cycle
+    reading must use the Premium route. This intentionally errs toward Premium.
+    """
+    q = " ".join(question.lower().split())
+    if not q or len(q) > 4000:
+        return False
+    premium_signals = (
+        "chiron", "saturn return", "uranus opposition", "solar return", "life cycle",
+        "lifecycle", "life-cycle", "node return", "detailed", "in depth", "in-depth",
+        "go deeper", "deep analysis", "source analysis", "personally", "for me personally",
+        "connect to my", "connect it to", "overall design", "incarnation cross",
+        "pattern recognition", "relationship", "compare", "comparison", "what does it mean for me",
+        "what is it saying about me", "interpret my", "synthesize", "synthesis", "advanced transit",
+        "future transit", "historical transit", "phs", "determination", "environment",
+    )
+    if any(term in q for term in premium_signals):
+        return False
+    simple_lookup = (
+        "what is my", "what are my", "show my", "list my", "which gate", "which line",
+        "what does gate ", "what is gate ", "what is channel ", "what are the centres",
+        "what are the centers", "what is a gate", "what is a channel", "what is a centre",
+        "what is a center", "explain the term", "define gate", "define channel",
+    )
+    return any(term in q for term in simple_lookup)
 
 
 def derive_structure(activations: dict) -> dict:
@@ -393,6 +423,85 @@ class handler(BaseHTTPRequestHandler):
                         "chart_id": chart_id,
                         "transit": transit,
                         "reading": reading,
+                    })
+                if len(segments) == 5 and segments[3] == "questions" and segments[4] == "basic" and method == "POST":
+                    body = self._read_json()
+                    question = str(body.get("question") or "").strip()
+                    if not question or len(question) > 4000:
+                        return self._send(400, {"error": "question_must_be_1_to_4000_characters"})
+                    if not classify_basic_question(question):
+                        return self._send(403, {
+                            "error": "premium_required",
+                            "message": "This question needs deeper personal synthesis. Premium unlocks open-ended interpretation."
+                        })
+                    # Basic route is explicitly classified by the server. Ignore all client tier/capability claims.
+                    request_id = self.headers.get("Idempotency-Key", "").strip()
+                    try:
+                        request_id = str(uuid.UUID(request_id)) if request_id else str(uuid.uuid4())
+                    except (ValueError, TypeError, AttributeError):
+                        return self._send(400, {"error": "idempotency_key_must_be_uuid"})
+                    try:
+                        foundation = build_foundation(body.get("birth") or {}, chart_id=chart_id)
+                    except (ValueError, KeyError, TypeError) as exc:
+                        return self._send(400, {"error": "invalid_request", "message": str(exc)})
+                    try:
+                        reservation = reserve_chat_credit(self.headers, request_id, "guide.basic_question")
+                    except ChatCreditError as exc:
+                        error = str(exc)
+                        status = 401 if error == "authentication_required" else 503
+                        return self._send(status, {"error": error})
+                    if not reservation.get("allowed") or reservation.get("replayed"):
+                        reason = reservation.get("reason", "credit_service_unavailable")
+                        status = 403 if reason in ("daily_credit_limit_reached", "premium_required", "capability_not_credit_eligible", "duplicate_request_no_new_charge") else 503
+                        return self._send(status, {
+                            "error": "daily_credit_limit_reached" if reason == "daily_credit_limit_reached" else "premium_required" if reason == "premium_required" else "credit_request_not_accepted" if reason == "duplicate_request_no_new_charge" else "credit_service_unavailable",
+                            "credits_used": reservation.get("credits_used"),
+                            "daily_limit": reservation.get("daily_limit"),
+                            "reset_at": reservation.get("reset_at"),
+                        })
+                    if not self._allow_ai_request():
+                        try:
+                            finalize_chat_credit(self.headers, request_id, "voided")
+                        except ChatCreditError:
+                            pass
+                        return self._send(429, {"error": "ai_rate_limit_exceeded", "retry_after_seconds": AI_RATE_WINDOW_SECONDS})
+                    try:
+                        interpretation = generate_interpretation(
+                            question, foundation, knowledge_tier="basic"
+                        )
+                    except InterpretationProviderError:
+                        try:
+                            finalize_chat_credit(self.headers, request_id, "voided")
+                        except ChatCreditError:
+                            pass
+                        return self._send(503, {"error": "interpretation_provider_unavailable", "interpretation_status": "provider_error"})
+                    if interpretation.get("interpretation_status") != "ready":
+                        try:
+                            finalize_chat_credit(self.headers, request_id, "voided")
+                        except ChatCreditError:
+                            pass
+                        return self._send(503, {
+                            "error": "interpretation_provider_unavailable",
+                            "interpretation_status": interpretation.get("interpretation_status", "provider_error")
+                        })
+                    try:
+                        finalize_chat_credit(self.headers, request_id, "consumed")
+                    except ChatCreditError:
+                        # Do not return a successful answer if usage accounting cannot be finalized.
+                        return self._send(503, {"error": "credit_service_unavailable"})
+                    return self._send(200, {
+                        "chart": foundation["core"],
+                        "activations": foundation["activations"],
+                        "phs": foundation["phs"],
+                        "question": question,
+                        "interpretation_status": interpretation.get("interpretation_status", "provider_error"),
+                        "evidence_status": "mechanics_recalculated_from_birth_data",
+                        "credit_usage": {
+                            "credits_used": reservation.get("credits_used"),
+                            "daily_limit": reservation.get("daily_limit"),
+                            "reset_at": reservation.get("reset_at"),
+                        },
+                        **interpretation,
                     })
                 if len(segments) == 5 and segments[3] == "questions" and segments[4] == "context" and method == "POST":
                     body = self._read_json()
