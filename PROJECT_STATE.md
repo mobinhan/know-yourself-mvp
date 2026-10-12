@@ -285,3 +285,11 @@ These remain contract/policy foundations. No durable cross-session storage, prod
 - Security advisor has no new RLS-without-policy findings among `ky_*` tables. The remaining RLS/GraphQL warnings refer to the pre-existing `public.Terugkeer` table, which was deliberately left unchanged because its purpose is unknown. GraphQL visibility warnings for user-owned tables reflect schema discoverability; RLS and grants still enforce row ownership.
 - Performance advisor currently reports unused indexes because the new tables are empty and have not yet received application traffic; it no longer reports the prior missing foreign-key index findings.
 - Authenticated end-to-end request testing still needs a dedicated test account/session. CI verifies source contracts and type-checking, not full logged-in request flows.
+
+## Transit overlay / Ask evidence checkpoint — 2026-10-12
+
+- Golden Chart #2 temporary-channel regression passed in GitHub Actions run #464: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38196195552
+- Canonical evidence now has a dedicated `E-TRANSIT-OVERLAY` record, and question understanding / evidence selection can explicitly request it for transit-overlay and temporary-channel questions.
+- Regression coverage verifies that the selected evidence contains the temporary-channel result and satisfies the timing evidence contract. The first test attempt exposed a missing lifecycle-evidence fixture; the fixture was corrected, not the evidence requirement.
+- Latest validation for this integration checkpoint: run #470, commit `a77a92437361d7b032d3f24415d3911c8260ad1e`; verify the completed workflow before treating it as passed.
+- Important boundary: the repository tree has no live Ask endpoint or connected external LLM. The only checked-in Supabase Edge Function is `user-data-api` for authenticated persistence/data access. Therefore this is an engine-side evidence-routing improvement, not proof that the Lovable UI is already passing or consuming this evidence. No Lovable credits were used.
