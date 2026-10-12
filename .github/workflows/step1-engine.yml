@@ -42,7 +42,8 @@ jobs:
             engine/test_substructure.py \
             engine/test_temporal_ephemeris.py \
             engine/test_temporal_edge_mechanics.py \
-            engine/test_temporal_golden.py 2>&1 | tee python-validation.txt
+            engine/test_temporal_golden.py \
+            engine/test_golden_activation_regression.py 2>&1 | tee python-validation.txt
       - name: Publish Python validation result
         if: always()
         run: |
