@@ -12,6 +12,7 @@ const TARGET_TO_EVIDENCE = {
   profile: "E-PROFILE",
   cross: "E-CROSS",
   temporal_state: "E-TEMPORAL-STATE",
+  transit_overlay: "E-TRANSIT-OVERLAY",
   lifecycle_event: "E-LIFECYCLE-EVENTS",
   connection: "E-CONNECTION"
 };
