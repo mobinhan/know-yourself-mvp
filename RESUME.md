@@ -168,3 +168,18 @@ Important limitation: this file records the required protocol; it does not itsel
 - Attempted to send an implementation request to the existing Lovable project only; Lovable rejected it because the workspace is out of credits. No code edit, credit-consuming build, database provisioning, payment integration, or deployment occurred.
 - Do not retry Lovable build actions until workspace credits are available and authorized. No new project was created.
 - Next safe implementation step once the existing project can be edited: add a reusable server-only capability guard and tests; Premium must fail closed until trusted authentication and entitlement resolution exist. Do not claim Premium is protected until route-level tests pass against the actual implementation.
+
+
+## Current verified checkpoint (2026-10-12 — Premium entitlement guard foundation)
+
+- User explicitly authorized proceeding with Premium safeguards.
+- Created draft PR #7: https://github.com/mobinhan/know-yourself-mvp/pull/7
+- Branch: `security/premium-entitlement-guard`
+- Latest branch commit: `995c3fead3b82a3f6fe62e676f79a31d94c267d3`
+- Added `supabase/functions/_shared/entitlements.ts`: reusable capability policy for `guide.basic`, `explore.advanced_sources`, `transits.advanced_analysis`, `lifecycles.full`, `insights.history`, `insights.pattern_recognition`, and `connection.comparison`. Premium checks fail closed when identity/entitlement is missing or mismatched, subscription is inactive/expired, or capability is unknown.
+- Added `supabase/functions/_shared/entitlements.test.ts` with 10 policy test cases.
+- Added `docs/premium-entitlement-implementation.md` documenting what is and is not implemented.
+- **Not yet protected end to end:** helper is not wired into an AI/knowledge route; trusted subscription source is not integrated; tests were authored but not executed; no live deployment or authenticated integration tests were performed. The mandatory 3framework Premium gate remains **BLOCKED**, not PASS.
+- Repository discovery found the current `main` branch is still the V22 website artifact and has a Supabase `user-data-api` function for authenticated user data. The inspected Lovable `/api/ask` code belongs to a separate unpublished project snapshot, not this default-branch app. Do not modify Lovable without explicit approval.
+- Next step: identify the production AI route and trusted subscription source; then wire authentication → server-side entitlement lookup → capability guard → consent/ownership checks → restricted retrieval → model call, and prove denied requests skip both retrieval and model invocation.
+- No files were changed on `main`; no PR was merged; no deployment or subscription-provider configuration was changed.
