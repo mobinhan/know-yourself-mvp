@@ -1,6 +1,6 @@
 # Know Yourself — Resume State
 
-Last updated: 2026-10-11
+Last updated: 2026-10-12
 
 ## Purpose
 This file is the canonical continuity checkpoint for the Know Yourself (KY) project. When the user says **“Resume KY”** or **“save mcp”**, recover this file first, inspect the live GitHub state, and continue from the latest verified checkpoint. Do not rely on conversation summaries alone when repository verification is available.
@@ -174,10 +174,10 @@ Important limitation: this file records the required protocol; it does not itsel
 
 - User explicitly authorized proceeding with Premium safeguards.
 - Draft PR #7: https://github.com/mobinhan/know-yourself-mvp/pull/7
-- Branch: `security/premium-entitlement-guard`; latest known changes are on this branch. Fetch branch head/PR status before continuing.
+- Branch: `security/premium-entitlement-guard`; latest verified PR head: `c07a5c0ccd613c879e076c52cef12b7c12f3af0b`; PR remains draft and unmerged.
 - Added `supabase/functions/_shared/entitlements.ts`: explicit capability policy for basic Guide, advanced Explore sources, advanced transit analysis, full Life Cycles, insight history, pattern recognition, and Connection comparison. Premium decisions fail closed for missing/mismatched identity/entitlement, inactive/expired access, malformed time, and unknown capability keys (including inherited object-property names).
 - Added `supabase/functions/_shared/load-entitlement.ts`: server-side lookup from the `ky_entitlements` table, scoped to authenticated user; missing row maps to Free; lookup errors fail closed.
-- Added focused Deno tests for capability policy and trusted entitlement lookup. Added `.github/workflows/premium-entitlements.yml` to run them. **Test execution is not yet verified; do not claim PASS until the workflow result is inspected.**
+- Added focused Deno tests for capability policy and trusted entitlement lookup. GitHub Actions run #38224634198 passed **14 tests, 0 failed** (policy/lookup unit tests only; not route-level enforcement). Workflow logs were inspected.
 - Added migration `supabase/migrations/20261012000000_ky_entitlements.sql`. Authenticated users can read their own entitlement but cannot insert/update/delete it. The migration has not been applied to live Supabase; no billing webhook or trusted admin provisioning path has been integrated.
 - Added `docs/premium-entitlement-implementation.md` with implementation status and blockers.
 - **Critical remaining gap:** no protected AI/knowledge route in the default branch currently invokes the capability policy before retrieval/model invocation. The V22 app on `main` is a static website artifact; a separate `feature/live-api-v1` branch contains a Python API but is not on `main`. The previously inspected Lovable `/api/ask` belongs to a separate unpublished project. Do not edit Lovable without explicit approval.
