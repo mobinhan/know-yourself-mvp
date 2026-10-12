@@ -136,3 +136,14 @@ Important limitation: this file records the required protocol; it does not itsel
 - No production code or calculation-engine decision was changed. PR #6 remains draft and must not be merged automatically.
 - CI artifact: `ephemeris-cross-engine-audit`, artifact ID `11710954671`; its summary reports the results above.
 - Next: determine whether the Human Design calculation contract requires true or mean lunar node, then validate the chosen convention at gate/line transitions and against trusted reference chart outputs. Keep Swiss Ephemeris available; do not switch engines based on this audit alone.
+
+## Current verified checkpoint (2026-10-12 — Golden Chart #2 node convention research)
+
+- Web research found that public Human Design calculators use both true and mean lunar nodes. Project Me and YourHumanDesign explicitly state that they use the true node; PRISM explicitly uses the mean node and claims a Jovian Archive lineage. Jovian Archive's public methodology pages reviewed describe chart calculation and the role of the nodes but do not specify the true/mean setting.
+- Therefore, no universal canonical node convention has been established from the public sources reviewed. Do not treat a secondary site's “most common” claim as conclusive.
+- Recomputed Golden Chart #2's node positions with Swiss Ephemeris 2.10.03 at the exact stored UTC instants:
+  - Personality, 1982-04-15 05:38 UTC: True North Node 106.978916086° → Gate 53.2; Mean North Node 107.664681968° → Gate 53.3. South Node is correspondingly 54.2 vs 54.3.
+  - Design, 1982-01-17 09:06:09.053097 UTC: True North Node 112.427250626° → Gate 62.2; Mean North Node 112.317608992° → Gate 62.2. South Node remains Gate 61.2 under both.
+- This means the node convention changes Personality node line/substructure for Golden Chart #2, although this specific comparison does not change the chart's stored channel set.
+- Audit report committed and fetched back from isolated PR #6 branch: https://github.com/mobinhan/know-yourself-mvp/blob/audit/astronomy-boundary-node-checks/audit/golden-chart-node-convention.md (commit 3965bd4588beb6a70c7f934f40755447eb862c48). PR #6 remains open and draft; no production engine, Golden Chart fixture, or main-branch calculation code was changed.
+- Next acceptance step: obtain a trusted Human Design reference chart for the exact same birth details and inspect its node activations (ideally the underlying activation data, not just the BodyGraph). If the reference doesn't expose enough detail to determine its node convention, keep the convention unresolved. Do not merge PR #6 or switch production engines based on this evidence alone.
