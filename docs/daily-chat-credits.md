@@ -75,3 +75,20 @@ This design is not production-ready until the dedicated Basic endpoint, server-o
 - If finalization fails after a provider response, the endpoint withholds the answer, but recovery of a stuck reservation needs database-level integration tests and an operational reconciliation path.
 - The classifier is intentionally conservative and rule-based. It is not a general semantic classifier; unrecognized questions should use the Premium open-question route.
 - No live authenticated E2E, actual user-facing credit counter/reset UI, billing provisioning, migration, merge or deployment has been completed.
+
+
+## Existing connected backend inspection (read-only, 2026-10-12)
+
+The currently connected Supabase project was inspected without writing to it:
+
+- Project `djtpqqjenmcsrdcguttk` is active/healthy.
+- Its applied migration list contains five existing Know Yourself persistence migrations (2026-10-09). It does not list the candidate `ky_entitlements` or chat-credit migrations.
+- The current public schema includes the existing KY persistence tables (profiles, preferences, charts, conversations/turns, memories, insights, transit snapshots, and knowledge records). No `ky_entitlements` or `ky_chat_credit_usage` table is present in the live schema.
+- The deployed `user-data-api` Edge Function is active at version 5 and handles authenticated user data/persistence. Its inspected source has no AI question-generation route, entitlement enforcement, or credit accounting.
+- Therefore the candidate Python `/v1/charts/{id}/questions/basic` route is not currently connected to the existing deployed Supabase Edge Function or confirmed live AI route. The candidate work cannot affect the running app yet.
+
+This inspection was read-only. No migration, function deployment, billing change, or live data write was performed.
+
+## Immediate integration decision
+
+Before wiring the UI, identify and validate the actual AI-generation endpoint used by the running Lovable interface. The persistence Edge Function is not itself the AI backend. Do not add a second competing chat backend or connect the UI to the candidate Python route until its deployment target and environment are established. Preserve the existing user-data API and guest chart flow.
