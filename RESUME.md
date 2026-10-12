@@ -205,3 +205,11 @@ Important limitation: this file records the required protocol; it does not itsel
 - Free/basic chart access may show basic chart facts and only the PHS information explicitly assigned to Free by the product design; do not give a detailed PHS reading to a Free user.
 - **Implementation status remains unverified:** this is a confirmed product rule, but it is not proof that Premium gating is deployed or enforced end-to-end. Follow the Premium entitlement checkpoint above; do not claim enforcement until the real app/API route and authenticated end-to-end tests are verified.
 
+## Current checkpoint (2026-10-12 — PHS acceptance criteria)
+
+- Confirmed product rule: detailed PHS interpretation is Premium; do not routinely expose full raw activation notation such as `62.2.5.5.3` in user-facing explanations. Keep full canonical substructure internally for accuracy/audit.
+- Added PHS-specific acceptance tests PHS-1 through PHS-7 to `docs/3framework-testing.md` on branch `docs/3framework-testing`, commit `16946979f3764d5a1902c5f2efb73ce6b23517ae`; fetched the remote file back and verified all seven tests are present.
+- Tests cover Free/Premium boundaries, raw-substructure presentation, separation of calculation from presentation, verified mapping provenance, graceful Free response, and regression against the general entitlement gate.
+- These are documentation/acceptance criteria, not runtime tests. PHS mapping correctness and deployed Premium enforcement remain unverified. Do not claim PHS is secured until the actual serving route applies trusted server-side entitlement checks and authenticated end-to-end tests pass.
+- Next: inspect the canonical PHS calculation/mapping implementation and its source evidence; validate the chain that yields Determination/Cognition/Environment/orientation without inferring a label from Gate 62.2 alone. Keep this isolated from production calculations until the mapping contract is supported by approved sources.
+
