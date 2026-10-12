@@ -50,7 +50,8 @@ def decide_capability(capability: str, user_id: str | None, entitlement: dict | 
         if not value:
             return None
         try:
-            return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            return parsed.replace(tzinfo=timezone.utc) if parsed.tzinfo is None else parsed
         except (TypeError, ValueError):
             return False
 
