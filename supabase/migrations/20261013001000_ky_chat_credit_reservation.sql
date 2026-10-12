@@ -66,7 +66,7 @@ begin
     from public.ky_chat_credit_usage u
     where u.user_id = p_user_id and u.usage_date = v_today
       and u.outcome in ('reserved', 'consumed');
-    return query select true, 'duplicate_request_no_new_charge', v_used, v_limit, v_reset, true;
+    return query select false, 'duplicate_request_no_new_charge', v_used, v_limit, v_reset, true;
     return;
   end if;
 
