@@ -81,15 +81,15 @@ These are requirements, not passes. Keep every case **BLOCKED** until run throug
 |---|---|---|---|
 | 2026-10-12 | Workflow run #38225061277 / run #491; candidate PR #8 branch | **FAIL** | Python engine validation failed; JavaScript contract validation passed. Job log inspected: 1 failed, 26 passed. `engine/test_v1_api.py::test_interpretation_provider_uses_responses_api_and_filters_evidence` returned empty `knowledge_basis` where the test expected `EXT-KNOW-IHDS-GATE-57-4-DIRECTOR-001`; root cause is not yet determined. |
 | 2026-10-12 | Draft PR #7 | **BLOCKED** | 14 policy unit tests previously passed; route integration, live migration and provisioning absent per PR description. |
-| 2026-10-12 | Draft PR #8 | **BLOCKED** | Candidate route tests described in PR; not production/main; newest observed engine workflow has a Python failure. |
+| 2026-10-12 | Draft PR #8 | **BLOCKED for release; candidate CI pass** | Candidate commit `33a6ce6bea8a0ac18890fcbbd3382f1790fda81e` passed Python engine validation, JavaScript contract validation, Premium API route guard, and gate-line regression. Still not production/main; no authenticated live E2E. |
 | 2026-10-12 | Draft PR #9 | **BLOCKED** | Answer-quality improvement is unmerged; prior passing run is not proof for current PR head or deployed app. |
 | 2026-10-12 | Candidate PR #8, commit `33a6ce6bea8a0ac18890fcbbd3382f1790fda81e` | **PASS — candidate CI only** | Python engine validation, JavaScript contract validation, Premium API route guard, and gate-line regression all completed successfully. Not production E2E. |
 | 2026-10-12 | Candidate PR #9, head `8b8c2c1b48836ad7d945d78c3eaa1a340d20c0e4` | **BLOCKED for exact-head certification** | Successful engine runs observed at older commits `c7a7523699f7d440627c03e6809ce5cbc0be5120` and `95e85984f14198ff045d7fad500489307bea6e27`, not the current PR head. |
-| 2026-10-12 | This audit | **IN PROGRESS** | Source/CI inspection and matrix update completed; live app, current-main full suite, and authenticated E2E were not run. |
+| 2026-10-12 | Draft PR #11, commit `b35ae2519f08b89462e98b6db1bc8d7ea56b4005` | **PASS — candidate CI only** | Premium API guard, Python engine validation, and JavaScript contract validation passed on the exact head. Includes Basic allowlist / Premium-by-default policy and client downgrade regression test. Does not prove production enforcement or Free UI completeness. |\n| 2026-10-12 | This audit | **IN PROGRESS** | Exact-head candidate CI verified for PR #11; live app, current-main full suite, and authenticated E2E were not run. |
 
 ## Next execution order
 
-1. Verify CI for PR #8 fix commit `d17bf751cfcd41cfec9f919261c1c8da7b40349d`. Confirm the explicit Premium fixture passes, then inspect any remaining Python failures independently; do not equate isolated route-guard success with full engine CI.
+1. Preserve the historical PR #8 CI failure as history, but use exact-head run evidence: PR #8 candidate commit `33a6ce6bea8a0ac18890fcbbd3382f1790fda81e` and PR #11 candidate commit `b35ae2519f08b89462e98b6db1bc8d7ea56b4005` passed their observed relevant CI checks. These are still candidate-only, not main or production.
 2. Run or trigger current-main engine validation and record the exact commit/results; do not use the candidate branch result as main's result.
 3. Review PR #9's answer-composer tests and latest checks; keep separate from entitlement changes.
 4. Select the real runtime/API route before extending Premium work. Do not merge PR #8 onto main until its base/API deployment relationship is resolved.
