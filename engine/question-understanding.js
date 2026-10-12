@@ -20,7 +20,7 @@ export function understandQuestion(question) {
       : "interpretive";
   const requires_timing = intent === "timing" || /\b(when|today|now|currently|recently|lately|next|future|past)\b/.test(normalized);
   const crossRequested = /\b(incarnation cross|my cross|cross of incarnation|cross)\b/.test(normalized);
-  const overlayRequested = /\\b(transit overlay|temporary channels?|temporary gates?|temporary definition|combined definition|activated by (?:the )?transit|transit[- ]activated channels?)\\b/.test(normalized);
+  const overlayRequested = /\b(transit overlay|temporary channels?|temporary gates?|temporary definition|combined definition|activated by (?:the )?transit|transit[- ]activated channels?)\b/.test(normalized);
   const evidenceTargets = requires_timing
     ? ["temporal_state","transit_overlay","lifecycle_event","activations"]
     : ["type","strategy","authority","profile","definition","channels","centres","gates","activations"];
