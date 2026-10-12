@@ -144,6 +144,18 @@ Rules:
 - V4: Metaphorical artwork is not presented as mechanical evidence.
 - V5: If no relevant visual is available, the answer omits the image rather than filling space with decoration.
 
+## Advanced source material — general retrieval rule
+
+Advanced Human Design source material is not a special-case add-on for format channels. Retrieve it whenever it materially improves the answer or the question asks for depth, mechanism, interaction, nuance, exceptions, or a source-specific interpretation. This applies across the system: Type and Strategy, Authority, centres, gates, lines, channels, circuitry and streams, definition, profiles, Incarnation Cross, planetary activations, transits, life cycles, PHS, Variable, Color/Tone/Base, relationships, and other advanced topics.
+
+Use the least complex source depth that answers the question accurately, but do not stop at beginner-level summaries when the question calls for advanced mechanics. Retrieve source passages with provenance, preserve the source's terminology and framing, and distinguish:
+- deterministic chart mechanics from the engine;
+- what the source explicitly teaches;
+- synthesis across multiple source passages;
+- the model's interpretation or practical application.
+
+Do not invent advanced doctrine from general model associations. If the knowledge base lacks the relevant material, say that it is missing and either research a clearly labelled external source or explain that the point remains unverified. Do not imply a source was consulted unless it actually was. Advanced teaching deepens the explanation; it does not override canonical chart facts or silently replace Strategy and Authority mechanics.
+
 ## Human Design interpretation rule — channels and Sacral Authority
 
 The system must not reduce advanced channel/authority questions to generic channel keywords. In particular, when interpreting a Generator with Sacral Authority, it should inspect which defined channels connect directly to the Sacral Centre and explain how Human Design source material describes their relationship to Sacral energy/response. This is an interpretive teaching claim, so it must be grounded in the project's knowledge sources or clearly labelled external research—not invented from general model associations.
