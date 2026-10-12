@@ -119,6 +119,49 @@ Rules:
 10. **Continuity is not a claim of persistence.** Only report a save or retrieval as successful after verifying it.
 11. **No unapproved platform or cost changes.** GitHub remains the project source of truth. Do not create a Lovable project or spend Lovable credits without explicit approval. Do not introduce Vercel as a dependency unless explicitly reopened.
 12. **Regression after correction.** Durable corrections and repeated failures should inform a test or procedure that prevents recurrence.
+13. **Visuals must be data-aligned.** General creative imagery is welcome when it adds warmth or understanding, but the concept, symbols, mood, and claims must connect to the actual question and available evidence. Chart-specific visuals must be generated from verified chart data, never guessed by an image model.
+
+## Visual guidance — meaningful images, not generic decoration
+
+Use images when they deepen understanding, improve emotional resonance, or clarify an idea. A general illustration is acceptable; it does not have to be a technical diagram. However, it must be aligned with the actual subject and the evidence available.
+
+Rules:
+- Choose a visual concept based on the actual question, verified chart facts, relevant source teaching, and consented user context—not just the broad topic “Human Design.”
+- For interpretive topics, a creative/metaphorical illustration is fine if its metaphor accurately reflects the concept being explained. Do not imply that metaphorical artwork is canonical chart evidence.
+- For chart mechanics (BodyGraph, gates, channels, centres, planetary activations, profile, Cross, transits), render or annotate from the deterministic chart data. Do not ask image generation to invent a technically accurate BodyGraph.
+- If the image depicts a particular channel, gate, centre, or activation, verify that it is actually present in the relevant natal or transit state and label the state clearly.
+- Distinguish natal definition from temporary transit conditioning in both visuals and captions.
+- Do not use imagery that suggests a chart fact, personal trait, life event, or causal claim that the evidence does not support.
+- Avoid repeated generic stock-like images or unrelated decorative images. Prefer one well-matched image over several weak matches.
+- If no relevant visual can be made reliably, use no image.
+- Where feasible, attach the visual to a short explanation of why it relates to the answer; provide alt text.
+- Evaluate relevance and data accuracy separately: a beautiful image can still fail if it is unrelated or implies incorrect chart mechanics.
+
+### Visual regression checks
+- V1: Image concept directly matches the question's specific subject.
+- V2: Any chart details match verified engine output.
+- V3: Natal and transit activations are not conflated.
+- V4: Metaphorical artwork is not presented as mechanical evidence.
+- V5: If no relevant visual is available, the answer omits the image rather than filling space with decoration.
+
+## Human Design interpretation rule — channels and Sacral Authority
+
+The system must not reduce advanced channel/authority questions to generic channel keywords. In particular, when interpreting a Generator with Sacral Authority, it should inspect which defined channels connect directly to the Sacral Centre and explain how Human Design source material describes their relationship to Sacral energy/response. This is an interpretive teaching claim, so it must be grounded in the project's knowledge sources or clearly labelled external research—not invented from general model associations.
+
+For the user's currently recorded six channels (3–60, 11–56, 28–38, 32–54, 34–57, 42–53), the channels directly connecting to the Sacral Centre are recorded as:
+- **3–60** (Root–Sacral)
+- **34–57** (Sacral–Spleen)
+- **42–53** (Sacral–Root)
+
+The other three recorded channels do not directly connect to the Sacral Centre. This structural distinction is not by itself enough to claim exactly how a person's response will feel or to establish a source's advanced doctrine. The answer should investigate circuitry, channel mechanics, and the distinction between authority as decision-making mechanism versus channels as defined energy pathways. Avoid the oversimplification that channels are merely “themes” with no influence on the Sacral response; also avoid claiming they replace or independently override Sacral Authority unless the cited source explicitly supports that statement.
+
+Required response behavior:
+- Verify the canonical chart facts first.
+- Retrieve relevant advanced teaching with provenance.
+- Explain the interaction in layers: mechanical connection to Sacral; source teaching about that channel/circuit; cautious personal synthesis.
+- Distinguish official/source teaching from broader Human Design interpretation and KY synthesis.
+- Where source materials disagree or are silent, say so and do not manufacture a single definitive doctrine.
+- Do not assume the mere presence of a channel proves a specific subjective bodily reaction for the user.
 
 ## Cross-layer test map
 
@@ -154,7 +197,6 @@ This document defines the intended framework and its acceptance tests; it does *
 3. Connect the permitted context to the open reasoning request without making the reasoning layer a fixed questionnaire.
 4. Run F7, F9, F10, F11, and F12 end to end.
 5. Update each status only from executed evidence and save the resulting checkpoint in `RESUME.md`.
-
 
 ## Cross-cutting mechanism — 3Framework Orchestrator (3FO)
 
