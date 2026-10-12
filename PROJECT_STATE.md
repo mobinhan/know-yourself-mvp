@@ -1,9 +1,14 @@
 # Know Yourself — Project State
 
-**State captured:** 2026-10-09
+**State captured:** 2026-10-12
 **Repository:** `mobinhan/know-yourself-mvp`
 **Branch:** `main`
-**Latest verified commit:** `ddd13c6004dbb8cf4591b65c5d6cd38eb15a1801`
+**Latest verified commit:** `2ff004533677a33da682c27fe26ce36fafc5f63e`
+
+
+## Chart validation continuity — 2026-10-12
+
+Canonical chart-validation procedure is recorded in `engine/CHART_VALIDATION_PROTOCOL.md`. Before changing chart mechanics, inspect that protocol, `engine/VALIDATION_MODEL.md`, `engine/VALIDATION_STATUS.md`, `engine/golden-chart.json`, and the relevant engine tests. The Golden activation regression suite `engine/test_golden_activation_regression.py` is now wired into `.github/workflows/step1-engine.yml` and passed in workflow run #460 (32 Python tests; JavaScript contract job also passed) for commit `2ff004533677a33da682c27fe26ce36fafc5f63e`. The fixture remains a regression reference, not an independent authority; discrepancies must be investigated, never hidden by changing expected values without evidence.
 
 ## Working rule
 
