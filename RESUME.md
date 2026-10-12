@@ -227,3 +227,16 @@ Important limitation: this file records the required protocol; it does not itsel
 - Main production readiness remains **BLOCKED**: no verified authenticated end-to-end proof of server Premium enforcement, PHS mapping provenance, consent/persistence ownership, full three-layer orchestration, or delivered UI behavior. Lunar-node convention audit remains unresolved for production certification.
 - No Lovable credits, Vercel, merge, or deployment used.
 - Next: check CI at exact current PR heads; resolve the main production/API route decision before Premium implementation; run and record current-main tests; then proceed with authenticated E2E and chart/timing reference validation.
+
+
+## Current checkpoint (2026-10-12 — Basic allowlist / Premium-by-default candidate)
+
+- Draft PR #11: https://github.com/mobinhan/know-yourself-mvp/pull/11
+- Candidate branch: `security/basic-allowlist-default-premium`; exact head `b35ae2519f08b89462e98b6db1bc8d7ea56b4005`; stacked on candidate API PR #8 branch, not main.
+- Added `docs/basic-allowlist-premium-default.md`: explicit Basic allowlist; unclassified/new capabilities Premium by default; open-ended AI interpretation Premium; detailed PHS and life-cycle interpretation Premium.
+- Candidate API ignores client-supplied capability/tier/plan for open-ended questions and uses the server-selected `guide.open_question` capability. AI-assisted `/today` is Premium; deterministic basic facts/overlay should remain separately accessible.
+- Added regression coverage for attempted client downgrade and Premium-by-default policy.
+- Exact-head CI observed PASS on commit `b35ae2519f08b89462e98b6db1bc8d7ea56b4005`: Premium API guard, Python engine validation, JavaScript contract validation. This is candidate CI only.
+- Release remains BLOCKED: no merge, no live Supabase migration/provisioning, no authenticated end-to-end verification, and no proof the actual app UI retains the intended Basic experience. Check PR #11 for follow-up test results before considering merge.
+- Release matrix updated on `audit/3framework-release-matrix`, commit `c569149b2b12eadbb787c3025bc99024ac2db1d8`.
+- Do not merge/deploy automatically. Do not create/spend Lovable credits or use Vercel as a dependency without explicit approval.
