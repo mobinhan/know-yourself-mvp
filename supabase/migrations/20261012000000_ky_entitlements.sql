@@ -20,5 +20,6 @@ create policy "Users can read their own entitlement" on public.ky_entitlements
   for select to authenticated using (auth.uid() = user_id);
 revoke all on public.ky_entitlements from anon, authenticated;
 grant select on public.ky_entitlements to authenticated;
+grant all on public.ky_entitlements to service_role;
 comment on table public.ky_entitlements is
   'Server-managed entitlement source of truth. Client roles are read-only; never trust client-supplied plan claims.';
