@@ -5,6 +5,8 @@ on:
     paths:
       - "supabase/functions/_shared/entitlements.ts"
       - "supabase/functions/_shared/entitlements.test.ts"
+      - "supabase/functions/_shared/load-entitlement.ts"
+      - "supabase/functions/_shared/load-entitlement.test.ts"
       - ".github/workflows/premium-entitlements.yml"
   push:
     branches:
