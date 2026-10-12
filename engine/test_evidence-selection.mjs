@@ -53,6 +53,7 @@ const overlayEvidence = buildEvidence({
   activations:{personality:[],design:[]},
   structure,
   temporalState,
+  lifecycleEvents:[],
   sources:["SRC_TEST"]
 });
 const overlayQuestion = understandQuestion("Which temporary channels are activated by the transit overlay?");
