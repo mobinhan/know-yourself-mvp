@@ -180,12 +180,12 @@ Important limitation: this file records the required protocol; it does not itsel
 
 ### Candidate API route enforcement
 - Draft PR #8: https://github.com/mobinhan/know-yourself-mvp/pull/8
-- Branch: `security/premium-api-route-guard`, based on candidate API branch `feature/live-api-v1`; latest branch commit at checkpoint `cc12e5a730f77280fa67d3fd272443d3f9c17393`.
+- Branch: `security/premium-api-route-guard`, based on candidate API branch `feature/live-api-v1`; latest verified branch head `5ae2e6679eb6a9e1b6218352733b5beb7ef2b517`.
 - Added `api/entitlements.py`: verifies Supabase bearer JWT, reads the server-managed entitlement row using the authenticated JWT, defaults a missing row to Free, and fails closed on entitlement lookup errors.
 - Added guards to candidate `/v1/charts/{id}/questions/context` and `/today` before chart/transit computation and before the AI interpretation provider when a Premium capability is requested.
 - Free requests default to `guide.basic`; the model context is limited to active foundational L1 records, with external curated records and validated relationships excluded. Premium capability is not inferred from a client plan claim; the client can request a capability but the server independently authorizes it.
 - Added route tests designed to assert denied Premium requests do not invoke chart computation, transit computation, or the model provider; added a Free knowledge-tier boundary test.
-- CI run #38224912498 was **in progress** at the last check (dependency installation); fetch its final result before claiming route tests pass.
+- Route guard CI run #38224912498 passed once. A rerun after tightening the advanced-retrieval fixtures is run #38225069136 and was still in dependency installation at last check. The existing gate-line regression workflow, which had failed due to old tests not requesting the Premium tier explicitly, now passes in run #38225069134. Fetch the final route-guard rerun before claiming the current head's route tests pass.
 - PR #8 targets `feature/live-api-v1`, not `main`. That candidate API is not yet the default-branch production application.
 
 ### Mandatory blockers
