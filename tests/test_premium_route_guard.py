@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from api.index import handler
+from api.interpretation_provider import _select_knowledge
 
 
 class FakeHandler:
@@ -51,6 +52,19 @@ class PremiumRouteGuardTests(unittest.TestCase):
         build.assert_not_called()
         transit.assert_not_called()
         model.assert_not_called()
+
+    def test_free_knowledge_tier_excludes_external_and_advanced_records(self):
+        foundation = {"activations": {"personality": [], "design": []}}
+        knowledge, external, relationships = _select_knowledge(
+            "channels and authority", foundation, knowledge_tier="basic"
+        )
+        self.assertEqual(external, [])
+        self.assertEqual(relationships, [])
+        self.assertTrue(all(
+            "L1" in record.get("depth", [])
+            and record.get("record_metadata", {}).get("epistemic_class") == "foundational"
+            for record in knowledge
+        ))
 
 
 if __name__ == "__main__":
