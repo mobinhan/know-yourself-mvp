@@ -38,6 +38,23 @@ class PremiumRouteGuardTests(unittest.TestCase):
         build.assert_not_called()
         model.assert_not_called()
 
+    def test_client_cannot_downgrade_open_question_to_basic(self):
+        fake = FakeHandler(
+            "/v1/charts/chart-1/questions/context",
+            {"birth": {"date": "1982-04-15", "time": "07:38", "timezone": "Europe/Amsterdam"},
+             "question": "What is my Uranus opposition saying about me?",
+             "capability": "guide.basic", "tier": "free", "plan": "free"},
+        )
+        with patch("api.index.resolve_request_capability", return_value={
+            "allowed": False, "status": 403, "reason": "premium_required"
+        }) as resolve, patch("api.index.build_foundation") as build, patch("api.index.generate_interpretation") as model:
+            handler._dispatch(fake, "POST")
+        self.assertEqual(fake.response, (403, {"error": "premium_required"}))
+        resolve.assert_called_once()
+        self.assertEqual(resolve.call_args.args[1], "guide.open_question")
+        build.assert_not_called()
+        model.assert_not_called()
+
     def test_today_route_denies_before_chart_or_transit_computation(self):
         fake = FakeHandler(
             "/v1/charts/chart-1/today",
