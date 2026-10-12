@@ -343,3 +343,18 @@ This is a **blocking gate for 3framework testing**, not merely documentation or 
 - UI-only hiding, client-side plan flags, prompt instructions, and a successful chat response do not count as enforcement.
 - Record each test result as PASS / FAIL / BLOCKED with test evidence. A BLOCKED test is not a PASS.
 - Any new endpoint or data source that can expose Premium-only analysis, knowledge, saved context, or history must inherit the same policy and add boundary tests before it is considered complete.
+
+### PHS-specific entitlement and presentation tests (confirmed product decision)
+
+PHS detailed interpretation is a Premium capability. The underlying deterministic PHS calculation must remain accurate regardless of entitlement; gate access to the detailed interpretation, not chart truth.
+
+- **PHS-1 — Free boundary:** a Free user does not receive detailed Determination/digestion, Cognition/Tone, Environment, or integrated personalized PHS interpretation.
+- **PHS-2 — Premium access:** a server-verified Premium user can receive the allowed detailed PHS interpretation with provenance and clear separation between source teaching and synthesis.
+- **PHS-3 — No raw-substructure overexposure:** user-facing PHS explanations should normally present the useful human-readable classification and explanation, not the full raw activation notation (for example, do not routinely expose `62.2.5.5.3`). A concise gate/line or Color detail may be shown only where it materially helps explain the result.
+- **PHS-4 — Calculation and presentation separation:** retain full activation/substructure data in the canonical evidence layer for audit and reproducibility; do not let the presentation rule truncate or mutate canonical data.
+- **PHS-5 — Mapping provenance:** derived labels such as Determination, Cognition, Environment, and orientation must be produced from the canonical PHS mapping rules and verified chart substructure. Do not infer “Right” or a PHS label from a gate number alone.
+- **PHS-6 — Graceful Free response:** when a Free user asks for a detailed PHS reading, provide a brief boundary explanation and, where allowed, basic chart facts without disclosing the locked interpretation.
+- **PHS-7 — Regression:** Premium PHS access must not bypass general entitlement, authentication, ownership, consent, or fail-closed requirements P1–P15.
+
+Status note: these are required acceptance tests derived from the confirmed product decision; they are not evidence that the deployed app currently enforces the PHS Premium boundary.
+
