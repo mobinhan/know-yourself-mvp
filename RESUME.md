@@ -195,3 +195,13 @@ Important limitation: this file records the required protocol; it does not itsel
 - Do not edit Lovable without explicit user approval.
 - The mandatory 3framework Premium acceptance gate remains **BLOCKED**, not PASS, until candidate route tests pass, production route alignment is resolved, entitlement migration/provisioning is safely applied, and authenticated end-to-end bypass tests pass.
 - Resume by checking PR #7 and #8 heads, route-guard CI, and the current deployed API identity; then continue with integration without merging/deploying prematurely.
+
+## Confirmed product decision (2026-10-12 — PHS access and presentation)
+
+- **Detailed PHS interpretation is Premium.** Treat this as a confirmed product decision, not merely a proposal.
+- Premium PHS includes detailed Determination/digestion interpretation, Cognition/Tone interpretation, Environment analysis, and personalized synthesis using the controlled knowledge base.
+- Keep underlying PHS mechanics and classifications accurate in the canonical chart/evidence layer; the entitlement boundary governs access to the detailed interpretation and experience, not calculation correctness.
+- Do not expose unnecessary raw technical substructure in user-facing PHS explanations. In particular, the user explicitly says PHS explanations do **not** need to disclose full activation notation such as `62.2.5.5.3`. Present the relevant human-readable classification (for example, Environment: Valleys / Wide Valleys) and explain its meaning at the appropriate entitlement level.
+- Free/basic chart access may show basic chart facts and only the PHS information explicitly assigned to Free by the product design; do not give a detailed PHS reading to a Free user.
+- **Implementation status remains unverified:** this is a confirmed product rule, but it is not proof that Premium gating is deployed or enforced end-to-end. Follow the Premium entitlement checkpoint above; do not claim enforcement until the real app/API route and authenticated end-to-end tests are verified.
+
