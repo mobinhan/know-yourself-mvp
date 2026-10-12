@@ -73,7 +73,7 @@ class GateLineSynthesisContractTests(unittest.TestCase):
             "api.interpretation_provider.urlopen",
             return_value=FakeResponse(provider_payload),
         ) as mocked_urlopen:
-            result = generate_interpretation("Explain Gate 57.4", foundation)
+            result = generate_interpretation("Explain Gate 57.4", foundation, knowledge_tier="premium")
 
         request = mocked_urlopen.call_args.args[0]
         body = json.loads(request.data.decode("utf-8"))
