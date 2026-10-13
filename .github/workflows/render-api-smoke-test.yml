@@ -1,0 +1,100 @@
+name: Render API smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - deploy/render-api
+    paths:
+      - ".github/workflows/render-api-smoke-test.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  live-smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check live health endpoint
+        run: |
+          python - <<'PY'
+          import json, time, urllib.request
+          url = "https://know-yourself-api.onrender.com/health"
+          last_error = None
+          for attempt in range(12):
+              try:
+                  with urllib.request.urlopen(url, timeout=15) as response:
+                      payload = json.load(response)
+                      assert response.status == 200, response.status
+                      assert payload.get("status") == "ok", payload
+                      assert payload.get("api_version") == "v1", payload
+                      print("HEALTH PASS:", json.dumps(payload))
+                      break
+              except Exception as exc:
+                  last_error = exc
+                  print(f"Health attempt {attempt + 1}/12 failed: {exc}")
+                  time.sleep(10)
+          else:
+              raise SystemExit(f"Health endpoint failed: {last_error}")
+          PY
+
+      - name: Test live knowledge catalogue
+        run: |
+          python - <<'PY'
+          import json, urllib.request
+          url = "https://know-yourself-api.onrender.com/v1/knowledge/gates"
+          with urllib.request.urlopen(url, timeout=30) as response:
+              data = json.load(response)
+              assert response.status == 200, response.status
+              assert isinstance(data, list) and len(data) >= 64, (
+                  f"Expected at least 64 gate records; got {type(data).__name__}, "
+                  f"{len(data) if isinstance(data, list) else 'not a list'}"
+              )
+              print(f"KNOWLEDGE CATALOGUE PASS: {len(data)} gate records")
+          PY
+
+      - name: Test live Golden Chart #2 calculation
+        run: |
+          python - <<'PY'
+          import json, urllib.request
+          url = "https://know-yourself-api.onrender.com/v1/charts"
+          body = {
+              "birth": {
+                  "date": "1982-04-15",
+                  "time": "07:38:00",
+                  "location": "Baarn, Netherlands",
+                  "timezone": "Europe/Amsterdam",
+                  "latitude": 52.211,
+                  "longitude": 5.287
+              }
+          }
+          request = urllib.request.Request(
+              url,
+              data=json.dumps(body).encode(),
+              headers={"Content-Type": "application/json"},
+              method="POST"
+          )
+          with urllib.request.urlopen(request, timeout=45) as response:
+              data = json.load(response)
+              assert response.status == 201, response.status
+          foundation = data.get("foundation") or {}
+          core = foundation.get("core") or {}
+          expected_channels = {
+              "3-60", "11-56", "28-38", "32-54", "34-57", "42-53"
+          }
+          actual_channels = {
+              item.get("channel") for item in core.get("channels", [])
+          }
+          checks = {
+              "chart_id_returned": bool(data.get("id")),
+              "type_generator": core.get("type") == "generator",
+              "authority_sacral": core.get("authority") == "sacral",
+              "profile_5_1": core.get("profile") == "5/1",
+              "six_expected_channels": actual_channels == expected_channels,
+          }
+          print("GOLDEN CHART CHECKS:", json.dumps(checks, sort_keys=True))
+          print("ACTUAL CHANNELS:", sorted(actual_channels))
+          assert all(checks.values()), "Golden Chart #2 regression failed"
+          print("GOLDEN CHART PASS")
+          PY
