@@ -355,9 +355,25 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         with urlopen(request, timeout=35) as response:
             provider_payload = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
-        # Log only a coarse status category; never log provider bodies or credentials.
+        # Parse only safe, structured error metadata. Never log credentials, request
+        # payloads, chart data, or the raw provider response body.
         category = {401: "authentication_failed", 403: "access_forbidden", 429: "rate_limit_or_quota"}.get(exc.code, "provider_http_error")
-        print(f"openai_provider_diagnostic category={category} http_status={exc.code}", flush=True)
+        error_type = "unknown"
+        error_code = "unknown"
+        error_param = "unknown"
+        try:
+            provider_error = json.loads(exc.read().decode("utf-8")).get("error", {})
+            if isinstance(provider_error, dict):
+                error_type = str(provider_error.get("type") or "unknown")[:80]
+                error_code = str(provider_error.get("code") or "unknown")[:100]
+                error_param = str(provider_error.get("param") or "unknown")[:100]
+        except (ValueError, UnicodeDecodeError, AttributeError):
+            pass
+        print(
+            f"openai_provider_diagnostic category={category} http_status={exc.code} "
+            f"error_type={error_type} error_code={error_code} error_param={error_param}",
+            flush=True,
+        )
         raise InterpretationProviderError(category) from None
     except (URLError, TimeoutError, OSError) as exc:
         print("openai_provider_diagnostic category=network_or_timeout", flush=True)
