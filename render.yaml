@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: ky-engine
+    runtime: python
+    plan: free
+    branch: deploy/render-standalone-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: python render_server.py
+    healthCheckPath: /health
+    autoDeploy: false
