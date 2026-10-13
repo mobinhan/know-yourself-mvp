@@ -355,23 +355,34 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         with urlopen(request, timeout=35) as response:
             provider_payload = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
-        # Parse only safe, structured error metadata. Never log credentials, request
-        # payloads, chart data, or the raw provider response body.
+        # Log bounded provider diagnostics only; never log raw response/request data.
         category = {401: "authentication_failed", 403: "access_forbidden", 429: "rate_limit_or_quota"}.get(exc.code, "provider_http_error")
-        error_type = "unknown"
-        error_code = "unknown"
-        error_param = "unknown"
+        error_type = error_code = error_param = "unknown"
+        error_message = "unavailable"
         try:
-            provider_error = json.loads(exc.read().decode("utf-8")).get("error", {})
-            if isinstance(provider_error, dict):
-                error_type = str(provider_error.get("type") or "unknown")[:80]
-                error_code = str(provider_error.get("code") or "unknown")[:100]
-                error_param = str(provider_error.get("param") or "unknown")[:100]
-        except (ValueError, UnicodeDecodeError, AttributeError):
+            payload = json.loads(exc.read().decode("utf-8", errors="replace"))
+            detail = payload.get("error", {}) if isinstance(payload, dict) else {}
+            if isinstance(detail, dict):
+                def safe_metadata(value, limit=100):
+                    if not isinstance(value, str):
+                        return "unknown"
+                    value = value.strip()
+                    return value[:limit] if value and all(ch.isalnum() or ch in "._:- " for ch in value) else "redacted"
+                error_type = safe_metadata(detail.get("type"))
+                error_code = safe_metadata(detail.get("code"))
+                error_param = safe_metadata(detail.get("param"))
+                message = detail.get("message")
+                if isinstance(message, str):
+                    message = " ".join(message.replace("\\r", " ").replace("\\n", " ").replace("\\t", " ").split())
+                    message = re.sub(r"(?i)bearer\\s+\\S+", "Bearer [REDACTED]", message)
+                    message = re.sub(r"(?i)sk-[a-z0-9_-]+", "[REDACTED_KEY]", message)
+                    error_message = message[:240]
+        except (ValueError, UnicodeDecodeError, AttributeError, TypeError):
             pass
         print(
             f"openai_provider_diagnostic category={category} http_status={exc.code} "
-            f"error_type={error_type} error_code={error_code} error_param={error_param}",
+            f"error_type={error_type} error_code={error_code} error_param={error_param} "
+            f"error_message={error_message}",
             flush=True,
         )
         raise InterpretationProviderError(category) from None
