@@ -42,7 +42,7 @@ class GateLineSynthesisContractTests(unittest.TestCase):
             "applies_when": {"gate_number": 57, "line_number": 4},
         }
         foundation = {
-            "core": {"gate_set": [57], "channels": [], "centres": []},
+            "core": {"gate_set": [57], "channels": [], "centres": [], "authority": "sacral"},
             "activations": {
                 "personality": [{"body": "Sun", "gate": 57, "line": 4}],
                 "design": [],
