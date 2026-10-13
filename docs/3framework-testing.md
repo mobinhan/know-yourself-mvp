@@ -395,3 +395,39 @@ This is an answer-orchestration and pedagogy rule, not a change to canonical cha
 - **O13: PARTIAL** — the channel 34–57 distinction was mentioned, but source retrieval/provenance for the advanced teaching was not demonstrated in this turn.
 - **O14: PASS (process response only)** — after the user correction, the orchestration rule and regression tests are being added. This does not mean the product runtime has implemented or passed these tests.
 - Overall: **CONVERSATIONAL FAILURE IDENTIFIED; DOCUMENTATION UPDATED; RUNTIME INTEGRATION NOT VERIFIED.** This is a manual conversational evaluation, not an automated or end-to-end product test.
+
+
+## Cross-authority orchestration rule — embodied decision-making
+
+**Core product principle:** Know Yourself should help users move decision-making away from mental over-analysis and toward their embodied authority. This applies across Human Design authority types, not only Sacral Authority. The body leads; the mind can support understanding, research, planning, and communication, but must not be presented as the user's decision-making authority within this teaching.
+
+This principle must be applied with authority-specific accuracy:
+- **Emotional / Solar Plexus Authority:** allow emotional clarity over time; do not frame the first emotional spike or immediate bodily sensation as the final answer.
+- **Sacral Authority:** help the user notice the immediate Sacral bodily response to a concrete prompt; do not intellectualize it or manufacture a response.
+- **Splenic Authority:** explain the quiet, in-the-moment intuitive awareness as distinct from Sacral response and emotional clarity.
+- **Ego / Heart Authority:** explain the authority-specific will/desire/commitment mechanics in the approved source language; do not substitute a generic gut feeling.
+- **Self-Projected Authority:** preserve the role of hearing oneself express what is true through speaking; do not falsely describe it as Sacral sensation.
+- **Mental / Environmental (often called sounding-board) decision process:** do not claim the mind is an inner authority or invent a bodily yes/no signal. Explain the source-specific role of environment and talking things through, while keeping the product's wider aim of reducing mental pressure and helping the user notice their own clarity.
+- **Lunar Authority:** explain the lunar cycle/time-based process accurately; do not force an immediate body signal or instant answer.
+
+Use the canonical chart engine to resolve the user's actual authority deterministically. The orchestration layer must not infer or change authority from conversational descriptions. Retrieve the relevant approved source teaching for detailed explanations and distinguish source teaching from KY synthesis. Do not assume all authorities feel the same or that every sensation is a reliable instruction.
+
+### Required answer behavior
+1. Start with the user's actual authority and answer the question directly in natural, warm, experience-oriented language.
+2. Explain how that authority guides decision-making, in its own terms.
+3. Keep mental analysis in a supporting role rather than framing it as the authority; practical facts and consequences can still be researched and evaluated.
+4. Do not force every authority into a Sacral/gut-response model. Embodied decision-making is the product principle; the mechanics remain authority-specific.
+5. Avoid reflexive neuroscience lectures or caveat-heavy explanations unless asked or materially relevant.
+6. Never tell the user what they personally feel; invite them to notice their own experience.
+7. If a user corrects an authority explanation, treat it as a substantive orchestration failure and add or update a regression test.
+
+### Cross-authority regression tests
+- **O15 — Authority coverage:** the embodied decision-making principle is applied to all supported authority types, not just Sacral.
+- **O16 — Authority-specific mechanics:** Emotional, Sacral, Splenic, Ego, Self-Projected, Mental/Environmental, and Lunar decision processes are distinguished correctly using approved source evidence.
+- **O17 — No mind-as-authority drift:** answers do not tell users to think their way into a decision; analysis supports practical due diligence but does not replace the authority-specific process.
+- **O18 — No generic body-signal substitution:** answers do not prescribe a gut yes/no sensation for authorities whose mechanics are different.
+- **O19 — Chart-driven personalization:** the explanation uses the authority resolved by canonical engine output and does not infer authority from prose, channel keywords, or a user's anecdotal sensation.
+- **O20 — Direct experiential guidance:** the answer gives the user a clear, accessible way to work with their own authority without forcing a questionnaire or pretending to know their inner experience.
+
+### Status
+This principle is now a product/orchestration requirement. Documentation is not proof of runtime implementation. O15–O20 remain **NOT RUN** against the actual answer-generation path until automated or traced runtime tests are executed.
