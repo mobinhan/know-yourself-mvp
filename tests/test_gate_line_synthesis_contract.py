@@ -4,7 +4,7 @@ import os
 import unittest
 from unittest.mock import patch
 
-from api.interpretation_provider import InterpretationProviderError, generate_interpretation
+from api.interpretation_provider import (\n    InterpretationProviderError, generate_interpretation,\n    _authority_guidance, _build_orchestrator_context,\n)
 
 
 class FakeResponse:
@@ -268,6 +268,47 @@ class GateLineSynthesisContractTests(unittest.TestCase):
         mocked_urlopen.assert_not_called()
         self.assertEqual(result["interpretation_status"], "provider_not_configured")
         self.assertIsNone(result["answer"])
+
+
+class Plus3FrameworkOrchestratorTests(unittest.TestCase):
+    def test_orchestrator_is_control_plane_not_a_fourth_layer(self):
+        foundation = {"core": {"authority": "sacral"}}
+        context = _build_orchestrator_context(foundation)
+        self.assertEqual(context["name"], "+3framework")
+        self.assertIn("not a fourth layer", context["orchestrator_role"])
+        self.assertEqual(len(context["execution_order"]), 4)
+        self.assertIn("Layer 1:", context["execution_order"][0])
+        self.assertIn("Layer 2:", context["execution_order"][1])
+        self.assertIn("Layer 3:", context["execution_order"][2])
+        self.assertIn("before delivery", context["execution_order"][3])
+        self.assertTrue(any("Never flatten every authority" in rule for rule in context["invariants"]))
+
+    def test_authority_specific_guidance_covers_distinct_mechanics(self):
+        cases = {
+            "sacral": ("bodily response", "not a conclusion reached by mental analysis"),
+            "emotional": ("emotional wave", "not prescribe an instant yes/no"),
+            "splenic": ("in-the-moment intuitive awareness", "generic gut yes/no"),
+            "ego": ("authentic will", "sacral response"),
+            "self_projected": ("hearing oneself speak", "gut yes/no"),
+            "mental": ("right environment", "invent an inner-body"),
+            "lunar": ("lunar cycle", "immediate body signal"),
+        }
+        for authority, phrases in cases.items():
+            with self.subTest(authority=authority):
+                guidance = _authority_guidance({"core": {"authority": authority}})
+                for phrase in phrases:
+                    self.assertIn(phrase, guidance)
+
+    def test_missing_authority_is_not_inferred(self):
+        guidance = _authority_guidance({"core": {}})
+        self.assertIn("does not provide an authority value", guidance)
+        self.assertIn("Do not infer or invent one", guidance)
+
+    def test_unknown_authority_is_preserved_without_generic_substitution(self):
+        guidance = _authority_guidance({"core": {"authority": "custom_authority"}})
+        self.assertIn("custom_authority", guidance)
+        self.assertIn("Do not reinterpret or replace it", guidance)
+        self.assertIn("rather than substituting a generic body signal", guidance)
 
 
 if __name__ == "__main__":
