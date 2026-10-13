@@ -273,6 +273,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     """Generate a grounded 3framework answer, or a truthful non-configured status."""
     api_key = os.environ.get("OPENAI_API_KEY", "").strip()
     if not api_key:
+        print("openai_provider_diagnostic category=missing_key", flush=True)
         return {
             "interpretation_status": "provider_not_configured",
             "answer": None,
@@ -354,12 +355,16 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         with urlopen(request, timeout=35) as response:
             provider_payload = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
-        # Do not pass provider error details or credentials back to the browser.
-        raise InterpretationProviderError(f"OpenAI Responses API returned HTTP {exc.code}") from None
+        # Log only a coarse status category; never log provider bodies or credentials.
+        category = {401: "authentication_failed", 403: "access_forbidden", 429: "rate_limit_or_quota"}.get(exc.code, "provider_http_error")
+        print(f"openai_provider_diagnostic category={category} http_status={exc.code}", flush=True)
+        raise InterpretationProviderError(category) from None
     except (URLError, TimeoutError, OSError) as exc:
-        raise InterpretationProviderError("OpenAI Responses API could not be reached") from None
+        print("openai_provider_diagnostic category=network_or_timeout", flush=True)
+        raise InterpretationProviderError("network_or_timeout") from None
     except (json.JSONDecodeError, UnicodeDecodeError) as exc:
-        raise InterpretationProviderError("OpenAI Responses API returned invalid JSON") from None
+        print("openai_provider_diagnostic category=invalid_provider_json", flush=True)
+        raise InterpretationProviderError("invalid_provider_json") from None
 
     raw_text = _response_text(provider_payload)
     if not raw_text:
