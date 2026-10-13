@@ -174,6 +174,101 @@ def _response_text(payload: dict) -> str:
     return "\n".join(chunks).strip()
 
 
+def _authority_guidance(foundation: dict) -> str:
+    """Return authority-specific embodied-decision guidance from canonical chart data."""
+    core = foundation.get("core", {}) if isinstance(foundation, dict) else {}
+    authority = str(core.get("authority") or "").strip().lower().replace("-", "_").replace(" ", "_")
+    guidance = {
+        "emotional": (
+            "Authority: Emotional / Solar Plexus. Do not treat the first emotional high or low as final clarity. "
+            "Describe allowing the emotional wave and time to bring clarity; do not prescribe an instant yes/no."
+        ),
+        "solar_plexus": (
+            "Authority: Emotional / Solar Plexus. Do not treat the first emotional high or low as final clarity. "
+            "Describe allowing the emotional wave and time to bring clarity; do not prescribe an instant yes/no."
+        ),
+        "sacral": (
+            "Authority: Sacral. Lead with the Human Design teaching that response is a present-moment bodily response "
+            "to something concrete, not a conclusion reached by mental analysis. Offer a simple, concrete prompt where useful. "
+            "Do not invent a sensation or claim to know what this user felt."
+        ),
+        "splenic": (
+            "Authority: Splenic. Describe quiet, in-the-moment intuitive awareness as the Human Design mechanism. "
+            "Do not turn it into a loud emotional reaction, extended analysis, or a generic gut yes/no."
+        ),
+        "ego": (
+            "Authority: Ego / Heart. Use only the exact authority mechanics supported by the supplied knowledge. "
+            "Explore authentic will, desire, and what the person is genuinely willing to commit to; do not substitute a sacral response."
+        ),
+        "ego_manifested": (
+            "Authority: Ego / Heart (Manifested). Use only the exact authority mechanics supported by the supplied knowledge. "
+            "Explore authentic will and commitment; do not substitute a sacral response or invent a bodily sensation."
+        ),
+        "ego_projected": (
+            "Authority: Ego / Heart (Projector). Use only the exact authority mechanics supported by the supplied knowledge. "
+            "Explore authentic will and commitment; do not substitute a sacral response or invent a bodily sensation."
+        ),
+        "self_projected": (
+            "Authority: Self-Projected. Describe clarity emerging through hearing oneself speak and noticing what feels true "
+            "in one's own expression. Do not prescribe a gut yes/no or claim the answer comes from mental analysis alone."
+        ),
+        "mental": (
+            "Authority: Mental / Environmental (often described through a sounding-board process). Do not invent an inner-body "
+            "yes/no signal. Describe noticing how clarity emerges through the right environment and talking things through with "
+            "trusted sounding boards, without handing authority to their opinions."
+        ),
+        "environmental": (
+            "Authority: Mental / Environmental (often described through a sounding-board process). Do not invent an inner-body "
+            "yes/no signal. Describe noticing how clarity emerges through the right environment and talking things through with "
+            "trusted sounding boards, without handing authority to their opinions."
+        ),
+        "lunar": (
+            "Authority: Lunar. Describe a time-based process over the lunar cycle rather than demanding an immediate body signal "
+            "or instant certainty. Do not invent a specific timing recommendation unless supplied evidence supports it."
+        ),
+        "lunar_authority": (
+            "Authority: Lunar. Describe a time-based process over the lunar cycle rather than demanding an immediate body signal "
+            "or instant certainty. Do not invent a specific timing recommendation unless supplied evidence supports it."
+        ),
+    }
+    if not authority:
+        return (
+            "Authority guidance: The canonical chart does not provide an authority value. Do not infer or invent one. "
+            "Keep advice general and state that authority-specific guidance needs verified chart mechanics."
+        )
+    return guidance.get(
+        authority,
+        f"Authority guidance: The canonical chart reports authority '{authority}'. Do not reinterpret or replace it. "
+        "Use only supplied, approved knowledge to describe its specific decision process; if mechanics are not supported, "
+        "say so rather than substituting a generic body signal."
+    )
+
+
+def _build_orchestrator_context(foundation: dict) -> dict:
+    """Build the +3framework control-plane instructions without changing API contracts."""
+    return {
+        "name": "+3framework",
+        "orchestrator_role": (
+            "Read this orchestration control plane first. It governs the order and boundaries of the three layers; "
+            "it is not a fourth layer."
+        ),
+        "execution_order": [
+            "Layer 1: establish canonical chart mechanics and approved evidence; preserve unknowns.",
+            "Layer 2: apply only user-provided context and the current question to relevance and tone.",
+            "Layer 3: let ChatGPT synthesize directly from Layers 1 and 2 in a warm, natural answer.",
+            "Before delivery, check that no chart fact, authority, source, transit, or personal sensation was invented."
+        ],
+        "invariants": [
+            "Layer 2 may personalize relevance, not alter Layer 1 facts or certainty.",
+            "The user's Human Design authority is the decision-making reference in this teaching model; the mind may support reflection but must not be substituted for the chart's authority.",
+            "Authority mechanics differ. Never flatten every authority into a Sacral gut response or claim that every authority produces the same bodily signal.",
+            "Do not add a fourth critic/reasoning layer to the 3-layer architecture.",
+            "Keep natal activations distinct from temporary transit activations."
+        ],
+        "authority_guidance": _authority_guidance(foundation)
+    }
+
+
 def generate_interpretation(question: str, foundation: dict, temporal_context: dict | None = None, knowledge_tier: str = "basic") -> dict:
     """Generate a grounded 3framework answer, or a truthful non-configured status."""
     api_key = os.environ.get("OPENAI_API_KEY", "").strip()
@@ -210,16 +305,19 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         "controlled_knowledge": knowledge,
         "external_knowledge": external,
         "validated_relationships": relationships,
-        "framework": "3framework",
+        "framework": "+3framework",
+        "orchestrator": _build_orchestrator_context(foundation),
         "layer_separation": {
             "layer_1": "Canonical chart mechanics and source-linked knowledge above.",
             "layer_2": "Only the current question and explicitly supplied context; do not infer private user traits.",
-            "layer_3": "ChatGPT synthesizes directly from Layers 1 and 2. No separate critic or additional reasoning layer is part of 3framework."
+            "layer_3": "ChatGPT synthesizes directly from Layers 1 and 2. No separate critic or additional reasoning layer is part of +3framework."
         }
     }
     instructions = (
-        "You are the interpretation layer for Know Yourself, a Human Design application. "
-        "Follow 3framework: canonical chart evidence first, contextual relevance second, direct synthesis third. "
+        "You are the live reasoning layer for Know Yourself, a Human Design application. "
+        "Read the +3framework orchestrator instructions in the supplied input first; the plus sign denotes a cross-cutting control plane, "
+        "not a fourth layer. Follow its order: canonical chart evidence first, contextual relevance second, direct synthesis third, "
+        "then validate boundaries before delivery. "
         "Treat supplied core and activation records as the only authority for this chart's mechanics. "
         "Do not calculate or infer chart mechanics. Never confuse catalogue membership with activation. "
         "Keep natal activations separate from temporary transit activations. If temporal_context is absent, "
@@ -233,7 +331,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         "title, summary, reflection, evidence_class, source_ids, gate, channels, centres), factual_basis (array of "
         "evidence labels), knowledge_basis (array of supplied knowledge record IDs), relationship_basis (array of "
         "supplied validated relationship IDs), interpretation (string), limitations (array of strings). "
-        "Use concise but substantive prose. Never invent evidence IDs, source IDs, relationship IDs, or facts. There is no separate post-synthesis critic in 3framework; synthesize directly from the supplied canonical evidence and context."
+        "Use concise but substantive prose. Never invent evidence IDs, source IDs, relationship IDs, or facts. There is no separate post-synthesis critic in +3framework; synthesize directly from the supplied canonical evidence and context."
     )
     body = {
         "model": model,
