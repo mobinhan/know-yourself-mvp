@@ -288,7 +288,7 @@ class Plus3FrameworkOrchestratorTests(unittest.TestCase):
         self.assertIn("Layer 1:", context["execution_order"][0])
         self.assertIn("Layer 2:", context["execution_order"][1])
         self.assertIn("Layer 3:", context["execution_order"][2])
-        self.assertIn("before delivery", context["execution_order"][3])
+        self.assertIn("Before delivery", context["execution_order"][3])
         self.assertTrue(any("Never flatten every authority" in rule for rule in context["invariants"]))
 
     def test_authority_specific_guidance_covers_distinct_mechanics(self):
