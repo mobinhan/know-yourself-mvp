@@ -370,7 +370,8 @@ class handler(BaseHTTPRequestHandler):
                             temporal_context=transit["result"],
                             knowledge_tier=knowledge_tier,
                         )
-                    except InterpretationProviderError:
+                    except InterpretationProviderError as exc:
+                        print(f"openai_provider_diagnostic category={str(exc)[:60]}", flush=True)
                         return self._send(503, {"error": "interpretation_provider_unavailable", "interpretation_status": "provider_error"})
                     if reading.get("interpretation_status") == "provider_not_configured":
                         reading = {
@@ -415,7 +416,8 @@ class handler(BaseHTTPRequestHandler):
                         return self._send(429, {"error": "ai_rate_limit_exceeded", "retry_after_seconds": AI_RATE_WINDOW_SECONDS})
                     try:
                         interpretation = generate_interpretation(question, foundation, temporal_context=temporal_context, knowledge_tier=knowledge_tier)
-                    except InterpretationProviderError:
+                    except InterpretationProviderError as exc:
+                        print(f"openai_provider_diagnostic category={str(exc)[:60]}", flush=True)
                         return self._send(503, {"error": "interpretation_provider_unavailable", "interpretation_status": "provider_error"})
                     return self._send(200, {
                         "chart": foundation["core"],
