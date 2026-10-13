@@ -373,8 +373,8 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
                 error_param = safe_metadata(detail.get("param"))
                 message = detail.get("message")
                 if isinstance(message, str):
-                    message = " ".join(message.replace("\\r", " ").replace("\\n", " ").replace("\\t", " ").split())
-                    message = re.sub(r"(?i)bearer\\s+\\S+", "Bearer [REDACTED]", message)
+                    message = " ".join(message.replace("\r", " ").replace("\n", " ").replace("\t", " ").split())
+                    message = re.sub(r"(?i)bearer\s+\S+", "Bearer [REDACTED]", message)
                     message = re.sub(r"(?i)sk-[a-z0-9_-]+", "[REDACTED_KEY]", message)
                     error_message = message[:240]
         except (ValueError, UnicodeDecodeError, AttributeError, TypeError):
