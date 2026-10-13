@@ -358,3 +358,40 @@ PHS detailed interpretation is a Premium capability. The underlying deterministi
 
 Status note: these are required acceptance tests derived from the confirmed product decision; they are not evidence that the deployed app currently enforces the PHS Premium boundary.
 
+
+
+## Orchestrator rule — somatic-first guidance for Sacral Authority
+
+**Purpose:** when a user asks about Sacral response or Sacral Authority, the answer must help them return attention to direct bodily experience rather than turning the teaching into another mental-analysis exercise.
+
+This is an answer-orchestration and pedagogy rule, not a change to canonical chart mechanics.
+
+### Required behavior
+- Lead with the Human Design teaching plainly: within this system, the Sacral response is a bodily response, not a thought or a conclusion reached by mental analysis.
+- Invite the user to notice their own immediate bodily experience; do not tell them what they must feel or manufacture a sensation for them.
+- Avoid leading with neuroscience, caveats, abstract analysis, or a long list of possible sensations when the user is asking for the core Human Design teaching. Add scientific distinctions when the user asks about biology/evidence or when they materially clarify the question, without letting them displace the requested teaching.
+- Distinguish the Sacral response from mental reasoning and from other chart mechanics (including Splenic intuition). Do not conflate Sacral Authority with a channel such as 34–57.
+- Use canonical chart data to establish the user's authority and relevant defined channels; retrieve approved Human Design source material for deeper mechanism claims. Do not invent source doctrine or claim that the subjective sensation can be inferred from chart mechanics.
+- Keep the voice warm, direct, experiential, and invitational. The aim is not merely to explain the concept intellectually, but to help the user recognise their own experience.
+- Preserve user agency: do not present a bodily feeling as infallible or make consequential decisions on the user's behalf.
+
+### Required response sequence
+1. Answer the user's direct question in clear, experience-oriented language.
+2. Explain the Human Design teaching and the relevant chart mechanics at the requested depth.
+3. Invite observation or a small experiential reflection only when useful; never force a questionnaire.
+4. Add evidence boundaries proportionately and in context, rather than reflexively shifting the whole answer into intellectual analysis.
+
+### Orchestrator regression tests
+- **O10 — Somatic-first response:** Given “Where does my Sacral response come from?”, the answer leads with the Human Design explanation of a bodily response, not thought, and locates the teaching in the Sacral Centre.
+- **O11 — No intellectualization drift:** The answer does not replace the requested experiential teaching with a brain/gut neuroscience lecture or excessive disclaimers. Relevant scientific distinctions remain available when asked.
+- **O12 — Personal experience not fabricated:** The answer invites the user to notice their own experience without claiming to know where or how they personally feel the response.
+- **O13 — Authority/channel distinction:** The answer preserves Sacral Authority as the decision-making authority and explains relevant Sacral-connected channels only with appropriate source support; it does not equate channel 34–57 with Splenic Authority.
+- **O14 — User correction becomes regression:** If the user says the answer has returned decision-making to the mind instead of the body, treat this as a substantive failure, revise the answer, and add/update the test rule rather than merely apologizing.
+
+### Initial execution record — conversational test, 2026-10-13
+- **O10: FAIL** — first answer discussed biological interoception and caveats before centering the requested Human Design teaching.
+- **O11: FAIL** — subsequent answer continued to foreground scientific explanation and mental analysis; the user explicitly corrected that this misses the central purpose.
+- **O12: PARTIAL** — the answer did not claim to know the user's exact sensation, but the experiential invitation was secondary.
+- **O13: PARTIAL** — the channel 34–57 distinction was mentioned, but source retrieval/provenance for the advanced teaching was not demonstrated in this turn.
+- **O14: PASS (process response only)** — after the user correction, the orchestration rule and regression tests are being added. This does not mean the product runtime has implemented or passed these tests.
+- Overall: **CONVERSATIONAL FAILURE IDENTIFIED; DOCUMENTATION UPDATED; RUNTIME INTEGRATION NOT VERIFIED.** This is a manual conversational evaluation, not an automated or end-to-end product test.
