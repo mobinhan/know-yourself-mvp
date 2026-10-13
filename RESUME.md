@@ -224,3 +224,14 @@ Important limitation: this file records the required protocol; it does not itsel
 - Manual conversation evaluation: initial responses **failed** the somatic-first requirement by foregrounding biological explanation/caveats and mental analysis. O12 was partial; advanced source provenance and live retrieval were not demonstrated. O14 passes only as a correction-handling process because the regression rule is now documented.
 - **Important:** this is a documentation change and manual conversation evaluation, not proof the production 3Framework Orchestrator/runtime enforces the rule. Runtime integration and automated execution of O10–O14 remain **NOT VERIFIED**.
 - Next: implement the rule in the actual Answer Composer/3FO prompt or policy path, then run O10–O14 against the real response path and record trace/evidence. Keep the answer natural and warm; do not reflexively turn Sacral teaching into a neuroscience lecture. Preserve source accuracy and distinguish Sacral Authority from channels such as 34–57.
+
+
+## Current checkpoint (2026-10-13 — embodied decision-making across all authorities)
+
+- User clarified that the product principle is not Sacral-only: **all Human Design authority guidance should orient users toward embodied decision-making, with the body leading and the mind supporting rather than taking over.**
+- Updated the 3Framework Orchestrator contract on branch `docs/3framework-testing` to generalize the rule across Emotional, Sacral, Splenic, Ego/Heart, Self-Projected, Mental/Environmental, and Lunar decision processes.
+- Added regression tests O15–O20 for authority coverage, authority-specific mechanics, avoiding mind-as-authority drift, avoiding generic gut-signal substitution, chart-driven personalization, and direct experiential guidance.
+- Documentation update commit: `0f40863ca151d3fd2d0217d945aa5b47a49e1f00`.
+- This is a product/orchestration requirement, not evidence that runtime behavior is already implemented. O15–O20 are **NOT RUN** against the actual answer-generation path.
+- Important nuance for faithful implementation: embodied decision-making is the overarching product principle, but the specific Human Design mechanics differ by authority. Do not flatten every authority into the Sacral gut-response model; in particular, preserve the source-specific Emotional clarity-over-time and Mental/Environmental sounding-board/environment process.
+- Next: inspect the actual Answer Composer / 3FO runtime path, apply the cross-authority rule there, then execute O10–O20 with representative fixtures for each supported authority and retain evidence. Do not claim runtime integration until verified.
