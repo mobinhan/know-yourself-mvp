@@ -213,3 +213,14 @@ Important limitation: this file records the required protocol; it does not itsel
 - These are documentation/acceptance criteria, not runtime tests. PHS mapping correctness and deployed Premium enforcement remain unverified. Do not claim PHS is secured until the actual serving route applies trusted server-side entitlement checks and authenticated end-to-end tests pass.
 - Next: inspect the canonical PHS calculation/mapping implementation and its source evidence; validate the chain that yields Determination/Cognition/Environment/orientation without inferring a label from Gate 62.2 alone. Keep this isolated from production calculations until the mapping contract is supported by approved sources.
 
+
+
+## Current checkpoint (2026-10-13 — somatic-first Sacral response orchestration)
+
+- User clarified a core Know Yourself teaching principle: for Sacral Authority, the answer must help move decision-making away from mental analysis and back toward direct bodily awareness. The Sacral response should be explained as a bodily response, not a thought; the user is learning to notice their own response, not to think their way into one.
+- Added an orchestrator rule and regression tests O10–O14 to `docs/3framework-testing.md` on branch `docs/3framework-testing`.
+- Documentation commit: `cb398497a00c7c5603db09bb9166a2ba43369086`.
+- Remote fetch-back verified the new rule and O10 test are present.
+- Manual conversation evaluation: initial responses **failed** the somatic-first requirement by foregrounding biological explanation/caveats and mental analysis. O12 was partial; advanced source provenance and live retrieval were not demonstrated. O14 passes only as a correction-handling process because the regression rule is now documented.
+- **Important:** this is a documentation change and manual conversation evaluation, not proof the production 3Framework Orchestrator/runtime enforces the rule. Runtime integration and automated execution of O10–O14 remain **NOT VERIFIED**.
+- Next: implement the rule in the actual Answer Composer/3FO prompt or policy path, then run O10–O14 against the real response path and record trace/evidence. Keep the answer natural and warm; do not reflexively turn Sacral teaching into a neuroscience lecture. Preserve source accuracy and distinguish Sacral Authority from channels such as 34–57.
