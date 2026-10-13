@@ -83,6 +83,11 @@ class GateLineSynthesisContractTests(unittest.TestCase):
         model_input = json.loads(body["input"])
         instructions = body["instructions"]
 
+        self.assertEqual(model_input["framework"], "+3framework")
+        self.assertEqual(model_input["orchestrator"]["name"], "+3framework")
+        self.assertIn("not a fourth layer", model_input["orchestrator"]["orchestrator_role"])
+        self.assertIn("Sacral", model_input["orchestrator"]["authority_guidance"])
+        self.assertIn("Read the +3framework orchestrator instructions", instructions)
         self.assertIn(source["id"], {item["id"] for item in model_input["external_knowledge"]})
         self.assertIn(
             relationship["id"],
