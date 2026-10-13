@@ -4,7 +4,10 @@ import os
 import unittest
 from unittest.mock import patch
 
-from api.interpretation_provider import (\n    InterpretationProviderError, generate_interpretation,\n    _authority_guidance, _build_orchestrator_context,\n)
+from api.interpretation_provider import (
+    InterpretationProviderError, generate_interpretation,
+    _authority_guidance, _build_orchestrator_context,
+)
 
 
 class FakeResponse:
