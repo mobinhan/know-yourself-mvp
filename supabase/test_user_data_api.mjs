@@ -29,4 +29,11 @@ assert.match(migration, /create policy ky_charts_owner_all[\s\S]*auth\.uid\(\)/i
 assert.match(migration, /revoke all[\s\S]*ky_knowledge_sources[\s\S]*from anon, authenticated/i, "raw knowledge tables must not be client-readable");
 assert.match(hardening, /on delete set null \(chart_id\)/i, "composite foreign keys must preserve user_id when chart is removed");
 assert.match(hardening, /ky_knowledge_records_deny_clients[\s\S]*using \(false\)/i, "backend-only knowledge policy must deny client access");
+
+assert.match(source, /invalid_turn_limit/, "conversation turn retrieval must reject invalid limits");
+assert.match(source, /parsedLimit > 100/, "conversation turn retrieval must enforce a hard maximum page size");
+assert.match(source, /query = query\.order\("sequence_number", \{ ascending: false \}\)\.limit\(parsedLimit\)/, "latest/older turn pages must be bounded in the database query");
+assert.match(source, /query\.gt\("sequence_number", afterSequence\).*?\.limit\(parsedLimit\)/s, "incremental turn retrieval must support summary coverage cursors");
+assert.match(source, /use_only_one_sequence_cursor/, "turn retrieval must reject conflicting pagination cursors");
+assert.match(source, /\.reverse\(\)/, "descending turn pages must be returned chronologically");
 console.log("USER DATA API SECURITY CONTRACT PASS");
