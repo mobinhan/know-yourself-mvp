@@ -1,0 +1,61 @@
+name: Provider comparison regression suite
+
+on:
+  pull_request:
+    paths:
+      - "api/interpretation_provider.py"
+      - "api/interpretation_critic.py"
+      - "api/index.py"
+      - "api/entitlements.py"
+      - "engine/knowledge-records.json"
+      - "engine/external-knowledge-records.json"
+      - "engine/knowledge-relationships.json"
+      - "tests/test_provider_adapters.py"
+      - "tests/test_gate_line_retrieval.py"
+      - "tests/test_gate_line_synthesis_contract.py"
+      - "tests/test_interpretation_critic.py"
+      - "tests/test_entitlements.py"
+      - "tests/test_premium_route_guard.py"
+      - ".github/workflows/provider-comparison-regression.yml"
+  push:
+    branches:
+      - "feature/provider-comparison-harness"
+    paths:
+      - "api/interpretation_provider.py"
+      - "api/interpretation_critic.py"
+      - "api/index.py"
+      - "api/entitlements.py"
+      - "engine/knowledge-records.json"
+      - "engine/external-knowledge-records.json"
+      - "engine/knowledge-relationships.json"
+      - "tests/test_provider_adapters.py"
+      - "tests/test_gate_line_retrieval.py"
+      - "tests/test_gate_line_synthesis_contract.py"
+      - "tests/test_interpretation_critic.py"
+      - "tests/test_entitlements.py"
+      - "tests/test_premium_route_guard.py"
+      - ".github/workflows/provider-comparison-regression.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  focused-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install API dependencies
+        run: pip install -r requirements.txt
+      - name: Run provider adapter tests
+        run: python -m unittest tests.test_provider_adapters -v
+      - name: Run gate-line and critic regression tests
+        run: >
+          python -m unittest
+          tests.test_gate_line_retrieval
+          tests.test_gate_line_synthesis_contract
+          tests.test_interpretation_critic -v
+      - name: Run entitlement and premium route guard tests
+        run: python -m unittest tests.test_entitlements tests.test_premium_route_guard -v
