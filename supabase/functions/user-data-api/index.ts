@@ -195,11 +195,55 @@ Deno.serve(async (req: Request) => {
       }
       if (conversationId && subresource === "turns") {
         if (req.method === "GET") {
-          const { data, error } = await supabase.from("ky_conversation_turns")
+          // Keep the stored conversation complete, but bound each API response.
+          // Default to the newest page; callers can page older turns or request
+          // turns after a known sequence (for summary/context coverage).
+          const rawLimit = url.searchParams.get("limit");
+          const parsedLimit = rawLimit === null ? 50 : Number(rawLimit);
+          if (!Number.isInteger(parsedLimit) || parsedLimit < 1 || parsedLimit > 100) {
+            return respond(400, { error: "invalid_turn_limit", min: 1, max: 100 });
+          }
+          const beforeRaw = url.searchParams.get("before_sequence");
+          const afterRaw = url.searchParams.get("after_sequence");
+          if (beforeRaw !== null && afterRaw !== null) {
+            return respond(400, { error: "use_only_one_sequence_cursor" });
+          }
+          const parseCursor = (raw: string | null) => {
+            if (raw === null) return null;
+            const value = Number(raw);
+            return Number.isSafeInteger(value) && value >= 0 ? value : NaN;
+          };
+          const beforeSequence = parseCursor(beforeRaw);
+          const afterSequence = parseCursor(afterRaw);
+          if (Number.isNaN(beforeSequence) || Number.isNaN(afterSequence)) {
+            return respond(400, { error: "invalid_sequence_cursor" });
+          }
+
+          let query = supabase.from("ky_conversation_turns")
             .select("id,user_id,conversation_id,sequence_number,role,question,answer,factual_basis,knowledge_basis,relationship_basis,critic_result,reasoning_model,prompt_version,created_at")
-            .eq("user_id", user.id).eq("conversation_id", conversationId).order("sequence_number", { ascending: true });
+            .eq("user_id", user.id).eq("conversation_id", conversationId);
+          if (afterSequence !== null) {
+            query = query.gt("sequence_number", afterSequence).order("sequence_number", { ascending: true }).limit(parsedLimit);
+          } else {
+            if (beforeSequence !== null) query = query.lt("sequence_number", beforeSequence);
+            query = query.order("sequence_number", { ascending: false }).limit(parsedLimit);
+          }
+          const { data, error } = await query;
           if (error) throw error;
-          return respond(200, { data });
+          // Descending fetch is efficient for latest/older pages; return every
+          // page in chronological order so clients never have to guess.
+          const turns = afterSequence !== null ? (data ?? []) : [...(data ?? [])].reverse();
+          return respond(200, {
+            data: turns,
+            page: {
+              limit: parsedLimit,
+              before_sequence: beforeSequence,
+              after_sequence: afterSequence,
+              oldest_sequence: turns.length ? turns[0].sequence_number : null,
+              newest_sequence: turns.length ? turns[turns.length - 1].sequence_number : null,
+              has_more_older: afterSequence === null && turns.length === parsedLimit
+            }
+          });
         }
         if (req.method === "POST") {
           const body = parseJson(await req.json());

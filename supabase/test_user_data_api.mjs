@@ -5,6 +5,7 @@ const source = fs.readFileSync(new URL("./functions/user-data-api/index.ts", imp
 const migration = fs.readFileSync(new URL("./migrations/20261009054427_know_yourself_persistence_foundation_v1.sql", import.meta.url), "utf8");
 const hardening = fs.readFileSync(new URL("./migrations/20261009054455_know_yourself_persistence_integrity_and_policy_hardening.sql", import.meta.url), "utf8");
 const writeBoundaries = fs.readFileSync(new URL("./migrations/20261009054934_know_yourself_client_write_boundaries_and_user_turns.sql", import.meta.url), "utf8");
+const layer2Migration = fs.readFileSync(new URL("./migrations/20261015010000_layer2_bounded_context_retrieval.sql", import.meta.url), "utf8");
 
 assert.match(source, /npm:@supabase\/supabase-js@2\.57\.0/, "Supabase client dependency must be pinned");
 assert.match(source, /Authorization: authHeader/, "forward user JWT to enforce RLS");
@@ -29,4 +30,16 @@ assert.match(migration, /create policy ky_charts_owner_all[\s\S]*auth\.uid\(\)/i
 assert.match(migration, /revoke all[\s\S]*ky_knowledge_sources[\s\S]*from anon, authenticated/i, "raw knowledge tables must not be client-readable");
 assert.match(hardening, /on delete set null \(chart_id\)/i, "composite foreign keys must preserve user_id when chart is removed");
 assert.match(hardening, /ky_knowledge_records_deny_clients[\s\S]*using \(false\)/i, "backend-only knowledge policy must deny client access");
+
+assert.match(source, /invalid_turn_limit/, "conversation turn retrieval must reject invalid limits");
+assert.match(source, /parsedLimit > 100/, "conversation turn retrieval must enforce a hard maximum page size");
+assert.match(source, /query = query\.order\("sequence_number", \{ ascending: false \}\)\.limit\(parsedLimit\)/, "latest/older turn pages must be bounded in the database query");
+assert.match(source, /query\.gt\("sequence_number", afterSequence\).*?\.limit\(parsedLimit\)/s, "incremental turn retrieval must support summary coverage cursors");
+assert.match(source, /use_only_one_sequence_cursor/, "turn retrieval must reject conflicting pagination cursors");
+assert.match(source, /\.reverse\(\)/, "descending turn pages must be returned chronologically");
+
+assert.match(layer2Migration, /ky_save_conversation_summary[\s\S]*auth\.role\(\) is distinct from 'service_role'/i, "summary persistence must require a trusted service-role caller");
+assert.match(layer2Migration, /p_through_sequence > v_max_sequence/, "summary coverage cannot claim nonexistent turns");
+assert.match(layer2Migration, /p_through_sequence < v_existing_sequence/, "summary coverage cannot move backwards");
+assert.match(layer2Migration, /revoke all on function public\.ky_save_conversation_summary[\s\S]*from public, anon, authenticated/i, "summary persistence must not be callable by clients");
 console.log("USER DATA API SECURITY CONTRACT PASS");
