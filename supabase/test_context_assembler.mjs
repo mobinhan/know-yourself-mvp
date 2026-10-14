@@ -7,6 +7,7 @@ const mockTokenizer = text => text.trim() ? text.trim().split(/\s+/).length : 0;
 const input = {
   instructions: "Answer using only canonical chart and validated evidence.",
   question: "Explain my chart and what I should consider next.",
+  preferences: { personalization_enabled: true, personal_context_enabled: true },
   canonicalChart: { type: "Projector", authority: "Splenic", evidence_id: "chart-1" },
   evidence: [
     { id: "ev-1", claim: "Evidence claim one with enough text to consume tokens." },
@@ -30,6 +31,9 @@ assert.ok(result.metrics.measured_tokens <= 4000, "assembled context must stay w
 assert.equal(result.metrics.recent_turns_included, 12, "AI context should cap raw history at 12 turns");
 assert.equal(result.context.recent_turns[0].sequence_number, 19, "selected recent turns should be chronological");
 assert.equal(result.context.recent_turns.at(-1).sequence_number, 30, "newest turn must be retained");
+assert.equal(result.context.memories.length, 2, "only consented, confirmed, unexpired memories should enter context");
+assert.equal(result.context.summary.through_sequence, 7, "summary coverage sequence must be retained");
+
 assert.equal(mockTokenizer(JSON.stringify(result.context)), result.metrics.measured_tokens, "reported count must measure final serialized context");
 
 const tight = assembleContext(input, { maxTokens: 150, maxTurns: 12, countTokens: mockTokenizer });
