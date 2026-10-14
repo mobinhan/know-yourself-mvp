@@ -39,7 +39,7 @@ class OpenAIResponseDiagnosticsTests(unittest.TestCase):
         payload = {
             "output": [{
                 "type": "message",
-                "content": [{"type": "output_text", "text": "{\\"answer\\":\\"ok\\"}"}],
+                "content": [{"type": "output_text", 'text': '{"answer":"ok"}'}],
             }]
         }
         self.assertEqual(_response_text(payload), '{"answer":"ok"}')
