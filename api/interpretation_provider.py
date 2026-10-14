@@ -478,5 +478,5 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     result["model"] = model
     result["provider"] = provider
     if usage:
-        result["usage"] = {k: v for k, v in usage.items() if k in {"prompt_tokens", "completion_tokens", "total_tokens", "input_tokens", "output_tokens", "thoughtsTokenCount", "cachedContentTokenCount"}}
+        result["usage"] = {k: v for k, v in usage.items() if k in {"prompt_tokens", "completion_tokens", "total_tokens", "input_tokens", "output_tokens", "thoughtsTokenCount", "cachedContentTokenCount", "promptTokenCount", "candidatesTokenCount"}}
     return result
