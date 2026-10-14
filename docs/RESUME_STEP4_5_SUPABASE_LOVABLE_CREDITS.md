@@ -61,3 +61,9 @@ No Step 5 edits were made by that blocked attempt. No publish/deploy occurred.
 - Do not create a new project, duplicate tables, modify `main` wholesale, use unapproved deployment, or use Vercel.
 - Preserve current UI and deterministic chart engine. Keep GitHub source of truth and use isolated feature branch for canonical repository changes.
 - The user explicitly requested saving this checkpoint so a new chat can resume specifically at this part.
+
+## Resume verification — 2026-10-14
+- Re-checked the live Lovable project read-only. Latest project commit is b3fda8a71ebb4b85c2c463b32a545d38490c46b2 (2026-10-13, “Moved transit out of chat dock”), newer than the prior checkpoint commit. Recent edits also include “Pinned Ask box at bottom”; these are UI changes, not the blocked persistence increment.
+- Current src/routes/api/health.ts still returns persistence unavailable with reason “No database connected; charts are not stored.”; current package.json does not include @supabase/supabase-js. This confirms Step 5 is still not wired in the existing Lovable runtime.
+- The latest project agent turn is finished. No new implementation request was sent during this resume because the last confirmed blocker is exhausted Lovable workspace credits. No edits, publish, or deployment were made in this session.
+- Next action remains: after credits are restored, continue in the same Lovable project with authenticated email OTP/magic-link, guest-safe mode, existing Supabase user-data-api integration, honest persistence health, and focused tests. Do not create a new project/backend or publish.
