@@ -21,21 +21,17 @@ Status: implementation specification and additive migration candidate. This does
 9. Assemble the prompt package, call the configured GPT-5 mini provider server-side, validate the answer with the critic, and only then persist assistant output, factual basis, knowledge basis, relationship basis, model ID, and prompt version using the trusted write path.
 10. If the provider, evidence retrieval, or critic fails, return a clear bounded failure/uncertainty response. Never fabricate a successful answer or write an unvalidated assistant turn.
 
-## Initial configurable budget
+## Configurable context budget and retrieval limits
 
-Start with a **12,000-token input budget per request**, measured with the selected provider's tokenizer where available. This is a ceiling, not a target.
+The **initial AI-context budget is 4,000 input tokens per request**, configurable at the trusted server boundary. The assembler measures the serialized final context using the selected provider's tokenizer; row counts alone never establish a token limit. Output tokens are budgeted separately.
 
-| Context component | Initial budget |
-| --- | ---: |
-| Relevant canonical chart facts | 1,000 tokens |
-| Evidence + knowledge records + validated relationships | 3,500 tokens |
-| Relevant user memories | 1,000 tokens |
-| Conversation summary | 1,000 tokens |
-| Recent messages | 3,000 tokens |
-| System/orchestration instructions + current question and remaining input overhead | 2,500 tokens |
-| **Total** | **12,000 tokens** |
+- The conversation-history API may return a page of up to 50 turns for user-facing history browsing. That is a storage/API pagination limit, **not** the model-context limit.
+- The AI context assembler independently selects at most the newest **12 turns**, and can include fewer when the measured budget requires trimming.
+- Canonical chart data and evidence are selected for relevance before assembly; memory and summary are lower-priority contextual material. If the core instructions and current question alone exceed the budget, fail explicitly rather than call the model.
+- Every candidate inclusion/exclusion is recorded in a structured trimming log using section/record identifiers and reason, not sensitive memory text.
+- After assembling, measure the exact serialized payload again. If it exceeds budget, do not call the provider.
 
-The model output limit is configured separately. Record actual input/output token usage and provider/model identifiers per request so these limits can be tuned from observed cost and answer quality. Never cut chart facts or supporting evidence in a way that changes meaning: retrieve fewer records or return a transparent evidence gap instead.
+Record actual provider/model, measured input/output tokens, latency, and validation outcome per request without logging secrets. Never silently truncate an evidence claim or chart fact in a way that changes meaning; include fewer records or return a transparent evidence gap instead.
 
 ## Summary policy
 
