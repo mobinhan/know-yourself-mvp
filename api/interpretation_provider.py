@@ -341,8 +341,8 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     provider = os.environ.get("KY_AI_PROVIDER", "openai").strip().lower()
     model_defaults = {
         "openai": os.environ.get("OPENAI_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL,
-        "gemini": os.environ.get("GEMINI_MODEL", "gemini-2.5-flash").strip(),
-        "mistral": os.environ.get("MISTRAL_MODEL", "mistral-small-4").strip(),
+        "gemini": os.environ.get("GEMINI_MODEL", "").strip(),
+        "mistral": os.environ.get("MISTRAL_MODEL", "").strip(),
     }
     model = model_defaults.get(provider)
     if not model:
