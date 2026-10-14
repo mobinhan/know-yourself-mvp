@@ -166,12 +166,49 @@ def _response_text(payload: dict) -> str:
         return payload["output_text"]
     chunks = []
     for item in payload.get("output", []):
-        if item.get("type") != "message":
+        if not isinstance(item, dict) or item.get("type") != "message":
             continue
         for part in item.get("content", []):
-            if part.get("type") == "output_text" and isinstance(part.get("text"), str):
+            if isinstance(part, dict) and part.get("type") == "output_text" and isinstance(part.get("text"), str):
                 chunks.append(part["text"])
-    return "\n".join(chunks).strip()
+    return "\\n".join(chunks).strip()
+
+
+def _response_diagnostic(payload: dict) -> str:
+    """Summarize an empty Responses API result without logging prompts or content."""
+    output = payload.get("output") if isinstance(payload.get("output"), list) else []
+    item_types = []
+    content_types = []
+    refusal = False
+    for item in output:
+        if not isinstance(item, dict):
+            continue
+        item_type = item.get("type")
+        if isinstance(item_type, str) and item_type not in item_types:
+            item_types.append(item_type[:40])
+        content = item.get("content") if isinstance(item.get("content"), list) else []
+        for part in content:
+            if not isinstance(part, dict):
+                continue
+            part_type = part.get("type")
+            if isinstance(part_type, str) and part_type not in content_types:
+                content_types.append(part_type[:40])
+            refusal = refusal or part_type == "refusal"
+    status = payload.get("status")
+    status = status[:40] if isinstance(status, str) else "unknown"
+    details = payload.get("incomplete_details")
+    reason = details.get("reason") if isinstance(details, dict) else None
+    reason = reason[:60] if isinstance(reason, str) else "none"
+    usage = payload.get("usage")
+    output_tokens = usage.get("output_tokens") if isinstance(usage, dict) else None
+    if not isinstance(output_tokens, int):
+        output_tokens = "unknown"
+    return (
+        f"status={status} incomplete_reason={reason} output_count={len(output)} "
+        f"item_types={','.join(item_types) or 'none'} "
+        f"content_types={','.join(content_types) or 'none'} "
+        f"refusal={str(refusal).lower()} output_tokens={output_tokens}"
+    )
 
 
 def _authority_guidance(foundation: dict) -> str:
@@ -396,6 +433,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
 
     raw_text = _response_text(provider_payload)
     if not raw_text:
+        print(f"openai_provider_empty_output {_response_diagnostic(provider_payload)}", flush=True)
         raise InterpretationProviderError("OpenAI Responses API returned no text output")
     try:
         result = json.loads(raw_text)
