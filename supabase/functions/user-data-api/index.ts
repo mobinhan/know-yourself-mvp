@@ -241,7 +241,7 @@ Deno.serve(async (req: Request) => {
               after_sequence: afterSequence,
               oldest_sequence: turns.length ? turns[0].sequence_number : null,
               newest_sequence: turns.length ? turns[turns.length - 1].sequence_number : null,
-              has_more_older: beforeSequence === null && afterSequence === null && turns.length === parsedLimit
+              has_more_older: afterSequence === null && turns.length === parsedLimit
             }
           });
         }
