@@ -302,7 +302,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     }
     user_context = {
         "question": question,
-        "output_format_instruction": "Respond in JSON format using the schema described in the instructions.",
+        "output_format_instruction": "Respond in json format using the schema described in the instructions.",
         "chart_evidence": chart_evidence,
         "controlled_knowledge": knowledge,
         "external_knowledge": external,
