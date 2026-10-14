@@ -79,6 +79,8 @@ jobs:
           deno-version: v2.x
       - name: Run Supabase user data API security contract
         run: node supabase/test_user_data_api.mjs
+      - name: Run Layer 2 context assembler budget test
+        run: node supabase/test_context_assembler.mjs
       - name: Type-check Supabase user data API
         run: deno check supabase/functions/user-data-api/index.ts
       - name: Run deterministic structural test
