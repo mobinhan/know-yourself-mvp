@@ -337,7 +337,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     body = {
         "model": model,
         "instructions": instructions,
-        "input": json.dumps(user_context, ensure_ascii=False, separators=(",", ":")),
+        "input": "Please respond in JSON format using the schema described in the instructions.\n" + json.dumps(user_context, ensure_ascii=False, separators=(",", ":")),
         "text": {"format": {"type": "json_object"}},
         "max_output_tokens": 1800,
         "store": False,
