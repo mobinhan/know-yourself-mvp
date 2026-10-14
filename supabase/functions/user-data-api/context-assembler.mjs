@@ -40,10 +40,10 @@ export function assembleContext(input, options = {}) {
   for (const item of input.evidence ?? []) candidates.push({
     section: "evidence", id: String(item.id ?? "evidence"), value: item, priority: 1
   });
-  for (const item of input.memories ?? []) candidates.push({
+  for (const item of eligibleMemories(input.memories, input.preferences, input.now instanceof Date ? input.now : new Date())) candidates.push({
     section: "memories", id: String(item.id ?? "memory"), value: item, priority: 2
   });
-  if (input.summary?.text && Number.isSafeInteger(input.summary.throughSequence)) {
+  if (input.preferences?.personal_context_enabled === true && input.summary?.text && Number.isSafeInteger(input.summary.throughSequence)) {
     candidates.push({ section: "summary", id: "conversation_summary", value: input.summary, priority: 3 });
   }
   const turns = [...(input.turns ?? [])]
@@ -76,6 +76,9 @@ export function assembleContext(input, options = {}) {
     } else {
       payload[target] = previous;
       log.push({ section: target, id: candidate.id, action: "trimmed_budget", tokens_before: usedTokens });
+      if (target === "canonical_chart") {
+        throw new RangeError("canonical_chart_exceeds_token_budget");
+      }
     }
   }
 
