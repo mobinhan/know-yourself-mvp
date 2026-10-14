@@ -347,6 +347,22 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     model = model_defaults.get(provider)
     if not model:
         raise InterpretationProviderError("unsupported_provider")
+    key_names = {"openai": "OPENAI_API_KEY", "gemini": "GEMINI_API_KEY", "mistral": "MISTRAL_API_KEY"}
+    key_name = key_names.get(provider)
+    if key_name and not os.environ.get(key_name, "").strip():
+        print(f"ai_provider_diagnostic provider={provider} category=missing_key", flush=True)
+        return {
+            "interpretation_status": "provider_not_configured",
+            "answer": None,
+            "factual_basis": [],
+            "knowledge_basis": [],
+            "relationship_basis": [],
+            "limitations": [f"{key_name} is not configured in the server environment."],
+            "provider": provider,
+            "model": model,
+        }
+    if not model:
+        raise InterpretationProviderError("unsupported_provider")
     knowledge, external, relationships = _select_knowledge(question, foundation, knowledge_tier=knowledge_tier)
     activations = foundation.get("activations", {})
     def model_safe_activations(items):
@@ -373,7 +389,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         "layer_separation": {
             "layer_1": "Canonical chart mechanics and source-linked knowledge above.",
             "layer_2": "Only the current question and explicitly supplied context; do not infer private user traits.",
-            "layer_3": "Live model synthesizes directly from Layers 1 and 2. No separate critic or additional reasoning layer is part of +3framework."
+            "layer_3": "ChatGPT synthesizes directly from Layers 1 and 2. No separate critic or additional reasoning layer is part of +3framework."
         }
     }
     instructions = (
