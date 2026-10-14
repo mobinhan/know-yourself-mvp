@@ -265,15 +265,16 @@ def _json_bytes(value) -> bytes:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), default=str).encode("utf-8")
 
 
-def _photon_search(query: str) -> list[dict]:
-    if not query or len(query) > 180:
-        raise ValueError("q must contain 1–180 characters")
+def _geocode_request(url: str):
     request = Request(
-        "https://photon.komoot.io/api/?q=" + quote(query) + "&limit=8",
+        url,
         headers={"User-Agent": "KnowYourself/0.1 (Human Design chart birthplace lookup)"},
     )
-    with urlopen(request, timeout=4) as response:
-        payload = json.loads(response.read().decode("utf-8"))
+    with urlopen(request, timeout=8) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def _parse_photon(payload) -> list[dict]:
     results = []
     for feature in payload.get("features", []):
         props = feature.get("properties", {})
@@ -294,6 +295,48 @@ def _photon_search(query: str) -> list[dict]:
     return results
 
 
+def _parse_nominatim(payload) -> list[dict]:
+    results = []
+    for item in payload:
+        try:
+            lat = float(item.get("lat"))
+            lon = float(item.get("lon"))
+        except (TypeError, ValueError):
+            continue
+        display = str(item.get("display_name") or "").strip()
+        name = display.split(",")[0].strip() if display else ""
+        if not name:
+            continue
+        results.append({
+            "name": name,
+            "display_name": display,
+            "latitude": lat,
+            "longitude": lon,
+            "country": item.get("address", {}).get("country") if isinstance(item.get("address"), dict) else None,
+        })
+    return results
+
+
+def _photon_search(query: str) -> list[dict]:
+    if not query or len(query) > 180:
+        raise ValueError("q must contain 1-180 characters")
+    encoded = quote(query)
+    photon_error = None
+    try:
+        results = _parse_photon(_geocode_request("https://photon.komoot.io/api/?q=" + encoded + "&limit=8"))
+        if results:
+            return results
+    except (TimeoutError, OSError) as exc:
+        photon_error = exc
+    try:
+        results = _parse_nominatim(
+            _geocode_request("https://nominatim.openstreetmap.org/search?q=" + encoded + "&format=jsonv2&limit=8&addressdetails=1")
+        )
+        if results:
+            return results
+    except (TimeoutError, OSError) as exc:
+        raise URLError(str(exc))
+    raise URLError(str(photon_error) if photon_error else "no birthplace matches found")
 class handler(BaseHTTPRequestHandler):
     def _send(self, status: int, payload):
         body = _json_bytes(payload)
