@@ -8,6 +8,7 @@ export async function summarizeConversation({
   turns,
   existingSummary = null,
   existingSummaryThroughSequence = 0,
+  existingSummaryVersion = 0,
   generateSummary,
   saveSummary,
   maxSummaryChars = 6000,
@@ -23,7 +24,10 @@ export async function summarizeConversation({
   if (!ordered.length) return { status: "skipped", reason: "no_turns" };
 
   const newestSequence = ordered.at(-1).sequence_number;
-  const throughSequence = ordered[Math.max(0, ordered.length - preserveRecentTurns - 1)]?.sequence_number ?? 0;
+  if (ordered.length <= preserveRecentTurns) {
+    return { status: "skipped", reason: "recent_turns_already_within_window" };
+  }
+  const throughSequence = ordered[ordered.length - preserveRecentTurns - 1]?.sequence_number ?? 0;
   if (throughSequence <= existingSummaryThroughSequence) {
     return { status: "skipped", reason: "no_new_older_turns" };
   }
@@ -48,7 +52,7 @@ export async function summarizeConversation({
     conversationId,
     summary: summary.trim(),
     throughSequence,
-    summaryVersion: 1
+    summaryVersion: existingSummaryVersion + 1
   });
   return {
     status: "saved",
