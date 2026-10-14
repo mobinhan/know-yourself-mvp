@@ -51,4 +51,17 @@ const memories = [
 assert.deepEqual(eligibleMemories(memories, { personalization_enabled: true, personal_context_enabled: false }, new Date("2026-01-01T00:00:00Z")).map(x => x.id), ["ok"]);
 assert.deepEqual(eligibleMemories(memories, { personalization_enabled: false, personal_context_enabled: true }), []);
 assert.throws(() => assembleContext(input, { maxTokens: 1, countTokens: mockTokenizer }), /fixed_prompt_exceeds_token_budget/);
-console.log("LAYER 2 CONTEXT ASSEMBLER MOCKED-TOKENIZER TEST PASS");
+
+// End-to-end assembly-to-mocked-AI contract: the mock receives only the
+// assembled, measured package; no external model call or provider credential.
+let mockCalled = false;
+const mockAI = async context => {
+  mockCalled = true;
+  assert.ok(mockTokenizer(JSON.stringify(context)) <= 4000, "mock AI input must be within budget");
+  return { answer: "Mock answer grounded in the supplied context." };
+};
+const e2eContext = assembleContext(input, { maxTokens: 4000, maxTurns: 12, countTokens: mockTokenizer });
+const e2eAnswer = await mockAI(e2eContext.context);
+assert.equal(mockCalled, true, "mock AI must receive assembled context");
+assert.match(e2eAnswer.answer, /Mock answer/);
+console.log("LAYER 2 CONTEXT ASSEMBLER MOCKED-TOKENIZER + MOCK-AI TEST PASS");
