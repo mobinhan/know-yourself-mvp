@@ -1,0 +1,31 @@
+name: OpenAI response diagnostics tests
+
+on:
+  pull_request:
+    paths:
+      - "api/interpretation_provider.py"
+      - "tests/test_openai_response_diagnostics.py"
+      - ".github/workflows/openai-response-diagnostics.yml"
+  push:
+    branches:
+      - deploy/render-api
+    paths:
+      - "api/interpretation_provider.py"
+      - "tests/test_openai_response_diagnostics.py"
+      - ".github/workflows/openai-response-diagnostics.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  offline-provider-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run offline provider response tests
+        run: python -m unittest tests/test_openai_response_diagnostics.py -v
