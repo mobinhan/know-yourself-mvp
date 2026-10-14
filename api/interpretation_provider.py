@@ -328,7 +328,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         "generic line keywords to a gate. Layer 2 can shape relevance and tone but cannot change evidence or certainty. "
         "Distinguish chart mechanics from Human Design interpretation naturally, without repetitive disclaimers. "
         "Do not present Human Design interpretations as scientific diagnosis or guaranteed predictions. "
-        "Return one valid JSON object with keys: answer (string), one_line (string), cards (array of objects with "
+        "The response must be JSON. Return one valid JSON object with keys: answer (string), one_line (string), cards (array of objects with "
         "title, summary, reflection, evidence_class, source_ids, gate, channels, centres), factual_basis (array of "
         "evidence labels), knowledge_basis (array of supplied knowledge record IDs), relationship_basis (array of "
         "supplied validated relationship IDs), interpretation (string), limitations (array of strings). "
