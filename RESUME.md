@@ -235,3 +235,17 @@ Important limitation: this file records the required protocol; it does not itsel
 - This is a product/orchestration requirement, not evidence that runtime behavior is already implemented. O15–O20 are **NOT RUN** against the actual answer-generation path.
 - Important nuance for faithful implementation: embodied decision-making is the overarching product principle, but the specific Human Design mechanics differ by authority. Do not flatten every authority into the Sacral gut-response model; in particular, preserve the source-specific Emotional clarity-over-time and Mental/Environmental sounding-board/environment process.
 - Next: inspect the actual Answer Composer / 3FO runtime path, apply the cross-authority rule there, then execute O10–O20 with representative fixtures for each supported authority and retain evidence. Do not claim runtime integration until verified.
+
+
+## Current checkpoint (2026-10-15 — Layer 2 bounded context retrieval)
+
+- Live Supabase project `djtpqqjenmcsrdcguttk` is active. The live schema was inspected; it already contains `ky_user_preferences`, `ky_conversations`, `ky_conversation_turns`, `ky_user_memories`, `ky_saved_insights`, `ky_charts`, and the governed knowledge tables. These are the existing tables to reuse; do not create duplicate user-history or memory tables.
+- Live migrations currently show five persistence migrations through `20261009055012_know_yourself_safe_chart_metadata_updates`. Live tables contain no user rows at inspection time.
+- Added draft PR #24: https://github.com/mobinhan/know-yourself-mvp/pull/24
+  - Branch: `feature/layer2-context-retrieval`
+  - Adds `docs/3framework-layer2-context-retrieval.md`, defining the 3framework data boundary, retrieval order, consent checks, 12,000-token initial input budget, summary rules, and 15 acceptance tests.
+  - Adds additive migration candidate `supabase/migrations/20261015010000_layer2_bounded_context_retrieval.sql` for compact conversation summary fields, retrieval indexes, and a trigger blocking authenticated clients from writing summary fields.
+  - Files were fetched back from GitHub to verify the remote content.
+- **Not yet applied to live Supabase.** No runtime retrieval, summarization, live GPT-5 mini provider, answer critic, or authenticated end-to-end test was implemented by this PR. Current `supabase/README.md` still correctly states that the live LLM/critic-backed assistant-answer endpoint is not deployed.
+- Required next: inspect the selected API branch and actual deployment target; add context assembly with consent and ownership enforcement, token-budget tests, and a trusted server-only summary write path; then apply the migration only after review and run live RLS/security and authenticated E2E checks.
+- Do not treat the draft PR or schema candidate as proof the complete 3framework pipeline is operational.
