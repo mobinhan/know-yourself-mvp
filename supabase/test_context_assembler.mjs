@@ -36,8 +36,8 @@ assert.equal(result.context.summary.through_sequence, 7, "summary coverage seque
 
 assert.equal(mockTokenizer(JSON.stringify(result.context)), result.metrics.measured_tokens, "reported count must measure final serialized context");
 
-const tight = assembleContext(input, { maxTokens: 150, maxTurns: 12, countTokens: mockTokenizer });
-assert.ok(tight.metrics.measured_tokens <= 150, "tight budget must still be respected");
+const tight = assembleContext(input, { maxTokens: 35, maxTurns: 12, countTokens: mockTokenizer });
+assert.ok(tight.metrics.measured_tokens <= 35, "tight budget must still be respected");
 assert.ok(tight.metrics.trimmed_items > 0, "trimming must be logged");
 assert.ok(tight.metrics.trimming_log.some(entry => entry.action === "trimmed_budget"), "trimming log must identify exclusions");
 
