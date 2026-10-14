@@ -83,6 +83,8 @@ jobs:
         run: node supabase/test_context_assembler.mjs
       - name: Run trusted summary coverage test
         run: node supabase/test_summary_service.mjs
+      - name: Run mocked end-to-end answer pipeline
+        run: node supabase/test_answer_pipeline.mjs
       - name: Type-check Supabase user data API
         run: deno check supabase/functions/user-data-api/index.ts
       - name: Run deterministic structural test
