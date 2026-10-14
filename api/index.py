@@ -371,8 +371,22 @@ class handler(BaseHTTPRequestHandler):
                             knowledge_tier=knowledge_tier,
                         )
                     except InterpretationProviderError as exc:
-                        print(f"openai_provider_diagnostic category={str(exc)[:60]}", flush=True)
-                        return self._send(503, {"error": "interpretation_provider_unavailable", "interpretation_status": "provider_error"})
+                        # Transit mechanics are deterministic and must remain available when
+                        # the optional AI provider fails. Keep the failure visible in reading
+                        # status, but do not discard the already-computed transit result.
+                        diagnostic = str(exc)[:60]
+                        print(f"openai_provider_diagnostic category={diagnostic}", flush=True)
+                        reading = {
+                            "interpretation_status": "provider_error",
+                            "status": "provider_error",
+                            "one_line": "Your transit overlay is calculated. The personalised AI reading is temporarily unavailable.",
+                            "cards": [],
+                            "boundaries": [
+                                "Natal mechanics remain unchanged.",
+                                "Transit activations are temporary.",
+                                "No personalised AI interpretation was generated for this request.",
+                            ],
+                        }
                     if reading.get("interpretation_status") == "provider_not_configured":
                         reading = {
                             **reading,
