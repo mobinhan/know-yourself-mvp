@@ -28,4 +28,4 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run offline provider response tests
-        run: python -m unittest tests/test_openai_response_diagnostics.py -v
+        run: python tests/test_openai_response_diagnostics.py -v
