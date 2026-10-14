@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { assembleContext, eligibleMemories } from "./context-assembler.mjs";
+import { assembleContext, eligibleMemories } from "./functions/user-data-api/context-assembler.mjs";
 
 // Deterministic mocked tokenizer: count whitespace-delimited tokens in the
 // exact serialized payload. The production caller must inject its provider tokenizer.
