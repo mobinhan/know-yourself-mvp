@@ -269,26 +269,87 @@ def _build_orchestrator_context(foundation: dict) -> dict:
     }
 
 
+def _provider_text(provider: str, payload: dict) -> str:
+    """Extract text from a provider response into the shared JSON contract."""
+    if provider == "openai":
+        return _response_text(payload)
+    if provider == "gemini":
+        candidates = payload.get("candidates", [])
+        if candidates and isinstance(candidates[0], dict):
+            parts = candidates[0].get("content", {}).get("parts", [])
+            return "\\n".join(p.get("text", "") for p in parts if isinstance(p, dict) and isinstance(p.get("text"), str)).strip()
+        return ""
+    choices = payload.get("choices", [])
+    if choices and isinstance(choices[0], dict):
+        content = choices[0].get("message", {}).get("content")
+        if isinstance(content, str):
+            return content.strip()
+    return ""
+
+
+def _call_model(provider: str, model: str, instructions: str, user_context: dict) -> tuple[dict, dict]:
+    """Call a configured server-side provider. Returns payload and usage metadata."""
+    if provider == "openai":
+        api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+        if not api_key:
+            raise InterpretationProviderError("missing_key")
+        body = {"model": model, "instructions": instructions,
+                "input": json.dumps(user_context, ensure_ascii=False, separators=(",", ":")),
+                "text": {"format": {"type": "json_object"}}, "max_output_tokens": 1800, "store": False}
+        url = "https://api.openai.com/v1/responses"
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    elif provider == "gemini":
+        api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+        if not api_key:
+            raise InterpretationProviderError("missing_key")
+        from urllib.parse import quote
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{quote(model, safe='')}:generateContent"
+        body = {"systemInstruction": {"parts": [{"text": instructions}]},
+                "contents": [{"role": "user", "parts": [{"text": json.dumps(user_context, ensure_ascii=False, separators=(",", ":"))}]}],
+                "generationConfig": {"responseMimeType": "application/json", "maxOutputTokens": 1800}}
+        headers = {"x-goog-api-key": api_key, "Content-Type": "application/json"}
+    elif provider == "mistral":
+        api_key = os.environ.get("MISTRAL_API_KEY", "").strip()
+        if not api_key:
+            raise InterpretationProviderError("missing_key")
+        url = "https://api.mistral.ai/v1/chat/completions"
+        body = {"model": model, "messages": [{"role": "system", "content": instructions},
+                {"role": "user", "content": json.dumps(user_context, ensure_ascii=False, separators=(",", ":"))}],
+                "response_format": {"type": "json_object"}, "max_tokens": 1800, "stream": False}
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    else:
+        raise InterpretationProviderError("unsupported_provider")
+    request = Request(url, data=json.dumps(body, ensure_ascii=False).encode("utf-8"), headers=headers, method="POST")
+    try:
+        with urlopen(request, timeout=35) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except HTTPError as exc:
+        category = {401: "authentication_failed", 403: "access_forbidden", 429: "rate_limit_or_quota"}.get(exc.code, "provider_http_error")
+        print(f"ai_provider_diagnostic provider={provider} category={category} http_status={exc.code}", flush=True)
+        raise InterpretationProviderError(category) from None
+    except (URLError, TimeoutError, OSError):
+        print(f"ai_provider_diagnostic provider={provider} category=network_or_timeout", flush=True)
+        raise InterpretationProviderError("network_or_timeout") from None
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        raise InterpretationProviderError("invalid_provider_json") from None
+    usage = payload.get("usageMetadata", {}) if provider == "gemini" else payload.get("usage", {})
+    return payload, usage if isinstance(usage, dict) else {}
+
+
 def generate_interpretation(question: str, foundation: dict, temporal_context: dict | None = None, knowledge_tier: str = "basic") -> dict:
     """Generate a grounded 3framework answer, or a truthful non-configured status."""
-    api_key = os.environ.get("OPENAI_API_KEY", "").strip()
-    if not api_key:
-        print("openai_provider_diagnostic category=missing_key", flush=True)
-        return {
-            "interpretation_status": "provider_not_configured",
-            "answer": None,
-            "factual_basis": [],
-            "knowledge_basis": [],
-            "relationship_basis": [],
-            "limitations": ["OPENAI_API_KEY is not configured in the server environment."]
-        }
-
-    model = os.environ.get("OPENAI_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL
+    provider = os.environ.get("KY_AI_PROVIDER", "openai").strip().lower()
+    model_defaults = {
+        "openai": os.environ.get("OPENAI_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL,
+        "gemini": os.environ.get("GEMINI_MODEL", "gemini-2.5-flash").strip(),
+        "mistral": os.environ.get("MISTRAL_MODEL", "mistral-small-4").strip(),
+    }
+    model = model_defaults.get(provider)
+    if not model:
+        raise InterpretationProviderError("unsupported_provider")
     knowledge, external, relationships = _select_knowledge(question, foundation, knowledge_tier=knowledge_tier)
     activations = foundation.get("activations", {})
     def model_safe_activations(items):
-        # Exclude ephemeris timestamps and longitudes: neither is needed for interpretation,
-        # and timestamps can reveal the user's birth date/time.
         fields = ("body", "imprint", "gate", "line", "colour", "tone", "base")
         return [{key: item.get(key) for key in fields if key in item} for item in items]
     chart_evidence = {
@@ -312,91 +373,31 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
         "layer_separation": {
             "layer_1": "Canonical chart mechanics and source-linked knowledge above.",
             "layer_2": "Only the current question and explicitly supplied context; do not infer private user traits.",
-            "layer_3": "ChatGPT synthesizes directly from Layers 1 and 2. No separate critic or additional reasoning layer is part of +3framework."
+            "layer_3": "Live model synthesizes directly from Layers 1 and 2. No separate critic or additional reasoning layer is part of +3framework."
         }
     }
     instructions = (
         "You are the live reasoning layer for Know Yourself, a Human Design application. "
         "Read the +3framework orchestrator instructions in the supplied input first; the plus sign denotes a cross-cutting control plane, "
         "not a fourth layer. Follow its order: canonical chart evidence first, contextual relevance second, direct synthesis third, "
-        "then validate boundaries before delivery. "
-        "Treat supplied core and activation records as the only authority for this chart's mechanics. "
-        "Do not calculate or infer chart mechanics. Never confuse catalogue membership with activation. "
-        "Keep natal activations separate from temporary transit activations. If temporal_context is absent, "
-        "do not make claims about today's transits. Use controlled knowledge to explain meaning and paraphrase it; "
-        "do not quote source material. Preserve source-specific gate-line archetypes only when exact gate and line "
-        "evidence and a matching validated relationship are supplied. Never derive a gate-line synthesis by adding "
-        "generic line keywords to a gate. Layer 2 can shape relevance and tone but cannot change evidence or certainty. "
-        "Distinguish chart mechanics from Human Design interpretation naturally, without repetitive disclaimers. "
-        "Do not present Human Design interpretations as scientific diagnosis or guaranteed predictions. "
-        "The response must be JSON. Return one valid JSON object with keys: answer (string), one_line (string), cards (array of objects with "
-        "title, summary, reflection, evidence_class, source_ids, gate, channels, centres), factual_basis (array of "
-        "evidence labels), knowledge_basis (array of supplied knowledge record IDs), relationship_basis (array of "
-        "supplied validated relationship IDs), interpretation (string), limitations (array of strings). "
-        "Use concise but substantive prose. Never invent evidence IDs, source IDs, relationship IDs, or facts. There is no separate post-synthesis critic in +3framework; synthesize directly from the supplied canonical evidence and context."
-    )
-    body = {
-        "model": model,
-        "instructions": instructions,
-        "input": json.dumps(user_context, ensure_ascii=False, separators=(",", ":")),
-        "text": {"format": {"type": "json_object"}},
-        "max_output_tokens": 1800,
-        "store": False,
-    }
-    request = Request(
-        "https://api.openai.com/v1/responses",
-        data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
+        "then validate boundaries before delivery. Treat supplied core and activation records as the only authority for this chart's mechanics. "
+        "Do not calculate or infer chart mechanics. Never confuse catalogue membership with activation. Keep natal activations separate from temporary transit activations. "
+        "If temporal_context is absent, do not make claims about today's transits. Use controlled knowledge to explain meaning and paraphrase it; do not quote source material. "
+        "Preserve source-specific gate-line archetypes only when exact gate and line evidence and a matching validated relationship are supplied. "
+        "Never derive a gate-line synthesis by adding generic line keywords to a gate. Layer 2 can shape relevance and tone but cannot change evidence or certainty. "
+        "Distinguish chart mechanics from Human Design interpretation naturally, without repetitive disclaimers. Do not present Human Design interpretations as scientific diagnosis or guaranteed predictions. "
+        "The response must be JSON. Return one valid JSON object with keys: answer (string), one_line (string), cards (array of objects with title, summary, reflection, evidence_class, source_ids, gate, channels, centres), "
+        "factual_basis (array of evidence labels), knowledge_basis (array of supplied knowledge record IDs), relationship_basis (array of supplied validated relationship IDs), "
+        "interpretation (string), limitations (array of strings). Use concise but substantive prose. Never invent evidence IDs, source IDs, relationship IDs, or facts."
     )
     try:
-        with urlopen(request, timeout=35) as response:
-            provider_payload = json.loads(response.read().decode("utf-8"))
-    except HTTPError as exc:
-        # Log bounded provider diagnostics only; never log raw response/request data.
-        category = {401: "authentication_failed", 403: "access_forbidden", 429: "rate_limit_or_quota"}.get(exc.code, "provider_http_error")
-        error_type = error_code = error_param = "unknown"
-        error_message = "unavailable"
-        try:
-            payload = json.loads(exc.read().decode("utf-8", errors="replace"))
-            detail = payload.get("error", {}) if isinstance(payload, dict) else {}
-            if isinstance(detail, dict):
-                def safe_metadata(value, limit=100):
-                    if not isinstance(value, str):
-                        return "unknown"
-                    value = value.strip()
-                    return value[:limit] if value and all(ch.isalnum() or ch in "._:- " for ch in value) else "redacted"
-                error_type = safe_metadata(detail.get("type"))
-                error_code = safe_metadata(detail.get("code"))
-                error_param = safe_metadata(detail.get("param"))
-                message = detail.get("message")
-                if isinstance(message, str):
-                    message = " ".join(message.replace("\r", " ").replace("\n", " ").replace("\t", " ").split())
-                    message = re.sub(r"(?i)bearer\s+\S+", "Bearer [REDACTED]", message)
-                    message = re.sub(r"(?i)sk-[a-z0-9_-]+", "[REDACTED_KEY]", message)
-                    error_message = message[:240]
-        except (ValueError, UnicodeDecodeError, AttributeError, TypeError):
-            pass
-        print(
-            f"openai_provider_diagnostic category={category} http_status={exc.code} "
-            f"error_type={error_type} error_code={error_code} error_param={error_param} "
-            f"error_message={error_message}",
-            flush=True,
-        )
-        raise InterpretationProviderError(category) from None
-    except (URLError, TimeoutError, OSError) as exc:
-        print("openai_provider_diagnostic category=network_or_timeout", flush=True)
-        raise InterpretationProviderError("network_or_timeout") from None
-    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
-        print("openai_provider_diagnostic category=invalid_provider_json", flush=True)
-        raise InterpretationProviderError("invalid_provider_json") from None
-
-    raw_text = _response_text(provider_payload)
+        provider_payload, usage = _call_model(provider, model, instructions, user_context)
+    except InterpretationProviderError as exc:
+        print(f"ai_provider_diagnostic provider={provider} category={str(exc)[:80]}", flush=True)
+        raise
+    raw_text = _provider_text(provider, provider_payload)
     if not raw_text:
-        raise InterpretationProviderError("OpenAI Responses API returned no text output")
+        raise InterpretationProviderError("provider returned no text output")
     try:
         result = json.loads(raw_text)
     except json.JSONDecodeError:
@@ -475,4 +476,7 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
     # through the separate critic/reasoning path associated with the 5framework.
     result["interpretation_status"] = "ready"
     result["model"] = model
+    result["provider"] = provider
+    if usage:
+        result["usage"] = {k: v for k, v in usage.items() if k in {"prompt_tokens", "completion_tokens", "total_tokens", "input_tokens", "output_tokens", "thoughtsTokenCount", "cachedContentTokenCount"}}
     return result
