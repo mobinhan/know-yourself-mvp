@@ -17,13 +17,18 @@ Compare the current OpenAI Responses integration with Google Gemini Flash and Mi
 - Do not log prompts, chart payloads, credentials, or full provider responses.
 - Keep provider choice configurable server-side. No automatic production switch.
 
-## Candidate integrations
+## Candidate integrations (verified 2026-10-14; re-check before live runs)
 
-1. OpenAI Responses API — existing baseline.
-2. Gemini API — use a documented Flash model and its structured-output configuration.
-3. Mistral API — use a documented Small 4 model and JSON/structured output configuration.
+1. **OpenAI baseline:** Responses API, current configured default `gpt-5-mini`. The official model page currently marks this model deprecated; do not silently change the baseline during this comparison. Consider a separate follow-up benchmark against `gpt-5.4-mini` after the current baseline is reproducible.
+2. **Google candidate:** Gemini API model ID `gemini-3.8-flash`, using `generateContent` and JSON response mode. Official pricing page currently lists introductory paid pricing through December 31, 2026 of $0.75 per million input tokens and $3.75 per million output tokens; listed standard pricing doubles from January 1, 2027. Google’s terms differ by service/tier: the free tier may use submitted data to improve products, while paid-tier terms list this as No. Use a paid account/tier and verify the applicable terms before sending even synthetic evaluation data.
+3. **Mistral candidate:** API model ID `mistral-small-2603` (Mistral Small 4), using chat completions with JSON-object mode. Official pricing lists $0.15 per million input tokens and $0.60 per million output tokens for Small 4.
 
-Before live tests, verify exact model IDs, current token pricing, supported output constraints, retention/training terms, and required server secrets from official provider documentation. Never assume a model alias is available in every account or region.
+Official references:
+- OpenAI model and pricing: https://developers.openai.com/api/docs/models/gpt-5-mini and https://developers.openai.com/api/docs/models/gpt-5.4-mini
+- Gemini model and pricing: https://ai.google.dev/gemini-api/docs/latest-model and https://ai.google.dev/gemini-api/docs/pricing
+- Mistral Small 4 model and pricing: https://docs.mistral.ai/models/mistral-small-4-0-26-03 and https://docs.mistral.ai/inference/pricing
+
+These are documentation checks, not account-level confirmation. Before live tests, confirm each model is enabled for the actual account/region, check retention/training and data-processing terms, set budget limits, and store credentials only as Render server-side environment secrets. Do not paste keys into GitHub, the app, or this conversation.
 
 ## Benchmark corpus
 
