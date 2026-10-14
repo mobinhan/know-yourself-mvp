@@ -79,6 +79,8 @@ export function assembleContext(input, options = {}) {
     }
   }
 
+  payload.recent_turns.sort((a, b) => a.sequence_number - b.sequence_number);
+
   // The final measurement is authoritative. Never rely on sum-of-section
   // estimates because tokenizer overhead and JSON serialization are nonlinear.
   usedTokens = count(payload);
