@@ -277,7 +277,7 @@ def _provider_text(provider: str, payload: dict) -> str:
         candidates = payload.get("candidates", [])
         if candidates and isinstance(candidates[0], dict):
             parts = candidates[0].get("content", {}).get("parts", [])
-            return "\\n".join(p.get("text", "") for p in parts if isinstance(p, dict) and isinstance(p.get("text"), str)).strip()
+            return "\n".join(p.get("text", "") for p in parts if isinstance(p, dict) and isinstance(p.get("text"), str)).strip()
         return ""
     choices = payload.get("choices", [])
     if choices and isinstance(choices[0], dict):
