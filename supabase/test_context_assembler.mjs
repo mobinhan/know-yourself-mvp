@@ -14,8 +14,8 @@ const input = {
     { id: "ev-2", claim: "Evidence claim two with enough text to consume tokens." }
   ],
   memories: [
-    { id: "mem-1", category: "communication_style", value: "Prefer warm direct answers." },
-    { id: "mem-2", category: "goal", value: "Explore career direction over time." }
+    { id: "mem-1", category: "communication_style", value: "Prefer warm direct answers.", status: "active", user_consent: true, user_confirmed: true },
+    { id: "mem-2", category: "goal", value: "Explore career direction over time.", status: "active", user_consent: true, user_confirmed: true }
   ],
   summary: { text: "Earlier conversation summary with prior decisions.", throughSequence: 7 },
   turns: Array.from({ length: 30 }, (_, i) => ({
