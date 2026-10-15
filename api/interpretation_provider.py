@@ -306,7 +306,7 @@ def _build_orchestrator_context(foundation: dict) -> dict:
     }
 
 
-def generate_interpretation(question: str, foundation: dict, temporal_context: dict | None = None, knowledge_tier: str = "basic") -> dict:
+def _generate_with_openai(question: str, foundation: dict, temporal_context: dict | None = None, knowledge_tier: str = "basic") -> dict:
     """Generate a grounded 3framework answer, or a truthful non-configured status."""
     api_key = os.environ.get("OPENAI_API_KEY", "").strip()
     if not api_key:
@@ -512,6 +512,225 @@ def generate_interpretation(question: str, foundation: dict, temporal_context: d
 
     # 3framework ends with direct ChatGPT synthesis. Do not route this answer
     # through the separate critic/reasoning path associated with the 5framework.
+    result["interpretation_status"] = "ready"
+    result["model"] = model
+    return result
+
+# ---- Gemini provider (OpenAI-compatible endpoint) with Flash/Pro hybrid routing ----
+
+
+def generate_interpretation(question: str, foundation: dict, temporal_context: dict | None = None, knowledge_tier: str = "basic") -> dict:
+    """Route to the configured interpretation provider."""
+    provider = os.environ.get("INTERPRETATION_PROVIDER", "openai").strip().lower()
+    if provider == "gemini":
+        return _generate_with_gemini(question, foundation, temporal_context, knowledge_tier)
+    return _generate_with_openai(question, foundation, temporal_context, knowledge_tier)
+
+
+def _generate_with_gemini(question: str, foundation: dict, temporal_context: dict | None, knowledge_tier: str) -> dict:
+    """Gemini backend. Free guide answers use the fast Flash model; premium
+    answers use the deep-thinking Pro model."""
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        print("gemini_provider_diagnostic category=missing_key", flush=True)
+        return {
+            "interpretation_status": "provider_not_configured",
+            "answer": None,
+            "factual_basis": [],
+            "knowledge_basis": [],
+            "relationship_basis": [],
+            "limitations": ["GEMINI_API_KEY is not configured in the server environment."],
+        }
+
+    # Hybrid routing: Flash for the free guide, thinking Pro for premium.
+    model = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash").strip() or "gemini-3.8-flash"
+    max_tokens = 8000
+    if knowledge_tier == "premium":
+        model = os.environ.get("GEMINI_MODEL_PREMIUM", "gemini-3.1-pro-preview").strip() or "gemini-3.1-pro-preview"
+        max_tokens = 16000
+
+    knowledge, external, relationships = _select_knowledge(question, foundation, knowledge_tier=knowledge_tier)
+    activations = foundation.get("activations", {})
+    def model_safe_activations(items):
+        fields = ("body", "imprint", "gate", "line", "colour", "tone", "base")
+        return [{key: item.get(key) for key in fields if key in item} for item in items]
+    chart_evidence = {
+        "core": foundation.get("core", {}),
+        "activations": {
+            "personality": model_safe_activations(activations.get("personality", [])),
+            "design": model_safe_activations(activations.get("design", [])),
+        },
+        "phs": foundation.get("phs", {}),
+        "temporal_context": temporal_context,
+    }
+    user_context = {
+        "question": question,
+        "output_format_instruction": "Respond in json format using the schema described in the instructions.",
+        "chart_evidence": chart_evidence,
+        "controlled_knowledge": knowledge,
+        "external_knowledge": external,
+        "validated_relationships": relationships,
+        "framework": "+3framework",
+        "orchestrator": _build_orchestrator_context(foundation),
+        "layer_separation": {
+            "layer_1": "Canonical chart mechanics and source-linked knowledge above.",
+            "layer_2": "Only the current question and explicitly supplied context; do not infer private user traits.",
+            "layer_3": "The reasoning model synthesizes directly from Layers 1 and 2. No separate critic or additional reasoning layer is part of +3framework.",
+        },
+    }
+    instructions = (
+        "You are the live reasoning layer for Know Yourself, a Human Design application. "
+        "Read the +3framework orchestrator instructions in the supplied input first; the plus sign denotes a cross-cutting control plane, "
+        "not a fourth layer. Follow its order: canonical chart evidence first, contextual relevance second, direct synthesis third, "
+        "then validate boundaries before delivery. "
+        "Treat supplied core and activation records as the only authority for this chart's mechanics. "
+        "Do not calculate or infer chart mechanics. Never confuse catalogue membership with activation. "
+        "Keep natal activations separate from temporary transit activations. If temporal_context is absent, "
+        "do not make claims about today's transits. Use controlled knowledge to explain meaning and paraphrase it; "
+        "do not quote source material. Preserve source-specific gate-line archetypes only when exact gate and line "
+        "evidence and a matching validated relationship are supplied. Never derive a gate-line synthesis by adding "
+        "generic line keywords to a gate. Layer 2 can shape relevance and tone but cannot change evidence or certainty. "
+        "Distinguish chart mechanics from Human Design interpretation naturally, without repetitive disclaimers. "
+        "Do not present Human Design interpretations as scientific diagnosis or guaranteed predictions. "
+        "The response must be JSON. Return one valid JSON object with keys: answer (string), one_line (string), cards (array of objects with "
+        "title, summary, reflection, evidence_class, source_ids, gate, channels, centres), factual_basis (array of "
+        "evidence labels), knowledge_basis (array of supplied knowledge record IDs), relationship_basis (array of "
+        "supplied validated relationship IDs), interpretation (string), limitations (array of strings). "
+        "Use concise but substantive prose. Never invent evidence IDs, source IDs, relationship IDs, or facts. "
+        "There is no separate post-synthesis critic in +3framework; synthesize directly from the supplied canonical evidence and context."
+    )
+    body = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": instructions},
+            {"role": "user", "content": json.dumps(user_context, ensure_ascii=False, separators=(",", ":"))},
+        ],
+        "response_format": {"type": "json_object"},
+        "max_completion_tokens": max_tokens,
+    }
+    request = Request(
+        "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urlopen(request, timeout=60) as response:
+            provider_payload = json.loads(response.read().decode("utf-8"))
+    except HTTPError as exc:
+        category = {401: "authentication_failed", 403: "access_forbidden", 429: "rate_limit_or_quota"}.get(exc.code, "provider_http_error")
+        error_type = error_code = error_param = "unknown"
+        error_message = "unavailable"
+        try:
+            payload = json.loads(exc.read().decode("utf-8", errors="replace"))
+            detail = payload.get("error", {}) if isinstance(payload, dict) else {}
+            if isinstance(detail, dict):
+                def safe_metadata(value, limit=100):
+                    if not isinstance(value, str):
+                        return "unknown"
+                    value = value.strip()
+                    return value[:limit] if value and all(ch.isalnum() or ch in "._:- " for ch in value) else "redacted"
+                error_type = safe_metadata(detail.get("type"))
+                error_code = safe_metadata(detail.get("code"))
+                error_param = safe_metadata(detail.get("param"))
+                message = detail.get("message")
+                if isinstance(message, str):
+                    message = " ".join(message.replace("\r", " ").replace("\n", " ").replace("\t", " ").split())
+                    error_message = message[:240]
+        except (ValueError, UnicodeDecodeError, AttributeError, TypeError):
+            pass
+        print(
+            f"gemini_provider_diagnostic category={category} http_status={exc.code} "
+            f"error_type={error_type} error_code={error_code} error_param={error_param} "
+            f"error_message={error_message}",
+            flush=True,
+        )
+        raise InterpretationProviderError(category) from None
+    except (URLError, TimeoutError, OSError):
+        print("gemini_provider_diagnostic category=network_or_timeout", flush=True)
+        raise InterpretationProviderError("network_or_timeout") from None
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        print("gemini_provider_diagnostic category=invalid_provider_json", flush=True)
+        raise InterpretationProviderError("invalid_provider_json") from None
+
+    choices = provider_payload.get("choices") if isinstance(provider_payload.get("choices"), list) else []
+    raw_text = ""
+    finish_reason = "none"
+    if choices and isinstance(choices[0], dict):
+        finish_reason = str(choices[0].get("finish_reason"))
+        message = choices[0].get("message") if isinstance(choices[0].get("message"), dict) else {}
+        raw_text = str(message.get("content") or "").strip()
+    if not raw_text:
+        print(f"gemini_provider_empty_output finish_reason={finish_reason}", flush=True)
+        raise InterpretationProviderError("Gemini API returned no text output")
+    try:
+        result = json.loads(raw_text)
+    except json.JSONDecodeError:
+        raise InterpretationProviderError("Model output did not match the required JSON contract") from None
+    if not isinstance(result, dict) or not isinstance(result.get("answer"), str) or not result["answer"].strip():
+        raise InterpretationProviderError("Model output is missing the required answer")
+
+    allowed_knowledge = {record.get("id") for record in knowledge}
+    allowed_external = {record.get("id") for record in external}
+    allowed_relationships = {edge.get("id") for edge in relationships}
+    allowed_sources = {
+        source_id for record in knowledge for source_id in record.get("source_ids", [])
+        if isinstance(source_id, str)
+    } | {record.get("source_id") for record in external if isinstance(record.get("source_id"), str)}
+
+    # Treat model output as untrusted input, same as the OpenAI path.
+    def string_items(value, allowed=None, limit=8):
+        if not isinstance(value, list):
+            return []
+        return [
+            item[:300] for item in value
+            if isinstance(item, str) and (allowed is None or item in allowed)
+        ][:limit]
+
+    result["factual_basis"] = string_items(
+        result.get("factual_basis"),
+        {"core", "activations.personality", "activations.design", "phs", "temporal_context"},
+    )
+    result["knowledge_basis"] = string_items(result.get("knowledge_basis"), allowed_knowledge | allowed_external)
+    result["relationship_basis"] = string_items(result.get("relationship_basis"), allowed_relationships)
+    result["limitations"] = string_items(result.get("limitations"), limit=8)
+    raw_cards = result.get("cards") if isinstance(result.get("cards"), list) else []
+    allowed_gates = {
+        gate for gate in foundation.get("core", {}).get("gate_set", [])
+        if isinstance(gate, int) and not isinstance(gate, bool)
+    }
+    allowed_channels = {
+        item.get("channel") for item in foundation.get("core", {}).get("channels", [])
+        if isinstance(item, dict) and isinstance(item.get("channel"), str)
+    }
+    allowed_centres = {
+        centre for centre in foundation.get("core", {}).get("centres", [])
+        if isinstance(centre, str)
+    }
+    safe_cards = []
+    for card in raw_cards[:6]:
+        if not isinstance(card, dict):
+            continue
+        card_sources = string_items(card.get("source_ids"), allowed_sources, limit=8)
+        card_channels = string_items(card.get("channels"), allowed_channels, limit=8)
+        card_centres = string_items(card.get("centres"), allowed_centres, limit=9)
+        card_gate = card.get("gate")
+        if not isinstance(card_gate, int) or isinstance(card_gate, bool) or card_gate not in allowed_gates:
+            card_gate = None
+        safe_cards.append({
+            "title": str(card.get("title") or "A pattern to notice")[:120],
+            "summary": str(card.get("summary") or "")[:1200],
+            "reflection": str(card.get("reflection") or "")[:800],
+            "evidence_class": str(card.get("evidence_class") or "interpretation")[:60],
+            "source_ids": card_sources,
+            "gate": card_gate,
+            "channels": card_channels,
+            "centres": card_centres,
+        })
+    result["cards"] = safe_cards
+    one_line = result.get("one_line")
+    result["one_line"] = (one_line.strip() if isinstance(one_line, str) and one_line.strip() else result["answer"])[:500]
+    result["interpretation"] = result.get("interpretation") if isinstance(result.get("interpretation"), str) else ""
     result["interpretation_status"] = "ready"
     result["model"] = model
     return result
