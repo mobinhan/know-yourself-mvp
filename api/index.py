@@ -19,7 +19,7 @@ from urllib.parse import parse_qs, quote, urlparse
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
-from api import v1_additions as _v1_additions
+import v1_additions as _v1_additions
 
 from timezonefinder import TimezoneFinder
 
