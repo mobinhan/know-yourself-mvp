@@ -19,6 +19,8 @@ from urllib.parse import parse_qs, quote, urlparse
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
+from api import v1_additions as _v1_additions
+
 from timezonefinder import TimezoneFinder
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -337,6 +339,15 @@ def _photon_search(query: str) -> list[dict]:
     except (TimeoutError, OSError) as exc:
         raise URLError(str(exc))
     raise URLError(str(photon_error) if photon_error else "no birthplace matches found")
+
+
+_v1_additions.configure(
+    build_foundation=build_foundation,
+    source_metadata=_source_metadata,
+    send_json=lambda h, s, p: h._send(s, p),
+)
+
+
 class handler(BaseHTTPRequestHandler):
     def _send(self, status: int, payload):
         body = _json_bytes(payload)
@@ -511,6 +522,8 @@ class handler(BaseHTTPRequestHandler):
                 return self._send(200, {**channel, "title": f"Channel {requested}", "detail_status": "mechanical_catalogue_only"})
             if segments[:3] == ["v1", "knowledge", "centres"] and len(segments) == 3 and method == "GET":
                 return self._send(200, GATE_CATALOG["centres"])
+            if _v1_additions.dispatch(self, segments, method):
+                return
             return self._send(404, {"error": "route_not_found", "route": route})
         except (ValueError, KeyError, TypeError) as exc:
             return self._send(400, {"error": "invalid_request", "message": str(exc)})
