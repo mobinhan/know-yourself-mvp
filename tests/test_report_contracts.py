@@ -9,6 +9,7 @@ CHART = {
     "chart_fingerprint": "fingerprint-abc",
     "engine_name": "ky-hd-engine",
     "engine_version": "1.2.0",
+    "canonical_facts": {"type": "Generator", "authority": "Sacral"},
 }
 EVIDENCE_IDS = {"hd-source:authority:v3", "hd-source:profile:v2"}
 
@@ -20,10 +21,7 @@ def valid_payload():
         "product_version": 1,
         "report_id": "report-123",
         "generated_at": "2026-10-16T10:00:00Z",
-        "chart_snapshot": {
-            **CHART,
-            "canonical_facts": {"type": "Generator", "authority": "Sacral"},
-        },
+        "chart_snapshot": {**CHART},
         "evidence_manifest": [
             {"evidence_id": "hd-source:authority:v3", "source_id": "hd-source:authority", "source_version": "v3"},
             {"evidence_id": "hd-source:profile:v2", "source_id": "hd-source:profile", "source_version": "v2"},
@@ -81,6 +79,12 @@ class ReportContractTests(unittest.TestCase):
         payload = valid_payload()
         payload["chart_snapshot"]["engine_version"] = "999"
         with self.assertRaisesRegex(ReportValidationError, "engine_version"):
+            self.validate(payload)
+
+    def test_canonical_facts_must_match_trusted_chart(self):
+        payload = valid_payload()
+        payload["chart_snapshot"]["canonical_facts"]["authority"] = "Splenic"
+        with self.assertRaisesRegex(ReportValidationError, "canonical_facts do not match"):
             self.validate(payload)
 
     def test_evidence_not_supplied_to_model_is_rejected(self):
