@@ -29,14 +29,15 @@ def _read_json(name: str) -> dict:
 
 
 def _select_knowledge(question: str, foundation: dict, knowledge_tier: str = "basic") -> tuple[list[dict], list[dict], list[dict]]:
-    records = _read_json("knowledge-records.json").get("records", [])
+    full_records = _read_json("knowledge-records.json").get("records", [])
+    records = full_records
     external = _read_json("external-knowledge-records.json").get("records", [])
     graph = _read_json("knowledge-relationships.json").get("edges", [])
     if knowledge_tier != "premium":
-        # Free Guide receives only reviewed foundational L1 paraphrases.
-        # Do not send the advanced curated/external knowledge corpus to the model.
+        # Free Guide starts with reviewed foundational L1 paraphrases.
+        # Chart-anchored additions are selected separately from the full corpus below.
         records = [
-            record for record in records
+            record for record in full_records
             if "L1" in record.get("depth", [])
             and record.get("record_metadata", {}).get("epistemic_class") == "foundational"
             and record.get("record_metadata", {}).get("lifecycle_status") == "active"
@@ -69,6 +70,84 @@ def _select_knowledge(question: str, foundation: dict, knowledge_tier: str = "ba
         if score:
             scored.append((score, record))
     selected = [record for _, record in sorted(scored, key=lambda x: x[0], reverse=True)[:MAX_KNOWLEDGE_RECORDS]]
+
+    if knowledge_tier != "premium":
+        # Add a small number of records anchored to canonical chart features.
+        core = foundation.get("core", {}) or {}
+        centres = core.get("centres", []) or []
+        if isinstance(centres, dict):
+            centre_names = [
+                str(name) for name, value in centres.items()
+                if value is True or (isinstance(value, dict) and value.get("defined") is True)
+            ]
+        else:
+            centre_names = [
+                str(value.get("name", value.get("centre", ""))) if isinstance(value, dict) else str(value)
+                for value in centres
+            ]
+        feature_phrases = {name.strip().lower() for name in centre_names if name.strip()}
+
+        channel_sources = [
+            core.get("channels", []), foundation.get("channels", []),
+            core.get("completed_channels", []), foundation.get("completed_channels", [])
+        ]
+        channel_pairs = set()
+        for source in channel_sources:
+            values = source.values() if isinstance(source, dict) else (source or [])
+            for value in values:
+                if isinstance(value, dict):
+                    if value.get("completed") is False or value.get("defined") is False:
+                        continue
+                    label = str(value.get("name", value.get("channel", value.get("label", value.get("id", "")))))
+                else:
+                    label = str(value)
+                match = re.search(r"(?<!\d)(\d{1,2})\s*[-–—]\s*(\d{1,2})(?!\d)", label)
+                if match:
+                    a, b = sorted((int(match.group(1)), int(match.group(2))))
+                    channel_pairs.add((a, b))
+        feature_phrases.update(f"{a}-{b}" for a, b in channel_pairs)
+
+        chart_type = core.get("type") or core.get("chart_type") or foundation.get("type") or foundation.get("chart_type")
+        if isinstance(chart_type, dict):
+            chart_type = chart_type.get("name") or chart_type.get("value")
+        if chart_type:
+            feature_phrases.add(str(chart_type).strip().lower())
+
+        activated_gates = {
+            int(a.get("gate")) for a in all_activations
+            if isinstance(a, dict) and str(a.get("gate", "")).isdigit()
+        }
+        feature_additions = []
+        for record in full_records:
+            related = record.get("related_concepts", []) or []
+            searchable = " ".join([
+                " ".join(map(str, related)) if isinstance(related, list) else str(related),
+                str(record.get("concept", "")), str(record.get("claim", "")),
+                str(record.get("summary", ""))
+            ]).lower()
+            phrase_match = any(
+                phrase and (
+                    re.search(r"(?<![a-z0-9])" + re.escape(phrase) + r"(?![a-z0-9])", searchable)
+                    if re.fullmatch(r"[a-z0-9 -]+", phrase)
+                    else phrase in searchable
+                )
+                for phrase in feature_phrases
+            )
+            gate_match_in_record = any(
+                re.search(r"\b" + str(gate) + r"\b", searchable) is not None
+                for gate in activated_gates
+            )
+            if phrase_match or gate_match_in_record:
+                feature_additions.append(record)
+                if len(feature_additions) >= 8:
+                    break
+        seen_ids = {record.get("id") for record in selected}
+        for record in feature_additions:
+            record_id = record.get("id")
+            if record_id not in seen_ids:
+                selected.append(record)
+                seen_ids.add(record_id)
+        selected = selected[:MAX_KNOWLEDGE_RECORDS]
 
     ranked_external = []
     for index, record in enumerate(external):

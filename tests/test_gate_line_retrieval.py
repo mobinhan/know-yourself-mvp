@@ -23,6 +23,33 @@ def foundation(active=True):
 
 
 class GateLineRetrievalTests(unittest.TestCase):
+    def test_basic_tier_selects_record_matching_defined_centre_without_question_overlap(self):
+        chart_record = {
+            "id": "HD-CHART-SACRAL-001",
+            "depth": ["L2"],
+            "record_metadata": {"epistemic_class": "advanced", "lifecycle_status": "active"},
+            "related_concepts": ["sacral"],
+            "concept": "Energy mechanics",
+            "claim": "A chart-specific sacral pattern.",
+            "summary": "Evidence about defined sacral energy.",
+        }
+        with patch(
+            "api.interpretation_provider._read_json",
+            side_effect=[
+                {"records": [chart_record]},
+                {"records": [{"id": "EXT-PRIVATE"}]},
+                {"edges": [{"id": "REL-PRIVATE", "status": "validated"}]},
+            ],
+        ):
+            selected, external, relationships = _select_knowledge(
+                "How can I approach my work?",
+                {"core": {"centres": ["sacral"]}, "activations": {"personality": [], "design": []}},
+                knowledge_tier="basic",
+            )
+        self.assertIn(chart_record["id"], {record["id"] for record in selected})
+        self.assertEqual(external, [])
+        self.assertEqual(relationships, [])
+
     def test_exact_active_gate_line_survives_external_record_limit(self):
         generic_records = [
             {
