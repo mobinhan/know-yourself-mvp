@@ -63,6 +63,68 @@ def _validate_timestamp(value: Any, field: str) -> None:
              f"{field} must include a timezone")
 
 
+def assemble_report_payload(
+    content: Mapping[str, Any],
+    *,
+    trusted_chart: Mapping[str, Any],
+    supplied_evidence: Iterable[Mapping[str, Any]],
+    report_id: str,
+    generated_at: str,
+    generation_metadata: Mapping[str, Any],
+    allowed_product_key: str = PRODUCT_KEY,
+    allowed_product_version: int = PRODUCT_VERSION,
+) -> dict:
+    """Build the persisted envelope using server-owned metadata.
+
+    The model supplies only sections, interpretation labels and reflection prompts.
+    Chart facts, evidence manifest, report identity, timestamps and generation
+    metadata are attached by trusted server code, then the complete envelope is
+    passed through validate_report_payload before it may be persisted.
+    """
+    _require(isinstance(content, Mapping), "generated content must be an object")
+    expected_content_keys = {"sections", "interpretation_kind", "reflection_prompts"}
+    _require(set(content.keys()) == expected_content_keys,
+             "generated content has missing or unexpected fields")
+    required_chart_keys = {"chart_id", "chart_fingerprint", "engine_name", "engine_version", "canonical_facts"}
+    _require(isinstance(trusted_chart, Mapping) and set(trusted_chart.keys()) == required_chart_keys,
+             "trusted_chart has missing or unexpected fields")
+    _require(isinstance(generation_metadata, Mapping), "generation_metadata must be an object")
+    expected_metadata_keys = {"prompt_version", "model_provider", "context_policy_version"}
+    _require(set(generation_metadata.keys()) == expected_metadata_keys,
+             "generation_metadata has missing or unexpected fields")
+
+    manifest = []
+    for index, item in enumerate(supplied_evidence):
+        _require(isinstance(item, Mapping), f"supplied_evidence[{index}] must be an object")
+        _require(set(item.keys()) == {"evidence_id", "source_id", "source_version"},
+                 f"supplied_evidence[{index}] has missing or unexpected fields")
+        manifest.append(dict(item))
+
+    envelope = {
+        "schema_version": SCHEMA_VERSION,
+        "product_key": allowed_product_key,
+        "product_version": allowed_product_version,
+        "report_id": _nonempty_string(report_id, "report_id"),
+        "generated_at": _nonempty_string(generated_at, "generated_at"),
+        "chart_snapshot": dict(trusted_chart),
+        "evidence_manifest": manifest,
+        "sections": content.get("sections"),
+        "interpretation_kind": content.get("interpretation_kind"),
+        "reflection_prompts": content.get("reflection_prompts"),
+        "generation_metadata": {
+            **dict(generation_metadata),
+            "generated_at": generated_at,
+        },
+    }
+    return validate_report_payload(
+        envelope,
+        expected_chart=trusted_chart,
+        supplied_evidence_ids=[item["evidence_id"] for item in manifest],
+        allowed_product_key=allowed_product_key,
+        allowed_product_version=allowed_product_version,
+    )
+
+
 def validate_report_payload(
     payload: Mapping[str, Any],
     *,
