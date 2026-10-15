@@ -99,3 +99,32 @@ Read `docs/PROJECT_CHECKPOINT_2026-10-09.md`, `docs/LOVABLE_MIGRATION_PLAN.md`, 
 - The GitHub integration's workflow-run lookup returned no Actions runs for the fix commit; combined commit status showed Vercel success only. Do not claim automated tests passed.
 - User asked to save this checkpoint and will likely resume with **“Resume KY”**. On resume, re-check branch heads, PR #1/#2 state, current deployment/checks and read this checkpoint before acting.
 - Existing guardrails remain: preserve 3framework and no separate critic in active path; no Lovable credits/actions without specific explicit approval; no production merge without approval; avoid overwriting desktop-only work. Vercel use is currently authorized only for diagnosis/testing of this existing project, not as an irrevocable architecture decision.
+
+## Current verified checkpoint — 2026-10-15 (Render API startup recovered)
+
+### Deployed service
+- Repository: https://github.com/mobinhan/know-yourself-mvp
+- Active API branch: `deploy/render-api`.
+- Latest deployed commit: [`4762cd6968040034273e4203db8071df7f039725`](https://github.com/mobinhan/know-yourself-mvp/commit/4762cd6968040034273e4203db8071df7f039725) — “Add engine directory for temporal ephemeris dependencies”.
+- Render service: `know-yourself-api`; URL: https://know-yourself-api.onrender.com.
+- Latest deployment ID: `dep-db89eouq1p3s73a31o60`.
+- Render status verified as `live`; Render logged “Your service is live” at 2026-10-15 09:06:44 UTC.
+- No endpoint-level tests were run, per user instruction. The user will verify API functionality from their side.
+
+### Startup-import recovery iterations
+1. Earlier runtime failed at `from api import v1_additions` because Render starts `python api/server.py` with the `api/` directory on `sys.path`, not the repository root. Current `api/index.py` uses `import v1_additions as _v1_additions`.
+2. `v1_additions.py` initially failed to import `engine`. Commit `783dffb622411e263bce7176906456bd78106601` added the repository root to `sys.path` before importing the engine package.
+3. The next log showed `engine/temporal_ephemeris.py` could not resolve its sibling import `from ephemeris import ...`. Commit `4762cd6968040034273e4203db8071df7f039725` added both repository root and `engine/` to `sys.path` before `from engine import temporal_ephemeris`.
+4. The deployment logs included a traceback from a previous instance still running stale `api/index.py` code (`from api import v1_additions`). The subsequent instance started at 09:06:29 UTC, and Render marked the deployment live at 09:06:44 UTC. The latest checked GitHub `api/index.py` at the deployed commit uses the correct same-directory import. Do not mistake historical instance logs for a failure of the final deployed commit.
+
+### Current verified import layout
+- `api/index.py`: imports `v1_additions` as a same-directory module, then adds `engine/` and `api/` to `sys.path` for its own direct imports.
+- `api/v1_additions.py`: computes `REPO_ROOT` and `ENGINE_DIR`, adds both to `sys.path`, then imports `from engine import temporal_ephemeris`; the transit call uses `temporal_ephemeris.transit_activations(at_dt)`.
+- Deferred imports use same-directory forms such as `from entitlements import ...` and `from interpretation_provider import ...`.
+- Only `api/v1_additions.py` was changed in the two corrective commits; `api/index.py` was not changed during these final iterations.
+
+### Exact resume point
+1. Ask the user for the outcome of their own endpoint/functionality verification; do not run endpoint-level tests unless the user changes that instruction.
+2. If verification reports a failure, inspect the newest Render logs and current GitHub branch/file state first; make the smallest evidence-based fix, one commit per iteration, restricted to `api/v1_additions.py` and `api/index.py` unless the user explicitly expands scope.
+3. Keep deployment status, startup-log evidence, and endpoint functionality as separate claims. “Live” confirms Render started the service; it does not by itself prove API routes or Supabase integration work.
+
