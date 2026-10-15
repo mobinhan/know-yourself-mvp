@@ -18,7 +18,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
-from temporal_ephemeris import transit_activations
+from engine import temporal_ephemeris
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -191,7 +191,7 @@ def _natal_longitude(foundation, body_name):
 
 def _transit_longitude(at_dt, body_name):
     try:
-        acts = transit_activations(at_dt)
+        acts = temporal_ephemeris.transit_activations(at_dt)
     except Exception:
         return None
     for act in acts or []:
