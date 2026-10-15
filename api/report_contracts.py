@@ -85,9 +85,9 @@ def validate_report_payload(
     _require(not missing, f"missing required fields: {', '.join(sorted(missing))}")
     _require(not extra, f"unexpected fields: {', '.join(sorted(extra))}")
 
-    _require(payload.get("schema_version") == SCHEMA_VERSION, "unsupported schema_version")
+    _require(type(payload.get("schema_version")) is int and payload.get("schema_version") == SCHEMA_VERSION, "unsupported schema_version")
     _require(payload.get("product_key") == allowed_product_key, "unexpected product_key")
-    _require(payload.get("product_version") == allowed_product_version, "unsupported product_version")
+    _require(type(payload.get("product_version")) is int and payload.get("product_version") == allowed_product_version, "unsupported product_version")
     _nonempty_string(payload.get("report_id"), "report_id")
     _validate_timestamp(payload.get("generated_at"), "generated_at")
 
@@ -140,7 +140,7 @@ def validate_report_payload(
             _require(set(block.keys()) == {"type", "text", "evidence_ids"},
                      f"{bp} has missing or unexpected fields")
             block_type = block.get("type")
-            _require(block_type in _ALLOWED_BLOCK_TYPES, f"{bp}.type is unsupported")
+            _require(isinstance(block_type, str) and block_type in _ALLOWED_BLOCK_TYPES, f"{bp}.type is unsupported")
             if block_type == "bullet_list":
                 items = block.get("text")
                 _require(isinstance(items, list) and bool(items), f"{bp}.text must be a non-empty list for bullet_list")
@@ -157,6 +157,10 @@ def validate_report_payload(
     interpretation_kind = payload.get("interpretation_kind")
     _require(isinstance(interpretation_kind, list) and bool(interpretation_kind),
              "interpretation_kind must be a non-empty list")
+    _require(all(isinstance(item, str) for item in interpretation_kind),
+             "interpretation_kind values must be strings")
+    _require(len(interpretation_kind) == len(set(interpretation_kind)),
+             "interpretation_kind must not contain duplicates")
     _require(set(interpretation_kind).issubset({"chart_mechanics", "source_grounded_teaching", "reflective_synthesis"}),
              "interpretation_kind contains an unsupported value")
 
