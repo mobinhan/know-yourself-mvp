@@ -18,7 +18,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
-from engine import temporal_ephemeris
+from temporal_ephemeris import transit_activations
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -121,7 +121,7 @@ def handle_save_chart(handler):
     if not user_id:
         return _reply(handler, 401, {"error": "authentication_required"})
     try:
-        from api.entitlements import resolve_request_capability
+        from entitlements import resolve_request_capability
         decision = resolve_request_capability(handler.headers, "guide.basic")
     except Exception:
         decision = {"allowed": True}
@@ -191,7 +191,7 @@ def _natal_longitude(foundation, body_name):
 
 def _transit_longitude(at_dt, body_name):
     try:
-        acts = temporal_ephemeris.transit_activations(at_dt)
+        acts = transit_activations(at_dt)
     except Exception:
         return None
     for act in acts or []:
@@ -252,7 +252,7 @@ def _compute_lifecycle_events(foundation):
 
 
 def handle_lifecycles(handler, chart_id):
-    from api.entitlements import resolve_request_capability
+    from entitlements import resolve_request_capability
     body = _read_body(handler)
     decision = resolve_request_capability(handler.headers, str(body.get("capability") or "lifecycles.full"))
     try:
@@ -343,7 +343,7 @@ def _classify_connection(gates_a, gates_b, catalog):
 
 
 def handle_connection(handler, chart_id):
-    from api.entitlements import resolve_request_capability
+    from entitlements import resolve_request_capability
     body = _read_body(handler)
     decision = resolve_request_capability(handler.headers, str(body.get("capability") or "connection.comparison"))
     try:
@@ -380,8 +380,8 @@ _ai_calls: dict = {}
 
 
 def handle_answer(handler):
-    from api.entitlements import resolve_request_capability
-    from api.interpretation_provider import InterpretationProviderError, generate_interpretation
+    from entitlements import resolve_request_capability
+    from interpretation_provider import InterpretationProviderError, generate_interpretation
 
     body = _read_body(handler)
     user_id = _verify_user_id(handler.headers)
