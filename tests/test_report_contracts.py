@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from api.report_contracts import ReportValidationError, validate_report_payload
+from api.report_contracts import ReportValidationError, assemble_report_payload, validate_report_payload
 
 
 CHART = {
@@ -68,6 +68,52 @@ class ReportContractTests(unittest.TestCase):
         result = self.validate(payload)
         self.assertEqual(result, payload)
         self.assertIsNot(result, payload)
+
+    def test_assembler_injects_trusted_chart_and_evidence(self):
+        payload = valid_payload()
+        content = {
+            "sections": payload["sections"],
+            "interpretation_kind": payload["interpretation_kind"],
+            "reflection_prompts": payload["reflection_prompts"],
+        }
+        supplied = payload["evidence_manifest"]
+        result = assemble_report_payload(
+            content,
+            trusted_chart=CHART,
+            supplied_evidence=supplied,
+            report_id="server-report-id",
+            generated_at="2026-10-16T10:00:00Z",
+            generation_metadata={
+                "prompt_version": "life-purpose-v1",
+                "model_provider": "mock",
+                "context_policy_version": "context-v1",
+            },
+        )
+        self.assertEqual(result["chart_snapshot"], CHART)
+        self.assertEqual(result["evidence_manifest"], supplied)
+        self.assertEqual(result["report_id"], "server-report-id")
+
+    def test_assembler_rejects_model_supplied_chart_metadata(self):
+        payload = valid_payload()
+        content = {
+            "sections": payload["sections"],
+            "interpretation_kind": payload["interpretation_kind"],
+            "reflection_prompts": payload["reflection_prompts"],
+            "chart_snapshot": payload["chart_snapshot"],
+        }
+        with self.assertRaisesRegex(ReportValidationError, "missing or unexpected fields"):
+            assemble_report_payload(
+                content,
+                trusted_chart=CHART,
+                supplied_evidence=payload["evidence_manifest"],
+                report_id="server-report-id",
+                generated_at="2026-10-16T10:00:00Z",
+                generation_metadata={
+                    "prompt_version": "life-purpose-v1",
+                    "model_provider": "mock",
+                    "context_policy_version": "context-v1",
+                },
+            )
 
     def test_wrong_chart_fingerprint_is_rejected(self):
         payload = valid_payload()
