@@ -101,6 +101,11 @@ def validate_report_payload(
         _require(actual == expected, f"chart_snapshot.{key} does not match the trusted canonical chart")
     _require(isinstance(chart.get("canonical_facts"), Mapping), "chart_snapshot.canonical_facts must be an object")
     _require(bool(chart.get("canonical_facts")), "chart_snapshot.canonical_facts must not be empty")
+    expected_facts = expected_chart.get("canonical_facts")
+    _require(isinstance(expected_facts, Mapping) and bool(expected_facts),
+             "expected_chart.canonical_facts must be a non-empty trusted object")
+    _require(dict(chart.get("canonical_facts")) == dict(expected_facts),
+             "chart_snapshot.canonical_facts do not match the trusted canonical chart")
 
     manifest = payload.get("evidence_manifest")
     _require(isinstance(manifest, list), "evidence_manifest must be a list")
