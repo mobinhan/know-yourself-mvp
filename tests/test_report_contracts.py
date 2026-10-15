@@ -129,6 +129,24 @@ class ReportContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ReportValidationError, "unsupported value"):
             self.validate(payload)
 
+    def test_non_string_block_type_is_rejected_without_crashing(self):
+        payload = valid_payload()
+        payload["sections"][0]["blocks"][0]["type"] = ["paragraph"]
+        with self.assertRaisesRegex(ReportValidationError, "type is unsupported"):
+            self.validate(payload)
+
+    def test_non_string_interpretation_kind_is_rejected_without_crashing(self):
+        payload = valid_payload()
+        payload["interpretation_kind"] = [["chart_mechanics"]]
+        with self.assertRaisesRegex(ReportValidationError, "values must be strings"):
+            self.validate(payload)
+
+    def test_boolean_schema_version_is_not_accepted_as_integer_one(self):
+        payload = valid_payload()
+        payload["schema_version"] = True
+        with self.assertRaisesRegex(ReportValidationError, "unsupported schema_version"):
+            self.validate(payload)
+
 
 if __name__ == "__main__":
     unittest.main()
