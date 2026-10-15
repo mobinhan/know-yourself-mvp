@@ -1,6 +1,6 @@
 # Know Yourself Report Marketplace — v1 Contract
 
-**Status:** Draft implementation contract; documentation-only milestone.  
+**Status:** Draft implementation contract; first pure validation module and unit tests added, not yet wired into API or persistence.  
 **Scope:** One flagship paid report, delivered as an interactive online report and downloadable PDF.  
 **Product:** life-purpose-direction — “Life Purpose & Direction”.  
 **Commercial model:** One-time purchase per report; no subscription dependency.  
@@ -99,6 +99,11 @@ No provider is selected yet. Before choosing, compare current support for the me
 
 ## 8. Current milestone and next safe action
 
-This commit records the product and interface contracts only. It intentionally makes **no production database changes**, adds no API routes, selects no payment provider and does not trigger a Render deployment.
+Implemented on the feature branch:
 
-Next: reconcile the existing entitlement implementation with the live Supabase schema, inspect the storage/RLS policy model and current API test/CI setup, then propose the smallest migration and testable backend slice. Payment-provider research must be completed before a provider adapter is implemented.
+- `api/report_contracts.py`: pure validation for the Life Purpose & Direction v1 payload, trusted chart ID/fingerprint/engine-version matching, evidence-manifest allow-listing, section/block structure, interpretation labels, timestamps and JSON compatibility.
+- `tests/test_report_contracts.py`: unit tests for valid payloads and rejection of chart/evidence tampering, duplicate sections, unknown fields, timezone omissions and malformed output types.
+
+This validator is not yet called by an API route or persistence service. No production database changes, API routes, payment provider, or Render deployment have been made. Automated tests have not yet been executed in this environment; do not treat the presence of tests as proof that they pass.
+
+Next implementation slice: connect the validator to a report-generation service using the existing canonical chart and permitted evidence/context inputs, then add focused mocked tests. In parallel, prepare a reviewable migration proposal only after reconciling the live schema, ownership/RLS policies, server-side Supabase access and private-storage setup. Do not apply DDL to production or deploy until separately approved. Payment-provider research remains deferred until the merchant country/settlement decision is ready.
