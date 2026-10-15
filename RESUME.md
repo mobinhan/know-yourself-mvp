@@ -235,3 +235,44 @@ Important limitation: this file records the required protocol; it does not itsel
 - This is a product/orchestration requirement, not evidence that runtime behavior is already implemented. O15–O20 are **NOT RUN** against the actual answer-generation path.
 - Important nuance for faithful implementation: embodied decision-making is the overarching product principle, but the specific Human Design mechanics differ by authority. Do not flatten every authority into the Sacral gut-response model; in particular, preserve the source-specific Emotional clarity-over-time and Mental/Environmental sounding-board/environment process.
 - Next: inspect the actual Answer Composer / 3FO runtime path, apply the cross-authority rule there, then execute O10–O20 with representative fixtures for each supported authority and retain evidence. Do not claim runtime integration until verified.
+
+## Current checkpoint (2026-10-15 — routed answer pipeline mock gate passed)
+
+### Authoritative repository state
+- Repository: https://github.com/mobinhan/know-yourself-mvp
+- Active implementation PR: [PR #24 — Add bounded Layer 2 context retrieval contract](https://github.com/mobinhan/know-yourself-mvp/pull/24)
+- Branch: `feature/layer2-context-retrieval`
+- Latest branch commit: `2a780062e05c065f98dec2aff59b0c6c7e56ddc8` — “Add routed server-side answer pipeline contract tests”.
+- PR #24 remains **OPEN, DRAFT, UNMERGED**. Do not merge without explicit approval.
+- Successful CI run for the latest commit: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38633734869. Workflow conclusion: **success**. Both Python engine validation and JavaScript contract validation jobs passed, including the mocked end-to-end answer pipeline test.
+
+### Implemented on PR #24
+- Bounded Layer 2 context assembler: configurable 4,000-token default budget, maximum 12 newest turns, consent/confirmation/status/expiry filtering for memories, summary inclusion gated by personal-context preference, and trimming telemetry without private text.
+- User-facing history API pagination remains separate: default 50 rows/page, hard max 100. Never pass a 50-row history page wholesale into model context.
+- Trusted summary orchestration preserves the newest 12 turns, tracks summary version and covered sequence, and uses an injected trusted persistence callback. Migration/RPC is still a candidate and has not been applied to production.
+- New provider-neutral answer pipeline contract in `supabase/functions/answer-api/pipeline.mjs`: authenticate, verify conversation ownership before retrieval/model calls, rule-first router, Flash classifier for gray-zone questions, configurable escalation threshold (default 0.72), Flash/minimal-context path, reasoning/assembled-context path, critic before persistence, and whitelisted privacy-safe telemetry.
+- New mocked end-to-end test in `supabase/test_answer_pipeline.mjs` registered in CI.
+
+### Mocked tests verified
+1. Simple question routes to Flash with small context; full assembler/reasoning path is skipped; critic passes before persistence.
+2. Complex/personal question escalates to reasoning; assembled context stays within 4,000 tokens and includes no more than 12 recent turns; critic passes before persistence.
+3. A 32-turn conversation triggers trusted summary orchestration; coverage advances to sequence 20, summary version advances, and the newest 12 turns are preserved.
+4. Ownership denial blocks model calls and persistence.
+5. Gray-zone classifier confidence below the configured threshold fails safe to escalation.
+- Latest CI is green. These tests use mocked model and token-count adapters; this is not proof of live provider behavior or production deployment.
+
+### Hard rollout gates
+- **No real provider key has been connected.**
+- **No production migration applied, no production Edge Function deployed/redeployed, no merge.**
+- The answer pipeline is a provider-injected orchestration module and mock contract, not yet a fully wired deployed Supabase answer endpoint. Trusted Supabase retrieval/persistence adapters and real model/critic provider integration remain future work.
+- Do not discuss/enable a real provider key until the mock gate remains green and the server-side adapter/security review is ready.
+- When approved for the first real API run, limit it to 5–10 manual test questions, with a $10 billing cap set in Google Cloud beforehand. Do not enable general traffic by default.
+- Keep PR #24 in draft until the full pipeline integration/test gate is explicitly met.
+- Preserve prior constraints: no Lovable project/credit spend without approval; no Vercel dependency; never commit secrets; no merges, production migrations, or production redeployments without explicit approval.
+
+### Next action when resuming
+1. Read this checkpoint and re-check PR #24 head and CI status.
+2. Wire a trusted Supabase Edge Function adapter that performs owner-scoped conversation access, trusted canonical chart/evidence retrieval, consent-governed memory/summary retrieval, provider-tokenizer measurement, and trusted assistant-turn persistence.
+3. Use only mocked model adapters first; add authenticated ownership/consent tests and full handler-level integration tests. Keep the deployment and migration disabled.
+4. After that passes, review the real-provider plan. First real-provider trial remains limited to 5–10 manual questions with the $10 Google Cloud cap set before use.
+
