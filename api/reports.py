@@ -10,6 +10,7 @@ requests (~100s) - the client streams sections sequentially.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from urllib.error import HTTPError, URLError
