@@ -276,3 +276,25 @@ Important limitation: this file records the required protocol; it does not itsel
 3. Use only mocked model adapters first; add authenticated ownership/consent tests and full handler-level integration tests. Keep the deployment and migration disabled.
 4. After that passes, review the real-provider plan. First real-provider trial remains limited to 5–10 manual questions with the $10 Google Cloud cap set before use.
 
+
+
+## Current checkpoint (2026-10-16 — Basic Report direction confirmed)
+
+- Confirmed product direction: Know Yourself is primarily a platform for AI-analysed personalized reports; chat is a supporting follow-up experience.
+- Confirmed the Basic Report chapter structure:
+  1. Your Design at a Glance — verified Type, Strategy, Authority, Profile, Definition and actual canonical bodygraph.
+  2. How Your Design Works — defined and open/undefined centers.
+  3. Your Unique Themes — synthesis of related confirmed channels, not six disconnected mini-definitions.
+  4. Potential Blind Spots — explicitly consider verified open centers and conditioning themes, framed as possibilities rather than certainties.
+  5. Your Starting Point — practical self-observation prompts; no separate Career & Life Direction chapter in Basic.
+- Confirmed quality principle: “Basic” limits scope/mechanics, not writing quality or usefulness. Basic must be complete and valuable within its scope, not intentionally thin to force an upgrade.
+- Confirmed offer ladder: free downloadable Basic Report; free downloadable Complete Report Preview that demonstrates richer analysis but intentionally withholds selected paid sections; future paid Full Life Purpose & Direction Report, online and downloadable. Further report types can follow.
+- Confirmed 3framework path: Layer 1 canonical chart + immutable evidence; Layer 2 adaptive user context; Layer 3 ChatGPT synthesis. Report assembly/validation is a delivery pipeline, not a fourth reasoning layer.
+- Visual rule: premium editorial presentation, but the bodygraph itself must be rendered from canonical structured chart data, never generated as an illustrative approximation. Distinguish natal definition from temporary transit activation.
+- Added report documents on branch `feature/report-marketplace-contracts`:
+  - `docs/reports/basic-report-specification.md`
+  - `docs/reports/basic-report-example.md`
+- The example deliberately marks Type/Strategy/Authority/Profile/Definition and open centers for canonical verification. It uses the six previously confirmed Golden Chart #2 channels (3–60, 11–56, 28–38, 32–54, 34–57, 42–53) only as example material; the sample is not engine-generated or end-to-end validated.
+- Latest report-document commits returned by GitHub: specification `654731592e301443ec043c51f1195f9c91d1ad6f`; example `84db1aa44fe12ebb1505937e9466a0df0419c049`. Remote fetch-back verified both documents exist on the report branch. Current blob SHAs after fetch: specification `3577b9b1651a41efbba30e10850fdb4f276540f2`; example `7e652d45a5a9539a3086e22ce0d642bfea057b20`.
+- Implementation status: these are product specification and content prototype only. They do not prove the deployed report pipeline renders the canonical chart, validates evidence, assembles PDFs, or enforces Basic/Preview entitlements.
+- Guardrails preserved: no Lovable credit spend, no Vercel, no PR merge, no production deployment without explicit user approval.
