@@ -44,6 +44,7 @@ The report assembly/validation stage is a delivery pipeline, not a new reasoning
 - Basic Report is meaningful and complete within its scope; no separate career/life-direction chapter.
 - Output can be rendered online and downloaded as a PDF.
 - The saved report records a version and the relevant chart/evidence references for traceability.
+- A generated section that returns any validation_warnings does not pass acceptance until each warning is resolved in the template/prompt or consciously waived by a human reviewer.
 
 ## Current status / guardrail
 This is a confirmed product/report specification. It does not establish that the current deployed report pipeline already implements every requirement. Implementation and end-to-end validation remain separate milestones. Do not spend Lovable credits, deploy new product code, merge a PR, or use Vercel without explicit permission.
