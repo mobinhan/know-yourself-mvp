@@ -173,4 +173,79 @@ def dispatch(handler, segments, method: str) -> bool:
     if len(segments) == 4 and segments[:2] == ["v1", "charts"] and method == "POST" and segments[3] == "report-section":
         handle_report_section(handler, segments[2])
         return True
+    if segments == ["v1", "reports", "save"] and method == "POST":
+        handle_save_report(handler)
+        return True
+    if segments == ["v1", "reports"] and method == "GET":
+        handle_list_reports(handler)
+        return True
+    if len(segments) == 3 and segments[:2] == ["v1", "reports"] and method == "GET":
+        handle_get_report(handler, segments[2])
+        return True
     return False
+
+
+# ---------------------------------------------------- report persistence --
+
+
+def handle_save_report(handler):
+    from v1_additions import _service_request, _verify_user_id
+
+    user_id = _verify_user_id(handler.headers)
+    if not user_id:
+        return _reply(handler, 401, {"error": "authentication_required"})
+    body = _read_body(handler)
+    report_type = str(body.get("report_type") or "basic")[:40]
+    title = str(body.get("title") or "Report")[:160]
+    content = body.get("content")
+    if not isinstance(content, dict):
+        return _reply(handler, 422, {"error": "validation_failed", "detail": "content must be an object"})
+
+    # Version = previous max + 1 for this user + report_type.
+    prev = _service_request(
+        "GET",
+        "ky_reports?select=version&user_id=eq." + user_id
+        + "&report_type=eq." + report_type
+        + "&order=version.desc&limit=1",
+    )
+    version = (int(prev[0]["version"]) + 1) if prev else 1
+
+    row = {
+        "user_id": user_id,
+        "report_type": report_type,
+        "title": title,
+        "version": version,
+        "content": content,
+        "is_archived": False,
+    }
+    inserted = _service_request("POST", "ky_reports", row)
+    return _reply(handler, 201, {"report": inserted[0] if inserted else row})
+
+
+def handle_list_reports(handler):
+    from v1_additions import _service_request, _verify_user_id
+
+    user_id = _verify_user_id(handler.headers)
+    if not user_id:
+        return _reply(handler, 401, {"error": "authentication_required"})
+    rows = _service_request(
+        "GET",
+        "ky_reports?select=id,user_id,report_type,title,version,is_archived,created_at"
+        "&user_id=eq." + user_id + "&is_archived=eq.false&order=created_at.desc&limit=100",
+    )
+    return _reply(handler, 200, {"reports": rows})
+
+
+def handle_get_report(handler, report_id):
+    from v1_additions import _service_request, _verify_user_id
+
+    user_id = _verify_user_id(handler.headers)
+    if not user_id:
+        return _reply(handler, 401, {"error": "authentication_required"})
+    rows = _service_request(
+        "GET",
+        "ky_reports?select=*&id=eq." + str(report_id) + "&user_id=eq." + user_id + "&limit=1",
+    )
+    if not rows:
+        return _reply(handler, 404, {"error": "report_not_found"})
+    return _reply(handler, 200, {"report": rows[0]})
