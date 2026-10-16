@@ -272,26 +272,23 @@ def handle_save_report(handler):
         return _reply(handler, 422, {"error": "validation_failed", "detail": "content must be an object"})
 
     # Version = previous max + 1 for this user + report_type.
-    try:
-        prev = _service_request(
-            "GET",
-            "ky_reports?select=version&user_id=eq." + user_id
-            + "&report_type=eq." + report_type
-            + "&order=version.desc&limit=1",
-        )
-        version = (int(prev[0]["version"]) + 1) if prev else 1
+    prev = _service_request(
+        "GET",
+        "ky_reports?select=version&user_id=eq." + user_id
+        + "&report_type=eq." + report_type
+        + "&order=version.desc&limit=1",
+    )
+    version = (int(prev[0]["version"]) + 1) if prev else 1
 
-        row = {
-            "user_id": user_id,
-            "report_type": report_type,
-            "title": title,
-            "version": version,
-            "content": content,
-            "is_archived": False,
-        }
-        inserted = _service_request("POST", "ky_reports", row)
-    except (HTTPError, URLError, OSError) as exc:
-        return _storage_unavailable(handler, exc)
+    row = {
+        "user_id": user_id,
+        "report_type": report_type,
+        "title": title,
+        "version": version,
+        "content": content,
+        "is_archived": False,
+    }
+    inserted = _service_request("POST", "ky_reports", row)
     return _reply(handler, 201, {"report": inserted[0] if inserted else row})
 
 
@@ -301,14 +298,11 @@ def handle_list_reports(handler):
     user_id = _verify_user_id(handler.headers)
     if not user_id:
         return _reply(handler, 401, {"error": "authentication_required"})
-    try:
-        rows = _service_request(
-            "GET",
-            "ky_reports?select=id,user_id,report_type,title,version,is_archived,created_at"
-            "&user_id=eq." + user_id + "&is_archived=eq.false&order=created_at.desc&limit=100",
-        )
-    except (HTTPError, URLError, OSError) as exc:
-        return _storage_unavailable(handler, exc)
+    rows = _service_request(
+        "GET",
+        "ky_reports?select=id,user_id,report_type,title,version,is_archived,created_at"
+        "&user_id=eq." + user_id + "&is_archived=eq.false&order=created_at.desc&limit=100",
+    )
     return _reply(handler, 200, {"reports": rows})
 
 
@@ -318,13 +312,10 @@ def handle_get_report(handler, report_id):
     user_id = _verify_user_id(handler.headers)
     if not user_id:
         return _reply(handler, 401, {"error": "authentication_required"})
-    try:
-        rows = _service_request(
-            "GET",
-            "ky_reports?select=*&id=eq." + str(report_id) + "&user_id=eq." + user_id + "&limit=1",
-        )
-    except (HTTPError, URLError, OSError) as exc:
-        return _storage_unavailable(handler, exc)
+    rows = _service_request(
+        "GET",
+        "ky_reports?select=*&id=eq." + str(report_id) + "&user_id=eq." + user_id + "&limit=1",
+    )
     if not rows:
         return _reply(handler, 404, {"error": "report_not_found"})
     return _reply(handler, 200, {"report": rows[0]})
