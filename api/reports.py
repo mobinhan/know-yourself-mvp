@@ -12,7 +12,6 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from urllib.error import HTTPError, URLError
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
@@ -45,7 +44,7 @@ def _read_body(handler) -> dict:
         length = int(handler.headers.get("Content-Length") or 0)
     except (TypeError, ValueError):
         return {}
-    if length <= 0 or length > 65536:
+    if length <= 0 or length > 131072:
         return {}
     try:
         return json.loads(handler.rfile.read(length) or b"{}")
@@ -62,14 +61,65 @@ def _public_error(decision: dict):
     return 503, {"error": "entitlement_unavailable", "capability": decision.get("capability")}
 
 
-def _storage_unavailable(handler, exc):
-    if isinstance(exc, HTTPError):
-        detail = f"storage upstream returned HTTP {exc.code}"
-    elif isinstance(exc, URLError):
-        detail = "storage network unavailable"
-    else:
-        detail = "storage I/O unavailable"
-    return _reply(handler, 502, {"error": "storage_unavailable", "detail": detail})
+# ------------------------------------------------------------- validation --
+
+_ALL_CENTRES = ("head", "ajna", "throat", "g centre", "g center", "identity", "heart", "ego",
+                "solar plexus", "sacral", "spleen", "root")
+
+
+def _validate_section(foundation: dict, interpretation: dict) -> list:
+    """Deterministic fact-check of model output against canonical mechanics.
+
+    Every centre mentioned as open/defined, every channel, and every natal
+    gate citation must match the engine's chart. Returns human-readable
+    warnings; never throws.
+    """
+    warnings: list = []
+    try:
+        parts = [interpretation.get("answer") or ""]
+        for card in interpretation.get("cards") or []:
+            if isinstance(card, dict):
+                parts.append(str(card.get("summary") or ""))
+                parts.append(str(card.get("reflection") or ""))
+        text = " ".join(parts)
+        low = text.lower()
+
+        core = foundation.get("core", {}) if isinstance(foundation.get("core"), dict) else {}
+        defined = {str(c).lower() for c in core.get("centres", []) if isinstance(c, str)}
+        completed_channels = set()
+        for ch in core.get("channels", []) or []:
+            if isinstance(ch, dict) and isinstance(ch.get("channel"), str):
+                completed_channels.add(ch["channel"])
+        gate_set = {g for g in core.get("gate_set", []) if isinstance(g, int) and not isinstance(g, bool)}
+
+        for centre in _ALL_CENTRES:
+            if centre not in low:
+                continue
+            canonical = centre.replace(" centre", "").replace(" center", "")
+            if canonical == "g":
+                canonical = "g"
+            actual_defined = canonical in defined or (canonical == "ego" and "heart" in defined) or (canonical == "identity" and "g" in defined)
+            open_pat = re.compile(r"(open|undefined|not defined)\s+" + re.escape(centre))
+            def_pat = re.compile(r"defined\s+" + re.escape(centre))
+            if open_pat.search(low) and actual_defined:
+                warnings.append(f"mentions '{centre}' as open/undefined but it is defined in this chart")
+            if def_pat.search(low) and not actual_defined:
+                warnings.append(f"mentions '{centre}' as defined but it is open in this chart")
+
+        for a, b in re.findall(r"\b(\d{1,2})\s*[-–]\s*(\d{1,2})\b", text):
+            name = a + "-" + b
+            if name not in completed_channels:
+                warnings.append(f"mentions channel {name} which is not a completed natal channel")
+
+        for g in re.findall(r"\bgate\s+(\d{1,2})\b", low):
+            if int(g) not in gate_set:
+                warnings.append(f"cites gate {g} as natal but it is not activated in this chart")
+
+        if "transit" in low and "natal" in low:
+            pass  # presence of both is fine; the provider instructions govern separation
+    except Exception as exc:  # validation must never break report delivery
+        warnings.append(f"validator_error: {type(exc).__name__}")
+    return warnings[:8]
 
 
 # ------------------------------------------------------------- templates --
@@ -80,41 +130,47 @@ REPORT_TEMPLATES = {
         "excerpted": set(),
         "sections": [
             ("overview", "Your Design at a Glance",
-             "Write the opening overview of this person's Human Design report: the essence of their design as one coherent narrative - type, strategy, authority, profile and definition woven together, no lists."),
-            ("type_strategy", "Type & Strategy",
-             "Write the Type & Strategy section of this Human Design report: how this design is built to engage with the world, their decision-making strategy in daily life, and the core deconditioning theme for this type."),
-            ("authority", "Your Inner Authority",
-             "Write the Inner Authority section: how this person's authority speaks, how they can practice trusting it in real decisions, and what it feels like when they override it."),
-            ("profile", "Your Profile",
-             "Write the Profile section: their profile lines as a life role, how they naturally learn and mature, and how others tend to experience them."),
-            ("centres", "Centres: Consistent vs. Conditioned",
-             "Write the Centres section: walk through their DEFINED centres as sources of reliable energy, and their UNDEFINED centres as places where they take in and amplify others - with the key conditioning theme for each open centre."),
-            ("channels", "Your Defined Channels",
-             "Write the Channels section: for each of their completed channels, the fixed gift it carries and how it shows up in their life - mechanic-grounded, specific to their chart."),
+             "Write the opening chapter of this person's Human Design report. Present their Type, Strategy, Authority, "
+             "Profile and Definition as one coherent personal narrative - not a list, not a definition dump. "
+             "Make the reader feel recognized: this is a map of THEIR design, written for them."),
+            ("mechanics", "How Your Design Works",
+             "Write the chapter 'How Your Design Works': what is consistently DEFINED in their chart (reliable energy), "
+             "what is OPEN (where they take in and amplify the world), and how to begin observing that difference in "
+             "daily life. Ground every statement in their actual centres."),
+            ("themes", "Your Unique Themes",
+             "Write the chapter 'Your Unique Themes': do NOT explain each channel separately. Instead synthesize their "
+             "completed channels into 2-3 overarching themes of this design - how the energies combine into one coherent "
+             "pattern of gifts and challenges. This synthesis is the heart of the report."),
+            ("blind_spots", "Potential Blind Spots",
+             "Write the chapter 'Potential Blind Spots' about their OPEN centres: where openness may amplify outside "
+             "influence and conditioning. Use reflective questions rather than claiming patterns are already true of the "
+             "reader - you do not know their history. Practical, specific to their actual open centres."),
+            ("starting_point", "Your Starting Point",
+             "Write the closing chapter 'Your Starting Point': 3-5 personalized questions and small experiments that help "
+             "them apply this report to real life this week. No pretending to deliver a complete life analysis - an honest, "
+             "practical beginning."),
         ],
     },
     "preview": {
         "title": "Complete Report - Preview",
-        "excerpted": {"profile", "channels", "incarnation_cross", "gates", "life_cycles"},
+        "excerpted": {"themes", "blind_spots", "incarnation_cross", "gates", "life_cycles"},
         "sections": [
             ("overview", "Your Design at a Glance",
              "Write the opening overview of this person's Human Design report: the essence of their design as one coherent narrative - type, strategy, authority, profile and definition woven together, no lists."),
-            ("type_strategy", "Type & Strategy - In Depth",
-             "Write the deep Type & Strategy section of the Complete Report: strategy in career, relationships and rest; the signature of this type when living correctly vs. the not-self theme."),
-            ("authority", "Your Inner Authority - In Depth",
-             "Write the deep Inner Authority section: the authority's nuance, its relationship to timing, and practices for real decisions."),
-            ("profile", "Your Profile & Life Role",
-             "Write the deep Profile section of the Complete Report: profile lines, their life role, learning style and maturation path."),
-            ("centres", "Centres - Full Conditioning Map",
-             "Write the deep Centres section: every centre, defined and undefined, with conditioning wisdom and transpersonal themes."),
-            ("channels", "Your Complete Channel Architecture",
-             "Write the deep Channels section: every completed channel with its gift, shadow, and integration into the whole design."),
+            ("mechanics", "How Your Design Works - In Depth",
+             "Write the deep mechanics chapter: every defined and open centre, the conditioning wisdom for each open centre, and how the definition type shapes their relating."),
+            ("themes", "Your Unique Themes - Full Synthesis",
+             "Write the deep synthesis chapter: combine ALL completed channels, profile and definition into the overarching themes and life-pattern of this design."),
+            ("profile_depth", "Your Profile & Life Role",
+             "Write the deep Profile chapter: profile lines, their life role, learning style and maturation path."),
+            ("blind_spots", "Potential Blind Spots - Full Map",
+             "Write the deep blind-spots chapter: the full conditioning map of every open centre with transpersonal themes and practical deconditioning pointers."),
             ("incarnation_cross", "Your Incarnation Cross",
-             "Write the Incarnation Cross section: their cross as the life theme - the conscious/unconscious gates and what this life is arranged to explore."),
+             "Write the Incarnation Cross chapter: their cross as the life theme - the conscious/unconscious gates and what this life is arranged to explore."),
             ("gates", "Your Key Gates",
-             "Write the Key Gates section: their most prominent activated gates (sun/earth and repeated activations), each with its theme in their life."),
+             "Write the Key Gates chapter: their most prominent activated gates (sun/earth and repeated activations), each with its theme in their life."),
             ("life_cycles", "Your Life Cycles",
-             "Write the Life Cycles section: the major cycle timings of this design - Saturn return and oppositions, Uranus opposition - and what each cycle asks of them."),
+             "Write the Life Cycles chapter: the major cycle timings of this design - Saturn return and oppositions, Uranus opposition - and what each cycle asks of them."),
         ],
     },
 }
@@ -148,7 +204,9 @@ def handle_report_section(handler, chart_id):
     excerpted = section_id in template["excerpted"]
     question = (
         focus
-        + " Ground everything in the supplied chart mechanics and evidence; be specific to THIS chart, warm and concrete."
+        + " Ground everything in the supplied chart mechanics and evidence; be specific to THIS chart,"
+        + " warm, concrete, and written as a personal analysis the reader recognizes as being about them."
+        + " Teach in your own words; never reproduce distinctive source phrasing."
     )
     if excerpted:
         question += (
@@ -176,6 +234,7 @@ def handle_report_section(handler, chart_id):
         "section_index": order.index(section_id),
         "section_count": len(order),
         "excerpted": excerpted,
+        "validation_warnings": _validate_section(foundation, interpretation),
         "content": interpretation,
     })
 
