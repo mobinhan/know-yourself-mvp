@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
+from urllib.error import HTTPError, URLError
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
@@ -59,6 +60,16 @@ def _public_error(decision: dict):
     if status == "premium_required":
         return 403, {"error": "premium_required", "capability": decision.get("capability")}
     return 503, {"error": "entitlement_unavailable", "capability": decision.get("capability")}
+
+
+def _storage_unavailable(handler, exc):
+    if isinstance(exc, HTTPError):
+        detail = f"storage upstream returned HTTP {exc.code}"
+    elif isinstance(exc, URLError):
+        detail = "storage network unavailable"
+    else:
+        detail = "storage I/O unavailable"
+    return _reply(handler, 502, {"error": "storage_unavailable", "detail": detail})
 
 
 # ------------------------------------------------------------- templates --
@@ -202,23 +213,26 @@ def handle_save_report(handler):
         return _reply(handler, 422, {"error": "validation_failed", "detail": "content must be an object"})
 
     # Version = previous max + 1 for this user + report_type.
-    prev = _service_request(
-        "GET",
-        "ky_reports?select=version&user_id=eq." + user_id
-        + "&report_type=eq." + report_type
-        + "&order=version.desc&limit=1",
-    )
-    version = (int(prev[0]["version"]) + 1) if prev else 1
+    try:
+        prev = _service_request(
+            "GET",
+            "ky_reports?select=version&user_id=eq." + user_id
+            + "&report_type=eq." + report_type
+            + "&order=version.desc&limit=1",
+        )
+        version = (int(prev[0]["version"]) + 1) if prev else 1
 
-    row = {
-        "user_id": user_id,
-        "report_type": report_type,
-        "title": title,
-        "version": version,
-        "content": content,
-        "is_archived": False,
-    }
-    inserted = _service_request("POST", "ky_reports", row)
+        row = {
+            "user_id": user_id,
+            "report_type": report_type,
+            "title": title,
+            "version": version,
+            "content": content,
+            "is_archived": False,
+        }
+        inserted = _service_request("POST", "ky_reports", row)
+    except (HTTPError, URLError, OSError) as exc:
+        return _storage_unavailable(handler, exc)
     return _reply(handler, 201, {"report": inserted[0] if inserted else row})
 
 
@@ -228,11 +242,14 @@ def handle_list_reports(handler):
     user_id = _verify_user_id(handler.headers)
     if not user_id:
         return _reply(handler, 401, {"error": "authentication_required"})
-    rows = _service_request(
-        "GET",
-        "ky_reports?select=id,user_id,report_type,title,version,is_archived,created_at"
-        "&user_id=eq." + user_id + "&is_archived=eq.false&order=created_at.desc&limit=100",
-    )
+    try:
+        rows = _service_request(
+            "GET",
+            "ky_reports?select=id,user_id,report_type,title,version,is_archived,created_at"
+            "&user_id=eq." + user_id + "&is_archived=eq.false&order=created_at.desc&limit=100",
+        )
+    except (HTTPError, URLError, OSError) as exc:
+        return _storage_unavailable(handler, exc)
     return _reply(handler, 200, {"reports": rows})
 
 
@@ -242,10 +259,13 @@ def handle_get_report(handler, report_id):
     user_id = _verify_user_id(handler.headers)
     if not user_id:
         return _reply(handler, 401, {"error": "authentication_required"})
-    rows = _service_request(
-        "GET",
-        "ky_reports?select=*&id=eq." + str(report_id) + "&user_id=eq." + user_id + "&limit=1",
-    )
+    try:
+        rows = _service_request(
+            "GET",
+            "ky_reports?select=*&id=eq." + str(report_id) + "&user_id=eq." + user_id + "&limit=1",
+        )
+    except (HTTPError, URLError, OSError) as exc:
+        return _storage_unavailable(handler, exc)
     if not rows:
         return _reply(handler, 404, {"error": "report_not_found"})
     return _reply(handler, 200, {"report": rows[0]})
