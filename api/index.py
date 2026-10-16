@@ -20,6 +20,7 @@ from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
 import v1_additions as _v1_additions
+import reports as _reports
 
 from timezonefinder import TimezoneFinder
 
@@ -346,6 +347,7 @@ _v1_additions.configure(
     source_metadata=_source_metadata,
     send_json=lambda h, s, p: h._send(s, p),
 )
+_reports.configure(build_foundation=build_foundation)
 
 
 class handler(BaseHTTPRequestHandler):
@@ -523,6 +525,8 @@ class handler(BaseHTTPRequestHandler):
             if segments[:3] == ["v1", "knowledge", "centres"] and len(segments) == 3 and method == "GET":
                 return self._send(200, GATE_CATALOG["centres"])
             if _v1_additions.dispatch(self, segments, method):
+                return
+            if _reports.dispatch(self, segments, method):
                 return
             return self._send(404, {"error": "route_not_found", "route": route})
         except (ValueError, KeyError, TypeError) as exc:
