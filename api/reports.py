@@ -160,6 +160,39 @@ REPORT_TEMPLATES = {
              "practical beginning."),
         ],
     },
+    "foundations": {
+        "title": "Foundations Report",
+        "excerpted": set(),
+        "sections": [
+            ("energy_type", "Energy Type",
+             "Write the chapter 'Energy Type': how this person's energy naturally moves, works, rests, and exchanges "
+             "with the world - their energetic operating system. Include their Signature (how alignment feels in the "
+             "body and life) and their Not-Self theme (how misalignment feels), specific to their type."),
+            ("strategy", "Strategy",
+             "Write the chapter 'Strategy': their personal how-to manual for taking action and interacting with "
+             "opportunities so they encounter the least resistance. Concrete and practical - what to actually do "
+             "differently, and what happens when they ignore it."),
+            ("authority", "Inner Authority",
+             "Write the chapter 'Inner Authority': their internal decision-making compass - how they make correct "
+             "choices rather than relying solely on the logical mind. How it speaks, how to practice trusting it in "
+             "real decisions, and what overriding it costs them."),
+            ("profile", "Profile",
+             "Write the chapter 'Profile': their profile lines as natural role, learning style, and how they move "
+             "through life. How others tend to perceive and meet them, and why that matters."),
+            ("centres", "Defined vs. Open Centers",
+             "Write the chapter 'Defined vs. Open Centers': which of the 9 centers are defined (consistent, reliable "
+             "energy) and which are open (absorbing, amplifying, conditioned by others' energy). For each OPEN center, "
+             "give the conditioning theme and one practical observation pointer."),
+            ("channels", "Channels - Deeper",
+             "Write the optional deeper chapter 'Channels': their specific energetic pathways and gifts, and the "
+             "recurring themes these point to in work, relationships, and communication. Synthesis across channels "
+             "into a larger theme is allowed but not required."),
+            ("definition", "Definition Type - Deeper",
+             "Write the optional deeper chapter 'Definition Type': whether their chart is Single, Split, or "
+             "Triple/Quadruple Split - how information flows inside their body and what that means for their "
+             "decision-making and relating."),
+        ],
+    },
     "preview": {
         "title": "Complete Report - Preview",
         "excerpted": {"themes", "blind_spots", "incarnation_cross", "gates", "life_cycles"},
