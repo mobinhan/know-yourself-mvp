@@ -373,6 +373,9 @@ class handler(BaseHTTPRequestHandler):
         self._dispatch("POST")
 
     def _dispatch(self, method: str):
+        if method == "OPTIONS":
+            return self._send(204, {})
+
         parsed = urlparse(self.path)
         params = parse_qs(parsed.query)
         route = params.get("route", [parsed.path])[0]
