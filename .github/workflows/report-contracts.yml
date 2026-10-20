@@ -7,7 +7,9 @@ on:
   pull_request:
     paths:
       - "api/report_contracts.py"
+      - "api/report_pipeline.py"
       - "tests/test_report_contracts.py"
+      - "tests/test_report_pipeline.py"
       - "docs/reports/**"
       - ".github/workflows/report-contracts.yml"
 
@@ -20,4 +22,6 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run report contract tests
-        run: python -m unittest tests.test_report_contracts -v
+        run: python -m unittest discover -s tests -p "test_report_contracts.py" -v
+      - name: Run report pipeline tests
+        run: python -m unittest discover -s tests -p "test_report_pipeline.py" -v
