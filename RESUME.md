@@ -1,11 +1,25 @@
 # Know Yourself — Resume Here
 
+## Latest report-marketplace checkpoint — 2026-10-20 10:50 ICT
+
+- Active report work: `feature/report-marketplace-contracts`, PR #25 (draft, open, unmerged): https://github.com/mobinhan/know-yourself-mvp/pull/25
+- Current branch head before this checkpoint update: `19bbd16030a94d086bd95ee57e73017a8f917fde`.
+- Added `docs/reports/life-purpose-direction-specification.md`: flagship paid-report chapters, scope boundaries, 3Framework constraints, and pilot acceptance criteria.
+- Added `docs/reports/report-pipeline-output-contract.md`: generation → section validation → envelope assembly → persistence → online/PDF rendering → parity checks.
+- Added pure adapter `api/report_pipeline.py` and `tests/test_report_pipeline.py`: normalizes existing section responses into the validated report envelope, enforces stable chapter order, permits omitting life cycles only when unavailable, and rejects unresolved validation warnings or evidence IDs outside the supplied bundle.
+- Added `.github/workflows/report-contracts.yml`. **GitHub Actions run #13 passed** on commit `19bbd16030a94d086bd95ee57e73017a8f917fde`: report contract tests and report pipeline adapter tests both passed. Run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/39366288015
+- CI exposed a false-negative test caused by a shallow-copy fixture sharing nested canonical facts with the trusted chart; fixed the fixture to deep-copy the chart. The implementation was not weakened.
+- Existing `api/report_contracts.py` and `tests/test_report_contracts.py` remain part of PR #25.
+- Live schema rechecked read-only: `ky_charts` and `ky_reports` exist; no report artifact table or verified private Storage bucket was found. A read-only query returned no saved rows in `ky_charts`, so there is not yet a saved canonical chart available for a real pilot in this Supabase project.
+- Current live Render service remains on `deploy/render-api`, auto-deploy disabled. No migration, merge, or deployment was performed.
+- **Next exact task:** wire trusted chart ownership + exact evidence provenance into the server-side report-generation/persistence path. Only after that, add private PDF artifact storage and online/PDF parity tests, then run a pilot with a real saved canonical chart. Mock tests alone do not satisfy the pilot.
+- Preserve 3Framework. No separate critic/reasoning layer. No Vercel. No Lovable edits/credits without specific approval. No merge, production migration, or deployment without explicit approval.
+
 > **HARDWIRED ARCHITECTURE DECISION:** The user explicitly confirmed 3framework. Active path = (1) Canonical Chart + source-linked Evidence, (2) Adaptive User Context, (3) direct ChatGPT synthesis. The 5framework is comparison-only. Never add/invoke a separate critic or extra reasoning layer in the 3framework path. Keep ordinary schema validation and evidence-ID filtering. If a proposed change crosses this boundary, stop and ask the user first.
 
 > **MANDATORY LOVABLE APPROVAL RULE: Do not make any amendments, send prompts, run builds, or otherwise spend Lovable credits unless the user gives explicit permission for that specific Lovable work. “Proceed” alone is not permission. Before requesting approval, explain why Lovable access is necessary, what non-Lovable alternatives exist, and the expected credit cost if it can be estimated. Check the project checkpoint for this rule before any Lovable action.**
 
 > **MANDATORY PLATFORM RULE: We do not use Vercel for Know Yourself. Do not open, configure, troubleshoot, or deploy through Vercel. Use Lovable for the live app interface, GitHub for source control and recovery, GitHub Actions for tests, and Supabase for backend/data. Only reconsider Vercel if the user explicitly asks to reinstate it. Read this rule before taking any action.**
-
 
 > **HARDWIRED MOBILE/DESKTOP PARITY:** The user explicitly said mobile sessions have been operating below the current desktop level. Do not regress scope or maturity on mobile. Before continuing any session/device, read the latest checkpoint, continuity protocol, architecture contract, and relevant rubric; retrieve current GitHub state via MCP; then continue the exact next engineering task with the same autonomous, test-backed standard. Do not make the user repeat prior decisions. Preserve 3framework, no-critic active path, no-Lovable-without-specific-approval, no-Vercel, and no-merge-without-approval rules. Do not claim unpushed desktop changes are saved when the desktop workspace is inaccessible.
 
@@ -65,6 +79,7 @@ Read `docs/PROJECT_CHECKPOINT_2026-10-09.md`, `docs/LOVABLE_MIGRATION_PLAN.md`, 
 - Next: broaden source-grounded fixtures for direct ChatGPT synthesis without introducing a critic layer.
 - These are offline/mocked checks, not proof of live model quality. No live OpenAI request has been sent.
 - Do not access or amend Lovable without explicit approval. Do not use Vercel or merge PR #1 without explicit approval. Preserve desktop-only work; this environment cannot inspect the desktop working tree.
+
 ## Confirmed platform workflow
 
 - **Lovable:** primary web-app build/preview interface used in this project.
@@ -75,56 +90,68 @@ Read `docs/PROJECT_CHECKPOINT_2026-10-09.md`, `docs/LOVABLE_MIGRATION_PLAN.md`, 
 - Verify Lovable/GitHub synchronization before assuming the live interface includes the latest branch changes. Check CI and live behaviour as separate things. The external Vercel project/integration could not be changed through the current Vercel connection (403 scope authorization); repository config has been removed, but external account cleanup requires the user's dashboard action.
 - Full process: [docs/CONTINUITY_PROTOCOL.md](docs/CONTINUITY_PROTOCOL.md), section “Know Yourself development and deployment workflow”.
 
+## Historical checkpoint — 2026-10-15: Render API startup recovered
 
-## Latest save — 2026-10-09 22:57 ICT
-
-- Latest checkpoint update: [4f9790ecef34799e17200bd2db0ce59550ac899f](https://github.com/mobinhan/know-yourself-mvp/commit/4f9790ecef34799e17200bd2db0ce59550ac899f).
-- Read and preserved the existing 3framework decision, no-Lovable-without-explicit-approval rule, no-Vercel rule, and no-merge-without-approval rule.
-- Mobile resume point: read `docs/PROJECT_CHECKPOINT_2026-10-09.md` from the latest `feature/live-api-v1` head, verify branch heads and CI, then continue Step 3 offline evaluation fixture expansion. No live model-quality pass is claimed.
-- GitHub search surfaced main HEAD `9b503db604b680fccbc7b962a59ce9fa19776a39`; do not mistake it for the feature branch head or replace the feature branch with main.
-- Local desktop working tree has not been inspected, so unpushed local edits cannot be ruled out. Do not reset, overwrite, force-push, or merge during recovery.
-
-
-## Latest checkpoint — 2026-10-10: Vercel preview diagnosis
-
-**This section supersedes older platform instructions only for the limited diagnostic work described here.** The user explicitly asked to try Vercel again. This is authorization to inspect and test the existing Vercel project/preview, not to commit to Vercel permanently or to change production settings.
-
-- Production Vercel project is visible and its app opens. Production screenshot/PDF shows the My Chart screen rendering.
-- Production browser Console showed `Uncaught SyntaxError: Unexpected identifier 'chart'` at `(index):113`, plus a 404 for `/web/app.js`.
-- Root cause identified in `index.html`: HTML fragments containing `onclick="go('chart')"` were embedded inside single-quoted JavaScript strings. Four occurrences were escaped as `onclick="go(&quot;chart&quot;)"` in a dedicated fix branch.
-- Fix branch: `fix/my-chart-inline-handler`, commit `8f2b568d46467ea1a472838c3492fed8b8417ebb`.
-- Draft PR #2: https://github.com/mobinhan/know-yourself-mvp/pull/2 — “Fix My Chart inline JavaScript syntax”. It is not merged; production remains unchanged.
-- Vercel reported a successful deployment/check for the PR commit. User confirmed My Chart opens in preview. User then tested clicking BodyGraph centres/channels and reported **no detail opens**. The PDF preview shows the My Chart screen and bodygraph/channel labels, but does not prove the API/calculations or interactions work.
-- Current next task: read the full current `index.html` on `fix/my-chart-inline-handler`; trace SVG channel hit targets, centre click handlers, delegated event binding and any JavaScript console errors. Reproduce/validate before making a separate targeted fix. Then verify chart API endpoints and tests. Do not merge PR #2 or PR #1 without explicit approval.
-- The GitHub integration's workflow-run lookup returned no Actions runs for the fix commit; combined commit status showed Vercel success only. Do not claim automated tests passed.
-- User asked to save this checkpoint and will likely resume with **“Resume KY”**. On resume, re-check branch heads, PR #1/#2 state, current deployment/checks and read this checkpoint before acting.
-- Existing guardrails remain: preserve 3framework and no separate critic in active path; no Lovable credits/actions without specific explicit approval; no production merge without approval; avoid overwriting desktop-only work. Vercel use is currently authorized only for diagnosis/testing of this existing project, not as an irrevocable architecture decision.
-
-## Current verified checkpoint — 2026-10-15 (Render API startup recovered)
-
-### Deployed service
 - Repository: https://github.com/mobinhan/know-yourself-mvp
-- Active API branch: `deploy/render-api`.
-- Latest deployed commit: [`4762cd6968040034273e4203db8071df7f039725`](https://github.com/mobinhan/know-yourself-mvp/commit/4762cd6968040034273e4203db8071df7f039725) — “Add engine directory for temporal ephemeris dependencies”.
-- Render service: `know-yourself-api`; URL: https://know-yourself-api.onrender.com.
-- Latest deployment ID: `dep-db89eouq1p3s73a31o60`.
-- Render status verified as `live`; Render logged “Your service is live” at 2026-10-15 09:06:44 UTC.
-- No endpoint-level tests were run, per user instruction. The user will verify API functionality from their side.
+- API branch: `deploy/render-api`; commit `4762cd6968040034273e4203db8071df7f039725`.
+- Render service `know-yourself-api`: https://know-yourself-api.onrender.com. Render reported live on 2026-10-15 at 09:06:44 UTC.
+- Startup-import fixes added repository root and `engine/` to `sys.path` before importing `engine.temporal_ephemeris`. A stale-instance traceback was historical; the later instance started successfully.
+- No endpoint-level tests were run at that checkpoint. Startup/live status did not prove route functionality or Supabase integration. User was to verify API behaviour from their side.
 
-### Startup-import recovery iterations
-1. Earlier runtime failed at `from api import v1_additions` because Render starts `python api/server.py` with the `api/` directory on `sys.path`, not the repository root. Current `api/index.py` uses `import v1_additions as _v1_additions`.
-2. `v1_additions.py` initially failed to import `engine`. Commit `783dffb622411e263bce7176906456bd78106601` added the repository root to `sys.path` before importing the engine package.
-3. The next log showed `engine/temporal_ephemeris.py` could not resolve its sibling import `from ephemeris import ...`. Commit `4762cd6968040034273e4203db8071df7f039725` added both repository root and `engine/` to `sys.path` before `from engine import temporal_ephemeris`.
-4. The deployment logs included a traceback from a previous instance still running stale `api/index.py` code (`from api import v1_additions`). The subsequent instance started at 09:06:29 UTC, and Render marked the deployment live at 09:06:44 UTC. The latest checked GitHub `api/index.py` at the deployed commit uses the correct same-directory import. Do not mistake historical instance logs for a failure of the final deployed commit.
+## Latest checkpoint — 2026-10-16: Report-platform direction confirmed
 
-### Current verified import layout
-- `api/index.py`: imports `v1_additions` as a same-directory module, then adds `engine/` and `api/` to `sys.path` for its own direct imports.
-- `api/v1_additions.py`: computes `REPO_ROOT` and `ENGINE_DIR`, adds both to `sys.path`, then imports `from engine import temporal_ephemeris`; the transit call uses `temporal_ephemeris.transit_activations(at_dt)`.
-- Deferred imports use same-directory forms such as `from entitlements import ...` and `from interpretation_provider import ...`.
-- Only `api/v1_additions.py` was changed in the two corrective commits; `api/index.py` was not changed during these final iterations.
+### Product strategy — treat this as the controlling product decision
 
-### Exact resume point
-1. Ask the user for the outcome of their own endpoint/functionality verification; do not run endpoint-level tests unless the user changes that instruction.
-2. If verification reports a failure, inspect the newest Render logs and current GitHub branch/file state first; make the smallest evidence-based fix, one commit per iteration, restricted to `api/v1_additions.py` and `api/index.py` unless the user explicitly expands scope.
-3. Keep deployment status, startup-log evidence, and endpoint functionality as separate claims. “Live” confirms Render started the service; it does not by itself prove API routes or Supabase integration work.
+**Know Yourself is an AI-powered Human Design analysis and report platform, not primarily an AI chat app.** It transforms verified chart data and relevant personal context into structured, personalized reports across multiple areas of life. Conversational AI can help users explore or apply report insights, but chat is a supporting feature, not the core proposition.
 
+The first flagship is **Life Purpose & Direction**, with three access/content levels:
+
+1. **Basic Human Design Report — free PDF:** a concise, genuinely useful introduction.
+2. **Complete Report Preview — free PDF:** the full report structure, selected sections in full, and other sections excerpted/withheld; it must still provide real value rather than act as a brochure.
+3. **Full Life Purpose & Direction Report — paid later:** the full agreed content, available as an interactive online report and downloadable PDF.
+
+These three levels apply to the first flagship only; they do not limit the future catalogue. The report catalogue can expand across Career & Purpose, Money & Prosperity, Relationships & Love, Life Direction & Major Decisions, Self & Personal Development, and Timing & Life Events. The website currently presents several future report categories as “Coming Soon”; only Life Purpose & Direction is featured as available. Avoid presenting the catalogue as final or limited to five products.
+
+- Individual purchases are the current direction; no mandatory subscription.
+- Defer pricing, payment provider, country-adjusted pricing, checkout and entitlement implementation until the content/product scope is agreed.
+- Do not claim report generation, PDF downloads, accounts, checkout, or chart calculation are operational unless separately verified.
+
+### Architecture constraints
+
+- Preserve the confirmed 3framework: (1) canonical chart plus immutable/source-linked evidence, (2) adaptive user context kept separate from chart facts, (3) direct ChatGPT reasoning/synthesis. No separate critic or extra reasoning layer in the active path.
+- Keep the existing deterministic chart engine, Render API, Supabase and repository architecture. No architecture reset.
+- Build toward a reusable report-generation pipeline, not a separate bespoke AI implementation for every report. Each report definition will eventually specify purpose, content outline/version, evidence/context requirements, generation instructions, completeness/validation rules, access level, and online/PDF rendering.
+- Basic and preview are content/access variants of the flagship report, not the whole platform architecture.
+- User explicitly said to pause Lovable work until report scope is defined internally. **Do not spend Lovable credits, send Lovable prompts, or make Lovable edits until the user separately authorizes that specific work.**
+
+### Website state
+
+- Lovable project: `c1949884-6e4e-489f-b72a-381241c63117`
+- Editor: https://lovable.dev/projects/c1949884-6e4e-489f-b72a-381241c63117
+- Preview: https://id-preview--c1949884-6e4e-489f-b72a-381241c63117.lovable.app
+- Last known website commit after visual polish and route preparation: `5ca630ab588f3fc80d34f89371fc63fd08f538ea`.
+- Project was last confirmed unpublished. Pages/routes prepared: `/`, `/about`, `/my-chart`, `/account`, `/reports`. My Chart and Account are preparation/coming-soon pages, not working chart-generation or authentication flows.
+- The catalogue has Life Purpose & Direction featured and future categories marked “Coming Soon”. No report preview has been built.
+- Latest website edits used 1.00 and 1.44 Lovable credits for visual polish and route preparation respectively. The earlier balance was 2.44 before those tasks; current balance has not been independently checked.
+
+### Backend and report contract state
+
+- Repository: https://github.com/mobinhan/know-yourself-mvp
+- Report work branch: `feature/report-marketplace-contracts`
+- Draft PR #25: https://github.com/mobinhan/know-yourself-mvp/pull/25 — “Implement report payload assembly and validation”; base `deploy/render-api`. Keep it draft until the full pipeline test exists.
+- Last known branch head before this checkpoint: `5f6a631c57607ecbffe001d1479ad87e60d91c3b`.
+- Four files in the report-contract change: `api/report_contracts.py`, `tests/test_report_contracts.py`, `docs/REPORT_MARKETPLACE_V1.md`, `docs/REPORT_MARKETPLACE_COUNTRY_PRICING.md`.
+- The provider-independent report envelope assembly/validation contract exists in code, but is **not wired** to live generation, persistence or a production report endpoint. Tests were written but not verified as executed.
+- Supabase project `djtpqqjenmcsrdcguttk`; existing tables include `ky_charts`, `ky_profiles`, `ky_saved_insights`, etc. No report-marketplace tables, `ky_entitlements`, or Storage buckets were found in the last inspection. Verify current state before schema changes.
+- Render API: https://know-yourself-api.onrender.com. Startup was recovered, but end-to-end report generation and persistence remain unverified.
+- The agreed request pipeline direction is authenticated ownership check → rule-based routing, Flash classification for the gray zone with configurable escalation threshold → escalated requests use context assembler plus reasoning model; simple requests use Flash with minimal context. Keep PR #25 draft until full pipeline tests exist.
+
+### Exact next step on resume
+
+1. **Do not touch Lovable yet.** First define the flagship Life Purpose & Direction report internally: target user/outcome, exact sections, what is included in Basic vs Complete Preview vs Full, evidence/context required per section, safety/uncertainty boundaries, and completeness criteria.
+2. Review `docs/REPORT_MARKETPLACE_V1.md` and the current report contract on `feature/report-marketplace-contracts`; compare them with the newly confirmed report-first strategy and make a scoped content specification before implementation.
+3. Verify current GitHub branch heads, PR #25 status, CI results and Render state before engineering work. Do not assume any historical SHA or test status is current.
+4. Then test and extend the reusable report pipeline end-to-end (request → authenticated ownership → routing → context/evidence assembly → direct synthesis → validation → persistence/versioning → online/PDF rendering). Keep payment, pricing and entitlements deferred until report scope and pipeline are validated.
+5. No merge or deployment changes without the established approval/safety rules. Never claim tests, endpoint behaviour, or publication unless independently verified.
+
+**Cross-device resume phrase:** `Resume KY` or `Open MCP KY`. Start with this report-first checkpoint, not the older migration-audit task, unless a fresh repository check shows a higher-priority blocker.
