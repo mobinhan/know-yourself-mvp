@@ -1,0 +1,23 @@
+name: Report contract tests
+
+on:
+  push:
+    branches:
+      - feature/report-marketplace-contracts
+  pull_request:
+    paths:
+      - "api/report_contracts.py"
+      - "tests/test_report_contracts.py"
+      - "docs/reports/**"
+      - ".github/workflows/report-contracts.yml"
+
+jobs:
+  report-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run report contract tests
+        run: python -m unittest tests.test_report_contracts -v
