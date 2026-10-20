@@ -1,19 +1,19 @@
 # Know Yourself — Resume Here
 
-## Latest report-marketplace checkpoint — 2026-10-20 10:44 ICT
+## Latest report-marketplace checkpoint — 2026-10-20 10:50 ICT
 
 - Active report work: `feature/report-marketplace-contracts`, PR #25 (draft, open, unmerged): https://github.com/mobinhan/know-yourself-mvp/pull/25
-- Latest verified head before this checkpoint update: `9c9881a0adbd84d0021576ac1a2978700da00f8a`.
+- Current branch head before this checkpoint update: `19bbd16030a94d086bd95ee57e73017a8f917fde`.
 - Added `docs/reports/life-purpose-direction-specification.md`: flagship paid-report chapters, scope boundaries, 3Framework constraints, and pilot acceptance criteria.
 - Added `docs/reports/report-pipeline-output-contract.md`: generation → section validation → envelope assembly → persistence → online/PDF rendering → parity checks.
 - Added pure adapter `api/report_pipeline.py` and `tests/test_report_pipeline.py`: normalizes existing section responses into the validated report envelope, enforces stable chapter order, permits omitting life cycles only when unavailable, and rejects unresolved validation warnings or evidence IDs outside the supplied bundle.
-- Added `.github/workflows/report-contracts.yml` to run contract and adapter unit tests. The test suite has **not yet been verified as passing**; the available workflow-run lookup did not expose a run for the latest commit.
+- Added `.github/workflows/report-contracts.yml`. **GitHub Actions run #13 passed** on commit `19bbd16030a94d086bd95ee57e73017a8f917fde`: report contract tests and report pipeline adapter tests both passed. Run: https://github.com/mobinhan/know-yourself-mvp/actions/runs/39366288015
+- CI exposed a false-negative test caused by a shallow-copy fixture sharing nested canonical facts with the trusted chart; fixed the fixture to deep-copy the chart. The implementation was not weakened.
 - Existing `api/report_contracts.py` and `tests/test_report_contracts.py` remain part of PR #25.
 - Live schema rechecked read-only: `ky_charts` and `ky_reports` exist; no report artifact table or verified private Storage bucket was found. A read-only query returned no saved rows in `ky_charts`, so there is not yet a saved canonical chart available for a real pilot in this Supabase project.
 - Current live Render service remains on `deploy/render-api`, auto-deploy disabled. No migration, merge, or deployment was performed.
-- **Next exact task:** verify CI on the updated branch; then wire trusted chart ownership + exact evidence provenance into the server-side report-generation/persistence path. Only after that, add private PDF artifact storage and online/PDF parity tests, then run a pilot with a real saved canonical chart. Mock tests alone do not satisfy the pilot.
+- **Next exact task:** wire trusted chart ownership + exact evidence provenance into the server-side report-generation/persistence path. Only after that, add private PDF artifact storage and online/PDF parity tests, then run a pilot with a real saved canonical chart. Mock tests alone do not satisfy the pilot.
 - Preserve 3Framework. No separate critic/reasoning layer. No Vercel. No Lovable edits/credits without specific approval. No merge, production migration, or deployment without explicit approval.
-
 
 > **HARDWIRED ARCHITECTURE DECISION:** The user explicitly confirmed 3framework. Active path = (1) Canonical Chart + source-linked Evidence, (2) Adaptive User Context, (3) direct ChatGPT synthesis. The 5framework is comparison-only. Never add/invoke a separate critic or extra reasoning layer in the 3framework path. Keep ordinary schema validation and evidence-ID filtering. If a proposed change crosses this boundary, stop and ask the user first.
 
