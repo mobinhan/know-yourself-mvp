@@ -11,12 +11,20 @@ from datetime import datetime, timezone
 from typing import Any, Iterable, Mapping, Sequence
 import uuid
 
-from report_contracts import (
-    PRODUCT_KEY,
-    PRODUCT_VERSION,
-    ReportValidationError,
-    assemble_report_payload,
-)
+try:
+    from .report_contracts import (
+        PRODUCT_KEY,
+        PRODUCT_VERSION,
+        ReportValidationError,
+        assemble_report_payload,
+    )
+except ImportError:  # direct-module import used by the existing API runtime
+    from report_contracts import (
+        PRODUCT_KEY,
+        PRODUCT_VERSION,
+        ReportValidationError,
+        assemble_report_payload,
+    )
 
 # Required content chapters; life_cycles is conditional and may be omitted when
 # validated timing data and approved evidence are unavailable.
