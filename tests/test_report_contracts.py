@@ -21,7 +21,7 @@ def valid_payload():
         "product_version": 1,
         "report_id": "report-123",
         "generated_at": "2026-10-16T10:00:00Z",
-        "chart_snapshot": {**CHART},
+        "chart_snapshot": deepcopy(CHART),
         "evidence_manifest": [
             {"evidence_id": "hd-source:authority:v3", "source_id": "hd-source:authority", "source_version": "v3"},
             {"evidence_id": "hd-source:profile:v2", "source_id": "hd-source:profile", "source_version": "v2"},
