@@ -7,6 +7,7 @@ source-grounded, and disabled until OPENAI_API_KEY is configured.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 import uuid
@@ -21,6 +22,7 @@ from zoneinfo import ZoneInfo
 
 import v1_additions as _v1_additions
 import reports as _reports
+from auth_config import public_auth_config
 
 from timezonefinder import TimezoneFinder
 
@@ -381,6 +383,8 @@ class handler(BaseHTTPRequestHandler):
         route = params.get("route", [parsed.path])[0]
         segments = [s for s in route.split("/") if s]
         try:
+            if segments == ["v1", "auth", "config"] and method == "GET":
+                return self._send(200, public_auth_config(os.environ))
             if len(segments) >= 2 and segments[0] == "v1" and segments[1] == "birthplaces":
                 if len(segments) == 3 and segments[2] == "search" and method == "GET":
                     q = params.get("q", [""])[0]
