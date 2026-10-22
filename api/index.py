@@ -22,7 +22,10 @@ from zoneinfo import ZoneInfo
 
 import v1_additions as _v1_additions
 import reports as _reports
-from auth_config import public_auth_config
+try:
+    from .auth_config import public_auth_config
+except ImportError:  # standalone API entry point adds this directory to sys.path
+    from auth_config import public_auth_config
 
 from timezonefinder import TimezoneFinder
 
