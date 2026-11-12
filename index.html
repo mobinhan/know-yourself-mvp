@@ -89,6 +89,7 @@ function deleteLibraryItem(kind,id){library[kind]=library[kind].filter(x=>x.id!=
 const headlines=['Understand yourself.','Notice what is truly yours.','Explore what is changing.','Ask what actually matters.'];
 const app=document.getElementById('app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const centreLabels={head:'Head',ajna:'Ajna',throat:'Throat',g:'G',heart:'Heart',sacral:'Sacral',solar_plexus:'Solar Plexus',spleen:'Spleen',root:'Root'};
 function bodygraph(){
   if(!window.KY_BODYGRAPH_MANIFEST||!window.KYBodygraphRenderer){
     if(window.KY_BODYGRAPH_READY) window.KY_BODYGRAPH_READY.then(()=>{if(state.chart)render()});
