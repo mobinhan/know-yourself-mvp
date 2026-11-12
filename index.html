@@ -106,7 +106,8 @@ function bodygraph(){
   try{
     const check=window.KYBodygraphRenderer.validate(window.KY_BODYGRAPH_MANIFEST,chartData);
     if(!check.ok) throw new Error(check.issues.join('; '));
-    return window.KYBodygraphRenderer.render(window.KY_BODYGRAPH_MANIFEST,chartData,{width:420});
+    const svg=window.KYBodygraphRenderer.render(window.KY_BODYGRAPH_MANIFEST,chartData,{width:420});
+    return window.KYBodygraphAppearance.apply(svg);
   }catch(error){
     console.error('BodyGraph render failed',error);
     return '<div class="bodygraph-loading" role="alert">The BodyGraph could not be rendered for this chart.</div>';
