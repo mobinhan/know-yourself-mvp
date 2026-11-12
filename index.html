@@ -90,6 +90,7 @@ const headlines=['Understand yourself.','Notice what is truly yours.','Explore w
 const app=document.getElementById('app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const centreLabels={head:'Head',ajna:'Ajna',throat:'Throat',g:'G',heart:'Heart',sacral:'Sacral',solar_plexus:'Solar Plexus',spleen:'Spleen',root:'Root'};
+const channelCentres={"1-8":["g","throat"],"2-14":["g","sacral"],"3-60":["sacral","root"],"4-63":["ajna","head"],"5-15":["sacral","g"],"6-59":["solar_plexus","sacral"],"7-31":["g","throat"],"9-52":["sacral","root"],"10-20":["g","throat"],"10-34":["g","sacral"],"10-57":["g","spleen"],"11-56":["ajna","throat"],"12-22":["throat","solar_plexus"],"13-33":["g","throat"],"16-48":["throat","spleen"],"17-62":["ajna","throat"],"18-58":["spleen","root"],"19-49":["root","solar_plexus"],"20-34":["throat","sacral"],"20-57":["throat","spleen"],"21-45":["heart","throat"],"23-43":["throat","ajna"],"24-61":["ajna","head"],"25-51":["g","heart"],"26-44":["heart","spleen"],"27-50":["sacral","spleen"],"28-38":["spleen","root"],"29-46":["sacral","g"],"30-41":["solar_plexus","root"],"32-54":["spleen","root"],"34-57":["sacral","spleen"],"35-36":["throat","solar_plexus"],"37-40":["solar_plexus","heart"],"39-55":["root","solar_plexus"],"42-53":["sacral","root"],"47-64":["ajna","head"]};
 function bodygraph(){
   if(!window.KY_BODYGRAPH_MANIFEST||!window.KYBodygraphRenderer){
     if(window.KY_BODYGRAPH_READY) window.KY_BODYGRAPH_READY.then(()=>{if(state.chart)render()});
