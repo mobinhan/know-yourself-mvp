@@ -9,13 +9,20 @@
   }
   window.KY_BODYGRAPH_READY = Promise.all([
     gunzipText("/bodygraph/mmi-geometry-manifest.json.gz"),
-    gunzipText("/bodygraph/know-your-bodygraph-renderer.js.gz")
+    gunzipText("/bodygraph/know-your-bodygraph-renderer.js.gz"),
+    fetch("/bodygraph/appearance.js", { cache: "force-cache" }).then(function (r) {
+      if (!r.ok) throw new Error("Bodygraph appearance layer unavailable");
+      return r.text();
+    })
   ]).then(function (values) {
     window.KY_BODYGRAPH_MANIFEST = JSON.parse(values[0]);
-    const script = document.createElement("script");
-    script.textContent = values[1];
-    document.head.appendChild(script);
+    [values[1], values[2]].forEach(function (source) {
+      const script = document.createElement("script");
+      script.textContent = source;
+      document.head.appendChild(script);
+    });
     if (!window.KYBodygraphRenderer) throw new Error("Bodygraph renderer failed to initialise");
+    if (!window.KYBodygraphAppearance) throw new Error("Bodygraph appearance failed to initialise");
     window.dispatchEvent(new Event("ky-bodygraph-ready"));
   }).catch(function (error) {
     console.error("Know Yourself Bodygraph could not initialise", error);
