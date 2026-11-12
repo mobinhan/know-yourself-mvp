@@ -65,42 +65,45 @@
   }
 
   function styleCentres(svg) {
-    // Centre polygons are identified by their exact MMI centre outline attributes.
-    const centreFills = ["#FFFDF7"];
-    let out = svg;
-    for (const fill of centreFills) out = out.replaceAll('fill="' + fill + '" stroke="#1E2A44"', 'fill="url(#kyCrystal)" stroke="url(#kyGold)"');
-    // Keep all original points and paths. Use selectors to add a restrained inner jewel sheen.
-    return out;
+    // Only the nine centre polygons have the MMI centre outline stroke.
+    return svg.replace(/<polygon(?=[^>]*stroke="#1E2A44")(?=[^>]*fill="#FFFDF7")([^>]*)\/>/g,
+      (tag, attrs) => {
+        const points = (attrs.match(/points="([^"]+)"/)||[])[1] || "";
+        let gem = "kyGemViolet";
+        if (points.includes("138.8,564.7") || points.includes("0,385.7") || points.includes("264.9,427.8")) gem = "kyGemGold";
+        else if (points.includes("138.8,245")) gem = "kyGemBlue";
+        else if (points.includes("191.4,362.4") || points.includes("138.8,483.2")) gem = "kyGemRose";
+        else if (points.includes("126.3,307.4")) gem = "kyGemGold";
+        return tag.replace('fill="#FFFDF7"', 'fill="url(#' + gem + ')"')
+                  .replace('stroke="#1E2A44"', 'stroke="url(#kyGold)"')
+                  .replace('stroke-width="1.4"', 'stroke-width="1.8"')
+                  .replace('/>', ' filter="url(#kyGlow)"/>');
+      });
   }
 
   function apply(svg) {
     if (typeof svg !== "string" || !svg.includes("<svg")) throw new TypeError("Expected an MMI SVG string");
     let out = svg;
     out = out.replace(/<rect x="-18" y="-18" width="372" height="601" rx="14" fill="#FDFAF3" stroke="#D8CDB8" stroke-width="1"\/>/, "");
-    out = out.replace("<defs>", defs() + "<defs>");
-    out = out.replace("<polygon", background() + astrologyFrame() + "<polygon");
+    // Definitions and background must be inserted before the first geometry element,
+    // not before an arbitrary later polygon: this preserves all MMI draw order.
+    const firstDefsEnd = out.indexOf("</defs>");
+    if (firstDefsEnd < 0) throw new Error("MMI SVG definitions not found");
+    out = out.slice(0, firstDefsEnd + 7) + defs() + background() + astrologyFrame() + out.slice(firstDefsEnd + 7);
     out = styleCentres(out);
-    out = out.replaceAll('fill="#FFFDF7"', 'fill="#292846"');
-    out = out.replaceAll('fill="#1E2A44"', 'fill="url(#kyGold)"');
-    out = out.replaceAll('stroke="#1E2A44"', 'stroke="url(#kyGold)"');
-    out = out.replaceAll('fill="#A83226"', 'fill="#FF5F7E"');
+    // Channel underlays become pearl light; split, black and red activation fills stay distinct.
+    out = out.replaceAll('fill="#FFFDF7" stroke="none"', 'fill="#D8D0EE" stroke="#EADFFF" stroke-width=".35"');
+    out = out.replaceAll('fill="#A83226"', 'fill="#FF607C"');
     out = out.replaceAll('fill="#15151A"', 'fill="#171321"');
     out = out.replace('<svg ', '<svg class="ky-bodygraph-svg" ');
     out = out.replace("</svg>", `
       <style>
-        .ky-bodygraph-svg .ky-zodiac { fill:#F2D18A; font-family:Georgia,serif; font-size:13px; opacity:.88; filter:url(#kyCentreGlow); }
-        /* Centre silhouettes retain their MMI points; gradients add material depth only. */
-        .ky-bodygraph-svg polygon { filter:url(#kyCentreGlow); }
-        .ky-bodygraph-svg polygon[fill="#292846"] { fill:url(#kyCenterViolet); }
-        .ky-bodygraph-svg polygon[fill="url(#kyCrystal)"] { fill:url(#kyCenterGold); }
-        /* Existing paths are the renderer's canonical channels and outlines. */
-        .ky-bodygraph-svg path[stroke]:not([stroke="none"]) { filter:url(#kyChannelGlow); }
-        .ky-bodygraph-svg path[stroke="#A83226"],
-        .ky-bodygraph-svg path[stroke="#FF5F7E"] { stroke:#FF718D; filter:url(#kyChannelGlow); }
-        .ky-bodygraph-svg path[stroke="#15151A"],
-        .ky-bodygraph-svg path[stroke="#171321"] { stroke:#171321; filter:url(#kyChannelGlow); }
-        .ky-bodygraph-svg text { fill:#FFF0CE; paint-order:stroke; stroke:#17152E; stroke-width:.42px; }
-        .ky-bodygraph-svg circle { filter:url(#kyCentreGlow); }
+        .ky-bodygraph-svg .ky-zodiac { font: 5px Georgia,serif; letter-spacing:.5px; filter:url(#kyGlow); }
+        .ky-bodygraph-svg polygon[fill="#FF607C"],
+        .ky-bodygraph-svg polygon[fill="#171321"],
+        .ky-bodygraph-svg polygon[fill^="url(#kySplit)"] { filter:url(#kyGlow); }
+        .ky-bodygraph-svg text { fill:#FFF0D1; paint-order:stroke; stroke:#15142A; stroke-width:.38px; }
+        .ky-bodygraph-svg circle[fill="#C9A86A"] { fill:#F3C96F; stroke:#FFF1BD; stroke-width:.55px; filter:url(#kyGlow); }
         .ky-bodygraph-svg #ky-astrology-frame { pointer-events:none; }
       </style>
     </svg>`);
