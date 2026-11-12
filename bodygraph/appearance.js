@@ -4,14 +4,15 @@
   const theme = Object.freeze({
     name: "warm-editorial",
     palette: Object.freeze({
-      "#FDFAF3": "#FBF7EF", // canvas: warm ivory
-      "#FFFDF7": "#FFFCF6", // channel underlay / neutral fill
-      "#D8CDB8": "#E4D8C5", // quiet border
-      "#1E2A44": "#243650", // deep navy: outlines and primary labels
-      "#3A4A6B": "#6E788A", // muted slate: inactive gate labels
-      "#C9A86A": "#D8BD86", // muted gold: defined centre accents
-      "#A83226": "#B24D43"  // restrained red: Design activations
-      // Personality black (#15151A) and split patterns are intentionally unchanged.
+      "#FDFAF3": "#F1EBDD", // parchment canvas
+      "#FFFDF7": "#E9E1D4", // visible warm-neutral channel underlay
+      "#D8CDB8": "#D5C8B5", // soft border
+      "#1E2A44": "#1C3557", // confident deep navy structure
+      "#3A4A6B": "#738096", // softened slate gate labels
+      "#C9A86A": "#E6C98E", // brighter muted-gold defined centres
+      "#A9834B": "#B98B52", // warm ochre centre detail
+      "#A83226": "#C65B52"  // richer muted red: Design activations
+      // Personality black (#15151A) and MMI split patterns are intentionally unchanged.
     })
   });
 
