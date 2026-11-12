@@ -112,9 +112,18 @@
     out = out.replace("</svg>", `
       <style>
         .ky-bodygraph-svg .ky-zodiac { fill:#F2D18A; font-family:Georgia,serif; font-size:13px; opacity:.88; filter:url(#kyCentreGlow); }
-        .ky-bodygraph-svg polygon[stroke^="url(#kyGold)"] { filter:url(#kyCentreGlow); }
-        .ky-bodygraph-svg polygon[fill="#FF5F7E"], .ky-bodygraph-svg polygon[fill="#171321"] { filter:url(#kyChannelGlow); }
+        /* Centre silhouettes retain their MMI points; gradients add material depth only. */
+        .ky-bodygraph-svg polygon { filter:url(#kyCentreGlow); }
+        .ky-bodygraph-svg polygon[fill="#292846"] { fill:url(#kyCenterViolet); }
+        .ky-bodygraph-svg polygon[fill="url(#kyCrystal)"] { fill:url(#kyCenterGold); }
+        /* Existing paths are the renderer's canonical channels and outlines. */
+        .ky-bodygraph-svg path[stroke]:not([stroke="none"]) { filter:url(#kyChannelGlow); }
+        .ky-bodygraph-svg path[stroke="#A83226"],
+        .ky-bodygraph-svg path[stroke="#FF5F7E"] { stroke:#FF718D; filter:url(#kyChannelGlow); }
+        .ky-bodygraph-svg path[stroke="#15151A"],
+        .ky-bodygraph-svg path[stroke="#171321"] { stroke:#171321; filter:url(#kyChannelGlow); }
         .ky-bodygraph-svg text { fill:#FFF0CE; paint-order:stroke; stroke:#17152E; stroke-width:.42px; }
+        .ky-bodygraph-svg circle { filter:url(#kyCentreGlow); }
         .ky-bodygraph-svg #ky-astrology-frame { pointer-events:none; }
       </style>
     </svg>`);
