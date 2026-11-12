@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 
 import swisseph as swe
 
-# Rave Mandala order: Gate 41 begins the zodiac wheel.
+# MMI wheel validation (2026-11-12): Gate 41 begins at 2°00′00″ Aquarius (302.0°).\n# MANDALA_OFFSET_DEG=58 maps that longitude to wheel position 0. This is the\n# decompiled MMI gate-table anchor; do not replace it with 0° Aquarius or alter\n# GATE_ORDER/substructure math. See docs/BODYGRAPH_RENDERER.md.\n# MMI's node convention appears to be mean node; KY intentionally retains TRUE_NODE\n# until an owner-approved decision changes that convention.
 GATE_ORDER = [
     41,19,13,49,30,55,37,63,22,36,25,17,21,51,42,3,27,24,2,23,8,20,16,35,
     45,12,15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,46,18,48,57,32,50,
