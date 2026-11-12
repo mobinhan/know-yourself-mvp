@@ -293,3 +293,21 @@ These remain contract/policy foundations. No durable cross-session storage, prod
 - Regression coverage verifies that the selected evidence contains the temporary-channel result and satisfies the timing evidence contract. The first test attempt exposed a missing lifecycle-evidence fixture; the fixture was corrected, not the evidence requirement.
 - Latest validation for this integration checkpoint: GitHub Actions run #470 passed for commit `a77a92437361d7b032d3f24415d3911c8260ad1e`: https://github.com/mobinhan/know-yourself-mvp/actions/runs/38196512808. Both Python engine and JavaScript contract jobs succeeded.
 - Important boundary: the repository tree has no live Ask endpoint or connected external LLM. The only checked-in Supabase Edge Function is `user-data-api` for authenticated persistence/data access. Therefore this is an engine-side evidence-routing improvement, not proof that the Lovable UI is already passing or consuming this evidence. No Lovable credits were used.
+
+
+## Human Design knowledge research checkpoint — Life Cycles Analysis
+
+**Updated:** 2026-11-12  
+**Research record:** `knowledge/human-design/life-cycles/ra-uru-hu-life-cycles-analysis-2005.md`  
+**Research branch:** `knowledge/life-cycles-ra-2005`
+
+A source-attributed synthesis of Ra Uru Hu's four-part 2005 *Life Cycles Analysis* course has been added. It records the course structure, natal-first methodology, three weather-impact categories (Environmental, Personal, Educational), central role of the Nodes, Rave Return, Saturn/Uranus/Kiron long cycles, Profile-specific pathways, analyst stance, timing notes, proposed Know Yourself pipeline and unresolved validation questions.
+
+**Important boundaries:**
+- This is an original research synthesis, not a reproduction of the copyrighted transcript.
+- Direct Ra teaching, paraphrase, and Know Yourself implementation synthesis are distinguished.
+- The record is foundational research, not a complete formalised analyst algorithm and not yet implementation-ready.
+- Outstanding validation questions are explicitly listed in the research record.
+- The research was committed on a separate knowledge branch from `main`; no production/deploy branch was changed and no deployment was triggered.
+
+**Next action:** reconstruct the worked examples and final analyst guidelines into testable, individually sourced rules; then extend the same source-grounded process to Partnership, Incarnation Cross, Variables/PHS/Rave Psychology and Transits.
