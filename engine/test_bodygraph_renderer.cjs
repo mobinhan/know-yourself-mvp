@@ -26,8 +26,24 @@ assert.ok(avgX("spleen") < avgX("solarPlexus"), "native MMI orientation must kee
 assert.equal(Object.keys(manifest.centres).length, 9);
 assert.equal(Object.keys(manifest.gates).length, 64);
 assert.equal(Object.keys(manifest.channels).length, 36);
-for (const active of [[10,20],[10,34],[10,57],[20,34],[34,57],[10,34,57],[20,34,57],[10,20,34],[10,20,57],[10,20,34,57]]) {
-  const integrationSvg = renderer.render(manifest, { personalityGates: active, designGates: [], definedChannels: [] });
-  assert.ok(integrationSvg.includes("<svg"), "integration combination must render");
+const points = polygon => polygon.map(p => p.map(n => (Math.round(n * 100) / 100).toString()).join(",")).join(" ");
+const integrationCases = [
+  { gates: [10,20], aux: [70,68] },
+  { gates: [10,34], aux: [65,67,66] },
+  { gates: [10,57], aux: [70,68] },
+  { gates: [20,34], aux: [66,67,65] },
+  { gates: [34,57], aux: [65,69] },
+  { gates: [10,34,57], aux: [66,65] },
+  { gates: [20,34,57], aux: [65,67] },
+  { gates: [10,20,34], aux: [65,67,66] },
+  { gates: [10,20,57], aux: [66] },
+  { gates: [10,20,34,57], aux: [66,65] }
+];
+for (const item of integrationCases) {
+  const integrationSvg = renderer.render(manifest, { personalityGates: item.gates, designGates: [], definedChannels: [] });
+  for (const id of item.aux) {
+    const shape = points(manifest.integration.auxiliaryShapes[String(id)].outline);
+    assert.ok(integrationSvg.includes('points="' + shape + '"'), 'integration gates ' + item.gates.join(',') + ' must draw auxiliary shape ' + id);
+  }
 }
 console.log("PASS MMI bodygraph acceptance: reference hash, 64 labels, split gates, 9 centres, 36 channels, native orientation");
