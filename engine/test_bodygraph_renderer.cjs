@@ -19,11 +19,15 @@ assert.equal(validation.ok, true, validation.issues.join("; "));
 const svg = renderer.render(manifest, chart, { width: 420, title: "13 Dec 1980 · 14:32 CET · Baarn — activations" });
 const hash = crypto.createHash("sha256").update(svg).digest("hex");
 assert.equal(hash, "2d8b4dc53f735ffff6c00e5fadb6c658a0e60cd4f9f15260c6f54cee7316323d", "SVG must exactly reproduce approved reference");
-assert.equal((svg.match(/<text /g) || []).length, 64, "all gate labels must render");
+assert.equal((svg.match(/<text /g) || []).length, 65, "64 gate labels plus title must render");
 assert.equal((svg.match(/url\(#kySplit[HV]\)/g) || []).length, 3, "gates 26, 33 and 43 must use split fills");
 const avgX = key => manifest.centres[key].outline.reduce((sum, p) => sum + p[0], 0) / manifest.centres[key].outline.length;
 assert.ok(avgX("spleen") < avgX("solarPlexus"), "native MMI orientation must keep Spleen left of Solar Plexus");
 assert.equal(Object.keys(manifest.centres).length, 9);
 assert.equal(Object.keys(manifest.gates).length, 64);
 assert.equal(Object.keys(manifest.channels).length, 36);
+for (const active of [[10,20],[10,34],[10,57],[20,34],[34,57],[10,34,57],[20,34,57],[10,20,34],[10,20,57],[10,20,34,57]]) {
+  const integrationSvg = renderer.render(manifest, { personalityGates: active, designGates: [], definedChannels: [] });
+  assert.ok(integrationSvg.includes("<svg"), "integration combination must render");
+}
 console.log("PASS MMI bodygraph acceptance: reference hash, 64 labels, split gates, 9 centres, 36 channels, native orientation");
