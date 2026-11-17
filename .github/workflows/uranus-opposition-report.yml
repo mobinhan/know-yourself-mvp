@@ -1,6 +1,13 @@
 name: Uranus Opposition report pipeline
 
 on:
+  pull_request:
+    branches:
+      - deploy/render-api
+    paths:
+      - "api/uranus_opposition_pipeline.py"
+      - "tests/test_uranus_opposition_pipeline.py"
+      - ".github/workflows/uranus-opposition-report.yml"
   push:
     branches:
       - feature/uranus-opposition-report-replacement
