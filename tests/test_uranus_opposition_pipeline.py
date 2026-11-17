@@ -298,5 +298,26 @@ class UranusOppositionPipelineTests(unittest.TestCase):
             validate_report({"evidence_status": {"locked": True}, "chapters": []})
 
 
+    def test_pdf_delivery_route_is_registered(self):
+        from unittest.mock import patch
+        import uranus_opposition_pipeline as pipeline
+        handler = object()
+        with patch.object(pipeline, "handle_pdf") as mocked:
+            self.assertTrue(pipeline.dispatch(
+                handler, ["v1", "reports", "uranus-opposition", "pdf"], "POST"
+            ))
+            mocked.assert_called_once_with(handler)
+
+    def test_chapter_route_is_registered(self):
+        from unittest.mock import patch
+        import uranus_opposition_pipeline as pipeline
+        handler = object()
+        with patch.object(pipeline, "handle_chapter") as mocked:
+            self.assertTrue(pipeline.dispatch(
+                handler, ["v1", "charts", "chart-123", "uranus-opposition-chapter"], "POST"
+            ))
+            mocked.assert_called_once_with(handler, "chart-123")
+
+
 if __name__ == "__main__":
     unittest.main()
