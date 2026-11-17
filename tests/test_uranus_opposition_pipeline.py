@@ -196,5 +196,61 @@ class UranusOppositionPipelineTests(unittest.TestCase):
                 )
 
 
+    def test_golden_1982_reference_matches_natal_and_cycle_mechanics(self):
+        # Integration regression against the actual deterministic engine and
+        # the uploaded 15 April 1982 master report.
+        from api.index import build_foundation, calculate_chart, derive_structure, CHANNELS
+        from uranus_opposition_pipeline import build_uranus_opposition_evidence
+
+        foundation = build_foundation({
+            "date": "1982-04-15",
+            "time": "07:38",
+            "timezone": "Europe/Amsterdam",
+            "location": "Baarn, Netherlands",
+        }, chart_id="golden-uranus-1982")
+        natal_channels = sorted(x["channel"] for x in foundation["core"]["channels"])
+        self.assertEqual(
+            natal_channels,
+            ["11-56", "28-38", "3-60", "32-54", "34-57", "42-53"],
+        )
+        self.assertEqual(foundation["core"]["type"], "generator")
+        self.assertEqual(foundation["core"]["authority"], "sacral")
+        self.assertEqual(foundation["core"]["profile"], "5/1")
+
+        evidence = build_uranus_opposition_evidence(
+            foundation,
+            calculate_chart=calculate_chart,
+            derive_structure=derive_structure,
+            channel_catalog=CHANNELS,
+            reference_pass_index=0,
+        )
+        passes = evidence["all_exact_passes"]
+        self.assertEqual(
+            [item["timestamp"][:10] for item in passes[:3]],
+            ["2026-07-08", "2026-11-16", "2027-04-27"],
+        )
+        cycle = evidence["cycle"]
+        self.assertEqual(cycle["core"]["authority"], "emotional")
+        self.assertEqual(cycle["core"]["profile"], "2/4")
+        self.assertEqual(cycle["core"]["definition"]["type"], "triple_split")
+        self.assertEqual(
+            cycle["core"]["incarnation_cross"]["personality_sun"],
+            {"gate": 53, "line": 2},
+        )
+        self.assertEqual(
+            cycle["core"]["incarnation_cross"]["personality_earth"],
+            {"gate": 54, "line": 2},
+        )
+        self.assertEqual(
+            cycle["core"]["incarnation_cross"]["design_sun"],
+            {"gate": 51, "line": 4},
+        )
+        self.assertEqual(
+            cycle["core"]["incarnation_cross"]["design_earth"],
+            {"gate": 57, "line": 4},
+        )
+        self.assertTrue(evidence["evidence_status"]["locked"])
+
+
 if __name__ == "__main__":
     unittest.main()
