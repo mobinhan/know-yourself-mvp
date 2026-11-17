@@ -21,4 +21,4 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run dedicated pipeline tests
-        run: python -m unittest tests.test_uranus_opposition_pipeline -v
+        run: python -m unittest discover -s tests -p 'test_uranus_opposition_pipeline.py' -v
