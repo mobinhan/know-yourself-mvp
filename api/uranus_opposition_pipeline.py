@@ -11,6 +11,9 @@ from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 from typing import Callable
 import json
+import re
+import tempfile
+from pathlib import Path
 
 
 CHAPTERS = [
@@ -450,4 +453,110 @@ def dispatch(handler, segments, method: str) -> bool:
             and segments[3] == "uranus-opposition-chapter" and method == "POST"):
         handle_chapter(handler, segments[2])
         return True
+    if segments == ["v1", "reports", "uranus-opposition", "pdf"] and method == "POST":
+        handle_pdf(handler)
+        return True
     return False
+
+
+
+def handle_pdf(handler):
+    from entitlements import resolve_request_capability
+    from uranus_opposition_pdf import render_uranus_opposition_pdf
+
+    body = _read_body(handler)
+    decision = resolve_request_capability(
+        handler.headers, str(body.get("capability") or "guide.basic")
+    )
+    if not decision.get("allowed"):
+        status = 401 if decision.get("status") == "authentication_required" else (
+            403 if decision.get("status") == "premium_required" else 503
+        )
+        return _reply(handler, status, {
+            "error": decision.get("status") or "entitlement_unavailable",
+            "capability": decision.get("capability"),
+        })
+
+    chapters = body.get("chapters")
+    expected_ids = [item[0] for item in CHAPTERS]
+    if not isinstance(chapters, list) or [x.get("id") for x in chapters if isinstance(x, dict)] != expected_ids:
+        return _reply(handler, 422, {
+            "error": "validation_failed",
+            "detail": "The completed report must contain all 15 chapters in master order.",
+        })
+
+    try:
+        foundation = _DEPS["build_foundation"](body.get("birth") or {})
+        evidence = build_uranus_opposition_evidence(
+            foundation,
+            calculate_chart=_DEPS["calculate_chart"],
+            derive_structure=_DEPS["derive_structure"],
+            channel_catalog=_DEPS["channel_catalog"],
+            reference_pass_index=int(body.get("reference_pass_index", 0)),
+        )
+        birth = foundation["birth_data"]
+        passes = evidence["all_exact_passes"]
+        period = (
+            f'{passes[0]["timestamp_local"][:10]} – {passes[-1]["timestamp_local"][:10]}'
+        )
+        natal = evidence["natal"]["core"]
+        cycle = evidence["cycle"]["core"]
+        report_data = {
+            "title": "The Uranus Opposition",
+            "subtitle": "A personal Human Design life-cycle reading",
+            "client_name": str(body.get("client_name") or "")[:120],
+            "birth": {
+                "date_time": f'{birth["date"]} · {birth["time"]}',
+                "place": str(birth.get("location") or ""),
+            },
+            "cycle_period": period,
+            "evidence_status": evidence["evidence_status"],
+            "validation_warnings": [],
+            "evidence": evidence,
+            "introduction": body.get("introduction") or {
+                "heading": "A turning point within a longer journey",
+                "paragraphs": [
+                    "Your reading begins with the design you were born with. It then looks at the particular configuration surrounding your Uranus Opposition and asks what this cycle brings into view.",
+                    "The central story is not that your natal design changes. It is that a temporary life-cycle configuration meets the design that has accompanied you throughout life.",
+                    f'Your exact Uranus opposition passes extend from {passes[0]["timestamp_local"][:10]} through {passes[-1]["timestamp_local"][:10]}. The selected reference pass is the moment used for the cycle chart in this reading.',
+                ],
+                "pull_quote": "A turning point does not erase the road behind you.",
+                "how_to_read_heading": "How to read this report",
+                "how_to_read": "The natal foundation describes the design you were born with. The cycle chart describes the temporary configuration at the selected exact opposition pass. The combined field describes how those two layers meet; it is not a permanent redesign.",
+                "layers": {
+                    "natal": {
+                        "headline": f'{natal.get("type", "")} · {natal.get("authority", "")}',
+                        "subline": f'{natal.get("profile", "")} · {natal.get("definition", {}).get("type", "")}',
+                    },
+                    "cycle": {
+                        "headline": f'{cycle.get("type", "")} · {cycle.get("authority", "")}',
+                        "subline": f'{cycle.get("profile", "")} · {cycle.get("definition", {}).get("type", "")}',
+                    },
+                    "combined": {
+                        "headline": "Temporary combined field",
+                        "subline": "Context, not redesign",
+                    },
+                },
+            },
+            "chapters": chapters,
+        }
+        with tempfile.TemporaryDirectory(prefix="ky-uranus-") as folder:
+            target = Path(folder) / "uranus-opposition.pdf"
+            render_uranus_opposition_pdf(report_data, target)
+            payload = target.read_bytes()
+    except (UranusReportEvidenceError, ValueError, KeyError, TypeError) as exc:
+        return _reply(handler, 422, {"error": "uranus_report_invalid", "detail": str(exc)})
+    except Exception:
+        return _reply(handler, 503, {"error": "uranus_report_pdf_unavailable"})
+
+    name = re.sub(r"[^A-Za-z0-9_-]+", "-", str(body.get("client_name") or "personal")).strip("-")[:48] or "personal"
+    handler.send_response(200)
+    handler.send_header("Content-Type", "application/pdf")
+    handler.send_header("Content-Disposition", f'attachment; filename="Uranus-Opposition-{name}.pdf"')
+    handler.send_header("Content-Length", str(len(payload)))
+    handler.send_header("Cache-Control", "private, no-store")
+    handler.send_header("Access-Control-Allow-Origin", "*")
+    handler.end_headers()
+    handler.wfile.write(payload)
+
+
