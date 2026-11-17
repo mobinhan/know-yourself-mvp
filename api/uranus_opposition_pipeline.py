@@ -364,7 +364,7 @@ def generate_uranus_opposition_chapter(
         "id": chapter_id,
         "title": title,
         "blocks": [{"type": "paragraph", "text": paragraph.strip()}
-                   for paragraph in answer.split("\\n\\n") if paragraph.strip()],
+                   for paragraph in answer.split("\n\n") if paragraph.strip()],
         "provider_metadata": {
             "model": result.get("model"),
             "interpretation_status": result.get("interpretation_status"),
