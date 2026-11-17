@@ -19,15 +19,21 @@ from urllib.parse import parse_qs, quote, urlparse
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
+# Make same-directory API modules importable in both Render's server.py
+# execution context and tests that load api/index.py as a module.
+ROOT = Path(__file__).resolve().parent.parent
+API_DIR = Path(__file__).resolve().parent
+ENGINE_DIR = ROOT / "engine"
+for _path in (str(API_DIR), str(ENGINE_DIR), str(ROOT)):
+    if _path not in sys.path:
+        sys.path.insert(0, _path)
+
 import v1_additions as _v1_additions
 import reports as _reports
+import uranus_opposition_pipeline as _uranus_reports
 
 from timezonefinder import TimezoneFinder
 
-ROOT = Path(__file__).resolve().parent.parent
-ENGINE_DIR = ROOT / "engine"
-sys.path.insert(0, str(ENGINE_DIR))
-sys.path.insert(0, str(ROOT / "api"))
 from ephemeris import calculate_chart  # noqa: E402
 from temporal_ephemeris import transit_activations  # noqa: E402
 from interpretation_provider import generate_interpretation, InterpretationProviderError  # noqa: E402
@@ -348,6 +354,13 @@ _v1_additions.configure(
     send_json=lambda h, s, p: h._send(s, p),
 )
 _reports.configure(build_foundation=build_foundation)
+_uranus_reports.configure(
+    build_foundation=build_foundation,
+    calculate_chart=calculate_chart,
+    derive_structure=derive_structure,
+    channel_catalog=CHANNELS,
+    send_json=lambda h, s, p: h._send(s, p),
+)
 
 
 class handler(BaseHTTPRequestHandler):
@@ -528,6 +541,8 @@ class handler(BaseHTTPRequestHandler):
             if segments[:3] == ["v1", "knowledge", "centres"] and len(segments) == 3 and method == "GET":
                 return self._send(200, GATE_CATALOG["centres"])
             if _v1_additions.dispatch(self, segments, method):
+                return
+            if _uranus_reports.dispatch(self, segments, method):
                 return
             if _reports.dispatch(self, segments, method):
                 return

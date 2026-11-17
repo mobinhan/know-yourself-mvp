@@ -1,0 +1,33 @@
+name: Uranus Opposition report pipeline
+
+on:
+  pull_request:
+    branches:
+      - deploy/render-api
+    paths:
+      - "api/uranus_opposition_pipeline.py"
+      - "tests/test_uranus_opposition_pipeline.py"
+      - ".github/workflows/uranus-opposition-report.yml"
+  push:
+    branches:
+      - feature/uranus-opposition-report-replacement
+    paths:
+      - "api/uranus_opposition_pipeline.py"
+      - "tests/test_uranus_opposition_pipeline.py"
+      - ".github/workflows/uranus-opposition-report.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deterministic engine dependencies
+        run: pip install -r requirements.txt
+      - name: Run dedicated pipeline tests
+        run: python -m unittest discover -s tests -p 'test_uranus_opposition_pipeline.py' -v
