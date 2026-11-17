@@ -252,5 +252,51 @@ class UranusOppositionPipelineTests(unittest.TestCase):
         self.assertTrue(evidence["evidence_status"]["locked"])
 
 
+    def test_pdf_renderer_produces_cover_orientation_and_fifteen_chapters(self):
+        import tempfile
+        from pathlib import Path
+        from uranus_opposition_pdf import render_uranus_opposition_pdf
+
+        data = {
+            "title": "The Uranus Opposition",
+            "subtitle": "A personal Human Design life-cycle reading",
+            "client_name": "Golden Chart #2",
+            "birth": {"date_time": "15 April 1982 · 07:38", "place": "Baarn, Netherlands"},
+            "cycle_period": "July 2026 – April 2027",
+            "evidence_status": {"locked": True},
+            "validation_warnings": [],
+            "introduction": {
+                "heading": "A turning point within a longer journey",
+                "paragraphs": ["The natal foundation remains the reference."],
+                "pull_quote": "A turning point does not erase the road behind you.",
+                "how_to_read_heading": "How to read this report",
+                "how_to_read": "Read the natal, cycle and combined layers separately.",
+                "layers": {
+                    "natal": {"headline": "Generator · Sacral", "subline": "5/1 · Split"},
+                    "cycle": {"headline": "Generator · Emotional", "subline": "2/4 · Triple Split"},
+                    "combined": {"headline": "Temporary field", "subline": "Context, not redesign"},
+                },
+            },
+            "chapters": [
+                {"id": chapter_id, "title": title,
+                 "blocks": [{"type": "paragraph", "text": f"Substantive chapter {index}. " * 20}]}
+                for index, (chapter_id, title, _focus) in enumerate(CHAPTERS, 1)
+            ],
+        }
+        with tempfile.TemporaryDirectory() as folder:
+            target = Path(folder) / "golden-test.pdf"
+            render_uranus_opposition_pdf(data, target)
+            payload = target.read_bytes()
+            self.assertGreater(len(payload), 5000)
+            self.assertEqual(payload.count(b"/Type /Page"), 17)
+
+    def test_pdf_renderer_rejects_unlocked_or_incomplete_report(self):
+        from uranus_opposition_pdf import validate_report
+        with self.assertRaises(ValueError):
+            validate_report({"evidence_status": {"locked": False}, "chapters": []})
+        with self.assertRaises(ValueError):
+            validate_report({"evidence_status": {"locked": True}, "chapters": []})
+
+
 if __name__ == "__main__":
     unittest.main()
