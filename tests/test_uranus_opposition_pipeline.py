@@ -90,5 +90,92 @@ class UranusOppositionPipelineTests(unittest.TestCase):
             )
 
 
+    def test_evidence_builder_uses_exact_reference_pass_and_three_layers(self):
+        from datetime import datetime, timezone
+        from unittest.mock import patch
+        import types
+        from uranus_opposition_pipeline import build_uranus_opposition_evidence
+
+        events = [
+            {"type": "uranus_opposition", "body": "uranus",
+             "timestamp": "2026-07-08T12:20:45Z", "target_degrees": 180.0,
+             "direction": "forward"},
+            {"type": "uranus_opposition", "body": "uranus",
+             "timestamp": "2026-11-16T11:19:00Z", "target_degrees": 180.0,
+             "direction": "retrograde"},
+            {"type": "uranus_opposition", "body": "uranus",
+             "timestamp": "2027-04-27T13:31:00Z", "target_degrees": 180.0,
+             "direction": "forward"},
+        ]
+        fake_temporal = types.SimpleNamespace(
+            find_longitude_event=lambda *a, **k: events
+        )
+        foundation = {
+            "birth_data": {
+                "date": "1982-04-15", "time": "07:38",
+                "timezone": "Europe/Amsterdam", "location": "Baarn",
+            },
+            "core": {"type": "generator", "authority": "sacral"},
+            "activations": {
+                "personality": [
+                    {"body": "uranus", "longitude": 243.0, "gate": 3},
+                    {"body": "sun", "longitude": 24.0, "gate": 42},
+                ],
+                "design": [{"body": "sun", "longitude": 204.0, "gate": 60}],
+            },
+        }
+        cycle_acts = {
+            "personality": [
+                {"body": "sun", "gate": 53, "line": 2, "longitude": 64.0},
+                {"body": "uranus", "gate": 20, "line": 1, "longitude": 64.0},
+            ],
+            "design": [
+                {"body": "sun", "gate": 51, "line": 4, "timestamp_utc": "2026-04-08T04:47:06Z"},
+            ],
+        }
+        seen = {}
+
+        def calc(local_iso, tz):
+            seen["local_iso"] = local_iso
+            seen["tz"] = tz
+            return {"activations": cycle_acts, "ephemeris": {"provider": "Swiss Ephemeris"}}
+
+        def derive(activations):
+            return {
+                "type": "generator", "strategy": "wait_to_respond",
+                "authority": "emotional", "profile": "2/4",
+                "incarnation_cross": {"personality_sun": {"gate": 53, "line": 2}},
+            }
+
+        with patch.dict(sys.modules, {"temporal_ephemeris": fake_temporal}):
+            result = build_uranus_opposition_evidence(
+                foundation, calculate_chart=calc,
+                derive_structure=derive, channel_catalog=[],
+            )
+        self.assertEqual(len(result["all_exact_passes"]), 3)
+        self.assertEqual(result["cycle"]["reference_pass"]["timestamp"], "2026-07-08T12:20:45Z")
+        self.assertEqual(result["cycle"]["design_timestamp_utc"], "2026-04-08T04:47:06Z")
+        self.assertEqual(result["cycle"]["core"]["authority"], "emotional")
+        self.assertEqual(result["natal"]["core"]["authority"], "sacral")
+        self.assertTrue(result["evidence_status"]["locked"])
+        self.assertEqual(seen["tz"], "Europe/Amsterdam")
+
+    def test_invalid_reference_pass_index_fails_closed(self):
+        from unittest.mock import patch
+        import types
+        from uranus_opposition_pipeline import build_uranus_opposition_evidence
+
+        fake_temporal = types.SimpleNamespace(find_longitude_event=lambda *a, **k: [])
+        with patch.dict(sys.modules, {"temporal_ephemeris": fake_temporal}):
+            with self.assertRaises(UranusReportEvidenceError):
+                build_uranus_opposition_evidence(
+                    {"birth_data": {"date": "1982-04-15", "time": "07:38",
+                                    "timezone": "Europe/Amsterdam"},
+                     "activations": {"personality": [{"body": "uranus", "longitude": 243.0}]}},
+                    calculate_chart=lambda *a: {}, derive_structure=lambda *a: {},
+                    channel_catalog=[],
+                )
+
+
 if __name__ == "__main__":
     unittest.main()
