@@ -288,7 +288,7 @@ class UranusOppositionPipelineTests(unittest.TestCase):
             render_uranus_opposition_pdf(data, target)
             payload = target.read_bytes()
             self.assertGreater(len(payload), 5000)
-            self.assertEqual(payload.count(b"/Type /Page"), 17)
+            self.assertEqual(len(__import__("re").findall(rb"/Type /Page\\b", payload)), 17)
 
     def test_pdf_renderer_rejects_unlocked_or_incomplete_report(self):
         from uranus_opposition_pdf import validate_report
