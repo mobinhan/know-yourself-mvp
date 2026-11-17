@@ -212,6 +212,19 @@ def build_uranus_opposition_evidence(
     zone = ZoneInfo(zone_name)
     birth_local = datetime.fromisoformat(birth["date"] + "T" + birth["time"])
     birth_utc = birth_local.replace(tzinfo=zone).astimezone(timezone.utc)
+    natal_core = foundation.get("core") or {}
+    required_core = ("type", "strategy", "authority", "profile", "definition", "incarnation_cross", "channels", "centres")
+    missing_core = [key for key in required_core if key not in natal_core or natal_core.get(key) is None]
+    if missing_core:
+        raise UranusReportEvidenceError("Natal foundation is incomplete: " + ", ".join(missing_core))
+    # Required natal activations used by the chapter architecture.
+    for side, body in (
+        ("personality", "sun"), ("personality", "earth"),
+        ("design", "sun"), ("design", "earth"),
+        ("personality", "south_node"), ("personality", "north_node"),
+        ("design", "south_node"), ("design", "north_node"),
+    ):
+        _activation(foundation, side, body)
     natal_uranus = _activation(foundation, "personality", "uranus")
     natal_lon = float(natal_uranus["longitude"])
 
@@ -235,6 +248,18 @@ def build_uranus_opposition_evidence(
     cycle_calculation = calculate_chart(reference_local.replace(tzinfo=None).isoformat(), zone_name)
     cycle_activations = cycle_calculation["activations"]
     cycle_structure = _structure(cycle_activations, channel_catalog, derive_structure)
+    required_cycle = ("type", "strategy", "authority", "profile", "definition", "incarnation_cross")
+    missing_cycle = [key for key in required_cycle if key not in cycle_structure or cycle_structure.get(key) is None]
+    if missing_cycle:
+        raise UranusReportEvidenceError("Cycle chart structure is incomplete: " + ", ".join(missing_cycle))
+    for side, body in (
+        ("personality", "sun"), ("personality", "earth"),
+        ("design", "sun"), ("design", "earth"),
+        ("personality", "south_node"), ("personality", "north_node"),
+        ("design", "south_node"), ("design", "north_node"),
+    ):
+        if not any(str(x.get("body", "")).lower() == body for x in cycle_activations.get(side, []) or []):
+            raise UranusReportEvidenceError(f"Missing cycle {side} {body} activation.")
 
     natal_structure = foundation.get("core") or {}
     natal_gates = {int(x) for x in natal_structure.get("gate_set", [])}
