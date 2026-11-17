@@ -478,11 +478,15 @@ def handle_pdf(handler):
         })
 
     chapters = body.get("chapters")
-    expected_ids = [item[0] for item in CHAPTERS]
-    if not isinstance(chapters, list) or [x.get("id") for x in chapters if isinstance(x, dict)] != expected_ids:
+    expected_chapters = [(item[0], item[1]) for item in CHAPTERS]
+    actual_chapters = (
+        [(x.get("id"), x.get("title")) for x in chapters if isinstance(x, dict)]
+        if isinstance(chapters, list) else []
+    )
+    if actual_chapters != expected_chapters:
         return _reply(handler, 422, {
             "error": "validation_failed",
-            "detail": "The completed report must contain all 15 chapters in master order.",
+            "detail": "The completed report must contain all 15 canonical chapters in master order.",
         })
 
     try:
