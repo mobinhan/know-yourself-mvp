@@ -115,22 +115,41 @@ class UranusOppositionPipelineTests(unittest.TestCase):
                 "date": "1982-04-15", "time": "07:38",
                 "timezone": "Europe/Amsterdam", "location": "Baarn",
             },
-            "core": {"type": "generator", "authority": "sacral"},
+            "core": {
+                "type": "generator", "strategy": "wait_to_respond",
+                "authority": "sacral", "profile": "5/1",
+                "definition": {"type": "split", "components": [["Root"], ["Sacral"]]},
+                "incarnation_cross": {}, "channels": [], "centres": ["Root", "Sacral"],
+            },
             "activations": {
                 "personality": [
                     {"body": "uranus", "longitude": 243.0, "gate": 3},
                     {"body": "sun", "longitude": 24.0, "gate": 42},
+                    {"body": "earth", "longitude": 204.0, "gate": 32},
+                    {"body": "south_node", "longitude": 10.0, "gate": 54},
+                    {"body": "north_node", "longitude": 190.0, "gate": 53},
                 ],
-                "design": [{"body": "sun", "longitude": 204.0, "gate": 60}],
+                "design": [
+                    {"body": "sun", "longitude": 204.0, "gate": 60},
+                    {"body": "earth", "longitude": 24.0, "gate": 56},
+                    {"body": "south_node", "longitude": 15.0, "gate": 61},
+                    {"body": "north_node", "longitude": 195.0, "gate": 62},
+                ],
             },
         }
         cycle_acts = {
             "personality": [
                 {"body": "sun", "gate": 53, "line": 2, "longitude": 64.0},
+                {"body": "earth", "gate": 54, "line": 2, "longitude": 244.0},
+                {"body": "south_node", "gate": 59, "line": 1, "longitude": 120.0},
+                {"body": "north_node", "gate": 55, "line": 1, "longitude": 300.0},
                 {"body": "uranus", "gate": 20, "line": 1, "longitude": 64.0},
             ],
             "design": [
                 {"body": "sun", "gate": 51, "line": 4, "timestamp_utc": "2026-04-08T04:47:06Z"},
+                {"body": "earth", "gate": 57, "line": 4},
+                {"body": "south_node", "gate": 40, "line": 3},
+                {"body": "north_node", "gate": 37, "line": 3},
             ],
         }
         seen = {}
