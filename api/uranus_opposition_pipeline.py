@@ -195,7 +195,7 @@ def build_uranus_opposition_evidence(
     channel_catalog: list[dict],
     derive_structure: Callable,
     reference_pass_index: int = 0,
-    age_window: tuple[float, float] = (39.5, 44.5),
+    age_window: tuple[float, float] = (39.5, 45.5),
 ) -> dict:
     """Build a reproducible three-layer evidence packet from deterministic data.
 
