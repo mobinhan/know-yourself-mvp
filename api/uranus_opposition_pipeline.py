@@ -102,12 +102,17 @@ def _definition(channels: list[dict]) -> dict:
     return {"type": label, "components": components}
 
 
-def _structure(activations: dict, channel_catalog: list[dict]) -> dict:
+def _structure(activations: dict, channel_catalog: list[dict], derive_structure: Callable) -> dict:
     all_acts = (activations.get("personality") or []) + (activations.get("design") or [])
     gates = {int(a["gate"]) for a in all_acts if isinstance(a.get("gate"), int)}
     channels = _completed_channels(gates, channel_catalog)
     centres = sorted({str(c) for ch in channels for c in ch.get("centres", [])})
+    # Reuse the canonical API structural derivation for type, strategy,
+    # authority, profile and Cross. The local graph helper is retained only
+    # to expose the exact connected components for this evidence contract.
+    canonical = derive_structure(activations)
     return {
+        **canonical,
         "gate_set": sorted(gates),
         "channels": channels,
         "centres": centres,
@@ -133,12 +138,14 @@ def _chart_to_chart(natal_gates: set[int], cycle_gates: set[int],
         }
         if n_complete and c_complete:
             mutual.append(record)
-        elif c_complete and not n_complete:
+        elif c_complete and not n_complete and not (gates & natal_gates):
             cycle_only.append(record)
-        elif (n_complete and bool(gates & cycle_gates)) or (c_complete and bool(gates & natal_gates)):
-            electromagnetic.append(record)
-        elif gates & natal_gates and gates & cycle_gates:
+        elif n_complete and bool(gates & cycle_gates):
             compromise.append(record)
+        elif c_complete and bool(gates & natal_gates):
+            compromise.append(record)
+        elif (gates & natal_gates) and (gates & cycle_gates) and (gates & (natal_gates | cycle_gates)) == gates:
+            electromagnetic.append(record)
     return {
         "cycle_only_channels": cycle_only,
         "electromagnetic_channels": electromagnetic,
@@ -152,6 +159,7 @@ def build_uranus_opposition_evidence(
     *,
     calculate_chart: Callable,
     channel_catalog: list[dict],
+    derive_structure: Callable,
     reference_pass_index: int = 0,
     age_window: tuple[float, float] = (39.5, 44.5),
 ) -> dict:
@@ -192,7 +200,7 @@ def build_uranus_opposition_evidence(
     reference_local = reference_utc.astimezone(zone)
     cycle_calculation = calculate_chart(reference_local.replace(tzinfo=None).isoformat(), zone_name)
     cycle_activations = cycle_calculation["activations"]
-    cycle_structure = _structure(cycle_activations, channel_catalog)
+    cycle_structure = _structure(cycle_activations, channel_catalog, derive_structure)
 
     natal_structure = foundation.get("core") or {}
     natal_gates = {int(x) for x in natal_structure.get("gate_set", [])}
@@ -214,7 +222,6 @@ def build_uranus_opposition_evidence(
         "definition": _definition(combined_channels),
     }
 
-    natal_sun = _activation(foundation, "personality", "sun")
     cycle_sun = next((x for x in cycle_activations.get("personality", []) if x.get("body") == "sun"), None)
     cycle_design_sun = next((x for x in cycle_activations.get("design", []) if x.get("body") == "sun"), None)
     if not cycle_sun or not cycle_design_sun:
@@ -250,16 +257,21 @@ def build_uranus_opposition_evidence(
     }
 
 
-def generate_uranus_opposition_chapters(
+def generate_uranus_opposition_chapter(
     foundation: dict,
     evidence: dict,
+    chapter_id: str,
     *,
     generate_interpretation: Callable,
     knowledge_tier: str = "premium",
-) -> list[dict]:
-    """Generate all 15 chapters through the active direct-synthesis provider."""
+) -> dict:
+    """Generate one bounded chapter; callers can stream the 15 chapters safely."""
     if evidence.get("evidence_status", {}).get("locked") is not True:
         raise UranusReportEvidenceError("Report evidence packet is not locked.")
+    match = [(i, item) for i, item in enumerate(CHAPTERS, 1) if item[0] == chapter_id]
+    if not match:
+        raise UranusReportEvidenceError(f"Unknown Uranus Opposition chapter: {chapter_id}")
+    index, (_, title, focus) = match[0]
     temporal_context = {
         "report_type": "uranus_opposition",
         "evidence_layers": evidence,
@@ -270,39 +282,54 @@ def generate_uranus_opposition_chapters(
             "authority": "Personal decision authority remains natal. A cycle-defined Solar Plexus does not replace natal authority.",
         },
     }
-    chapters = []
-    for index, (chapter_id, title, focus) in enumerate(CHAPTERS, 1):
-        question = (
-            "Write a complete, substantial chapter for a premium Uranus Opposition life-cycle report. "
-            "Use a warm, personal, storytelling-led voice with real interpretive depth. "
-            "Do not write an encyclopedia entry or a list of disconnected definitions. "
-            "Keep natal, cycle and combined evidence explicitly distinct. "
-            "Do not invent facts, chart mechanics, personal history, outcomes or predictions. "
-            "If the supplied evidence does not support a claim, omit it or state the limitation. "
-            "The complete report evidence packet is supplied in temporal_context. "
-            f"Chapter {index}/15: {title}. {focus}"
-        )
-        result = generate_interpretation(
-            question,
-            foundation,
-            temporal_context=temporal_context,
+    question = (
+        "Write a complete, substantial chapter for a premium Uranus Opposition life-cycle report. "
+        "Use a warm, personal, storytelling-led voice with real interpretive depth. "
+        "Do not write an encyclopedia entry or a list of disconnected definitions. "
+        "Keep natal, cycle and combined evidence explicitly distinct. "
+        "Do not invent facts, chart mechanics, personal history, outcomes or predictions. "
+        "If the supplied evidence does not support a claim, omit it or state the limitation. "
+        "The complete report evidence packet is supplied in temporal_context. "
+        f"Chapter {index}/15: {title}. {focus}"
+    )
+    result = generate_interpretation(
+        question,
+        foundation,
+        temporal_context=temporal_context,
+        knowledge_tier=knowledge_tier,
+    )
+    answer = result.get("answer") if isinstance(result, dict) else None
+    if not isinstance(answer, str) or not answer.strip():
+        raise UranusReportEvidenceError(f"Provider returned no substantive answer for chapter {index}: {chapter_id}")
+    return {
+        "id": chapter_id,
+        "title": title,
+        "blocks": [{"type": "paragraph", "text": paragraph.strip()}
+                   for paragraph in answer.split("\\n\\n") if paragraph.strip()],
+        "provider_metadata": {
+            "model": result.get("model"),
+            "interpretation_status": result.get("interpretation_status"),
+            "factual_basis": result.get("factual_basis", []),
+            "knowledge_basis": result.get("knowledge_basis", []),
+            "relationship_basis": result.get("relationship_basis", []),
+            "limitations": result.get("limitations", []),
+        },
+    }
+
+
+def generate_uranus_opposition_chapters(
+    foundation: dict,
+    evidence: dict,
+    *,
+    generate_interpretation: Callable,
+    knowledge_tier: str = "premium",
+) -> list[dict]:
+    """Convenience batch wrapper. Production endpoints should call one chapter per request."""
+    return [
+        generate_uranus_opposition_chapter(
+            foundation, evidence, chapter_id,
+            generate_interpretation=generate_interpretation,
             knowledge_tier=knowledge_tier,
         )
-        answer = result.get("answer") if isinstance(result, dict) else None
-        if not isinstance(answer, str) or not answer.strip():
-            raise UranusReportEvidenceError(f"Provider returned no substantive answer for chapter {index}: {chapter_id}")
-        chapters.append({
-            "id": chapter_id,
-            "title": title,
-            "blocks": [{"type": "paragraph", "text": paragraph.strip()}
-                       for paragraph in answer.split("\n\n") if paragraph.strip()],
-            "provider_metadata": {
-                "model": result.get("model"),
-                "interpretation_status": result.get("interpretation_status"),
-                "factual_basis": result.get("factual_basis", []),
-                "knowledge_basis": result.get("knowledge_basis", []),
-                "relationship_basis": result.get("relationship_basis", []),
-                "limitations": result.get("limitations", []),
-            },
-        })
-    return chapters
+        for chapter_id, _title, _focus in CHAPTERS
+    ]
