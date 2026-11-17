@@ -10,6 +10,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 from typing import Callable
+import json
 
 
 CHAPTERS = [
@@ -44,6 +45,39 @@ CHAPTERS = [
     ("closing", "A different relationship with what comes next",
      "Write a substantial, memorable closing synthesis. No prediction, generic reassurance or repetition of the introduction."),
 ]
+
+
+# Injected by api/index.py so the report pipeline uses the one canonical engine.
+_DEPS: dict = {}
+
+
+def configure(*, build_foundation=None, calculate_chart=None,
+              derive_structure=None, channel_catalog=None, send_json=None):
+    if build_foundation is not None:
+        _DEPS["build_foundation"] = build_foundation
+    if calculate_chart is not None:
+        _DEPS["calculate_chart"] = calculate_chart
+    if derive_structure is not None:
+        _DEPS["derive_structure"] = derive_structure
+    if channel_catalog is not None:
+        _DEPS["channel_catalog"] = channel_catalog
+    if send_json is not None:
+        _DEPS["send_json"] = send_json
+
+
+def _read_body(handler):
+    try:
+        length = int(handler.headers.get("Content-Length") or 0)
+        if length <= 0 or length > 131072:
+            return {}
+        return json.loads(handler.rfile.read(length) or b"{}")
+    except Exception:
+        return {}
+
+
+def _reply(handler, status, payload):
+    sender = _DEPS.get("send_json")
+    return sender(handler, status, payload) if sender else handler._send(status, payload)
 
 
 class UranusReportEvidenceError(ValueError):
@@ -333,3 +367,62 @@ def generate_uranus_opposition_chapters(
         )
         for chapter_id, _title, _focus in CHAPTERS
     ]
+
+
+
+def handle_chapter(handler, chart_id: str):
+    from entitlements import resolve_request_capability
+    from interpretation_provider import InterpretationProviderError, generate_interpretation
+
+    body = _read_body(handler)
+    chapter_id = str(body.get("chapter_id") or "")
+    decision = resolve_request_capability(
+        handler.headers, str(body.get("capability") or "guide.basic")
+    )
+    if not decision.get("allowed"):
+        status = 401 if decision.get("status") == "authentication_required" else (
+            403 if decision.get("status") == "premium_required" else 503
+        )
+        return _reply(handler, status, {
+            "error": decision.get("status") or "entitlement_unavailable",
+            "capability": decision.get("capability"),
+        })
+    try:
+        foundation = _DEPS["build_foundation"](body.get("birth") or {}, chart_id=chart_id)
+        evidence = build_uranus_opposition_evidence(
+            foundation,
+            calculate_chart=_DEPS["calculate_chart"],
+            derive_structure=_DEPS["derive_structure"],
+            channel_catalog=_DEPS["channel_catalog"],
+            reference_pass_index=int(body.get("reference_pass_index", 0)),
+        )
+        chapter = generate_uranus_opposition_chapter(
+            foundation, evidence, chapter_id,
+            generate_interpretation=generate_interpretation,
+            knowledge_tier=decision.get("knowledge_tier") or "premium",
+        )
+    except UranusReportEvidenceError as exc:
+        return _reply(handler, 422, {"error": "uranus_report_evidence_unavailable", "detail": str(exc)})
+    except ValueError as exc:
+        return _reply(handler, 422, {"error": "validation_failed", "detail": str(exc)})
+    except InterpretationProviderError:
+        return _reply(handler, 503, {"error": "interpretation_provider_unavailable"})
+    except Exception:
+        return _reply(handler, 503, {"error": "uranus_report_generation_unavailable"})
+
+    return _reply(handler, 200, {
+        "report_type": "uranus_opposition",
+        "chapter": chapter,
+        "chapter_index": next(i for i, item in enumerate(CHAPTERS, 1) if item[0] == chapter_id),
+        "chapter_count": len(CHAPTERS),
+        "reference_pass_index": evidence["reference_pass_index"],
+        "evidence": evidence,
+    })
+
+
+def dispatch(handler, segments, method: str) -> bool:
+    if (len(segments) == 4 and segments[:2] == ["v1", "charts"]
+            and segments[3] == "uranus-opposition-chapter" and method == "POST"):
+        handle_chapter(handler, segments[2])
+        return True
+    return False
